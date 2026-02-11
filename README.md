@@ -22,6 +22,12 @@ An interactive tarot card reading web app with a richly themed mystical UI. User
 - **Responsive Design** — optimized for desktop and mobile
 - **Themed UI** — custom dark/gold mystical aesthetic with illustrated card art
 
+## Screenshots
+
+![Hero](./screenshots/hero.png)
+![Card Spread](./screenshots/spread.png)
+![Authentication](./screenshots/auth.png)
+
 ## Getting Started
 
 ### Prerequisites
