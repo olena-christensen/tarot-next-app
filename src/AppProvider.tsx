@@ -3,6 +3,7 @@ import {Card} from "@/types/Types";
 import {tarots} from "@/data";
 import {getQuestionPrompt} from "@/utils";
 import {handleAsk} from "@/handleAsk";
+import {generateReading} from "@/tarotReadings";
 
 type AppState = {
     tarots: Card[];
@@ -48,14 +49,22 @@ export function AppProvider({ children }: AppProviderProps) {
                 isResponseLoading: true,
             }));
 
-            const prompt = getQuestionPrompt(state.chosenCards);
-            handleAsk(prompt).then(response => {
-                setState(prevState => ({
-                    ...prevState,
-                    isResponseLoading: false,
-                    response: response,
-                }));
-            });
+            // TODO: swap back to API when billing is sorted
+            // const prompt = getQuestionPrompt(state.chosenCards);
+            // handleAsk(prompt).then(response => {
+            //     setState(prevState => ({
+            //         ...prevState,
+            //         isResponseLoading: false,
+            //         response: response,
+            //     }));
+            // });
+
+            const response = generateReading(state.chosenCards);
+            setState(prevState => ({
+                ...prevState,
+                isResponseLoading: false,
+                response: response,
+            }));
         }
     }, [state.chosenCards]);
 
