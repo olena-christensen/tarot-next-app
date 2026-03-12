@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as NextAuthOptions["adapter"],
+  adapter: PrismaAdapter(prisma as any) as NextAuthOptions["adapter"], // Prisma 7 type mismatch with adapter
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
