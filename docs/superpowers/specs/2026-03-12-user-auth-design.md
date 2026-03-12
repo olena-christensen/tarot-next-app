@@ -75,7 +75,7 @@ The current LoginForm is a presentational-only component with no state or handle
 
 ### Session Provider integration
 
-Create `src/components/Providers.tsx` — a client component that wraps both `SessionProvider` (from next-auth) and the existing `AppProvider`. Import this in `layout.tsx` to replace the current direct `AppProvider` usage, handling the server/client component boundary cleanly.
+Create `src/components/Providers.tsx` — a client component that wraps both `SessionProvider` (from next-auth) and the existing `AppProvider`. Import this in `page.tsx` to replace the current direct `AppProvider` usage.
 
 ### Session awareness in Login section
 
