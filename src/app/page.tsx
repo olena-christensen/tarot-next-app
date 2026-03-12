@@ -6,7 +6,7 @@ import {Login} from "@/components/Login";
 import {Loader} from "@/components/Loader";
 import {useEffect, useRef, useState} from "react";
 import {Header} from "@/components/Header";
-import {AppProvider} from "@/AppProvider";
+import {Providers} from "@/components/Providers";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -31,7 +31,7 @@ export default function Home() {
   };
 
   return (
-    <AppProvider>
+    <Providers>
         {!isLoaded
             ? <Loader />
             : (
@@ -52,6 +52,6 @@ export default function Home() {
                 </>
             )
         }
-    </AppProvider>
+    </Providers>
   );
 };
