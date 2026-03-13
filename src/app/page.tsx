@@ -2,16 +2,16 @@
 
 import {OfferBlock} from "@/components/OfferBlock";
 import {Tarot} from "@/components/Tarot";
-import {Login} from "@/components/Login";
+import {LoginModal} from "@/components/LoginModal";
 import {Loader} from "@/components/Loader";
 import {useEffect, useRef, useState} from "react";
 import {Header} from "@/components/Header";
-import {AppProvider} from "@/AppProvider";
+import {Providers} from "@/components/Providers";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const tarotRef = useRef<HTMLDivElement>(null);
-  const loginRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -24,34 +24,29 @@ export default function Home() {
     }
   };
 
-  const scrollToLogin = () => {
-    if (loginRef.current) {
-      loginRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <AppProvider>
+    <Providers>
         {!isLoaded
             ? <Loader />
             : (
                 <>
-                  <Header onScrollToLogin={scrollToLogin}/>
+                  <Header onOpenLogin={() => setIsLoginOpen(true)}/>
                   <main className="">
                     <OfferBlock
                         onScrollToTarot={scrollToTarot}
-                        onScrollToLogin={scrollToLogin}
+                        onOpenLogin={() => setIsLoginOpen(true)}
                     />
                     <div ref={tarotRef}>
                       <Tarot/>
                     </div>
-                    <div ref={loginRef}>
-                      <Login/>
-                    </div>
                   </main>
+                  <LoginModal
+                    isOpen={isLoginOpen}
+                    onClose={() => setIsLoginOpen(false)}
+                  />
                 </>
             )
         }
-    </AppProvider>
+    </Providers>
   );
 };

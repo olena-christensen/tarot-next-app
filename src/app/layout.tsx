@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Head from "next/head";
 import { Raleway } from "next/font/google";
-import "../assets/scss/style.css";
+import "../assets/scss/style.scss";
 import Footer from "@/components/Footer";
 
 const inter = Raleway({ subsets: ["latin"] });

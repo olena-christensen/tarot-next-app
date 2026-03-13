@@ -35,3 +35,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma generated client (schema.prisma is tracked separately)
+src/generated/prisma/client.d.ts
+src/generated/prisma/client.js
+src/generated/prisma/default.d.ts
+src/generated/prisma/default.js
+src/generated/prisma/edge.d.ts
+src/generated/prisma/edge.js
+src/generated/prisma/index-browser.js
+src/generated/prisma/index.d.ts
+src/generated/prisma/index.js
+src/generated/prisma/package.json
+src/generated/prisma/query_compiler_fast_bg.js
+src/generated/prisma/query_compiler_fast_bg.wasm
+src/generated/prisma/query_compiler_fast_bg.wasm-base64.js
+src/generated/prisma/runtime/
+src/generated/prisma/wasm-edge-light-loader.mjs
+src/generated/prisma/wasm-worker-loader.mjs

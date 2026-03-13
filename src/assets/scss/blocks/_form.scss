@@ -1,4 +1,8 @@
 .form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
   .form__input-block {
     display: flex;
     flex-direction: column;
@@ -47,5 +51,30 @@
         border: none;
       }
     }
+  }
+}
+
+.form__error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form__btn--google {
+  background-color: transparent;
+  border: $border;
+  color: $text-color;
+  font-size: 0.9rem;
+}
+
+.form__toggle {
+  margin-top: 1rem;
+  color: $primary;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
