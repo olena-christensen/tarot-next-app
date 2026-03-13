@@ -1,4 +1,8 @@
 .form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
   .form__input-block {
     display: flex;
     flex-direction: column;
@@ -64,6 +68,7 @@
 }
 
 .form__toggle {
+  margin-top: 1rem;
   color: $primary;
   cursor: pointer;
   text-align: center;

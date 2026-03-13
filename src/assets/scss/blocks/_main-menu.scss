@@ -1,17 +1,24 @@
 .main-menu {
   margin-left: auto;
-  border: $border;
-  border-radius: $border-radius;
 
   .main-menu__list {
     @include list-style;
     display: flex;
+    align-items: center;
     gap: 1rem;
   }
 
   .main-menu__link {
     @include link-style;
     padding: 0.5rem;
+  }
+
+  .main-menu__welcome {
+    @include link-style;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
   }
 }
 

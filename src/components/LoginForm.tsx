@@ -54,7 +54,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <form className="form form--login border-dashed" onSubmit={handleCredentialsSubmit}>
+    <form className="form form--login" onSubmit={handleCredentialsSubmit}>
       {isSignUp && (
         <div className="form__input-block">
           <label htmlFor="name" className="form__label">
@@ -122,7 +122,7 @@ export const LoginForm = () => {
           className="btn form__btn form__btn--google"
           onClick={handleGoogleSignIn}
         >
-          Sign in with Google
+          Let Google Speak Your Name
         </button>
 
         <a
@@ -133,8 +133,8 @@ export const LoginForm = () => {
           }}
         >
           {isSignUp
-            ? "Already initiated? Sign in"
-            : "New to the craft? Sign up"
+            ? "Already initiated? Enter the Sanctum"
+            : "New to the craft? Join the Circle of the Chosen"
           }
         </a>
       </div>

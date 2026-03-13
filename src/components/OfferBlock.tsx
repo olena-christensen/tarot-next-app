@@ -15,12 +15,12 @@ import {useAppContext} from "@/AppProvider";
 
 type OfferBlockProps = {
     onScrollToTarot: () => void;
-    onScrollToLogin: () => void;
+    onOpenLogin: () => void;
 };
 
 export const OfferBlock = ({
    onScrollToTarot,
-   onScrollToLogin
+   onOpenLogin
 }: OfferBlockProps) => {
     const { state, setState } = useAppContext();
     const [isLoaded, setIsLoaded] = useState(false);
@@ -104,7 +104,7 @@ export const OfferBlock = ({
                                 <div className="offer-block__btn offer-block__btn--right">
                                     <button
                                         className="btn border-dashed"
-                                        onClick={onScrollToLogin}
+                                        onClick={onOpenLogin}
                                     >
                                         Join the Circle <br/> of the Chosen
                                     </button>
