@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
-export const LoginForm = () => {
+type LoginFormProps = {
+  onSuccess?: () => void;
+};
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,6 +45,8 @@ export const LoginForm = () => {
 
       if (result?.error) {
         setError("Invalid email or password");
+      } else {
+        onSuccess?.();
       }
     } catch {
       setError("Something went wrong. Please try again.");

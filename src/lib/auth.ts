@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           image: user.image,
+          createdAt: user.createdAt,
         };
       },
     }),
@@ -53,12 +54,16 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.createdAt = user.createdAt
+          ? new Date(user.createdAt).toISOString()
+          : undefined;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { id: string }).id = token.id as string;
+        session.user.id = token.id;
+        session.user.createdAt = token.createdAt;
       }
       return session;
     },
