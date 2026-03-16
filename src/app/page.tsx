@@ -2,7 +2,8 @@
 
 import {OfferBlock} from "@/components/OfferBlock";
 import {Tarot} from "@/components/Tarot";
-import {LoginModal} from "@/components/LoginModal";
+import {Modal} from "@/components/Modal";
+import {LoginForm} from "@/components/LoginForm";
 import {Loader} from "@/components/Loader";
 import {useEffect, useRef, useState} from "react";
 import {Header} from "@/components/Header";
@@ -40,10 +41,13 @@ export default function Home() {
                       <Tarot/>
                     </div>
                   </main>
-                  <LoginModal
+                  <Modal
+                    title="Step Through the Veil"
                     isOpen={isLoginOpen}
                     onClose={() => setIsLoginOpen(false)}
-                  />
+                  >
+                    <LoginForm onSuccess={() => setIsLoginOpen(false)} />
+                  </Modal>
                 </>
             )
         }

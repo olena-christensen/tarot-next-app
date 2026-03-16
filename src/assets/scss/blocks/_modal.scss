@@ -1,4 +1,4 @@
-.login-modal {
+.modal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.85);
@@ -7,7 +7,7 @@
   justify-content: center;
   z-index: 100;
 
-  .login-modal__content {
+  .modal__content {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -22,7 +22,7 @@
     overflow-y: auto;
   }
 
-  .login-modal__close {
+  .modal__close {
     position: absolute;
     top: 2rem;
     right: 2rem;
@@ -37,7 +37,7 @@
     }
   }
 
-  .login__title {
+  .modal__title {
     margin-block: 0 2.5rem;
     padding: 0;
     border: none;

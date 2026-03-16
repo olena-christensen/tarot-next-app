@@ -6,3 +6,4 @@
 - Card flip animation — highlight cards one by one when ready for flipping
 - Spooky background sound during app loading animation
 - Footer — animation for highlighted items
+- User profile page
