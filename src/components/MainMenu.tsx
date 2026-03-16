@@ -1,12 +1,13 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 type MainMenuProps = {
     onOpenLogin: () => void;
+    onOpenProfile: () => void;
 };
 
-export default function MainMenu({ onOpenLogin }: MainMenuProps) {
+export default function MainMenu({ onOpenLogin, onOpenProfile }: MainMenuProps) {
     const { data: session, status } = useSession();
 
     return (
@@ -14,15 +15,12 @@ export default function MainMenu({ onOpenLogin }: MainMenuProps) {
             <ul className="main-menu__list">
                 {status === "loading" ? null : session ? (
                     <>
-                        <li className="main-menu__item main-menu__welcome">
-                            Welcome, {session.user?.name || "Mystic One"}
-                        </li>
                         <li className="main-menu__item">
                             <button
                                 className="btn main-menu__link"
-                                onClick={() => signOut({ callbackUrl: "/" })}
+                                onClick={onOpenProfile}
                             >
-                                Slip Into the Shadows
+                                Welcome, {session.user?.name || "Mystic One"}
                             </button>
                         </li>
                     </>
