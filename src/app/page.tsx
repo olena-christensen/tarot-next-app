@@ -55,7 +55,7 @@ export default function Home() {
                     isOpen={isProfileOpen}
                     onClose={() => setIsProfileOpen(false)}
                   >
-                    <UserProfile />
+                    <UserProfile onClose={() => setIsProfileOpen(false)} />
                   </Modal>
                 </>
             )

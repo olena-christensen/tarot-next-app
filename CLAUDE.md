@@ -26,3 +26,5 @@
 - DO NOT revert or undo changes without asking
 - Keep it direct — just do the work, don't over-explain
 - The database and Vercel setup took significant effort — do not break or replace it
+- **NEVER commit without explicit user permission** — always ask before committing, even during plan execution. Subagents must NOT commit.
+- **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task

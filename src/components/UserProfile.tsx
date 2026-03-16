@@ -2,7 +2,11 @@
 
 import { useSession, signOut } from "next-auth/react";
 
-export const UserProfile = () => {
+type UserProfileProps = {
+  onClose?: () => void;
+};
+
+export const UserProfile = ({ onClose }: UserProfileProps) => {
   const { data: session } = useSession();
 
   const memberSince = session?.user?.createdAt
@@ -32,7 +36,10 @@ export const UserProfile = () => {
       )}
       <button
         className="btn user-profile__btn"
-        onClick={() => signOut({ callbackUrl: "/" })}
+        onClick={() => {
+          onClose?.();
+          signOut({ callbackUrl: "/" });
+        }}
       >
         Slip Into the Shadows
       </button>
