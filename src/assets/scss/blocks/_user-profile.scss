@@ -22,9 +22,89 @@
   .user-profile__value {
     font-size: 1.1rem;
     color: $primary;
+
+    &--editable {
+      cursor: pointer;
+      border-bottom: 1px dashed $border-color;
+      padding-bottom: 0.15rem;
+      transition: border-color 0.2s;
+
+      &:hover {
+        border-bottom-color: $primary;
+      }
+    }
+  }
+
+  .user-profile__edit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .user-profile__input {
+    padding: 0.3rem 0.75rem;
+    height: 40px;
+    font-size: 1.1rem;
+    font-weight: 200;
+    font-family: $font-family;
+    color: $text-color;
+    background-color: $form-input-bg;
+    border: $border;
+    border-radius: $border-radius;
+    width: 100%;
+
+    &:focus {
+      border: $border;
+      outline: none;
+    }
+  }
+
+  .user-profile__edit-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .user-profile__edit-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    font-family: $font-family;
+    border-radius: $border-radius;
+    border: $border;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &--save {
+      background-color: rgba(250, 225, 163, 0.15);
+      color: $primary;
+
+      &:hover:not(:disabled) {
+        background-color: rgba(250, 225, 163, 0.25);
+      }
+    }
+
+    &--cancel {
+      background-color: transparent;
+      color: $primary;
+      opacity: 0.7;
+
+      &:hover:not(:disabled) {
+        opacity: 1;
+      }
+    }
+  }
+
+  .user-profile__error {
+    color: #e74c3c;
+    font-size: 0.85rem;
   }
 
   .user-profile__btn {
     margin-top: 1rem;
+    font-size: 20px;
   }
 }
