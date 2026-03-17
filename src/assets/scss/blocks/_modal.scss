@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   z-index: 100;
+  animation: modalFadeIn 0.3s ease-out;
 
   .modal__content {
     position: relative;
@@ -20,6 +21,7 @@
     border-radius: $border-radius;
     backdrop-filter: blur(50px);
     overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
   }
 
   .modal__close {
@@ -41,6 +43,26 @@
     margin-block: 0 2.5rem;
     padding: 0;
     border: none;
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
