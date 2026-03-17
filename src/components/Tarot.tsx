@@ -2,12 +2,14 @@ import Medallion3 from "@/assets/svg/medallion3.svg";
 import Medallion4 from "@/assets/svg/medallion4.svg";
 import {forwardRef, useEffect, useState} from "react";
 import AnimatedCard from "@/components/AnimatedCard";
+import {Modal} from "@/components/Modal";
 import {useAppContext} from "@/AppProvider";
 import {pickRandomCards} from "@/utils";
 
 export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
     const { state, setState } = useAppContext();
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
+    const [modalDismissed, setModalDismissed] = useState(false);
 
     const chosenCards = state.chosenCards;
     let cards = [];
@@ -32,6 +34,7 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
             chosenCards,
         }));
         setFlippedCards([false, false, false]);
+        setModalDismissed(false);
     };
 
     const handleCardFlip = (index: number) => {
@@ -65,24 +68,30 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
                 <div className="tarot__cards-container">
                     { cards}
                 </div>
-                {state.chosenCards.length > 0 && !state.isPredictionReady && (
-                    <h2 className="tarot__title title">Unveil Your Destiny, Card by Card...</h2>
+                {state.chosenCards.length > 0 && (
+                    <div className="tarot__action-area">
+                        {modalDismissed ? (
+                            <button
+                                className="btn btn-try-again border-dashed tarot__revoke-btn"
+                                onClick={handleClick}
+                                disabled={state.isResponseLoading}
+                            >
+                                Revoke and Retry
+                            </button>
+                        ) : (
+                            <h2 className="tarot__title title">Unveil Your Destiny, Card by Card...</h2>
+                        )}
+                    </div>
                 )}
-                <div className={state.isPredictionReady ? "tarot__info-block" : "tarot__info-block blur"}>
+                <Modal
+                    isOpen={state.isPredictionReady && !modalDismissed}
+                    onClose={() => setModalDismissed(true)}
+                    title={state.response ? "The Cards Have Spoken" : "The cards are still silent..."}
+                >
                     <div className="tarot__result">
-                        <h3 className="title title--third tarot__result-title">
-                            {state.response ? 'The Cards Have Spoken' : "The cards are still silent..."}
-                        </h3>
                         {state.response && <p className="tarot__result-text">{state.response}</p>}
                     </div>
-                    <button
-                        className="btn btn-try-again border-dashed"
-                        onClick={handleClick}
-                        disabled={state.isResponseLoading}
-                    >
-                        Revoke and Retry
-                    </button>
-                </div>
+                </Modal>
             </div>
         </section>
     );

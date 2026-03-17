@@ -58,11 +58,25 @@
     align-items: center;
   }
 
+  .tarot__action-area {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 3rem;
+    z-index: 5;
+  }
+
   .tarot__title {
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     font-size: 26px;
     z-index: 5;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .tarot__revoke-btn {
+    animation: fadeIn 0.5s ease-out;
   }
 
   .tarot__cards-container {
@@ -135,6 +149,12 @@
     min-width: 100px;
     text-align: left;
     font-size: 30px;
+  }
+
+  .tarot__revoke-btn {
+    position: relative;
+    z-index: 1;
+    margin-top: 2rem;
   }
 }
 
