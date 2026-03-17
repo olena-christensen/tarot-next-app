@@ -11,6 +11,8 @@
   .main-menu__link {
     @include link-style;
     padding: 0.5rem;
+    text-transform: capitalize;
+    border: none;
   }
 
   .main-menu__welcome {

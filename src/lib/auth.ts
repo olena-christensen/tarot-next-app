@@ -51,12 +51,15 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session: updateData }) {
       if (user) {
         token.id = user.id;
         token.createdAt = user.createdAt
           ? new Date(user.createdAt).toISOString()
           : undefined;
+      }
+      if (trigger === "update" && updateData?.name) {
+        token.name = updateData.name;
       }
       return token;
     },
@@ -64,6 +67,9 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.createdAt = token.createdAt;
+        if (token.name) {
+          session.user.name = token.name as string;
+        }
       }
       return session;
     },
