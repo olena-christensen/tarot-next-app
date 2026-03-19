@@ -1,6 +1,44 @@
 .animated-card {
   perspective: 1000px;
   cursor: pointer;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 12px;
+    z-index: -1;
+    opacity: 0;
+    background: conic-gradient(
+      from 0deg,
+      rgba(200, 195, 140, 0.8),
+      rgba(140, 160, 180, 0.4),
+      rgba(210, 205, 160, 0.9),
+      rgba(120, 145, 170, 0.3),
+      rgba(180, 185, 150, 0.7),
+      rgba(160, 175, 190, 0.5),
+      rgba(200, 195, 140, 0.8)
+    );
+    filter: blur(12px);
+    transition: opacity 0.8s ease-in-out;
+  }
+
+  &.glowing::before {
+    opacity: 1;
+    animation: glowPulse 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    filter: blur(12px);
+    transform: scale(1);
+  }
+  50% {
+    filter: blur(18px);
+    transform: scale(1.04);
+  }
 }
 
 .animated-card__wrap {

@@ -12,6 +12,8 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
     const [modalDismissed, setModalDismissed] = useState(false);
 
     const chosenCards = state.chosenCards;
+    const glowingIndex = chosenCards.length > 0 ? flippedCards.indexOf(false) : -1;
+
     let cards = [];
     for (let i = 0; i < 3; i++) {
         const card = <AnimatedCard
@@ -21,6 +23,7 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
             frontUrl="/decor-img/Card-middle.webp"
             backUrl={chosenCards[i] ? chosenCards[i].image : "/decor-img/Card-middle.webp"}
             animation="CardFlipAnimation 2s forwards"
+            isGlowing={i === glowingIndex}
             onClickAction={() => handleCardFlip(i)}
         />
         cards.push(card);
