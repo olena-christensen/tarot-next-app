@@ -12,6 +12,7 @@ type AppState = {
     isPredictionReady: boolean;
     response: string;
     isResponseLoading: boolean;
+    isCardsModalOpen: boolean;
 };
 
 type AppContextType = {
@@ -27,6 +28,7 @@ const defaultState: AppContextType = {
         isPredictionReady: false,
         response: '',
         isResponseLoading: false,
+        isCardsModalOpen: false,
     },
     setState: () => {},
 };

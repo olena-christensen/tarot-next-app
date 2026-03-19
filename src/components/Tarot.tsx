@@ -1,12 +1,14 @@
 import Medallion3 from "@/assets/svg/medallion3.svg";
 import Medallion4 from "@/assets/svg/medallion4.svg";
-import {forwardRef, useEffect, useState} from "react";
+
+import {useEffect, useState} from "react";
 import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
 import {useAppContext} from "@/AppProvider";
 import {pickRandomCards} from "@/utils";
+import Footer from "@/components/Footer";
 
-export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
+export const Tarot = () => {
     const { state, setState } = useAppContext();
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
@@ -29,15 +31,21 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
         cards.push(card);
     }
 
-
-    const handleClick = () => {
-        const chosenCards = pickRandomCards({ cards: state.tarots, count: 3 });
+    const handleClose = () => {
         setState(prevState => ({
             ...prevState,
-            chosenCards,
+            isCardsModalOpen: false,
+            chosenCards: [],
+            isPredictionReady: false,
+            response: '',
+            resetFlipped: true,
         }));
         setFlippedCards([false, false, false]);
         setModalDismissed(false);
+    };
+
+    const handleRetry = () => {
+        handleClose();
     };
 
     const handleCardFlip = (index: number) => {
@@ -49,34 +57,45 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
     };
 
     useEffect(() => {
-
         if (flippedCards.every(card => card)) {
             setTimeout(() => {
-                setState({
-                    ...state,
+                setState(prevState => ({
+                    ...prevState,
                     isPredictionReady: true,
-                });
+                }));
             }, 2000)
         }
     }, [flippedCards]);
 
-    return (
-        <section className="tarot" ref={ref}>
-            <div className="tarot__screen-bg">
-                <Medallion3/>
-                <Medallion4/>
-            </div>
-            <div className="container">
+    useEffect(() => {
+        if (state.isCardsModalOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [state.isCardsModalOpen]);
 
-                <div className="tarot__cards-container">
-                    { cards}
+    if (!state.isCardsModalOpen) return null;
+
+    return (
+        <div className="tarot-modal">
+            <div className="tarot-modal__inner">
+                <div className="tarot-modal__bg">
+                    <Medallion3/>
+                    <Medallion4/>
                 </div>
-                {state.chosenCards.length > 0 && (
+                <div className="tarot-modal__content">
+                    <div className="tarot__cards-container">
+                        {cards}
+                    </div>
                     <div className="tarot__action-area">
                         {modalDismissed ? (
                             <button
                                 className="btn btn-try-again border-dashed tarot__revoke-btn"
-                                onClick={handleClick}
+                                onClick={handleRetry}
                                 disabled={state.isResponseLoading}
                             >
                                 Revoke and Retry
@@ -85,7 +104,7 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
                             <h2 className="tarot__title title">Unveil Your Destiny, Card by Card...</h2>
                         )}
                     </div>
-                )}
+                </div>
                 <Modal
                     isOpen={state.isPredictionReady && !modalDismissed}
                     onClose={() => setModalDismissed(true)}
@@ -95,9 +114,8 @@ export const Tarot = forwardRef<HTMLDivElement>((props, ref) => {
                         {state.response && <p className="tarot__result-text">{state.response}</p>}
                     </div>
                 </Modal>
+                <Footer />
             </div>
-        </section>
+        </div>
     );
-});
-
-Tarot.displayName = "Tarot";
+};

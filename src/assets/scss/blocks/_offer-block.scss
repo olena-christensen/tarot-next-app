@@ -2,6 +2,7 @@
   position: relative;
   padding-top: 136px;
   height: 100vh;
+  overflow: hidden;
 
   &::before {
     content: "";
