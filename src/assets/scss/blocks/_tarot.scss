@@ -1,10 +1,21 @@
-.tarot {
+.tarot-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0;
+  animation: tarotModalFadeIn 0.5s ease-out forwards;
+}
+
+.tarot-modal__inner {
   position: relative;
-  padding-top: 40px;
-  padding-bottom: 60px;
+  width: 100%;
+  height: 100%;
+  background-color: $dark-bg;
   background-image: url("/decor-img/hands-and-candles.webp");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+  overflow: hidden;
 
   &::before,
   &::after {
@@ -15,6 +26,7 @@
     width: 100%;
     height: 45%;
     z-index: 0;
+    pointer-events: none;
   }
 
   &::before {
@@ -34,149 +46,131 @@
                     rgba(9, 9, 9, 0.92) 21%,
                     rgba(9, 9, 9, 0.04) 100%);
   }
+}
 
-  .tarot__screen-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10%;
-    z-index: 0;
+.tarot-modal__bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10%;
+  z-index: 0;
+  pointer-events: none;
 
-    svg {
-      width: 400px;
-      height: 400px;
-      opacity: 0.4;
-    }
+  svg {
+    width: 400px;
+    height: 400px;
+    opacity: 0.4;
   }
+}
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.tarot-modal__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  z-index: 1;
+}
 
-  .tarot__action-area {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 3rem;
-    z-index: 5;
-  }
+.tarot__title {
+  position: relative;
+  margin-bottom: 2rem;
+  font-size: 22px;
+  z-index: 5;
+  animation: fadeIn 0.5s ease-out;
+}
 
-  .tarot__title {
-    position: relative;
-    margin-bottom: 0;
-    font-size: 26px;
-    z-index: 5;
-    animation: fadeIn 0.5s ease-out;
-  }
+.tarot__action-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 3rem;
+  z-index: 5;
+}
 
-  .tarot__revoke-btn {
-    animation: fadeIn 0.5s ease-out;
-  }
+.tarot__revoke-btn {
+  animation: fadeIn 0.5s ease-out;
+}
 
-  .tarot__cards-container {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 78px;
-    width: 100%;
-    z-index: 1;
-  }
+.tarot__cards-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 960px;
+  z-index: 1;
 
   .animated-card {
-    width: 120px !important;
-    height: 191px !important;
+    width: 100px !important;
+    height: 160px !important;
 
     &:first-child {
-      transform: translate(20px, 35px) rotate(-14deg);
+      transform: translate(10px, 20px) rotate(-10deg);
     }
     &:last-child {
-      transform: translate(-20px, 35px) rotate(14deg);
+      transform: translate(-10px, 20px) rotate(10deg);
     }
   }
+}
 
-  .tarot__shake-btn {
-    position: relative;
-    margin-bottom: 2rem;
-    z-index: 10;
+.tarot__result {
+  flex: 1 1 40%;
+  padding: 1rem;
+  border: $border;
+  border-radius: $border-radius;
+  background-color: $form-input-bg;
+}
+
+.tarot__result-title {
+  text-align: left;
+}
+
+.btn-try-again {
+  flex: 1 1 30%;
+  min-width: 100px;
+  text-align: left;
+  font-size: 30px;
+}
+
+.tarot__revoke-btn {
+  position: relative;
+  z-index: 1;
+  margin-top: 1rem;
+}
+
+@keyframes tarotModalFadeIn {
+  from {
+    opacity: 0;
   }
-
-  .tarot__card-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .tarot__info-block {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: self-start;
-    gap: 1rem;
-    height: auto;
-    z-index: 1;
-    filter: blur(0);
-    transition: all 0.5s ease-in-out;
-    overflow: hidden;
-
-    &.blur {
-      height: 0;
-      filter: blur(5px);
-    }
-  }
-
-  .tarot__result {
-    flex: 1 1 40%;
-    padding: 1rem;
-    border: $border;
-    border-radius: $border-radius;
-    background-color: $form-input-bg;
-  }
-
-  .tarot__result-title {
-    text-align: left;
-  }
-
-  .btn-try-again {
-    flex: 1 1 30%;
-    min-width: 100px;
-    text-align: left;
-    font-size: 30px;
-  }
-
-  .tarot__revoke-btn {
-    position: relative;
-    z-index: 1;
-    margin-top: 2rem;
+  to {
+    opacity: 1;
   }
 }
 
 @media (min-width: 900px) {
-  .tarot {
-    padding-top: 120px;
-    padding-bottom: 80px;
+  .tarot__title {
+    font-size: 26px;
+  }
+
+  .tarot__cards-container {
+    gap: 40px;
 
     .animated-card {
       width: 280px !important;
       height: 447px !important;
       transform: none !important;
     }
+  }
 
-    .tarot__info-block {
-      flex-direction: row;
-      gap: 2rem;
-    }
-
-    .btn-try-again {
-      min-width: 434px;
-      max-width: 500px;
-    }
+  .btn-try-again {
+    min-width: 434px;
+    max-width: 500px;
   }
 }

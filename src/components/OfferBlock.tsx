@@ -9,19 +9,19 @@ import Medallion5 from "../assets/svg/medallion5.svg";
 import Medallion6 from "../assets/svg/medallion6.svg";
 import {SmokeAnimation} from "@/components/SmokeAnimation";
 import {useEffect, useState} from "react";
+import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
 import {pickRandomCards} from "@/utils";
 import {useAppContext} from "@/AppProvider";
 
 type OfferBlockProps = {
-    onScrollToTarot: () => void;
     onOpenLogin: () => void;
 };
 
 export const OfferBlock = ({
-   onScrollToTarot,
    onOpenLogin
 }: OfferBlockProps) => {
+    const { data: session } = useSession();
     const { state, setState } = useAppContext();
     const [isLoaded, setIsLoaded] = useState(false);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
@@ -39,7 +39,10 @@ export const OfferBlock = ({
         }));
         setIsDeckShaking(true);
         setTimeout(() => {
-            onScrollToTarot();
+            setState(prevState => ({
+                ...prevState,
+                isCardsModalOpen: true,
+            }));
             setIsDeckShaking(false);
         }, 2000);
 
@@ -101,7 +104,9 @@ export const OfferBlock = ({
                                     />
                                     <div className="hand"><Hand/></div>
                                 </div>
-                                <div className="offer-block__btn offer-block__btn--right">
+                                <div className="offer-block__btn offer-block__btn--right"
+                                     style={session ? {visibility: 'hidden'} : undefined}
+                                >
                                     <button
                                         className="btn border-dashed"
                                         onClick={onOpenLogin}

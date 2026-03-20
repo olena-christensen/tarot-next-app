@@ -9,6 +9,7 @@ type PropsType = {
     backUrl: string;
     animation: string;
     isDeckShaking?: boolean;
+    isGlowing?: boolean;
     onClickAction?: () => void;
 };
 
@@ -19,6 +20,7 @@ export default function AnimatedCard({
  backUrl,
  animation,
  isDeckShaking,
+ isGlowing,
  onClickAction,
 }: PropsType) {
     const { state, setState } = useAppContext();
@@ -61,7 +63,7 @@ export default function AnimatedCard({
 
     return (
         <div
-            className={isFlipped ? "animated-card flipped" : "animated-card"}
+            className={`animated-card${isFlipped ? " flipped" : ""}${isGlowing && !isFlipped ? " glowing" : ""}`}
             style={style}
             onClick={() => {
                 if (!isFlipped) handleClick();

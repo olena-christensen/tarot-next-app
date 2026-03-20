@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Head from "next/head";
 import { Raleway } from "next/font/google";
 import "../assets/scss/style.scss";
-import Footer from "@/components/Footer";
+
 
 const inter = Raleway({ subsets: ["latin"] });
 
@@ -27,7 +27,6 @@ export default function RootLayout({
     </Head>
     <body className={inter.className}>
       {children}
-      <Footer/>
     </body>
     </html>
   );
