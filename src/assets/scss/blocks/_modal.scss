@@ -14,11 +14,12 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    max-width: 740px;
+    max-width: none;
     width: 100%;
-    max-height: 90vh;
-    border: $border;
-    border-radius: $border-radius;
+    height: 100%;
+    max-height: 100dvh;
+    border: none;
+    border-radius: 0;
     backdrop-filter: blur(50px);
     overflow-y: auto;
     animation: modalSlideIn 0.3s ease-out;
@@ -67,7 +68,12 @@
 }
 
 @media (min-width: 768px) {
-  .modal__content {
+  .modal .modal__content {
+    max-width: 740px;
     width: 740px;
+    height: auto;
+    max-height: 90dvh;
+    border: $border;
+    border-radius: $border-radius;
   }
 }
