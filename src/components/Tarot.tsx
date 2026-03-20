@@ -26,6 +26,7 @@ export const Tarot = () => {
             backUrl={chosenCards[i] ? chosenCards[i].image : "/decor-img/Card-middle.webp"}
             animation="CardFlipAnimation 2s forwards"
             isGlowing={i === glowingIndex}
+            disabled={i !== glowingIndex}
             onClickAction={() => handleCardFlip(i)}
         />
         cards.push(card);
@@ -49,7 +50,7 @@ export const Tarot = () => {
     };
 
     const handleCardFlip = (index: number) => {
-        if (chosenCards.length > 0) {
+        if (chosenCards.length > 0 && index === glowingIndex) {
             const newFlippedCards = [...flippedCards];
             newFlippedCards[index] = true;
             setFlippedCards(newFlippedCards);
