@@ -104,16 +104,16 @@ export const OfferBlock = ({
                                     />
                                     <div className="hand"><Hand/></div>
                                 </div>
-                                {!session && (
-                                    <div className="offer-block__btn offer-block__btn--right">
-                                        <button
-                                            className="btn border-dashed"
-                                            onClick={onOpenLogin}
-                                        >
-                                            Join the Circle <br/> of the Chosen
-                                        </button>
-                                    </div>
-                                )}
+                                <div className="offer-block__btn offer-block__btn--right"
+                                     style={session ? {visibility: 'hidden'} : undefined}
+                                >
+                                    <button
+                                        className="btn border-dashed"
+                                        onClick={onOpenLogin}
+                                    >
+                                        Join the Circle <br/> of the Chosen
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </>
