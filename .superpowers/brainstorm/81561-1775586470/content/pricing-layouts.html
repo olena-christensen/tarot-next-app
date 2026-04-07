@@ -1,0 +1,96 @@
+<h2>Pricing page — pick a layout direction</h2>
+<p class="subtitle">Click a card to select. We'll polish whichever you prefer.</p>
+
+<div class="cards">
+  <div class="card" data-choice="classic" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:20px;background:#1a1530;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="background:#2a2540;border:1px solid #4a3f6a;border-radius:6px;padding:10px;font-size:9px;color:#aaa;">
+          <div style="font-weight:bold;color:#e8d9ff;">Free</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$0</div>
+          <div>3 readings/day</div>
+        </div>
+        <div style="background:#2a2540;border:1px solid #4a3f6a;border-radius:6px;padding:10px;font-size:9px;color:#aaa;">
+          <div style="font-weight:bold;color:#e8d9ff;">Single</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$1</div>
+          <div>+1 reading</div>
+        </div>
+        <div style="background:#3a2a55;border:2px solid #c9a8ff;border-radius:6px;padding:10px;font-size:9px;color:#ddd;position:relative;">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#c9a8ff;color:#1a1530;font-size:7px;padding:2px 6px;border-radius:8px;">POPULAR</div>
+          <div style="font-weight:bold;color:#fff;">Monthly</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$10</div>
+          <div>Unlimited</div>
+        </div>
+        <div style="background:#2a2540;border:1px solid #4a3f6a;border-radius:6px;padding:10px;font-size:9px;color:#aaa;">
+          <div style="font-weight:bold;color:#e8d9ff;">Yearly</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$50</div>
+          <div>Save 58%</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Classic 4-column</h3>
+      <p>All four tiers side-by-side with the Monthly highlighted as "Most Popular". Clean, instantly familiar. Good for desktop, stacks on mobile.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="split" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:20px;background:#1a1530;">
+      <div style="background:#2a2540;border:1px solid #4a3f6a;border-radius:6px;padding:8px;margin-bottom:10px;font-size:9px;color:#aaa;display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="color:#e8d9ff;font-weight:bold;">Single reading</div><div>One extra shake</div></div>
+        <div style="color:#fff;font-size:13px;">$1</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#3a2a55;border:2px solid #c9a8ff;border-radius:6px;padding:12px;font-size:9px;color:#ddd;">
+          <div style="color:#fff;font-weight:bold;">Monthly</div>
+          <div style="font-size:16px;color:#fff;margin:4px 0;">$10<span style="font-size:8px;">/mo</span></div>
+          <div>✓ Unlimited</div>
+          <div>✓ History</div>
+          <div>✓ Decks &amp; Diviners</div>
+        </div>
+        <div style="background:#2a3a55;border:2px solid #8ac9ff;border-radius:6px;padding:12px;font-size:9px;color:#ddd;position:relative;">
+          <div style="position:absolute;top:-8px;right:6px;background:#8ac9ff;color:#1a1530;font-size:7px;padding:2px 6px;border-radius:8px;">SAVE 58%</div>
+          <div style="color:#fff;font-weight:bold;">Yearly</div>
+          <div style="font-size:16px;color:#fff;margin:4px 0;">$50<span style="font-size:8px;">/yr</span></div>
+          <div>✓ Everything in Monthly</div>
+          <div>✓ Exclusive decks</div>
+          <div>✓ Early access</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:8px;color:#888;margin-top:8px;">Free: 3 readings/day — no signup needed</div>
+    </div>
+    <div class="card-body">
+      <h3>B — Hero split (recommended)</h3>
+      <p>Free is mentioned subtly at the bottom. Single reading is a small "top-up" row. Monthly vs Yearly compete head-to-head — Yearly clearly wins on value. Drives conversion.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="toggle" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:20px;background:#1a1530;">
+      <div style="text-align:center;margin-bottom:10px;">
+        <div style="display:inline-flex;background:#2a2540;border-radius:20px;padding:3px;font-size:9px;">
+          <span style="padding:4px 12px;color:#aaa;">Monthly</span>
+          <span style="padding:4px 12px;background:#c9a8ff;color:#1a1530;border-radius:16px;">Yearly · Save 58%</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#2a2540;border:1px solid #4a3f6a;border-radius:6px;padding:12px;font-size:9px;color:#aaa;">
+          <div style="color:#e8d9ff;font-weight:bold;">Free</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$0</div>
+          <div>3 readings/day</div>
+          <div>Basic deck</div>
+        </div>
+        <div style="background:#3a2a55;border:2px solid #c9a8ff;border-radius:6px;padding:12px;font-size:9px;color:#ddd;">
+          <div style="color:#fff;font-weight:bold;">Unlimited</div>
+          <div style="font-size:14px;color:#fff;margin:4px 0;">$50<span style="font-size:8px;">/yr</span></div>
+          <div>✓ Everything</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:8px;color:#888;margin-top:8px;">Need just one? Buy a single reading — $1</div>
+    </div>
+    <div class="card-body">
+      <h3>C — Toggle (Monthly/Yearly)</h3>
+      <p>A toggle switches the price between monthly and yearly. Only 2 main tiers shown. Modern SaaS feel. Single reading is a small footer link.</p>
+    </div>
+  </div>
+</div>
