@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { PLANS, type PlanId } from "@/lib/plans";
 
 type UserProfileProps = {
   onClose?: () => void;
@@ -16,6 +18,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
 
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
+  const [planId, setPlanId] = useState<PlanId | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,6 +35,21 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
       }
     }
     checkPassword();
+  }, []);
+
+  useEffect(() => {
+    async function loadPlan() {
+      try {
+        const res = await fetch("/api/user/plan");
+        if (res.ok) {
+          const data = await res.json();
+          setPlanId(data.planId as PlanId);
+        }
+      } catch {
+        // silent — UI falls back to "—"
+      }
+    }
+    loadPlan();
   }, []);
 
   const memberSince = session?.user?.createdAt
@@ -197,6 +215,19 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
           <span className="user-profile__value">{memberSince}</span>
         </div>
       )}
+      <div className="user-profile__field">
+        <span className="user-profile__label">Current plan</span>
+        <span className="user-profile__value">
+          {planId ? PLANS[planId].name : "—"}
+        </span>
+        <Link
+          href="/subscription"
+          className="user-profile__value user-profile__value--editable"
+          onClick={() => onClose?.()}
+        >
+          Upgrade →
+        </Link>
+      </div>
       <div className="user-profile__field">
         <span className="user-profile__label">Password</span>
         {isEditingPassword ? (
