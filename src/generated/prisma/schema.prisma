@@ -37,16 +37,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  createdAt     DateTime  @default(now())
-  accounts      Account[]
-  sessions      Session[]
-  readings      Reading[]
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  password        String?
+  image           String?
+  createdAt       DateTime  @default(now())
+  termsAcceptedAt DateTime?
+  accounts        Account[]
+  sessions        Session[]
+  readings        Reading[]
 }
 
 model VerificationToken {

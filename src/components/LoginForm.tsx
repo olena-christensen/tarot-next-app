@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 type LoginFormProps = {
@@ -12,12 +13,19 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (isSignUp && !acceptTerms) {
+      setError("Please accept the Terms of Service and Privacy Policy to continue.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -25,7 +33,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         const res = await fetch("/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({ name, email, password, acceptTerms }),
         });
 
         const data = await res.json();
@@ -56,6 +64,15 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   const handleGoogleSignIn = () => {
+    if (isSignUp && !acceptTerms) {
+      setError("Please accept the Terms of Service and Privacy Policy to continue.");
+      return;
+    }
+    if (isSignUp) {
+      // Short-lived cookie read by the NextAuth events.createUser callback
+      // so we can record termsAcceptedAt for new OAuth users.
+      document.cookie = "tarot_terms_consent=1; path=/; max-age=600; samesite=lax";
+    }
     signIn("google", { callbackUrl: "/" });
   };
 
@@ -102,6 +119,30 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           />
         </div>
       </div>
+
+      {isSignUp && (
+        <div className="form__input-block form__input-block--checkbox">
+          <label className="form__checkbox-label">
+            <input
+              type="checkbox"
+              className="form__checkbox"
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.target.checked)}
+            />
+            <span>
+              I agree to the{" "}
+              <Link href="/terms" target="_blank" className="form__link">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" target="_blank" className="form__link">
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
+        </div>
+      )}
 
       {error && (
         <div className="form__error">

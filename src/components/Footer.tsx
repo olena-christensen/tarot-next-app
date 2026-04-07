@@ -7,20 +7,15 @@ import Twink from "../assets/svg/twink.svg";
 
 export default function Footer() {
     return (
-        <footer className="main-footer">
-            <ShiningElement elementIndex={3} svgElement={<Twink />} />
-            <ShiningElement elementIndex={1} svgElement={<Bottle1 />} />
-            <ShiningElement elementIndex={2} svgElement={<Bottle2 />} />
-                <p className="main-footer__copyright">
-                    Created by  &#169;:
-                    <Link
-                        className="main-footer__link"
-                        href="https://github.com/Menolas"
-                        target="_blank"
-                    >
-                        Menolas
-                    </Link>
-                </p>
+        <footer className="main-footer container">
+            {/*<ShiningElement elementIndex={3} svgElement={<Twink />} />*/}
+            {/*<ShiningElement elementIndex={1} svgElement={<Bottle1 />} />*/}
+            {/*<ShiningElement elementIndex={2} svgElement={<Bottle2 />} />*/}
+            <p className="main-footer__legal">
+                <Link className="main-footer__link" href="/terms">Terms of Service</Link>
+                {" · "}
+                <Link className="main-footer__link" href="/privacy">Privacy Policy</Link>
+            </p>
         </footer>
     );
 };

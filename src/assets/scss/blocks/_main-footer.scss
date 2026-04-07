@@ -1,7 +1,14 @@
 .main-footer {
-  position: relative;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
   padding-top: 2rem;
-  background-color: rgb(9, 9, 9);
+  z-index: 10;
+  pointer-events: none;
+
+  .main-footer__link {
+
+  }
 
   .main-footer__copyright {
     text-align: center;
@@ -9,6 +16,17 @@
       @include link-style;
       color: $primary;
       font-size: 1.2rem;
+    }
+  }
+
+  .main-footer__legal {
+    text-align: center;
+    margin-top: 0.4rem;
+    .main-footer__link {
+      @include link-style;
+      font-size: 12px;
+      //text-decoration: none;
+      pointer-events: auto;
     }
   }
 

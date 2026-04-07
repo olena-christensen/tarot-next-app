@@ -3,7 +3,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 import { prisma } from "./prisma";
+
+export const TERMS_CONSENT_COOKIE = "tarot_terms_consent";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma as any) as NextAuthOptions["adapter"],
@@ -72,6 +75,24 @@ export const authOptions: NextAuthOptions = {
         }
       }
       return session;
+    },
+  },
+  events: {
+    async createUser({ user }) {
+      // When the adapter creates a new OAuth user, record terms acceptance
+      // based on the short-lived consent cookie set on the client before the
+      // OAuth redirect.
+      try {
+        const consent = cookies().get(TERMS_CONSENT_COOKIE)?.value;
+        if (consent === "1") {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { termsAcceptedAt: new Date() },
+          });
+        }
+      } catch {
+        // cookies() may be unavailable outside a request context — ignore.
+      }
     },
   },
   pages: {
