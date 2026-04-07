@@ -8,6 +8,7 @@ import Medallion4 from "../assets/svg/medallion4.svg";
 import Medallion5 from "../assets/svg/medallion5.svg";
 import Medallion6 from "../assets/svg/medallion6.svg";
 import {SmokeAnimation} from "@/components/SmokeAnimation";
+import Footer from "@/components/Footer";
 import {useEffect, useState} from "react";
 import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
@@ -116,6 +117,7 @@ export const OfferBlock = ({
                                 </div>
                             </div>
                         </div>
+                        <Footer />
                     </>
                 )
             }

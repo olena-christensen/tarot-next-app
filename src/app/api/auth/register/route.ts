@@ -4,11 +4,18 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, acceptTerms } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
+
+    if (!acceptTerms) {
+      return NextResponse.json(
+        { error: "You must accept the Terms of Service and Privacy Policy" },
         { status: 400 }
       );
     }
@@ -46,6 +53,7 @@ export async function POST(request: Request) {
         name: name || null,
         email,
         password: hashedPassword,
+        termsAcceptedAt: new Date(),
       },
     });
 
