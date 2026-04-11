@@ -1,9 +1,8 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {useMessages} from "next-intl";
 import {Card} from "@/types/Types";
 import {tarots} from "@/data";
-import {getQuestionPrompt} from "@/utils";
-import {handleAsk} from "@/handleAsk";
-import {generateReading} from "@/tarotReadings";
+import {generateReading} from "@/lib/generateReading";
 
 type AppState = {
     tarots: Card[];
@@ -43,6 +42,7 @@ type AppProviderProps = {
 
 export function AppProvider({ children }: AppProviderProps) {
     const [state, setState] = useState<AppState>(defaultState.state);
+    const messages = useMessages();
 
     useEffect(() => {
         if (state.chosenCards.length > 0) {
@@ -53,24 +53,19 @@ export function AppProvider({ children }: AppProviderProps) {
                 isResponseLoading: true,
             }));
 
-            // TODO: swap back to API when billing is sorted
-            // const prompt = getQuestionPrompt(state.chosenCards);
-            // handleAsk(prompt).then(response => {
-            //     setState(prevState => ({
-            //         ...prevState,
-            //         isResponseLoading: false,
-            //         response: response,
-            //     }));
-            // });
-
-            const response = generateReading(state.chosenCards);
+            const response = generateReading(
+                state.chosenCards,
+                messages as any,
+                (messages as any).ui?.drawThreeCards ?? "Draw three cards to receive your reading.",
+                (messages as any).ui?.spiritsUnclear ?? "The spirits are unclear. Please draw again.",
+            );
             setState(prevState => ({
                 ...prevState,
                 isResponseLoading: false,
                 response: response,
             }));
         }
-    }, [state.chosenCards]);
+    }, [state.chosenCards, messages]);
 
     return (
         <AppContext.Provider value={{ state, setState }}>

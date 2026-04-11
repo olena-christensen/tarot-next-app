@@ -10,8 +10,10 @@ import {Loader} from "@/components/Loader";
 import {useEffect, useState} from "react";
 import {Header} from "@/components/Header";
 import {Providers} from "@/components/Providers";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("ui");
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -35,21 +37,21 @@ export default function Home() {
                     <Tarot/>
                   </main>
                   <Modal
-                    title="Step Through the Veil"
+                    title={t("stepThroughTheVeil")}
                     isOpen={isLoginOpen}
                     onClose={() => setIsLoginOpen(false)}
                   >
                     <LoginForm onSuccess={() => setIsLoginOpen(false)} />
                   </Modal>
                   <Modal
-                    title="Your Mystic Profile"
+                    title={t("yourMysticProfile")}
                     isOpen={isProfileOpen}
                     onClose={() => setIsProfileOpen(false)}
                   >
                     <UserProfile onClose={() => setIsProfileOpen(false)} />
                   </Modal>
                   <Modal
-                    title="Choose Your Path"
+                    title={t("chooseYourPath")}
                     isOpen={isSubscriptionOpen}
                     onClose={() => setIsSubscriptionOpen(false)}
                     wide

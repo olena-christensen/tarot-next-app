@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
@@ -15,6 +16,7 @@ type PageShellProps = {
 export const PageShell = ({ children }: PageShellProps) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const t = useTranslations("ui");
 
   return (
     <Providers>
@@ -25,14 +27,14 @@ export const PageShell = ({ children }: PageShellProps) => {
       {children}
       <Footer />
       <Modal
-        title="Step Through the Veil"
+        title={t("stepThroughTheVeil")}
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
       >
         <LoginForm onSuccess={() => setIsLoginOpen(false)} />
       </Modal>
       <Modal
-        title="Your Mystic Profile"
+        title={t("yourMysticProfile")}
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
       >

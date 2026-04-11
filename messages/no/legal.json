@@ -1,0 +1,161 @@
+{
+  "legal": {
+    "terms": {
+      "title": "Vilkår for bruk",
+      "metaTitle": "Vilkår for bruk | Tarot",
+      "metaDescription": "Vilkår for bruk av Tarot-appen.",
+      "lastUpdated": "Sist oppdatert: 6. april 2026",
+      "intro": "Velkommen til Tarot (\"Tjenesten\", \"vi\", \"oss\"). Ved å få tilgang til eller bruke Tjenesten, godtar du å være bundet av disse vilkårene for bruk (\"Vilkårene\"). Hvis du ikke godtar, vennligst ikke bruk Tjenesten.",
+      "section1": {
+        "title": "1. Kun underholdning",
+        "content": "Tjenesten tilbyr tarotkort-tolkninger og relatert innhold utelukkende for underholdningsformål. Tolkninger er ikke en erstatning for profesjonell rådgivning, inkludert, men ikke begrenset til, medisinsk, juridisk, psykologisk eller finansiell rådgivning. Du er alene ansvarlig for eventuelle beslutninger du tar basert på innhold generert av Tjenesten."
+      },
+      "section2": {
+        "title": "2. Kvalifikasjon",
+        "content": "Du må være minst 16 år gammel for å bruke Tjenesten. Ved å bruke Tjenesten bekrefter du at du oppfyller dette kravet."
+      },
+      "section3": {
+        "title": "3. Kontoer",
+        "content": "Noen funksjoner krever at du oppretter en konto. Du godtar å oppgi korrekt informasjon, holde påloggingsinformasjonen din sikker, og varsle oss om eventuell uautorisert bruk. Du er ansvarlig for all aktivitet under din konto. Vi kan suspendere eller avslutte kontoer som bryter disse Vilkårene."
+      },
+      "section4": {
+        "title": "4. Akseptabel bruk",
+        "content": "Du godtar å ikke:",
+        "items": [
+          "Bruke Tjenesten til ulovlige formål;",
+          "Forsøke å forstyrre, reversere eller få uautorisert tilgang til Tjenesten;",
+          "Laste opp skadelig innhold eller trakassere andre brukere;",
+          "Skrape, kopiere eller videreselge innhold fra Tjenesten uten tillatelse."
+        ]
+      },
+      "section5": {
+        "title": "5. Immaterielle rettigheter",
+        "content": "Alt innhold, design, tekst, grafikk og kode på Tjenesten eies av oss eller våre lisensgivere og er beskyttet av opphavsrett og andre lover. Du får en begrenset, ikke-eksklusiv, ikke-overførbar lisens til å bruke Tjenesten for personlige, ikke-kommersielle formål."
+      },
+      "section6": {
+        "title": "6. Brukerinnhold",
+        "content": "Hvis du sender inn innhold (spørsmål, notater, tilbakemeldinger), gir du oss en verdensomspennende, royaltyfri lisens til å bruke, lagre og vise det utelukkende for å drifte og forbedre Tjenesten."
+      },
+      "section7": {
+        "title": "7. Ansvarsfraskrivelser",
+        "content": "Tjenesten tilbys \"som den er\" uten garantier av noe slag. Vi garanterer ikke nøyaktighet, tilgjengelighet eller egnethet for et bestemt formål. Tarot-tolkninger genereres for underholdning og har ingen prediktiv garanti."
+      },
+      "section8": {
+        "title": "8. Ansvarsbegrensning",
+        "content": "I den grad loven tillater det, skal vi ikke være ansvarlige for indirekte, tilfeldige, spesielle eller følge-skader som oppstår av din bruk av Tjenesten. Vårt totale ansvar skal ikke overstige beløpet du har betalt oss i de tolv månedene før kravet, eller EUR 50 hvis du ikke har betalt noe."
+      },
+      "section9": {
+        "title": "9. Endringer i Tjenesten eller Vilkårene",
+        "content": "Vi kan endre Tjenesten eller disse Vilkårene når som helst. Vesentlige endringer vil bli kunngjort på denne siden med en oppdatert \"sist oppdatert\"-dato. Fortsatt bruk etter endringer utgjør aksept."
+      },
+      "section10": {
+        "title": "10. Oppsigelse",
+        "content": "Du kan slutte å bruke Tjenesten når som helst. Vi kan suspendere eller avslutte din tilgang hvis du bryter disse Vilkårene."
+      },
+      "section11": {
+        "title": "11. Gjeldende lov",
+        "content": "Disse Vilkårene er underlagt lovene i Den europeiske union og landet der Tjenestens operatør er etablert, uten hensyn til lovvalgsregler. EU-forbrukere beholder beskyttelsen under sin lokale ufravikelige lovgivning."
+      },
+      "section12": {
+        "title": "12. Kontakt",
+        "content": "For spørsmål om disse Vilkårene, kontakt oss på {email}.",
+        "email": "support@example.com"
+      },
+      "note": "Merk: Dette er et utkast og utgjør ikke juridisk rådgivning. Vennligst la det gjennomgås av en kvalifisert advokat før lansering."
+    },
+    "privacy": {
+      "title": "Personvernerklæring",
+      "metaTitle": "Personvernerklæring | Tarot",
+      "metaDescription": "Personvernerklæring for Tarot-appen.",
+      "lastUpdated": "Sist oppdatert: 6. april 2026",
+      "intro": "Denne personvernerklæringen forklarer hvordan Tarot (\"vi\", \"oss\") samler inn, bruker og beskytter dine personopplysninger når du bruker vår Tjeneste. Vi overholder EUs personvernforordning (GDPR) og, der det er relevant, California Consumer Privacy Act (CCPA).",
+      "section1": {
+        "title": "1. Behandlingsansvarlig",
+        "content": "Behandlingsansvarlig for dine personopplysninger er operatøren av denne Tjenesten. For personvernhenvendelser, kontakt oss på {email}.",
+        "email": "privacy@example.com"
+      },
+      "section2": {
+        "title": "2. Data vi samler inn",
+        "items": [
+          "Kontodata: e-postadresse, visningsnavn, hashet passord (eller tredjeparts OAuth-identifikator).",
+          "Bruksdata: tolkningshistorikk, spørsmål du sender inn, tidsstempler og preferanser.",
+          "Tekniske data: IP-adresse, nettlesertype, enhetsinformasjon og grunnleggende analyse.",
+          "Informasjonskapsler: autentiseringssesjonskapsler og, der det er aktuelt, analysekapsler (kun med ditt samtykke)."
+        ]
+      },
+      "section3": {
+        "title": "3. Rettslig grunnlag for behandling (GDPR)",
+        "items": [
+          "Kontrakt: for å levere Tjenesten du har bedt om (art. 6(1)(b) GDPR).",
+          "Samtykke: for valgfri analyse og markedsføring (art. 6(1)(a) GDPR).",
+          "Berettiget interesse: for å sikre Tjenesten og forhindre misbruk (art. 6(1)(f) GDPR).",
+          "Rettslig forpliktelse: der det kreves av loven (art. 6(1)(c) GDPR)."
+        ]
+      },
+      "section4": {
+        "title": "4. Hvordan vi bruker dine data",
+        "items": [
+          "For å opprette og administrere din konto;",
+          "For å tilby tarot-tolkninger og relaterte funksjoner;",
+          "For å kommunisere viktige oppdateringer om Tjenesten;",
+          "For å sikre Tjenesten og forhindre svindel eller misbruk;",
+          "For å overholde juridiske forpliktelser."
+        ]
+      },
+      "section5": {
+        "title": "5. Tredjepartsbehandlere",
+        "content": "Vi bruker betrodde tjenesteleverandører for å drifte Tjenesten. Disse behandlerne handler på våre vegne i henhold til databehandleravtaler:",
+        "items": [
+          "Vercel Inc. — hosting og infrastruktur (USA / EU-regioner);",
+          "PostgreSQL-databaseleverandør — datalagring (via Vercel Marketplace);",
+          "NextAuth OAuth-leverandører — for tredjeparts-innlogging, hvis brukt (f.eks. Google);",
+          "E-postleverandør — for transaksjonelle e-poster, hvis aktuelt."
+        ]
+      },
+      "section6": {
+        "title": "6. Internasjonale overførsler",
+        "content": "Noen behandlere kan være lokalisert utenfor Det europeiske økonomiske samarbeidsområdet. Der dette forekommer, baserer vi oss på standardkontraktsklausuler eller tilsvarende garantier som kreves av GDPR."
+      },
+      "section7": {
+        "title": "7. Dataoppbevaring",
+        "content": "Vi oppbevarer kontodata så lenge kontoen din er aktiv. Hvis du sletter kontoen din, sletter eller anonymiserer vi personopplysninger innen 30 dager, med unntak der oppbevaring kreves av loven."
+      },
+      "section8": {
+        "title": "8. Dine rettigheter (GDPR / CCPA)",
+        "content": "Du har rett til å:",
+        "items": [
+          "Få tilgang til personopplysningene vi har om deg;",
+          "Be om retting av uriktige data;",
+          "Be om sletting (\"retten til å bli glemt\");",
+          "Begrense eller protestere mot behandling;",
+          "Dataportabilitet;",
+          "Trekke tilbake samtykke når som helst;",
+          "Sende klage til din lokale tilsynsmyndighet."
+        ],
+        "ccpaNote": "Innbyggere i California har tilleggsrettigheter under CCPA, inkludert retten til å vite hvilke personopplysninger vi samler inn og retten til å velge bort eventuelt salg av personopplysninger. Vi selger ikke personopplysninger."
+      },
+      "section9": {
+        "title": "9. Informasjonskapsler",
+        "content": "Vi bruker strengt nødvendige informasjonskapsler for autentisering. Valgfrie analysekapsler settes kun etter at du gir samtykke via vårt kapsel-banner. Du kan trekke tilbake samtykket når som helst gjennom nettleserinnstillingene dine."
+      },
+      "section10": {
+        "title": "10. Sikkerhet",
+        "content": "Vi implementerer rimelige tekniske og organisatoriske tiltak for å beskytte dine data, inkludert kryptering under overførsel (HTTPS), hashede passord og tilgangskontroller. Ingen systemer er helt sikre, og vi kan ikke garantere absolutt sikkerhet."
+      },
+      "section11": {
+        "title": "11. Barn",
+        "content": "Tjenesten er ikke rettet mot barn under 16 år. Vi samler ikke bevisst inn personopplysninger fra barn. Hvis du tror et barn har gitt oss data, vennligst kontakt oss for fjerning."
+      },
+      "section12": {
+        "title": "12. Endringer i denne erklæringen",
+        "content": "Vi kan oppdatere denne personvernerklæringen. Vesentlige endringer vil bli kunngjort på denne siden med en oppdatert \"sist oppdatert\"-dato."
+      },
+      "section13": {
+        "title": "13. Kontakt",
+        "content": "For personvernrelaterte spørsmål eller for å utøve dine rettigheter, kontakt {email}.",
+        "email": "privacy@example.com"
+      },
+      "note": "Merk: Dette er et utkast og utgjør ikke juridisk rådgivning. Vennligst la det gjennomgås av en kvalifisert advokat før lansering, og fyll inn faktisk firmanavn, adresse og kontaktinformasjon."
+    }
+  }
+}

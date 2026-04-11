@@ -1,6 +1,5 @@
 interface BaseCard {
     id: string;
-    name: string;
     image: string;
 }
 

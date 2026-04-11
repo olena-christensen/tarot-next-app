@@ -1,0 +1,36 @@
+{
+  "plans": {
+    "FREE": {
+      "name": "Gratis",
+      "features": ["3 tolkninger per dag", "Nullstilles ved midnatt"]
+    },
+    "SINGLE": {
+      "name": "Enkelttolkning",
+      "features": ["Én ekstra tolkning", "Ingen abonnement"]
+    },
+    "MONTHLY": {
+      "name": "Månedlig",
+      "features": [
+        "Ubegrensede tolkninger",
+        "Tolkningshistorikk",
+        "Velg din kortstokk",
+        "Velg din spåkvinne",
+        "Utdypende tolkninger",
+        "Daglig kort på e-post",
+        "Eksporter tolkninger som PDF",
+        "Favoritter og personlige notater",
+        "Påminningsvarslinger",
+        "Reklamefritt"
+      ]
+    },
+    "YEARLY": {
+      "name": "Årlig",
+      "features": [
+        "Alt i Månedlig",
+        "Spar 58% mot månedlig",
+        "Eksklusive sesongkortstokker",
+        "Tidlig tilgang til nye spåkvinner og kortstokker"
+      ]
+    }
+  }
+}

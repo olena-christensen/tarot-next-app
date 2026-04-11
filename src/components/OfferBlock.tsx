@@ -10,6 +10,7 @@ import Medallion6 from "../assets/svg/medallion6.svg";
 import {SmokeAnimation} from "@/components/SmokeAnimation";
 import Footer from "@/components/Footer";
 import {useEffect, useState} from "react";
+import { useTranslations } from "next-intl";
 import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
 import {pickRandomCards} from "@/utils";
@@ -28,6 +29,7 @@ export const OfferBlock = ({
 }: OfferBlockProps) => {
     const { data: session } = useSession();
     const { state, setState } = useAppContext();
+    const t = useTranslations("ui");
     const [isLoaded, setIsLoaded] = useState(false);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
     const [planId, setPlanId] = useState<string | null>(null);
@@ -72,14 +74,14 @@ export const OfferBlock = ({
     return (
         <section className={`offer-block ${isLoaded ? "loaded" : ""}`}>
             {!isLoaded
-                ? <div>Loading...</div>
+                ? <div>{t("loading")}</div>
                 : (
                     <>
                         <SmokeAnimation/>
                         <h1 className="offer-block__title title title--primary">
-                            <span>Discover</span>
-                            <span>Your</span>
-                            <span>Fate</span>
+                            <span>{t("discover")}</span>
+                            <span>{t("your")}</span>
+                            <span>{t("fate")}</span>
                         </h1>
                         <div className="offer-block__screen offer-block__screen--moon">
                             <div className="moon"></div>
@@ -108,7 +110,7 @@ export const OfferBlock = ({
                                         }}
                                         disabled={state.isResponseLoading}
                                     >
-                                        Shake the Deck
+                                        {t("shakeDeck")}
                                     </button>
                                 </div>
                                 <div
@@ -132,7 +134,7 @@ export const OfferBlock = ({
                                         className="btn border-dashed"
                                         onClick={onOpenLogin}
                                     >
-                                        Join the Circle <br/> of the Chosen
+                                        {t("joinTheCircle")}
                                     </button>
                                 </div>
                             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { PLAN_ORDER, PLANS, type Plan } from "@/lib/plans";
+import { useTranslations } from "next-intl";
 
 const intervalSuffix = (interval: Plan["interval"]): string => {
   switch (interval) {
@@ -18,14 +19,17 @@ type SubscriptionPlansProps = {
 };
 
 export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps) => {
+  const t = useTranslations("ui");
+  const tPlans = useTranslations("plans");
+
   return (
     <section className="subscription">
       <div className="container">
         {showHeader && (
           <header className="subscription__header">
-            <h1 className="subscription__title">Choose your path</h1>
+            <h1 className="subscription__title">{t("chooseYourPath")}</h1>
             <p className="subscription__subtitle">
-              One reading at a time, or unlimited every day.
+              {t("oneReadingAtATime")}
             </p>
           </header>
         )}
@@ -43,9 +47,9 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
             return (
               <article key={plan.id} className={cardClass}>
                 {isPopular && (
-                  <span className="subscription__badge">Most popular</span>
+                  <span className="subscription__badge">{t("mostPopular")}</span>
                 )}
-                <h2 className="subscription__card-name">{plan.name}</h2>
+                <h2 className="subscription__card-name">{tPlans(`${plan.id}.name`)}</h2>
                 <div className="subscription__card-price">
                   {plan.priceLabel}
                   {suffix && (
@@ -55,7 +59,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                   )}
                 </div>
                 <ul className="subscription__features">
-                  {plan.features.map((feature) => (
+                  {(tPlans.raw(`${plan.id}.features`) as string[]).map((feature) => (
                     <li key={feature} className="subscription__feature">
                       {feature}
                     </li>
@@ -66,10 +70,10 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                   className="subscription__cta"
                   disabled
                   title={
-                    isFree ? undefined : "Payments launching soon"
+                    isFree ? undefined : t("paymentsLaunchingSoon")
                   }
                 >
-                  {isFree ? "Current plan" : "Coming soon"}
+                  {isFree ? t("currentPlanBtn") : t("comingSoon")}
                 </button>
               </article>
             );

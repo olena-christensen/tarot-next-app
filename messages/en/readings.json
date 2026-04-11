@@ -1,0 +1,584 @@
+{
+  "readings": {
+    "arcana-0": {
+      "keywords": "beginnings, innocence, spontaneity, free spirit",
+      "meaning": "The Fool speaks of new beginnings and untapped potential. You stand at the edge of something extraordinary, unburdened by fear or doubt. Trust in the unknown \u2014 the universe rewards those who dare to leap.",
+      "past": "A bold leap of faith set the stage for where you are now. That moment of fearless innocence, when you chose the unknown over the familiar, planted seeds that continue to grow.",
+      "present": "You are being called to embrace a fresh start. Something beckons you toward the edge of the known world \u2014 release your grip on certainty and let the wind carry you.",
+      "future": "A thrilling new chapter awaits you. The path ahead is uncharted, and that is precisely its gift. Approach what comes with the wonder of a child and the courage of an adventurer."
+    },
+    "arcana-1": {
+      "keywords": "manifestation, power, resourcefulness, willpower",
+      "meaning": "The Magician channels the raw forces of creation. All the tools you need are already within your reach \u2014 it is your will and focus that transforms potential into reality.",
+      "past": "A time of remarkable personal power shaped your journey. You once wielded your talents with precision and confidence, and the results of that mastery still echo in your life.",
+      "present": "The universe has placed every resource at your disposal. Now is the moment to act with intention \u2014 align your desires with your actions and watch the impossible become real.",
+      "future": "You are growing into a formidable force of creation. Soon you will discover just how much you can manifest when your mind, spirit, and will move as one."
+    },
+    "arcana-2": {
+      "keywords": "intuition, mystery, inner knowledge, the subconscious",
+      "meaning": "The High Priestess guards the threshold between the seen and unseen. She whispers that the answers you seek are not found in the noise of the world, but in the silence within.",
+      "past": "There was a time when your inner voice spoke clearly, guiding you through shadows. That intuitive wisdom you once trusted so deeply is still alive \u2014 it never left you.",
+      "present": "Be still and listen. Beneath the surface of your daily life, deep currents of knowing are stirring. The truth you seek cannot be reasoned \u2014 it must be felt.",
+      "future": "Hidden knowledge will soon reveal itself to you. Dreams, synchronicities, and quiet whispers from the beyond are converging to illuminate a mystery you have long pondered."
+    },
+    "arcana-3": {
+      "keywords": "abundance, nurturing, fertility, nature",
+      "meaning": "The Empress embodies the lush abundance of the natural world. She speaks of growth, creativity, and the deep nourishment that comes from tending to what you love with patience and care.",
+      "past": "A period of rich growth and creative abundance shaped your foundation. Whether through love, art, or sheer nurturing energy, you cultivated something beautiful that still sustains you.",
+      "present": "You are surrounded by more abundance than you realize. Open your senses \u2014 beauty, comfort, and creative inspiration are flowing toward you. Receive them without guilt.",
+      "future": "A season of flourishing awaits. What you have nurtured with love and patience will soon bear fruit beyond your expectations. The harvest is approaching."
+    },
+    "arcana-4": {
+      "keywords": "authority, structure, stability, leadership",
+      "meaning": "The Emperor commands order from chaos. He represents the power of structure, discipline, and decisive authority \u2014 the strength to build empires from vision and willpower alone.",
+      "past": "A figure of authority or a period of strict discipline left a lasting imprint on you. The structures that were built \u2014 or imposed \u2014 during that time still form the scaffold of your life.",
+      "present": "It is time to take command. The situation before you demands clarity, structure, and firm decision-making. You have the authority within you \u2014 claim it without hesitation.",
+      "future": "A position of greater influence and stability is forming ahead. The foundations you lay now will support a structure of remarkable endurance. Lead with conviction."
+    },
+    "arcana-5": {
+      "keywords": "tradition, spiritual wisdom, conformity, mentorship",
+      "meaning": "The Hierophant bridges the sacred and the worldly. He speaks of wisdom passed through tradition, the value of mentorship, and the deeper truths that lie within established paths.",
+      "past": "A teacher, tradition, or institution once gave you a crucial framework of understanding. Those lessons \u2014 whether embraced or rebelled against \u2014 became part of your spiritual DNA.",
+      "present": "Seek the wisdom that lives in established knowledge. A mentor, a practice, or a tradition holds the answers you need right now. There is power in what has stood the test of time.",
+      "future": "You will soon step into the role of guide or teacher. The wisdom you have gathered through experience is preparing to flow through you and illuminate the path for others."
+    },
+    "arcana-6": {
+      "keywords": "love, union, choices, alignment",
+      "meaning": "The Lovers speak of profound connection and the sacred power of choice. This is not mere romance \u2014 it is the alchemy of two forces meeting and the courage required to choose authentically.",
+      "past": "A pivotal choice or a deep connection in your past set the trajectory of your heart. That moment of union or decision continues to reverberate through everything you are.",
+      "present": "A meaningful choice stands before you, one that touches the core of who you are. Follow the path that aligns with your deepest truth, even if it demands vulnerability.",
+      "future": "A powerful connection or defining choice is approaching. The bond that awaits you \u2014 whether with another soul or with your own authentic self \u2014 will transform you."
+    },
+    "arcana-7": {
+      "keywords": "determination, willpower, triumph, control",
+      "meaning": "The Chariot thunders forward with unstoppable determination. Victory belongs to those who master their inner contradictions and drive forward with focused, unwavering will.",
+      "past": "You once summoned incredible willpower to overcome a seemingly impossible obstacle. That triumph \u2014 hard-won and forged in determination \u2014 proved what you are truly capable of.",
+      "present": "The forces around you may pull in different directions, but you hold the reins. Channel your willpower, steady your course, and charge forward. Victory is within reach.",
+      "future": "A triumphant breakthrough is on the horizon. The discipline and determination you are cultivating now will soon carry you across a threshold into a hard-earned victory."
+    },
+    "arcana-8": {
+      "keywords": "fairness, truth, cause and effect, accountability",
+      "meaning": "Justice holds her scales with unwavering precision. Every action carries its consequence, every truth demands to be seen. The universe is recalibrating \u2014 and the balance will be restored.",
+      "past": "A past decision or action set a chain of consequences in motion that brought you to this point. The scales were tipped, and the universe has been adjusting ever since.",
+      "present": "The truth of a matter is becoming clear. Be honest with yourself and others \u2014 fairness and integrity are your most powerful allies right now. The scales are watching.",
+      "future": "A reckoning approaches \u2014 not as punishment, but as balance. The outcomes you have earned through your choices will manifest. Trust that the universe delivers what is deserved."
+    },
+    "arcana-9": {
+      "keywords": "introspection, solitude, inner guidance, wisdom",
+      "meaning": "The Hermit retreats from the world to find the light within. In solitude and silence, profound truths emerge \u2014 truths that can only be heard when the noise of the world falls away.",
+      "past": "A period of withdrawal or solitude in your past gave you insights that the busy world could never offer. That inner light you discovered in the darkness still guides you.",
+      "present": "Step back from the noise. The answers you seek will not come from others or from action \u2014 they will come from within. Give yourself the gift of quiet contemplation.",
+      "future": "A period of meaningful solitude lies ahead. This is not loneliness but illumination \u2014 you are being drawn inward to discover a truth that will reshape your understanding."
+    },
+    "arcana-10": {
+      "keywords": "cycles, destiny, change, turning point",
+      "meaning": "The Wheel turns, as it always has and always will. Nothing remains fixed \u2014 fortune rises and falls in eternal cycles. This is a moment of pivotal change, orchestrated by forces greater than you.",
+      "past": "A dramatic turn of fate once spun your world in an unexpected direction. That twist of destiny \u2014 whether it felt like luck or misfortune \u2014 was always part of a larger design.",
+      "present": "The Wheel is turning. Change is upon you, inevitable and powerful. Resistance is futile \u2014 instead, position yourself to ride the current. Fortune favors the adaptable.",
+      "future": "A significant shift in fortune is approaching. The cycle is about to turn, bringing new circumstances that will alter the landscape of your life. Embrace the revolution."
+    },
+    "arcana-11": {
+      "keywords": "courage, patience, inner strength, compassion",
+      "meaning": "True Strength is not brute force but quiet mastery. It is the gentle hand that tames the lion, the patient heart that endures, the compassionate spirit that transforms fear into power.",
+      "past": "You once faced something that required immense inner fortitude \u2014 not aggression, but patience and gentle courage. That quiet strength you summoned remains your greatest asset.",
+      "present": "The challenge before you calls not for force but for grace. Meet difficulty with patience, fear with compassion, and chaos with calm resolve. Your inner power is vast.",
+      "future": "You are being forged into something remarkably resilient. The strength you are developing now \u2014 quiet, deep, and unshakable \u2014 will carry you through whatever lies ahead."
+    },
+    "arcana-12": {
+      "keywords": "surrender, new perspective, letting go, pause",
+      "meaning": "The Hanged Man sees the world from an entirely different angle. Suspended between action and stillness, he discovers that sometimes the greatest progress comes from complete surrender.",
+      "past": "A time of forced pause or sacrifice in your past granted you a perspective you could never have gained otherwise. That period of suspension reshaped how you see the world.",
+      "present": "Stop struggling against the current. The situation demands that you release your grip and see things from a completely different angle. In letting go, you will find what you seek.",
+      "future": "A period of meaningful pause is approaching. What feels like stagnation will actually be a profound recalibration \u2014 the universe is preparing to show you something you cannot see from where you stand."
+    },
+    "arcana-13": {
+      "keywords": "transformation, endings, renewal, transition",
+      "meaning": "Death does not speak of physical ending but of profound transformation. Something must fall away to make room for what is emerging. This is the sacred alchemy of endings becoming beginnings.",
+      "past": "A powerful ending or transformation in your past cleared the ground for new growth. What felt like loss was actually the universe making space for something far greater.",
+      "present": "Something in your life has reached its natural conclusion. Release it with grace \u2014 clinging to what has ended only delays the extraordinary renewal that is already underway.",
+      "future": "A profound transformation is approaching. An old chapter must close completely before the next can begin. Do not fear the ending \u2014 what emerges from it will astonish you."
+    },
+    "arcana-14": {
+      "keywords": "balance, moderation, patience, harmony",
+      "meaning": "Temperance blends opposing forces into perfect harmony. She teaches that patience, balance, and the gentle art of moderation create something far more powerful than any extreme.",
+      "past": "A time of finding balance \u2014 of blending conflicting forces in your life \u2014 created a harmony that still sustains you. That patient work of integration was more powerful than you knew.",
+      "present": "Seek the middle path. The extremes are tempting, but true power lies in balance. Blend patience with action, logic with intuition, and giving with receiving.",
+      "future": "A beautiful state of equilibrium is forming ahead. The opposing forces in your life are moving toward harmony \u2014 the blend will create something greater than either element alone."
+    },
+    "arcana-15": {
+      "keywords": "shadow, attachment, illusion, bondage",
+      "meaning": "The Devil reveals the chains you have placed upon yourself. These bonds \u2014 of fear, attachment, or illusion \u2014 feel unbreakable, yet the truth is that you hold the key to your own liberation.",
+      "past": "A pattern of attachment or self-imposed limitation once held you captive. Whether you broke free or still carry those chains, understanding their origin is the first step toward release.",
+      "present": "Look honestly at what binds you. The fears, habits, or attachments that control your life are illusions of power \u2014 they only hold you because you believe they can. The chains are loose.",
+      "future": "A confrontation with your shadows is approaching. This is not punishment but liberation \u2014 by facing what enslaves you, you will discover the key to a freedom you have never known."
+    },
+    "arcana-16": {
+      "keywords": "upheaval, revelation, sudden change, awakening",
+      "meaning": "The Tower strikes without warning, shattering what was built on unstable ground. This is not destruction for its own sake \u2014 it is the lightning bolt of truth, clearing away illusion to reveal solid earth beneath.",
+      "past": "A sudden upheaval once shattered something you thought was permanent. Though the destruction was shocking, it revealed a truth that had been hidden \u2014 and that truth set you free.",
+      "present": "The ground is shifting beneath your feet. What crumbles now was never built to last. Let it fall \u2014 the revelation that follows the collapse will illuminate everything.",
+      "future": "A sudden and dramatic change is approaching. It will feel like disruption, but it is actually liberation. The structures that fall were never truly serving you. What remains will be real."
+    },
+    "arcana-17": {
+      "keywords": "hope, inspiration, renewal, serenity",
+      "meaning": "The Star shines after the storm, a beacon of hope and healing. She pours living water upon the earth, renewing what was scorched and illuminating the path forward with gentle, eternal light.",
+      "past": "After a period of darkness, a moment of pure hope and renewal restored your spirit. That starlight you found in your darkest hour became a guiding beacon you carry still.",
+      "present": "Hope is not naive \u2014 it is the most courageous act of all. The Star shines upon you now, offering healing, inspiration, and the quiet certainty that the best is yet to come.",
+      "future": "A period of profound healing and renewed hope is approaching. After all you have endured, the universe is preparing to pour its blessings upon you. Open your hands to receive."
+    },
+    "arcana-18": {
+      "keywords": "illusion, fear, intuition, the unconscious",
+      "meaning": "The Moon casts a light that distorts as much as it reveals. In her silver glow, fears take shape and illusions seem real. Trust your intuition to navigate what your eyes cannot clearly see.",
+      "past": "A period of confusion or deception in your past forced you to navigate by intuition alone. The shadows you walked through taught you to trust what you feel over what you see.",
+      "present": "Not everything is as it appears. Fears and illusions may be clouding your perception \u2014 look beneath the surface. Your intuition knows the truth even when your mind is uncertain.",
+      "future": "A passage through uncertainty lies ahead. The path will be dimly lit and the shadows will play tricks. Trust your deepest instincts \u2014 they will guide you safely through the illusion."
+    },
+    "arcana-19": {
+      "keywords": "joy, success, vitality, clarity",
+      "meaning": "The Sun blazes with triumphant radiance. All shadows dissolve in its light, revealing the world in its full, glorious clarity. This is the energy of pure joy, success, and the warmth of life fully lived.",
+      "past": "A golden period of joy and clarity once illuminated your life. That time of warmth and success planted a radiance in your spirit that no darkness can fully extinguish.",
+      "present": "The light is shining directly upon you. This is a moment of clarity, joy, and vibrant energy. Step fully into the warmth \u2014 you have earned this brightness. Celebrate it.",
+      "future": "A burst of radiant joy and success is approaching. The clouds are parting, and the full light of the Sun will soon illuminate your path. Everything will become wonderfully clear."
+    },
+    "arcana-20": {
+      "keywords": "rebirth, calling, reckoning, absolution",
+      "meaning": "The trumpet of Judgement sounds, calling you to rise. This is the moment of reckoning and rebirth \u2014 a higher calling that asks you to shed the past and step into the fullness of who you are meant to be.",
+      "past": "A moment of profound awakening or reckoning in your past called you to rise above who you were. That transformative summons changed the trajectory of your life forever.",
+      "present": "You are being called to account \u2014 not by others, but by the highest version of yourself. Rise to meet this moment. Release old guilt, embrace your true calling, and be reborn.",
+      "future": "A powerful awakening approaches. You will hear the call to step into a greater version of yourself \u2014 to shed old identities and rise, transformed, into the life you were always meant to live."
+    },
+    "arcana-21": {
+      "keywords": "completion, wholeness, accomplishment, integration",
+      "meaning": "The World dances in perfect, joyous completion. A great cycle has reached its fulfillment \u2014 all the pieces have come together, and you stand at the summit of a magnificent journey.",
+      "past": "A grand cycle of experience reached its beautiful conclusion in your past. That sense of completion and wholeness you achieved became the foundation for everything that followed.",
+      "present": "You are approaching \u2014 or standing within \u2014 a moment of magnificent completion. Everything is coming together. Honor the journey that brought you here and savor this wholeness.",
+      "future": "A cycle of extraordinary significance is nearing its completion. Everything you have worked toward, struggled with, and dreamed of is converging into a moment of triumphant wholeness."
+    },
+    "chalices-1": {
+      "keywords": "new love, emotional awakening, creativity, compassion",
+      "meaning": "The Ace of Chalices overflows with the pure waters of emotional beginning. A new wellspring of love, creativity, or spiritual connection is opening within you.",
+      "past": "An emotional awakening or the birth of a deep connection once opened your heart in a way that changed everything. That first rush of feeling still flows through your life.",
+      "present": "A new emotional beginning is being offered to you. Open your heart to receive it \u2014 whether it arrives as love, creative inspiration, or a deepening of spiritual connection.",
+      "future": "A beautiful new emotional experience is approaching. The cup being offered to you brims with love, compassion, and creative potential. Prepare your heart to receive."
+    },
+    "chalices-2": {
+      "keywords": "partnership, mutual attraction, connection, unity",
+      "meaning": "The Two of Chalices celebrates the sacred meeting of two souls. This is the alchemy of genuine connection \u2014 where separate waters merge into something greater than either alone.",
+      "past": "A meaningful partnership or deep mutual connection shaped your emotional world. That bond \u2014 its warmth, its lessons \u2014 continues to influence how you love and connect.",
+      "present": "A powerful connection is active in your life. Honor the reciprocity between you and another \u2014 this mutual flow of energy and emotion is rare and precious.",
+      "future": "A significant partnership or deep connection is forming on your horizon. Two forces are moving toward each other, and their union will create something profoundly meaningful."
+    },
+    "chalices-3": {
+      "keywords": "celebration, friendship, community, joy",
+      "meaning": "The Three of Chalices raises its cups in joyous celebration. Community, friendship, and shared happiness create a warmth that no solitary achievement can match.",
+      "past": "A time of celebration and deep friendship once filled your life with shared joy. Those bonds of community and togetherness left an indelible warmth in your spirit.",
+      "present": "Celebration is calling you. Gather with those who uplift you, share your joys, and let the warmth of community nourish your soul. You do not have to walk alone.",
+      "future": "A celebration or joyful gathering is approaching. The bonds of friendship and community around you are strengthening, preparing to create a moment of shared happiness."
+    },
+    "chalices-4": {
+      "keywords": "contemplation, apathy, reevaluation, discontent",
+      "meaning": "The Four of Chalices sits in quiet discontent, so focused on what is missing that the gifts being offered go unseen. Look up \u2014 the universe is extending something precious that you are overlooking.",
+      "past": "A period of emotional withdrawal or dissatisfaction once caused you to overlook opportunities and blessings that were right in front of you. That introspection, however painful, taught you something vital.",
+      "present": "You may be so caught in contemplation or discontent that you are missing what the universe is offering. Lift your gaze from the familiar cups \u2014 something new awaits your attention.",
+      "future": "A moment of reevaluation approaches. You will be asked to decide whether to remain in comfortable dissatisfaction or to reach for the unexpected gift that appears before you."
+    },
+    "chalices-5": {
+      "keywords": "loss, grief, regret, acceptance",
+      "meaning": "The Five of Chalices mourns what has been spilled, yet two cups still stand untouched behind. Grief is sacred, but so is the moment when you turn around and see what remains.",
+      "past": "A significant loss or disappointment once consumed your focus, making it difficult to see what you still had. The grief was real, but it eventually gave way to a deeper appreciation.",
+      "present": "The pain of what has been lost is real \u2014 honor it. But when you are ready, look behind you. Not everything was taken. Two full cups still wait for your attention.",
+      "future": "A loss or disappointment may lie ahead, but it will not be the whole story. The grief will pass, and when it does, you will discover that something precious survived."
+    },
+    "chalices-6": {
+      "keywords": "nostalgia, innocence, memories, reunion",
+      "meaning": "The Six of Chalices returns to the gardens of memory. The sweetness of the past, the innocence of earlier times, and the warmth of reunion offer comfort and remind you of who you truly are.",
+      "past": "Sweet memories and the innocence of earlier times hold a special place in your journey. Those moments of simple joy and genuine connection shaped the best parts of who you are.",
+      "present": "The past is calling to you \u2014 not to trap you, but to remind you of something precious. A reunion, a memory, or a return to simpler joys may be exactly what your soul needs.",
+      "future": "A connection to your past is forming ahead. Whether through reunion, nostalgia, or a return to something you once loved, the sweetness of memory will touch your life again."
+    },
+    "chalices-7": {
+      "keywords": "illusion, fantasy, choices, wishful thinking",
+      "meaning": "The Seven of Chalices presents a dazzling array of options, but not all that glitters is real. Discernment is essential \u2014 separate the genuine opportunity from the seductive illusion.",
+      "past": "A time of fantasy or scattered desires once pulled you in many directions. The dreams that shimmered before you taught you the crucial difference between vision and illusion.",
+      "present": "Many options and fantasies dance before you, each more tempting than the last. But beware \u2014 not all are real. Ground yourself, clear the fog, and choose with discernment.",
+      "future": "A dazzling array of possibilities will soon present themselves. The challenge will be seeing clearly through the glamour. Choose wisely \u2014 one cup holds truth, the others hold only mist."
+    },
+    "chalices-8": {
+      "keywords": "departure, letting go, seeking deeper meaning, walking away",
+      "meaning": "The Eight of Chalices turns away from what once satisfied to seek something deeper. This is not abandonment but evolution \u2014 the brave recognition that you have outgrown what you have.",
+      "past": "You once walked away from something that no longer served your spirit. That departure \u2014 though painful \u2014 was an act of courage that opened the path to something more meaningful.",
+      "present": "Something that once fulfilled you no longer does. It is time to walk away \u2014 not in anger, but in quiet recognition that your soul is calling you toward deeper waters.",
+      "future": "A departure is approaching. You will feel called to leave behind what is familiar in search of something more meaningful. Trust that what you seek exists beyond the horizon."
+    },
+    "chalices-9": {
+      "keywords": "contentment, satisfaction, wishes fulfilled, gratitude",
+      "meaning": "The Nine of Chalices sits before a banquet of fulfilled wishes. This is the card of deep contentment \u2014 the moment when you realize that what you have is exactly what you wanted.",
+      "past": "A time of wish fulfillment and deep satisfaction once graced your life. That experience of having your desires met showed you what genuine contentment feels like.",
+      "present": "Take a moment to appreciate how far you have come. Your wishes are being fulfilled \u2014 perhaps not in the way you imagined, but in ways that bring genuine satisfaction. Savor this.",
+      "future": "A period of deep contentment and wish fulfillment is approaching. What you have been hoping for is closer than you think. The universe is preparing your banquet."
+    },
+    "chalices-10": {
+      "keywords": "harmony, family, emotional fulfillment, bliss",
+      "meaning": "The Ten of Chalices arches across the sky like a rainbow of emotional fulfillment. This is the card of lasting happiness \u2014 the deep, abiding joy that comes from love, family, and true belonging.",
+      "past": "A period of deep emotional fulfillment and family harmony once blessed your life. That experience of belonging and shared love set a standard for what happiness truly means.",
+      "present": "Look at the richness of love and connection that surrounds you. The harmony you have been building is bearing fruit \u2014 this is the happiness you have been working toward.",
+      "future": "A state of profound emotional fulfillment and harmony is forming ahead. The love, family, and joy you envision are not just dreams \u2014 they are your approaching reality."
+    },
+    "chalices-page": {
+      "keywords": "creative opportunity, curiosity, emotional message, imagination",
+      "meaning": "The Page of Chalices gazes with wonder at the cup in hand, where something magical stirs. This is the messenger of creative inspiration and emotional openings \u2014 approach with childlike curiosity.",
+      "past": "A moment of creative or emotional discovery once stirred your imagination. That first encounter with something magical \u2014 a feeling, an idea, an inspiration \u2014 awakened a part of you that still creates.",
+      "present": "A message of emotional or creative significance is arriving. Stay open and curious \u2014 the universe is sending an invitation that speaks to your heart and imagination.",
+      "future": "A delightful creative or emotional opportunity is on its way. Keep your heart open and your imagination alive \u2014 what arrives may be small at first but holds immense potential."
+    },
+    "chalices-knight": {
+      "keywords": "romance, charm, idealism, following the heart",
+      "meaning": "The Knight of Chalices rides forward on a quest of the heart. Guided by emotion and idealism, this graceful figure pursues what matters most with charm, devotion, and unwavering romantic spirit.",
+      "past": "A romantic pursuit or an idealistic quest once swept through your life with passion and grace. That journey of the heart \u2014 wherever it led \u2014 taught you the power of following your emotions.",
+      "present": "Follow your heart with courage and grace. A romantic or creative pursuit calls you forward \u2014 approach it with the devotion and idealism of one who believes in the impossible.",
+      "future": "A romantic figure or emotional quest is approaching. Someone \u2014 or something \u2014 will arrive bearing the gifts of charm, devotion, and the kind of beauty that only the heart can see."
+    },
+    "chalices-queen": {
+      "keywords": "emotional depth, compassion, intuition, nurturing",
+      "meaning": "The Queen of Chalices sits at the shore where conscious and unconscious waters meet. Her emotional depth and intuitive wisdom are boundless \u2014 she nurtures all who come to her with compassion and understanding.",
+      "past": "A deeply compassionate and intuitive presence once nurtured and guided you. That energy of emotional wisdom \u2014 whether from another or from within yourself \u2014 shaped your capacity to feel and heal.",
+      "present": "Your emotional intelligence and compassion are your greatest strengths right now. Trust your intuition, nurture those around you, and let the deep waters of your empathy guide your choices.",
+      "future": "You are growing into profound emotional mastery. The depth of compassion and intuitive wisdom developing within you will soon become a healing force in your life and the lives of others."
+    },
+    "chalices-king": {
+      "keywords": "emotional balance, diplomacy, calm authority, wisdom",
+      "meaning": "The King of Chalices rules his emotional realm with calm mastery. He navigates the deepest waters without drowning \u2014 a master of feeling who governs with wisdom, balance, and steady compassion.",
+      "past": "A figure of emotional maturity and balanced wisdom once influenced your life profoundly. That example of mastering feelings without suppressing them gave you a model for true emotional strength.",
+      "present": "Navigate the emotional currents around you with calm authority. You have the wisdom to hold space for deep feelings without being swept away. Lead with both heart and composure.",
+      "future": "Emotional mastery and balanced wisdom are crystallizing within you. Soon you will navigate even the most turbulent waters with the calm, steady hand of one who has learned to rule their inner world."
+    },
+    "swords-1": {
+      "keywords": "clarity, breakthrough, truth, new idea",
+      "meaning": "The Ace of Swords cuts through confusion with a single stroke of brilliant clarity. A breakthrough in understanding, a flash of truth, or a powerful new idea pierces the fog.",
+      "past": "A moment of piercing clarity or intellectual breakthrough once cut through the confusion of your life. That flash of truth revealed something that could never again be unseen.",
+      "present": "A sword of clarity is being offered to you. Cut through the noise, the confusion, the half-truths. The answer is sharp and clear \u2014 you need only the courage to see it.",
+      "future": "A powerful breakthrough in understanding is approaching. A truth so clear and sharp that it will slice through every doubt and reveal the path forward with brilliant precision."
+    },
+    "swords-2": {
+      "keywords": "indecision, stalemate, avoidance, difficult choice",
+      "meaning": "The Two of Swords holds two blades in perfect, frozen balance \u2014 a mind divided, refusing to choose. The blindfold is self-imposed. Remove it, and the decision becomes clear.",
+      "past": "A period of paralysis or avoidance once kept you trapped between two difficult options. That stalemate \u2014 and how you eventually resolved it \u2014 taught you about the cost of indecision.",
+      "present": "You are caught between two choices, each with its own cost. The blindfold of avoidance offers temporary comfort but no resolution. It is time to open your eyes and decide.",
+      "future": "A difficult decision is approaching. You may feel pulled in two directions, but the stalemate cannot last forever. Trust that choosing imperfectly is better than not choosing at all."
+    },
+    "swords-3": {
+      "keywords": "heartbreak, sorrow, painful truth, grief",
+      "meaning": "The Three of Swords pierces the heart with an unavoidable truth. The pain is real and must be felt \u2014 but this wound, once acknowledged, begins to heal from the moment it is seen.",
+      "past": "A piercing heartbreak or painful truth once shattered something you held dear. That wound, though deep, eventually became a source of hard-won wisdom and emotional depth.",
+      "present": "A painful truth is making itself known. The heartache is real \u2014 do not deny it. But know that this pain is the necessary cost of seeing clearly. Healing begins with honesty.",
+      "future": "A difficult emotional truth may lie ahead. It will sting, but it carries the gift of clarity. The heart that breaks open also breaks free. You are stronger than this wound."
+    },
+    "swords-4": {
+      "keywords": "rest, recovery, contemplation, retreat",
+      "meaning": "The Four of Swords commands rest. After battle, the warrior must lay down their blade and recover. This is not defeat \u2014 it is the strategic wisdom of knowing when stillness serves you more than action.",
+      "past": "A period of necessary rest and recovery once allowed you to heal and regather your strength. That pause \u2014 though it may have felt like stagnation \u2014 was essential to your survival.",
+      "present": "You are being called to rest. Your mind has been at war, and the blade must be set aside. This is not laziness \u2014 it is the most strategic thing you can do right now. Recover.",
+      "future": "A period of rest and recovery is approaching. The battles ahead will require a sharp and rested mind. Use the coming stillness wisely \u2014 it is preparation, not retreat."
+    },
+    "swords-5": {
+      "keywords": "conflict, defeat, hollow victory, tension",
+      "meaning": "The Five of Swords stands amid the aftermath of conflict. Swords have been won, but at what cost? Not every battle is worth fighting, and not every victory leaves you better off.",
+      "past": "A conflict or competitive struggle once left a bitter taste, regardless of the outcome. The lesson was clear \u2014 winning at the expense of others rarely brings the satisfaction you expected.",
+      "present": "Tension and conflict surround you. Before engaging further, ask yourself: is this battle worth the cost? Sometimes the wisest move is to lay down your sword and walk away intact.",
+      "future": "A conflict may arise, but choose your battles carefully. The victory available may prove hollow, and the cost of fighting may exceed what you stand to gain. Know when to walk away."
+    },
+    "swords-6": {
+      "keywords": "transition, moving on, calmer waters, healing journey",
+      "meaning": "The Six of Swords carries you across troubled waters toward a calmer shore. The journey is quiet and bittersweet \u2014 leaving difficulty behind while carrying the wisdom it gave you.",
+      "past": "A necessary transition once carried you away from turbulent circumstances toward something calmer. That bittersweet departure \u2014 leaving pain behind \u2014 was an act of self-preservation and wisdom.",
+      "present": "You are in transit between who you were and who you are becoming. The waters may still be choppy, but the shore ahead is calmer. Keep moving forward \u2014 you are heading in the right direction.",
+      "future": "A transition to calmer waters is approaching. You will leave behind a difficult chapter and move toward peace. The journey will be quiet, but the destination will bring relief."
+    },
+    "swords-7": {
+      "keywords": "strategy, deception, cunning, stealth",
+      "meaning": "The Seven of Swords moves in shadows, relying on strategy and cunning. Not every battle is won by direct confrontation \u2014 sometimes wisdom lies in knowing what to take, what to leave, and when to move unseen.",
+      "past": "A situation in your past required cunning rather than direct confrontation. Whether you were the strategist or the one outmaneuvered, the experience sharpened your awareness of hidden motives.",
+      "present": "Be strategic about how you proceed. Not everyone around you is showing their full hand. Trust your instincts, guard your plans, and move with deliberate intention.",
+      "future": "A situation requiring strategic thinking is approaching. You may need to be clever rather than forceful. Stay alert to what is happening behind the scenes and plan your moves carefully."
+    },
+    "swords-8": {
+      "keywords": "restriction, self-imposed limitation, trapped, victim mentality",
+      "meaning": "The Eight of Swords stands bound and blindfolded, surrounded by blades \u2014 yet the bindings are loose and the cage has no door. The prison is mental. Freedom begins the moment you believe it is possible.",
+      "past": "A period of feeling trapped or restricted once dominated your experience. Looking back, you can see that many of those limitations were more mental than real \u2014 a cage of your own construction.",
+      "present": "You feel trapped, but the bars of your cage are made of thought and fear, not iron. The swords around you are not as close as they seem. Take a breath, remove the blindfold, and walk free.",
+      "future": "A feeling of restriction may arise, but recognize it for what it is \u2014 a mental construct, not a physical reality. The moment you refuse to believe in the cage, it dissolves."
+    },
+    "swords-9": {
+      "keywords": "anxiety, nightmares, worry, despair",
+      "meaning": "The Nine of Swords sits up in the dark, tormented by anxious thoughts. The swords above are the weight of worry and fear \u2014 but dawn will come, and what haunts the night rarely survives the light of day.",
+      "past": "A period of intense anxiety or sleepless worry once tormented you. Those dark nights of the soul \u2014 though agonizing \u2014 eventually gave way to daylight and the realization that you survived.",
+      "present": "Your mind is running a nightmare on repeat. The anxiety feels overwhelming, but remember \u2014 these are thoughts, not truths. The fears that seem monstrous at 3 AM shrink in the morning light.",
+      "future": "Anxious thoughts may intensify before they release. A period of worry is possible, but it is the darkness before dawn. What your mind fears is rarely what actually comes to pass."
+    },
+    "swords-10": {
+      "keywords": "rock bottom, ending, betrayal, dawn",
+      "meaning": "The Ten of Swords marks the absolute end \u2014 the final sword has fallen, and there is nothing left to take. But look at the horizon: dawn is breaking. You have survived the worst, and now there is nowhere to go but up.",
+      "past": "A devastating ending or betrayal once brought you to your knees. But that absolute low point became the foundation from which you rebuilt \u2014 because once you hit rock bottom, the only direction is up.",
+      "present": "This is the end of a painful cycle. It may feel like everything has been taken, but notice the light on the horizon. The worst is over. From this point forward, things can only improve.",
+      "future": "A definitive ending approaches, and it may feel harsh. But this is the final chapter of an old story \u2014 the last sword. Once it falls, the dawn breaks and an entirely new beginning is yours."
+    },
+    "swords-page": {
+      "keywords": "curiosity, new ideas, communication, vigilance",
+      "meaning": "The Page of Swords holds the blade high with restless, keen-eyed curiosity. Quick-minded and eager for truth, this messenger brings new ideas and the sharp energy of intellectual awakening.",
+      "past": "A burst of intellectual curiosity or a sharp new idea once electrified your thinking. That restless hunger for truth and knowledge set you on a path of mental sharpness you walk still.",
+      "present": "Stay alert and curious. New information is arriving, and your quick mind is needed to assess it. Communicate clearly, think critically, and keep your blade of discernment sharp.",
+      "future": "A stimulating new idea or important message is on its way. Stay mentally agile and ready to receive it \u2014 the information that arrives will open new intellectual territory."
+    },
+    "swords-knight": {
+      "keywords": "ambition, action, drive, charging forward",
+      "meaning": "The Knight of Swords charges into the storm with single-minded determination. Swift, direct, and unstoppable \u2014 this is the energy of decisive action driven by intellectual conviction.",
+      "past": "A time of charging headlong into action once demonstrated your fierce determination. That rush of mental energy and decisive force \u2014 for better or worse \u2014 proved the power of committed action.",
+      "present": "Now is the time for swift, decisive action. You have analyzed enough \u2014 charge forward with the conviction of your ideas. Speed and directness are your allies right now.",
+      "future": "A period of rapid, forceful action is approaching. Events will accelerate, and you will need to think and move quickly. The winds of change favor the bold and the decisive."
+    },
+    "swords-queen": {
+      "keywords": "independence, clear thinking, direct communication, perception",
+      "meaning": "The Queen of Swords sees through every veil with razor precision. Her independence of mind, clarity of communication, and refusal to accept comfortable lies make her a formidable seeker of truth.",
+      "past": "A period of fierce independence and clear-eyed thinking shaped your intellectual character. The ability to cut through deception and speak truth directly became one of your defining strengths.",
+      "present": "See things as they are, not as you wish them to be. Communicate with precision and honesty. Your clarity of mind is your sharpest tool \u2014 use it without apology.",
+      "future": "You are sharpening into a blade of intellectual clarity and independent thought. The ability to see truth, speak it clearly, and stand alone in your convictions will serve you powerfully."
+    },
+    "swords-king": {
+      "keywords": "intellectual authority, truth, clear judgment, ethical leadership",
+      "meaning": "The King of Swords rules with the authority of a sharp and disciplined mind. His judgments are fair, his thinking is clear, and his commitment to truth is absolute.",
+      "past": "A figure of intellectual authority or a period of disciplined, clear thinking once gave structure to your mental world. That influence taught you the power of principled judgment.",
+      "present": "Lead with your mind. The situation demands clear, rational thinking and fair judgment. Set emotion aside and let logic, ethics, and truth guide your decisions.",
+      "future": "A position requiring intellectual leadership and fair judgment is forming ahead. Your capacity for clear, ethical thinking will be called upon \u2014 and it will prove more than equal to the task."
+    },
+    "pentacles-1": {
+      "keywords": "new opportunity, prosperity, manifestation, abundance",
+      "meaning": "The Ace of Pentacles presents a golden coin from the heavens \u2014 a tangible new opportunity for prosperity, health, or material success. The seed of abundance is being placed in your hands.",
+      "past": "A golden opportunity once appeared in your life, offering the seed of material or physical success. How you nurtured that seed determined the prosperity that followed.",
+      "present": "A tangible new opportunity is being offered to you. This is real \u2014 not fantasy \u2014 and it requires practical action to realize its full potential. Take hold of it with both hands.",
+      "future": "A significant opportunity for prosperity or material growth is approaching. Keep your eyes open and your hands ready \u2014 the seed of abundance is about to be offered."
+    },
+    "pentacles-2": {
+      "keywords": "balance, adaptability, juggling, flexibility",
+      "meaning": "The Two of Pentacles juggles competing demands with playful dexterity. Life asks you to manage multiple priorities \u2014 and the secret is not rigid control but flexible, adaptive flow.",
+      "past": "A period of juggling multiple demands once tested your adaptability and resourcefulness. That dance of balance \u2014 however chaotic \u2014 taught you how to stay afloat in turbulent waters.",
+      "present": "You are balancing multiple priorities, and the dance requires your full attention. Stay flexible, stay playful, and trust your ability to keep everything in motion. You are more nimble than you think.",
+      "future": "A period of juggling competing demands is approaching. The key will be adaptability, not perfection. Trust your ability to find rhythm in the chaos and keep the dance going."
+    },
+    "pentacles-3": {
+      "keywords": "teamwork, craftsmanship, collaboration, skill",
+      "meaning": "The Three of Pentacles celebrates the magic of skilled collaboration. Mastery meets teamwork \u2014 when individual expertise combines with shared vision, extraordinary structures are built.",
+      "past": "A collaborative effort or display of craftsmanship once produced something of lasting quality. That experience of skilled teamwork showed you what becomes possible when talents combine.",
+      "present": "Your skills are needed as part of something larger. Collaborate, contribute your expertise, and trust the process. The work being done together is greater than anything you could build alone.",
+      "future": "An opportunity for meaningful collaboration is approaching. Your skills will be recognized and called upon. The project ahead requires teamwork, and your contribution will be essential."
+    },
+    "pentacles-4": {
+      "keywords": "security, control, possessiveness, conservation",
+      "meaning": "The Four of Pentacles grips tightly to what has been acquired. Security is valuable, but when the grip becomes too tight, it transforms from protection into prison. Know when to hold and when to release.",
+      "past": "A period of holding tightly to resources, security, or control shaped your relationship with stability. Whether that grip was wise or excessive, it taught you about the nature of true security.",
+      "present": "You are holding on tight \u2014 to money, to control, to stability. Ask yourself: is this protection or is this fear? True security comes not from clutching but from trusting your ability to generate more.",
+      "future": "A question about security and control is approaching. You will face a choice between holding tight and opening your hands. Remember that what flows freely always returns multiplied."
+    },
+    "pentacles-5": {
+      "keywords": "hardship, financial loss, isolation, worry",
+      "meaning": "The Five of Pentacles trudges through the cold, feeling shut out from warmth and abundance. The hardship is real, but notice the glowing window \u2014 help and refuge are closer than you think.",
+      "past": "A time of material hardship or feeling left out in the cold once tested your resilience. That struggle \u2014 though painful \u2014 eventually led you to find resources and strength you did not know you had.",
+      "present": "You may be experiencing financial strain or a sense of being left out in the cold. But look around \u2014 support exists if you are willing to see it and ask for it. You are not as alone as you feel.",
+      "future": "A period of material challenge may lie ahead, but it is temporary. Help will be available even in the darkest moment. Do not let pride prevent you from walking through the door marked 'refuge.'"
+    },
+    "pentacles-6": {
+      "keywords": "generosity, giving and receiving, charity, balance of resources",
+      "meaning": "The Six of Pentacles weighs generosity on its scales. The flow of giving and receiving must be balanced \u2014 true abundance is not hoarded but shared, and those who give wisely receive abundantly.",
+      "past": "An act of generosity \u2014 given or received \u2014 once created a ripple of abundance in your life. That experience of balanced exchange taught you the power of the giving-receiving cycle.",
+      "present": "Consider the balance of giving and receiving in your life. If you have plenty, share generously. If you are in need, accept help graciously. The scales work best when both sides flow.",
+      "future": "An opportunity for meaningful generosity or the receipt of needed help is approaching. The flow of resources is shifting in your favor \u2014 participate in the cycle with an open heart."
+    },
+    "pentacles-7": {
+      "keywords": "patience, assessment, long-term investment, perseverance",
+      "meaning": "The Seven of Pentacles pauses to assess the growing crop. The work has been done, the seeds planted, but the harvest is not yet here. Patience \u2014 the fruit will come when the time is right.",
+      "past": "A period of patient investment and careful cultivation once tested your ability to wait for results. That discipline of tending and trusting the process ultimately proved its worth.",
+      "present": "You have planted the seeds and done the work. Now is the time to pause, assess your progress, and trust the growth. Do not dig up the roots to check \u2014 patience is your wisest investment.",
+      "future": "The fruits of your labor are approaching, but they need more time. Continue to tend what you have planted with patience and care. The harvest will come, and it will reward your perseverance."
+    },
+    "pentacles-8": {
+      "keywords": "mastery, skill development, diligence, dedication",
+      "meaning": "The Eight of Pentacles hammers away with focused dedication, perfecting each coin with greater skill. This is the card of the dedicated craftsperson \u2014 mastery comes through patient, repetitive, devoted practice.",
+      "past": "A period of dedicated skill-building and focused practice shaped your abilities. That commitment to mastering your craft \u2014 stroke by stroke, day by day \u2014 built something of lasting value.",
+      "present": "Put your head down and commit to the work. Mastery is not born of talent alone but of dedicated, focused practice. Each repetition brings you closer to excellence. Keep hammering.",
+      "future": "A period of intensive skill development is approaching. The opportunity to deepen your expertise and master your craft will present itself. Commit fully \u2014 the results will speak for themselves."
+    },
+    "pentacles-9": {
+      "keywords": "luxury, self-sufficiency, independence, refinement",
+      "meaning": "The Nine of Pentacles walks through her private garden of abundance \u2014 created entirely by her own hands. This is the card of earned luxury, self-sufficiency, and the refined enjoyment of what you have built.",
+      "past": "A period of enjoying the fruits of your own labor once showed you what true independence feels like. That self-sufficiency \u2014 earned through effort \u2014 gave you a standard of living that is entirely your own.",
+      "present": "Appreciate what you have built through your own effort. You have earned this comfort, this abundance, this independence. Enjoy it without guilt \u2014 it is the product of your dedication.",
+      "future": "A state of earned abundance and self-sufficiency is forming ahead. The hard work you are investing now will bloom into a life of refined independence and material comfort."
+    },
+    "pentacles-10": {
+      "keywords": "legacy, wealth, family, long-term success",
+      "meaning": "The Ten of Pentacles represents the ultimate material fulfillment \u2014 lasting wealth, family legacy, and the deep satisfaction of building something that endures beyond a single lifetime.",
+      "past": "A legacy of family, wealth, or enduring achievement shaped the foundation you stand on. The work of those who came before you \u2014 or your own long-term building \u2014 created something lasting.",
+      "present": "You are surrounded by the fruits of long-term investment \u2014 in family, in wealth, in legacy. Appreciate the stability and abundance that has been built over time. This is your inheritance to honor.",
+      "future": "A legacy is forming from the choices you make now. The wealth, stability, and family bonds you build today will endure far beyond the present moment. Think in terms of generations."
+    },
+    "pentacles-page": {
+      "keywords": "ambition, study, new venture, practicality",
+      "meaning": "The Page of Pentacles gazes at the golden coin with studious fascination. This is the beginning of a practical journey \u2014 a new venture, a course of study, or an ambitious plan taking its first tangible form.",
+      "past": "A moment of practical inspiration or the beginning of a new venture once captured your attention. That initial fascination with building something real set you on a productive path.",
+      "present": "A practical new opportunity is catching your eye. Study it carefully, plan thoroughly, and take the first small steps. Great empires begin with a single, well-placed stone.",
+      "future": "A new opportunity for practical growth or study is approaching. Stay grounded and attentive \u2014 the venture that presents itself may start small but carries enormous potential."
+    },
+    "pentacles-knight": {
+      "keywords": "reliability, hard work, routine, steady progress",
+      "meaning": "The Knight of Pentacles advances with methodical, unwavering determination. Slow but absolutely unstoppable \u2014 this is the energy of steady progress, reliable effort, and the power of showing up every single day.",
+      "past": "A period of steady, reliable effort once moved you forward through sheer persistence. That slow, methodical approach \u2014 though unglamorous \u2014 built something solid that faster methods could not.",
+      "present": "Now is not the time for shortcuts or flash. Show up, do the work, and trust the process of steady progress. The Knight of Pentacles wins not by speed but by never stopping.",
+      "future": "A phase of steady, methodical progress is ahead. The pace may feel slow, but every step is solid. Trust that this reliable, persistent energy will carry you to your destination."
+    },
+    "pentacles-queen": {
+      "keywords": "abundance, nurturing, practical wisdom, comfort",
+      "meaning": "The Queen of Pentacles creates a world of warmth, abundance, and practical beauty. She nurtures with both hands firmly on the ground \u2014 where others dream, she builds. Where others worry, she provides.",
+      "past": "A nurturing presence or a period of grounded, practical wisdom once created a foundation of comfort and abundance in your life. That energy of warm, hands-on care shaped your sense of security.",
+      "present": "Ground yourself in practical wisdom. Create comfort, nurture abundance, and tend to the physical world with care. Your ability to combine warmth with practicality is your superpower right now.",
+      "future": "A period of grounded abundance and nurturing prosperity is forming ahead. Your practical wisdom and warm generosity will create a haven of comfort for yourself and those you love."
+    },
+    "pentacles-king": {
+      "keywords": "wealth, business mastery, security, discipline",
+      "meaning": "The King of Pentacles sits upon a throne of earned abundance. Master of the material world, his wealth is no accident \u2014 it is the product of discipline, shrewd judgment, and unshakable determination.",
+      "past": "A figure of material mastery or a period of disciplined wealth-building shaped your relationship with prosperity. That influence demonstrated what becomes possible through shrewd, patient management.",
+      "present": "Manage your material world with the authority and discipline of a seasoned ruler. Your practical judgment is sound \u2014 trust it. Build, invest, and create with the confidence of mastery.",
+      "future": "Material mastery and prosperous stability are crystallizing ahead. The discipline and shrewd judgment you apply now will compound into a position of genuine, lasting wealth."
+    },
+    "wands-1": {
+      "keywords": "inspiration, new passion, creative spark, potential",
+      "meaning": "The Ace of Wands bursts with raw creative fire. A new passion, inspiration, or creative spark is igniting \u2014 grab hold of this living flame and channel it into something extraordinary.",
+      "past": "A flash of creative inspiration or a new passion once set your soul ablaze. That initial spark \u2014 wild, exciting, full of potential \u2014 launched a journey of creative expression that still burns within.",
+      "present": "Creative fire is surging through you right now. A new passion or inspiration is demanding expression. Do not overthink it \u2014 seize this energy and let it flow into action.",
+      "future": "A powerful creative spark or new passion is about to ignite. The flame that approaches carries enormous potential. Be ready to catch fire and let it carry you somewhere extraordinary."
+    },
+    "wands-2": {
+      "keywords": "planning, vision, future possibilities, discovery",
+      "meaning": "The Two of Wands stands at the edge of the known world, gazing at the vast horizon of possibility. The first wand is planted firmly \u2014 the second points toward uncharted territory. It is time to plan your expansion.",
+      "past": "A moment of visionary planning once set you on an expansive path. Standing at the crossroads with the world before you, you dared to imagine something bigger \u2014 and that vision shaped what followed.",
+      "present": "You stand between the world you know and the world that could be. The vision is forming \u2014 now plan your next move carefully. Think big, plan practically, and prepare to expand beyond familiar borders.",
+      "future": "An expansive vision is about to crystallize. The horizon will open before you, revealing possibilities you had not considered. Prepare to move beyond the boundaries of your current world."
+    },
+    "wands-3": {
+      "keywords": "expansion, foresight, overseas opportunities, progress",
+      "meaning": "The Three of Wands watches ships sail toward distant horizons. Your efforts are in motion, your vision is expanding, and the returns of your foresight are making their way back to you.",
+      "past": "A period of expansion and far-reaching vision once sent your efforts out into the wider world. Those ships you launched carried your ambitions further than you imagined possible.",
+      "present": "Your plans are in motion and the horizon is opening. What you set in motion is progressing \u2014 trust your foresight and continue to think expansively. The ships are coming home.",
+      "future": "Expansion and the fruits of your foresight are approaching. What you have envisioned and worked toward is about to return to you, carrying results from far beyond your immediate reach."
+    },
+    "wands-4": {
+      "keywords": "celebration, homecoming, harmony, milestone",
+      "meaning": "The Four of Wands raises a canopy of celebration. A milestone has been reached, a homecoming is at hand, and the time has come to celebrate what you have built with those who matter most.",
+      "past": "A joyful milestone or celebration once marked a high point in your journey. That moment of shared happiness and accomplished pride remains a golden memory that warms your spirit.",
+      "present": "A milestone is here \u2014 celebrate it. You have earned this moment of joy, harmony, and shared accomplishment. Raise the wands, gather your people, and honor what has been achieved.",
+      "future": "A celebration or joyful milestone is on the horizon. The hard work and dedication you are investing now is leading toward a moment of triumph that calls for festivity."
+    },
+    "wands-5": {
+      "keywords": "competition, conflict, tension, diversity of opinion",
+      "meaning": "The Five of Wands clashes in a tangle of competing energies. Multiple forces vie for dominance \u2014 but this conflict, though chaotic, can be the creative friction that forges something stronger.",
+      "past": "A period of competition or clashing ideas once challenged you to fight for your position. That friction \u2014 though uncomfortable \u2014 sharpened your abilities and clarified your vision.",
+      "present": "You are in the thick of competing energies and conflicting opinions. Rather than seeking to eliminate the conflict, channel it. Creative tension, properly directed, produces breakthrough results.",
+      "future": "A period of competition or creative conflict is approaching. Multiple forces will clash, but from this friction, something powerful can emerge. Stand your ground and let the sparks fly."
+    },
+    "wands-6": {
+      "keywords": "victory, recognition, success, public acclaim",
+      "meaning": "The Six of Wands rides in triumph, wand held high to the cheers of the crowd. This is the moment of public victory and well-earned recognition \u2014 your efforts have been seen, and the world applauds.",
+      "past": "A moment of triumph and public recognition once crowned your efforts with glory. That victory \u2014 celebrated by others \u2014 proved that your work and courage were truly exceptional.",
+      "present": "Victory is yours, and the world is noticing. Accept the recognition with grace \u2014 you have earned it. This is your moment to ride high and let your success inspire others.",
+      "future": "Public recognition and triumph are approaching. Your efforts are about to be crowned with success that others can see and celebrate. The victory ride is coming \u2014 prepare to be seen."
+    },
+    "wands-7": {
+      "keywords": "defense, perseverance, standing your ground, challenge",
+      "meaning": "The Seven of Wands stands on higher ground, defending against challengers from below. You have earned your position \u2014 now defend it with the fierce determination of one who knows their worth.",
+      "past": "A time when you had to defend your position against challenges and opposition once tested your resolve. Standing your ground \u2014 though exhausting \u2014 proved that your position was worth fighting for.",
+      "present": "Challenges are coming at you from all sides, but you hold the high ground. Do not retreat. The very fact that others are pushing against you proves the value of where you stand. Hold firm.",
+      "future": "A challenge to your position is approaching. Others may question or oppose what you have built. Stand your ground with confidence \u2014 you earned your place, and you have the strength to defend it."
+    },
+    "wands-8": {
+      "keywords": "speed, momentum, swift action, rapid progress",
+      "meaning": "The Eight of Wands flies through the air with blazing speed. Everything accelerates \u2014 messages arrive, events unfold, and momentum surges forward with unstoppable velocity. Hang on tight.",
+      "past": "A period of rapid, exhilarating momentum once swept through your life like a wildfire. Events unfolded at lightning speed, and the acceleration carried you further than you ever expected.",
+      "present": "Things are moving fast. Events, messages, and opportunities are flying toward you with extraordinary speed. This is not the time to hesitate \u2014 match the momentum and ride the wave.",
+      "future": "A burst of rapid acceleration is approaching. Expect swift developments, fast-moving opportunities, and a pace that will take your breath away. Be ready to act when the wands fly."
+    },
+    "wands-9": {
+      "keywords": "resilience, perseverance, last stand, determination",
+      "meaning": "The Nine of Wands stands battered but unbroken, clutching the final wand. You have been through the fire and carry every scar \u2014 but you are still standing. One more push, and victory is yours.",
+      "past": "You once endured a grueling series of challenges that tested you to your absolute limit. Battered and weary, you refused to fall. That resilience proved you are far tougher than you knew.",
+      "present": "You are exhausted, scarred, and wondering if you can go on. You can. You have survived everything that came before this moment \u2014 one more push is all that stands between you and the finish line.",
+      "future": "A test of endurance is approaching \u2014 the final trial before a breakthrough. You will feel weary, but you have the resilience to endure. Do not give up now. The end is closer than it appears."
+    },
+    "wands-10": {
+      "keywords": "burden, responsibility, hard work, overwhelm",
+      "meaning": "The Ten of Wands staggers under the weight of all ten rods. The burden is immense \u2014 the responsibilities, the obligations, the sheer weight of everything you have taken on. It is time to set some down.",
+      "past": "A period of overwhelming responsibility once crushed you under its weight. Carrying too much for too long taught you the hard lesson of knowing your limits and the necessity of delegation.",
+      "present": "You are carrying too much. The burden of responsibilities, obligations, and self-imposed expectations is bending your back. You must put some wands down \u2014 not everything is yours to carry.",
+      "future": "A period of heavy responsibility is approaching. The load will feel overwhelming, but remember \u2014 you do not have to carry all ten wands alone. Delegate, prioritize, and protect your energy."
+    },
+    "wands-page": {
+      "keywords": "exploration, enthusiasm, discovery, free spirit",
+      "meaning": "The Page of Wands gazes at the flame atop the wand with wide-eyed enthusiasm. This is the messenger of adventure, creative exploration, and the irresistible urge to discover something new.",
+      "past": "A burst of enthusiastic exploration or a bold new venture once ignited your adventurous spirit. That moment of wide-eyed discovery awakened a creative curiosity that still drives you.",
+      "present": "An exciting new adventure or creative exploration is calling. Approach it with enthusiasm and an open mind \u2014 the Page of Wands reminds you that the best discoveries come from playful courage.",
+      "future": "An invitation to explore, create, or adventure is approaching. The energy will be youthful, enthusiastic, and full of potential. Say yes to the spark \u2014 it will lead somewhere extraordinary."
+    },
+    "wands-knight": {
+      "keywords": "passion, adventure, impulsiveness, bold action",
+      "meaning": "The Knight of Wands charges forward on a blaze of passion and fearless energy. Bold, adventurous, and utterly unrestrained \u2014 this is the force of pure creative fire in motion.",
+      "past": "A period of bold, passionate action once blazed through your life with the force of wildfire. That fearless charge \u2014 impulsive but exhilarating \u2014 carried you into territories you never expected to reach.",
+      "present": "Let your passion take the lead. The Knight of Wands demands action fueled by fire \u2014 be bold, be adventurous, and charge toward what excites you without overthinking the consequences.",
+      "future": "A wave of passionate, adventurous energy is approaching. Something will ignite your spirit and demand bold action. When the fire rises, trust it \u2014 leap before the flame has time to cool."
+    },
+    "wands-queen": {
+      "keywords": "confidence, independence, determination, warmth",
+      "meaning": "The Queen of Wands radiates magnetic confidence and creative power. She commands attention not through force but through the sheer warmth and vitality of her presence. Her fire inspires all who approach.",
+      "past": "A figure of radiant confidence and creative power once inspired and influenced your life. That magnetic energy \u2014 warm, independent, and fiercely alive \u2014 showed you what it means to shine.",
+      "present": "Step into your power with warmth and confidence. Your creative energy and personal magnetism are at their peak. Lead with enthusiasm, inspire others with your vitality, and own your flame.",
+      "future": "You are growing into a force of magnetic, creative confidence. The warmth and determination developing within you will soon make you a source of inspiration and power for yourself and others."
+    },
+    "wands-king": {
+      "keywords": "visionary leadership, boldness, entrepreneurship, charisma",
+      "meaning": "The King of Wands rules with the fire of a visionary leader. Bold, charismatic, and driven by an unshakable creative vision, he transforms ideas into empires and passion into lasting achievement.",
+      "past": "A visionary leader or a period of bold, charismatic leadership shaped your understanding of what creative power can achieve. That influence taught you to lead with fire and build with passion.",
+      "present": "Lead with vision and boldness. Your creative fire and natural charisma are your greatest assets right now. Think like a visionary, act like an entrepreneur, and inspire like a king.",
+      "future": "Visionary leadership and bold creative mastery are your destiny. The charisma, determination, and entrepreneurial fire growing within you will soon demand a kingdom worthy of your ambitions."
+    }
+  },
+  "readingTemplates": {
+    "intros": [
+      "The cards have been drawn, and the tapestry of your fate unfolds before us. {card1}, {card2}, and {card3} \u2014 a combination of striking power and undeniable significance.",
+      "Three cards emerge from the shadows of the deck: {card1}, {card2}, and {card3}. Together they weave a story that the universe has been waiting to tell you.",
+      "The veil parts, and three messengers step forward: {card1}, {card2}, and {card3}. Their combined wisdom speaks directly to the forces shaping your destiny.",
+      "From the infinite possibilities of the deck, {card1}, {card2}, and {card3} have chosen you. Yes \u2014 the cards choose the reader as much as the reader chooses the cards.",
+      "A powerful trinity reveals itself: {card1}, {card2}, and {card3}. The energy between these three cards crackles with meaning \u2014 listen closely to what they say.",
+      "The stars have aligned to bring forth {card1}, {card2}, and {card3}. This is no accident \u2014 these cards carry a message that has been seeking you.",
+      "Behold the three cards that emerge from the cosmic shuffle: {card1}, {card2}, and {card3}. Their combined energy paints a portrait of your journey with remarkable clarity.",
+      "The deck has spoken with conviction, placing {card1}, {card2}, and {card3} before you. Each card alone is powerful \u2014 together, they form a revelation."
+    ],
+    "bridges": [
+      "As we move from past to present, the energy shifts. What was planted now bears fruit in the current moment.",
+      "The threads of the past weave into the fabric of your present reality. Notice how one flows into the other.",
+      "From the echoes of what was, we arrive at the pulse of what is. The connection between these energies is unmistakable.",
+      "The past has set the stage, and now the spotlight falls on this very moment. The cards speak of your present with urgency."
+    ],
+    "futureBridges": [
+      "And now the cards peer beyond the veil of time to illuminate what approaches.",
+      "The final card lifts its gaze toward the horizon, revealing the shape of things to come.",
+      "What the past planted and the present tends, the future will harvest. The third card speaks of what awaits.",
+      "The most mysterious card of all \u2014 the one that speaks to what has not yet happened \u2014 reveals its message."
+    ],
+    "closings": [
+      "Together, these three cards paint a journey of remarkable significance. The forces at work in your life are powerful, purposeful, and aligned with something greater than chance.",
+      "The reading is complete, but its echoes will continue to resonate. Carry the wisdom of these three cards as you navigate the path ahead \u2014 they have given you everything you need.",
+      "The cards have spoken their truth. This trinity of wisdom \u2014 spanning past, present, and future \u2014 offers you a compass for the journey ahead. Trust what has been revealed.",
+      "This powerful spread reveals that the forces surrounding you are moving with intention and purpose. The universe has offered its guidance \u2014 the rest is in your hands.",
+      "The cards fall silent, but their message lingers in the air. What has been revealed is both a mirror and a map \u2014 reflecting where you have been and illuminating where you are going."
+    ],
+    "pastPrefix": "Your first card, {card}, speaks to the energies of your past. ",
+    "presentPrefix": "{card} stands in the position of the present. ",
+    "futurePrefix": "{card} reveals what the future holds. "
+  }
+}

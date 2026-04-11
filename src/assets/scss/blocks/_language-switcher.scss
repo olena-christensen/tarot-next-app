@@ -1,0 +1,18 @@
+.language-switcher {
+  background: transparent;
+  color: $primary;
+  border: $border;
+  border-radius: $border-radius;
+  padding: 6px 12px;
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: $general-font-weight;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+
+  option {
+    background: $dark-bg;
+    color: $primary;
+  }
+}

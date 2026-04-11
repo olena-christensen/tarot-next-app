@@ -1,0 +1,584 @@
+{
+  "readings": {
+    "arcana-0": {
+      "keywords": "begynnelser, uskyld, spontanitet, fri sjel",
+      "meaning": "Narren taler om nye begynnelser og uutnyttet potensial. Du står på kanten av noe ekstraordinært, ubetynget av frykt eller tvil. Stol på det ukjente — universet belønner de som våger å hoppe.",
+      "past": "Et modig trossprang la grunnlaget for der du er nå. Det øyeblikket av fryktløs uskyld, da du valgte det ukjente fremfor det kjente, sådde frø som fortsetter å vokse.",
+      "present": "Du blir kalt til å omfavne en ny start. Noe lokker deg mot kanten av den kjente verden — slipp taket på vissheten og la vinden bære deg.",
+      "future": "Et spennende nytt kapittel venter deg. Veien foran er ukjent, og nettopp det er dens gave. Møt det som kommer med et barns undring og en eventurers mot."
+    },
+    "arcana-1": {
+      "keywords": "manifestasjon, kraft, oppfinnsomhet, viljestyrke",
+      "meaning": "Magikeren kanaliserer skapelsens rå krefter. Alle verktøyene du trenger er allerede innen rekkevidde — det er din vilje og ditt fokus som forvandler potensial til virkelighet.",
+      "past": "En tid med bemerkelsesverdig personlig kraft formet din reise. Du brukte en gang talentene dine med presisjon og selvtillit, og resultatene av den mestringen gir fremdeles gjenklang i livet ditt.",
+      "present": "Universet har lagt alle ressurser til din disposisjon. Nå er øyeblikket for å handle med intensjon — juster dine ønsker med dine handlinger og se det umulige bli virkelig.",
+      "future": "Du vokser til å bli en formidabel skaperkraft. Snart vil du oppdage hvor mye du kan manifestere når ditt sinn, din ånd og din vilje beveger seg som én."
+    },
+    "arcana-2": {
+      "keywords": "intuisjon, mysterium, indre kunnskap, det underbevisste",
+      "meaning": "Høyprestinnen vokter terskelen mellom det synlige og usynlige. Hun hvisker at svarene du søker ikke finnes i verdens støy, men i stillheten inni deg.",
+      "past": "Det var en tid da din indre stemme talte klart og ledet deg gjennom skyggene. Den intuitive visdommen du en gang stolte så dypt på lever fremdeles — den forlot deg aldri.",
+      "present": "Vær stille og lytt. Under overflaten av ditt daglige liv rører dype strømmer av viten seg. Sannheten du søker kan ikke resonneres frem — den må føles.",
+      "future": "Skjult kunnskap vil snart åpenbare seg for deg. Drømmer, synkronisiteter og stille hvisken fra det hinsidige konvergerer for å belyse et mysterium du lenge har grunnet på."
+    },
+    "arcana-3": {
+      "keywords": "overflod, næring, fruktbarhet, natur",
+      "meaning": "Keiserinnen legemliggjør den frodige overfloden i den naturlige verden. Hun taler om vekst, kreativitet og den dype næringen som kommer av å stelle det du elsker med tålmodighet og omsorg.",
+      "past": "En periode med rik vekst og kreativ overflod formet ditt fundament. Enten gjennom kjærlighet, kunst eller ren nærende energi, dyrket du noe vakkert som fremdeles bærer deg.",
+      "present": "Du er omgitt av mer overflod enn du innser. Åpne sansene dine — skjønnhet, komfort og kreativ inspirasjon strømmer mot deg. Motta dem uten skyldfølelse.",
+      "future": "En sesong med blomstring venter. Det du har næret med kjærlighet og tålmodighet vil snart bære frukt utover dine forventninger. Høsten nærmer seg."
+    },
+    "arcana-4": {
+      "keywords": "autoritet, struktur, stabilitet, lederskap",
+      "meaning": "Keiseren skaper orden fra kaos. Han representerer kraften i struktur, disiplin og bestemt autoritet — styrken til å bygge imperier av visjon og viljestyrke alene.",
+      "past": "En autoritetsfigur eller en periode med streng disiplin etterlot et varig avtrykk på deg. Strukturene som ble bygget — eller pålagt — i den tiden utgjør fremdeles stillaset i livet ditt.",
+      "present": "Det er på tide å ta kommandoen. Situasjonen foran deg krever klarhet, struktur og faste beslutninger. Du har autoriteten i deg — ta den uten å nøle.",
+      "future": "En posisjon med større innflytelse og stabilitet former seg foran deg. Grunnlaget du legger nå vil støtte en struktur av bemerkelsesverdig varighet. Led med overbevisning."
+    },
+    "arcana-5": {
+      "keywords": "tradisjon, åndelig visdom, konformitet, mentorskap",
+      "meaning": "Hierofanten bygger bro mellom det hellige og det verdslige. Han taler om visdom overført gjennom tradisjon, verdien av mentorskap og de dypere sannhetene som ligger i etablerte veier.",
+      "past": "En lærer, tradisjon eller institusjon ga deg en gang et avgjørende rammeverk for forståelse. De lærdomsmene — enten omfavnet eller gjort opprør mot — ble en del av ditt åndelige DNA.",
+      "present": "Søk visdommen som lever i etablert kunnskap. En mentor, en praksis eller en tradisjon har svarene du trenger akkurat nå. Det er kraft i det som har bestått tidens prøve.",
+      "future": "Du vil snart tre inn i rollen som veiviser eller lærer. Visdommen du har samlet gjennom erfaring forbereder seg på å strømme gjennom deg og opplyse veien for andre."
+    },
+    "arcana-6": {
+      "keywords": "kjærlighet, forening, valg, samstemthet",
+      "meaning": "Elskerne taler om dyp forbindelse og den hellige kraften i valget. Dette er ikke bare romantikk — det er alkemien når to krefter møtes og motet som kreves for å velge autentisk.",
+      "past": "Et skjellsettende valg eller en dyp forbindelse i fortiden din bestemte hjertets kurs. Det øyeblikket av forening eller beslutning fortsetter å gi gjenklang i alt du er.",
+      "present": "Et meningsfylt valg står foran deg, et som berører kjernen av hvem du er. Følg veien som samsvarer med din dypeste sannhet, selv om det krever sårbarhet.",
+      "future": "En kraftfull forbindelse eller et avgjørende valg nærmer seg. Båndet som venter deg — enten med en annen sjel eller med ditt eget autentiske selv — vil forvandle deg."
+    },
+    "arcana-7": {
+      "keywords": "besluttsomhet, viljestyrke, triumf, kontroll",
+      "meaning": "Vognen dundrer fremover med ustoppelig besluttsomhet. Seieren tilhører de som mestrer sine indre motsetninger og driver fremover med fokusert, urokkelig vilje.",
+      "past": "Du kalte en gang frem utrolig viljestyrke for å overvinne et tilsynelatende umulig hinder. Den triumfen — hardt vunnet og smidd i besluttsomhet — beviste hva du virkelig er i stand til.",
+      "present": "Kreftene rundt deg trekker kanskje i forskjellige retninger, men du holder tøylene. Kanaliser viljestyrken din, hold kursen stabil og storm fremover. Seieren er innen rekkevidde.",
+      "future": "Et triumferende gjennombrudd er i horisonten. Disiplinen og besluttsomheten du dyrker nå vil snart bære deg over en terskel til en hardt fortjent seier."
+    },
+    "arcana-8": {
+      "keywords": "rettferdighet, sannhet, årsak og virkning, ansvarlighet",
+      "meaning": "Rettferdighet holder sine vektskåler med urokkelig presisjon. Enhver handling bærer sin konsekvens, enhver sannhet krever å bli sett. Universet rekalibrerer — og balansen vil bli gjenopprettet.",
+      "past": "En fortidsbeslutning eller handling satte en kjede av konsekvenser i bevegelse som brakte deg til dette punktet. Vektskålen ble tippet, og universet har justert seg siden.",
+      "present": "Sannheten i en sak blir klar. Vær ærlig med deg selv og andre — rettferdighet og integritet er dine mektigste allierte akkurat nå. Vektskålen ser deg.",
+      "future": "Et oppgjør nærmer seg — ikke som straff, men som balanse. Resultatene du har fortjent gjennom dine valg vil manifestere seg. Stol på at universet leverer det som er fortjent."
+    },
+    "arcana-9": {
+      "keywords": "introspeksjon, ensomhet, indre veiledning, visdom",
+      "meaning": "Eremiten trekker seg tilbake fra verden for å finne lyset inni. I ensomhet og stillhet avdekkes dype sannheter — sannheter som bare kan høres når verdens støy forstummer.",
+      "past": "En periode med tilbaketrekning eller ensomhet i fortiden ga deg innsikter den travle verden aldri kunne tilby. Det indre lyset du oppdaget i mørket veileder deg fremdeles.",
+      "present": "Tre tilbake fra støyen. Svarene du søker vil ikke komme fra andre eller fra handling — de vil komme innenfra. Gi deg selv gaven av stille ettertanke.",
+      "future": "En periode med meningsfull ensomhet ligger foran. Dette er ikke ensomhet, men opplysning — du trekkes innover for å oppdage en sannhet som vil omforme din forståelse."
+    },
+    "arcana-10": {
+      "keywords": "sykluser, skjebne, forandring, vendepunkt",
+      "meaning": "Hjulet snurrer, slik det alltid har gjort og alltid vil. Ingenting forblir fast — lykken stiger og faller i evige sykluser. Dette er et øyeblikk av avgjørende forandring, orkestrert av krefter større enn deg.",
+      "past": "En dramatisk skjebnevending snudde en gang verden din i en uventet retning. Den vendingen — enten den føltes som lykke eller ulykke — var alltid del av et større design.",
+      "present": "Hjulet snurrer. Forandring er over deg, uunngåelig og kraftfull. Motstand er fånyttes — i stedet, posisjoner deg for å ri på strømmen. Lykken favoriserer den tilpasningsdyktige.",
+      "future": "Et betydelig skifte i lykken nærmer seg. Syklusen er i ferd med å snu, og bringer nye omstendigheter som vil forandre landskapet i livet ditt. Omfavn revolusjonen."
+    },
+    "arcana-11": {
+      "keywords": "mot, tålmodighet, indre styrke, medfølelse",
+      "meaning": "Sann Styrke er ikke rå kraft, men stille mestring. Det er den forsiktige hånden som temmer løven, det tålmodige hjertet som utholder, den medfølende ånden som forvandler frykt til kraft.",
+      "past": "Du sto en gang overfor noe som krevde enorm indre utholdenhet — ikke aggresjon, men tålmodighet og forsiktig mot. Den stille styrken du kalte frem forblir din største ressurs.",
+      "present": "Utfordringen foran deg kaller ikke på kraft, men på ynde. Møt vanskeligheter med tålmodighet, frykt med medfølelse og kaos med rolig besluttsomhet. Din indre kraft er enorm.",
+      "future": "Du smiees til noe bemerkelsesverdig motstandsdyktig. Styrken du utvikler nå — stille, dyp og urokkelig — vil bære deg gjennom hva enn som ligger foran."
+    },
+    "arcana-12": {
+      "keywords": "overgivelse, nytt perspektiv, å slippe taket, pause",
+      "meaning": "Den Hengte Mannen ser verden fra en helt annen vinkel. Hengende mellom handling og stillhet oppdager han at noen ganger kommer den største fremgangen fra fullstendig overgivelse.",
+      "past": "En tid med tvungen pause eller offer i fortiden ga deg et perspektiv du aldri kunne ha fått på noen annen måte. Den perioden med suspensjon omformet hvordan du ser verden.",
+      "present": "Slutt å kjempe mot strømmen. Situasjonen krever at du slipper grepet og ser ting fra en helt annen vinkel. I det å slippe taket vil du finne det du søker.",
+      "future": "En periode med meningsfull pause nærmer seg. Det som føler seg som stagnasjon vil faktisk være en dyp rekalibrering — universet forbereder seg på å vise deg noe du ikke kan se fra der du står."
+    },
+    "arcana-13": {
+      "keywords": "transformasjon, avslutninger, fornyelse, overgang",
+      "meaning": "Døden taler ikke om fysisk slutt, men om dyp transformasjon. Noe må falle bort for å gi plass til det som vokser frem. Dette er den hellige alkemien der avslutninger blir begynnelser.",
+      "past": "En kraftfull avslutning eller transformasjon i fortiden ryddet grunnen for ny vekst. Det som føltes som tap var faktisk universet som skapte plass for noe langt større.",
+      "present": "Noe i livet ditt har nådd sin naturlige konklusjon. Slipp det med ynde — å klynge seg til det som har endt forsinker bare den ekstraordinære fornyelsen som allerede er i gang.",
+      "future": "En dyp transformasjon nærmer seg. Et gammelt kapittel må lukkes fullstendig før det neste kan begynne. Frykt ikke avslutningen — det som vokser ut av den vil forbløffe deg."
+    },
+    "arcana-14": {
+      "keywords": "balanse, måtehold, tålmodighet, harmoni",
+      "meaning": "Måtehold blander motstridende krefter til perfekt harmoni. Hun lærer at tålmodighet, balanse og den forsiktige kunsten av måtehold skaper noe langt kraftigere enn noen ytterlighet.",
+      "past": "En tid med å finne balanse — med å blande motstridende krefter i livet ditt — skapte en harmoni som fremdeles bærer deg. Det tålmodige arbeidet med integrasjon var kraftigere enn du visste.",
+      "present": "Søk middelveien. Ytterlighetene er fristende, men sann kraft ligger i balanse. Bland tålmodighet med handling, logikk med intuisjon, og det å gi med det å motta.",
+      "future": "En vakker tilstand av likevekt former seg foran deg. De motstridende kreftene i livet ditt beveger seg mot harmoni — blandingen vil skape noe større enn noen av elementene alene."
+    },
+    "arcana-15": {
+      "keywords": "skygge, tilknytning, illusjon, lenker",
+      "meaning": "Djevelen avslører kjedene du har lagt på deg selv. Disse båndene — av frykt, tilknytning eller illusjon — føler seg ubrytelige, men sannheten er at du holder nøkkelen til din egen frigjøring.",
+      "past": "Et mønster av tilknytning eller selvpålagt begrensning holdt deg en gang fanget. Enten du brøt fri eller fremdeles bærer disse kjedene, er forståelse av deres opprinnelse første skritt mot frigjøring.",
+      "present": "Se ærlig på det som binder deg. Frykten, vanene eller tilknytningene som kontrollerer livet ditt er illusjoner av makt — de holder deg bare fordi du tror de kan. Kjedene er løse.",
+      "future": "En konfrontasjon med dine skygger nærmer seg. Dette er ikke straff, men frigjøring — ved å møte det som slavebinder deg, vil du oppdage nøkkelen til en frihet du aldri har kjent."
+    },
+    "arcana-16": {
+      "keywords": "omveltning, åpenbaring, plutselig forandring, oppvåkning",
+      "meaning": "Tårnet slår ned uten varsel og knuser det som ble bygget på ustabilt grunn. Dette er ikke ødeleggelse for sin egen skyld — det er sannhetens lyn, som feier bort illusjoner for å avsløre fast grunn under.",
+      "past": "En plutselig omveltning knuste en gang noe du trodde var permanent. Selv om ødeleggelsen var sjokkerende, avdekket den en sannhet som hadde vært skjult — og den sannheten satte deg fri.",
+      "present": "Bakken skifter under føttene dine. Det som smuldrer nå var aldri bygget for å vare. La det falle — åpenbaringen som følger sammenbruddet vil opplyse alt.",
+      "future": "En plutselig og dramatisk forandring nærmer seg. Det vil føles som forstyrrelse, men det er faktisk frigjøring. Strukturene som faller tjente deg aldri. Det som står igjen vil være ekte."
+    },
+    "arcana-17": {
+      "keywords": "håp, inspirasjon, fornyelse, ro",
+      "meaning": "Stjernen skinner etter stormen, et fyrtårn av håp og helbredelse. Hun øser levende vann over jorden, fornyer det som ble svidd og opplyser veien fremover med forsiktig, evig lys.",
+      "past": "Etter en periode med mørke gjenopprettet et øyeblikk av rent håp og fornyelse din ånd. Det stjernelyset du fant i din mørkeste time ble et veiledende fyrtårn du bærer med deg fremdeles.",
+      "present": "Håp er ikke naivt — det er den modigste handlingen av alle. Stjernen skinner over deg nå, og tilbyr helbredelse, inspirasjon og den stille vissheten om at det beste fremdeles venter.",
+      "future": "En periode med dyp helbredelse og fornyet håp nærmer seg. Etter alt du har gjennomgått, forbereder universet seg på å øse sine velsignelser over deg. Åpne hendene dine for å motta."
+    },
+    "arcana-18": {
+      "keywords": "illusjon, frykt, intuisjon, det underbevisste",
+      "meaning": "Månen kaster et lys som forvrenger like mye som det avslører. I dens sølvglimt tar frykt form og illusjoner virker ekte. Stol på intuisjonen din for å navigere det øynene dine ikke kan se klart.",
+      "past": "En periode med forvirring eller bedrag i fortiden tvang deg til å navigere med intuisjon alene. Skyggene du vandret gjennom lærte deg å stole på det du føler fremfor det du ser.",
+      "present": "Ikke alt er som det ser ut. Frykt og illusjoner kan skygge for din oppfatning — se under overflaten. Intuisjonen din kjenner sannheten selv når sinnet ditt er usikkert.",
+      "future": "En ferd gjennom usikkerhet ligger foran. Veien vil være svakt opplyst og skyggene vil spille deg puss. Stol på dine dypeste instinkter — de vil lede deg trygt gjennom illusjonen."
+    },
+    "arcana-19": {
+      "keywords": "glede, suksess, vitalitet, klarhet",
+      "meaning": "Solen brenner med triumferende strålekraft. Alle skygger oppløses i dens lys, og avslører verden i sin fulle, strålende klarhet. Dette er energien av ren glede, suksess og varmen av et liv fullt levd.",
+      "past": "En gyllen periode med glede og klarhet opplyste en gang livet ditt. Den tiden med varme og suksess plantet en strålekraft i din ånd som intet mørke fullt ut kan slukke.",
+      "present": "Lyset skinner direkte på deg. Dette er et øyeblikk av klarhet, glede og levende energi. Tre fullt inn i varmen — du har fortjent denne strålekraften. Feire den.",
+      "future": "Et utbrudd av strålende glede og suksess nærmer seg. Skyene letter, og Solens fulle lys vil snart opplyse din vei. Alt vil bli vidunderlig klart."
+    },
+    "arcana-20": {
+      "keywords": "gjenfødsel, kall, oppgjør, frikjennelse",
+      "meaning": "Dommens trompet lyder og kaller deg til å reise deg. Dette er øyeblikket for oppgjør og gjenfødsel — et høyere kall som ber deg om å legge bak deg fortiden og tre inn i fylden av den du er ment å være.",
+      "past": "Et øyeblikk av dyp oppvåkning eller oppgjør i fortiden kalte deg til å heve deg over den du var. Den transformerende kallen endret livets kurs for alltid.",
+      "present": "Du blir kalt til å stå til ansvar — ikke av andre, men av den høyeste versjonen av deg selv. Reis deg for å møte dette øyeblikket. Slipp gammel skyld, omfavn ditt sanne kall og bli gjenfødt.",
+      "future": "En kraftfull oppvåkning nærmer seg. Du vil høre kallet om å tre inn i en større versjon av deg selv — å legge bort gamle identiteter og reise deg, forvandlet, inn i livet du alltid var ment å leve."
+    },
+    "arcana-21": {
+      "keywords": "fullendelse, helhet, prestasjon, integrasjon",
+      "meaning": "Verden danser i perfekt, gledelig fullendelse. En stor syklus har nådd sin fullbyrdelse — alle brikkene har falt på plass, og du står på toppen av en storslått reise.",
+      "past": "En storslått syklus av erfaring nådde sin vakre avslutning i fortiden din. Den følelsen av fullendelse og helhet du oppnådde ble fundamentet for alt som fulgte.",
+      "present": "Du nærmer deg — eller står midt i — et øyeblikk av storslått fullendelse. Alt faller på plass. Hed reisen som brakte deg hit og nyt denne helheten.",
+      "future": "En syklus av ekstraordinær betydning nærmer seg fullendelse. Alt du har jobbet mot, kjempet med og drømt om konvergerer til et øyeblikk av triumferende helhet."
+    },
+    "chalices-1": {
+      "keywords": "ny kjærlighet, emosjonell oppvåkning, kreativitet, medfølelse",
+      "meaning": "Beger Ess flommer over av de rene vannene til en emosjonell begynnelse. En ny kilde til kjærlighet, kreativitet eller åndelig forbindelse åpner seg i deg.",
+      "past": "En emosjonell oppvåkning eller fødselen av en dyp forbindelse åpnet en gang hjertet ditt på en måte som forandret alt. Det første utbruddet av følelse strømmer fremdeles gjennom livet ditt.",
+      "present": "En ny emosjonell begynnelse tilbys deg. Åpne hjertet for å motta den — enten den ankommer som kjærlighet, kreativ inspirasjon eller en fordypning av åndelig forbindelse.",
+      "future": "En vakker ny emosjonell opplevelse nærmer seg. Begeret som tilbys deg flommer over av kjærlighet, medfølelse og kreativt potensial. Forbered hjertet ditt på å motta."
+    },
+    "chalices-2": {
+      "keywords": "partnerskap, gjensidig tiltrekning, forbindelse, enhet",
+      "meaning": "Beger To feirer det hellige møtet mellom to sjeler. Dette er alkemien av ekte forbindelse — der separate vann smelter sammen til noe større enn noen av dem alene.",
+      "past": "Et meningsfylt partnerskap eller dyp gjensidig forbindelse formet din emosjonelle verden. Det båndet — dets varme, dets lærdommer — fortsetter å påvirke hvordan du elsker og knytter bånd.",
+      "present": "En kraftfull forbindelse er aktiv i livet ditt. Hed gjensidigheten mellom deg og en annen — denne gjensidige strømmen av energi og følelse er sjelden og verdifull.",
+      "future": "Et betydningsfullt partnerskap eller dyp forbindelse former seg i din horisont. To krefter beveger seg mot hverandre, og deres forening vil skape noe dypt meningsfylt."
+    },
+    "chalices-3": {
+      "keywords": "feiring, vennskap, fellesskap, glede",
+      "meaning": "Beger Tre løfter sine beger i gledelig feiring. Fellesskap, vennskap og delt lykke skaper en varme som ingen ensom prestasjon kan matche.",
+      "past": "En tid med feiring og dypt vennskap fylte en gang livet ditt med delt glede. De båndene av fellesskap og samhørighet etterlot en uutslettelig varme i din ånd.",
+      "present": "Feiringen kaller på deg. Samle deg med dem som løfter deg opp, del dine gleder og la varmen fra fellesskapet nære din sjel. Du trenger ikke å gå alene.",
+      "future": "En feiring eller gledelig samling nærmer seg. Vennskapsbåndene og fellesskapet rundt deg styrkes, og forbereder seg på å skape et øyeblikk av delt lykke."
+    },
+    "chalices-4": {
+      "keywords": "kontemplasjon, apati, revurdering, misnøye",
+      "meaning": "Beger Fire sitter i stille misnøye, så fokusert på det som mangler at gavene som tilbys forblir usett. Se opp — universet rekker ut noe verdifullt som du overser.",
+      "past": "En periode med emosjonell tilbaketrekning eller misnøye fikk deg en gang til å overse muligheter og velsignelser rett foran deg. Den introspeksjonen, uansett hvor smertefull, lærte deg noe vitalt.",
+      "present": "Du kan være så fanget i kontemplasjon eller misnøye at du går glipp av det universet tilbyr. Løft blikket fra de kjente begrene — noe nytt venter på din oppmerksomhet.",
+      "future": "Et øyeblikk av revurdering nærmer seg. Du vil bli bedt om å bestemme om du vil forbli i komfortabel misnøye eller strekke deg etter den uventede gaven som viser seg foran deg."
+    },
+    "chalices-5": {
+      "keywords": "tap, sorg, anger, aksept",
+      "meaning": "Beger Fem sørger over det som er spilt, men to beger står fremdeles urørt bak. Sorg er hellig, men det er også øyeblikket når du snur deg og ser hva som gjenstår.",
+      "past": "Et betydelig tap eller en skuffelse opptok en gang all din oppmerksomhet, og gjorde det vanskelig å se hva du fremdeles hadde. Sorgen var ekte, men ga til slutt plass for en dypere takknemlighet.",
+      "present": "Smerten over det som er tapt er ekte — hed den. Men når du er klar, se bak deg. Ikke alt ble tatt. To fulle beger venter fremdeles på din oppmerksomhet.",
+      "future": "Et tap eller en skuffelse kan ligge foran, men det vil ikke være hele historien. Sorgen vil passere, og når den gjør det, vil du oppdage at noe verdifullt overlevde."
+    },
+    "chalices-6": {
+      "keywords": "nostalgi, uskyld, minner, gjenforening",
+      "meaning": "Beger Seks vender tilbake til minnenes hage. Fortids sødme, tidligere tiders uskyld og gjenforeningens varme gir trøst og minner deg om hvem du egentlig er.",
+      "past": "Søte minner og tidligere tiders uskyld har en spesiell plass i din reise. De øyeblikkene av enkel glede og ekte forbindelse formet de beste delene av hvem du er.",
+      "present": "Fortiden kaller på deg — ikke for å fange deg, men for å minne deg om noe verdifullt. En gjenforening, et minne eller en retur til enklere gleder kan være akkurat det sjelen din trenger.",
+      "future": "En forbindelse til fortiden din former seg foran. Enten gjennom gjenforening, nostalgi eller en retur til noe du en gang elsket, vil minnenes sødme berøre livet ditt igjen."
+    },
+    "chalices-7": {
+      "keywords": "illusjon, fantasi, valg, ønsketenkning",
+      "meaning": "Beger Sju presenterer et blendende utvalg av muligheter, men ikke alt som glitrer er ekte. Dømmekraft er avgjørende — skill den ekte muligheten fra den forførende illusjonen.",
+      "past": "En tid med fantasi eller spredte lengsler trakk deg en gang i mange retninger. Drømmene som glitret foran deg lærte deg den avgjørende forskjellen mellom visjon og illusjon.",
+      "present": "Mange muligheter og fantasier danser foran deg, hver mer fristende enn den forrige. Men vær på vakt — ikke alle er ekte. Jord deg, rydd tåken og velg med dømmekraft.",
+      "future": "Et blendende utvalg av muligheter vil snart presentere seg. Utfordringen vil være å se klart gjennom glamouren. Velg klokt — ett beger rommer sannhet, de andre rommer kun tåke."
+    },
+    "chalices-8": {
+      "keywords": "avreise, å slippe taket, å søke dypere mening, å gå videre",
+      "meaning": "Beger Åtte vender seg bort fra det som en gang tilfredsstilte for å søke noe dypere. Dette er ikke forlatelse, men utvikling — den modige erkjennelsen av at du har vokst fra det du har.",
+      "past": "Du gikk en gang bort fra noe som ikke lenger tjente din ånd. Den avreisen — selv om den var smertefull — var en handling av mot som åpnet veien til noe mer meningsfullt.",
+      "present": "Noe som en gang fylte deg, gjør det ikke lenger. Det er på tide å gå videre — ikke i sinne, men i stille erkjennelse av at sjelen din kaller deg mot dypere vann.",
+      "future": "En avreise nærmer seg. Du vil føle deg kalt til å legge bak deg det kjente i søket etter noe mer meningsfullt. Stol på at det du søker finnes bak horisonten."
+    },
+    "chalices-9": {
+      "keywords": "tilfredshet, tilfredsstillelse, oppfylte ønsker, takknemlighet",
+      "meaning": "Beger Ni sitter foran et bankett av oppfylte ønsker. Dette er kortet for dyp tilfredshet — øyeblikket når du innser at det du har er akkurat det du ønsket.",
+      "past": "En tid med oppfylte ønsker og dyp tilfredsstillelse velsignet en gang livet ditt. Den opplevelsen av å få dine lengsler oppfylt viste deg hva ekte tilfredshet føler seg som.",
+      "present": "Ta et øyeblikk til å verdsette hvor langt du har kommet. Ønskene dine blir oppfylt — kanskje ikke på den måten du forestilte deg, men på måter som gir ekte tilfredsstillelse. Nyt dette.",
+      "future": "En periode med dyp tilfredshet og oppfylte ønsker nærmer seg. Det du har håpet på er nærmere enn du tror. Universet forbereder ditt bankett."
+    },
+    "chalices-10": {
+      "keywords": "harmoni, familie, emosjonell oppfyllelse, lykksalighet",
+      "meaning": "Beger Ti buer seg over himmelen som en regnbue av emosjonell oppfyllelse. Dette er kortet for varig lykke — den dype, vedvarende gleden som kommer av kjærlighet, familie og ekte tilhørighet.",
+      "past": "En periode med dyp emosjonell oppfyllelse og familieharmoni velsignet en gang livet ditt. Den opplevelsen av tilhørighet og delt kjærlighet satte standarden for hva lykke virkelig betyr.",
+      "present": "Se på rikdommen av kjærlighet og forbindelse som omgir deg. Harmonien du har bygget bærer frukt — dette er lykken du har jobbet mot.",
+      "future": "En tilstand av dyp emosjonell oppfyllelse og harmoni former seg foran. Kjærligheten, familien og gleden du ser for deg er ikke bare drømmer — de er din kommende virkelighet."
+    },
+    "chalices-page": {
+      "keywords": "kreativ mulighet, nysgjerrighet, emosjonelt budskap, fantasi",
+      "meaning": "Beger Knekt stirrer med undring på begeret i hånden, der noe magisk rører seg. Dette er budbringeren av kreativ inspirasjon og emosjonelle åpninger — nærm deg med barnlig nysgjerrighet.",
+      "past": "Et øyeblikk av kreativ eller emosjonell oppdagelse rørte en gang fantasien din. Det første møtet med noe magisk — en følelse, en idé, en inspirasjon — vekket en del av deg som fremdeles skaper.",
+      "present": "Et budskap av emosjonell eller kreativ betydning ankommer. Hold deg åpen og nysgjerrig — universet sender en invitasjon som taler til hjertet og fantasien din.",
+      "future": "En herlig kreativ eller emosjonell mulighet er på vei. Hold hjertet ditt åpent og fantasien levende — det som ankommer kan være lite i begynnelsen, men rommer enormt potensial."
+    },
+    "chalices-knight": {
+      "keywords": "romantikk, sjarm, idealisme, å følge hjertet",
+      "meaning": "Beger Ridder rider fremover på et hjertets oppdrag. Ledet av følelser og idealisme forfølger denne grasiøse skikkelsen det som betyr mest med sjarm, hengivenhet og urokkelig romantisk ånd.",
+      "past": "En romantisk jakt eller et idealistisk oppdrag feide en gang gjennom livet ditt med lidenskap og ynde. Den hjertets reise — uansett hvor den førte — lærte deg kraften i å følge dine følelser.",
+      "present": "Følg hjertet ditt med mot og ynde. En romantisk eller kreativ jakt kaller deg fremover — nærm deg den med hengivenhet og idealisme til en som tror på det umulige.",
+      "future": "En romantisk skikkelse eller emosjonelt oppdrag nærmer seg. Noen — eller noe — vil ankomme med gaver av sjarm, hengivenhet og den typen skjønnhet som bare hjertet kan se."
+    },
+    "chalices-queen": {
+      "keywords": "emosjonell dybde, medfølelse, intuisjon, omsorg",
+      "meaning": "Beger Dronning sitter ved kysten der bevisste og ubevisste vann møtes. Hennes emosjonelle dybde og intuitive visdom er grenseløse — hun nærer alle som kommer til henne med medfølelse og forståelse.",
+      "past": "Et dypt medfølende og intuitivt nærvær nærte og veiledet deg en gang. Den energien av emosjonell visdom — enten fra en annen eller fra deg selv — formet din evne til å føle og hele.",
+      "present": "Din emosjonelle intelligens og medfølelse er dine største styrker akkurat nå. Stol på intuisjonen din, nær dem rundt deg, og la de dype vannene av din empati veilede dine valg.",
+      "future": "Du vokser inn i dyp emosjonell mestring. Dybden av medfølelse og intuitiv visdom som utvikler seg i deg vil snart bli en helbredende kraft i ditt liv og andres liv."
+    },
+    "chalices-king": {
+      "keywords": "emosjonell balanse, diplomati, rolig autoritet, visdom",
+      "meaning": "Beger Konge hersker over sitt emosjonelle rike med rolig mestring. Han navigerer de dypeste vann uten å drukne — en mester av følelse som styrer med visdom, balanse og stabil medfølelse.",
+      "past": "En skikkelse av emosjonell modenhet og balansert visdom påvirket en gang livet ditt dypt. Det eksempelet på å mestre følelser uten å undertrykke dem ga deg en modell for sann emosjonell styrke.",
+      "present": "Naviger de emosjonelle strømmene rundt deg med rolig autoritet. Du har visdommen til å romme dype følelser uten å bli revet med. Led med både hjerte og fatning.",
+      "future": "Emosjonell mestring og balansert visdom krystalliserer seg i deg. Snart vil du navigere selv de mest turbulente vann med den rolige, stødige hånden til en som har lært å herske over sin indre verden."
+    },
+    "swords-1": {
+      "keywords": "klarhet, gjennombrudd, sannhet, ny idé",
+      "meaning": "Sverd Ess skjærer gjennom forvirring med et enkelt slag av strålende klarhet. Et gjennombrudd i forståelse, et glimt av sannhet eller en kraftfull ny idé gjennomborer tåken.",
+      "past": "Et øyeblikk av gjennomtrengende klarhet eller intellektuelt gjennombrudd skar en gang gjennom forvirringen i livet ditt. Det glimtet av sannhet avdekket noe som aldri igjen kunne bli usett.",
+      "present": "Et klarhetens sverd tilbys deg. Skjær gjennom støyen, forvirringen, halvveis sannheter. Svaret er skarpt og klart — du trenger bare motet til å se det.",
+      "future": "Et kraftfullt gjennombrudd i forståelse nærmer seg. En sannhet så klar og skarp at den vil skjære gjennom enhver tvil og avsløre veien fremover med strålende presisjon."
+    },
+    "swords-2": {
+      "keywords": "ubesluttsomhet, stillstand, unnvikelse, vanskelig valg",
+      "meaning": "Sverd To holder to blad i perfekt, fryst balanse — et sinn delt, som nekter å velge. Bind for øynene er selvpålagt. Fjern det, og beslutningen blir klar.",
+      "past": "En periode med lammelse eller unnvikelse holdt deg en gang fanget mellom to vanskelige valg. Den stillstanden — og hvordan du til slutt løste den — lærte deg om prisen for ubesluttsomhet.",
+      "present": "Du er fanget mellom to valg, hvert med sin pris. Unnvikelsens blindfold gir midlertidig komfort, men ingen løsning. Det er på tide å åpne øynene og bestemme seg.",
+      "future": "En vanskelig beslutning nærmer seg. Du kan føle deg dratt i to retninger, men stillstanden kan ikke vare evig. Stol på at å velge ufullkomment er bedre enn å ikke velge i det hele tatt."
+    },
+    "swords-3": {
+      "keywords": "hjertesorg, sorg, smertefull sannhet, savn",
+      "meaning": "Sverd Tre gjennomborer hjertet med en uunngåelig sannhet. Smerten er ekte og må føles — men dette såret, når det er erkjent, begynner å hele fra det øyeblikket det blir sett.",
+      "past": "En gjennomborende hjertesorg eller smertefull sannhet knuste en gang noe du holdt kjært. Det såret, skjønt dypt, ble til slutt en kilde til hardt vunnet visdom og emosjonell dybde.",
+      "present": "En smertefull sannhet gjør seg kjent. Hjertesorgen er ekte — ikke fornekt den. Men vit at denne smerten er den nødvendige prisen for å se klart. Helbredelse begynner med ærlighet.",
+      "future": "En vanskelig emosjonell sannhet kan ligge foran. Den vil stikke, men den bærer gaven av klarhet. Hjertet som brister åpent brister også fritt. Du er sterkere enn dette såret."
+    },
+    "swords-4": {
+      "keywords": "hvile, restitusjon, kontemplasjon, tilbaketrekning",
+      "meaning": "Sverd Fire befaler hvile. Etter kampen må krigeren legge ned sitt sverd og restituere seg. Dette er ikke nederlag — det er den strategiske visdommen i å vite når stillhet tjener deg mer enn handling.",
+      "past": "En periode med nødvendig hvile og restitusjon lot deg en gang hele og samle kreftene igjen. Den pausen — selv om den kan ha følt seg som stagnasjon — var essensiell for din overlevelse.",
+      "present": "Du blir kalt til å hvile. Sinnet ditt har vært i krig, og sverdet må legges bort. Dette er ikke latskap — det er den mest strategiske tingen du kan gjøre akkurat nå. Restituere deg.",
+      "future": "En periode med hvile og restitusjon nærmer seg. Kampene foran vil kreve et skarpt og uthvilt sinn. Bruk den kommende stillheten klokt — det er forberedelse, ikke tilbaketog."
+    },
+    "swords-5": {
+      "keywords": "konflikt, nederlag, tom seier, spenning",
+      "meaning": "Sverd Fem står midt i etterdønningene av konflikt. Sverd er vunnet, men til hvilken pris? Ikke alle kamper er verdt å kjempe, og ikke alle seire etterlater deg i bedre stand.",
+      "past": "En konflikt eller konkurransepreget kamp etterlot en gang en bitter smak, uavhengig av utfallet. Lærdommen var klar — å vinne på andres bekostning bringer sjelden den tilfredsstillelsen du forventet.",
+      "present": "Spenning og konflikt omgir deg. Før du engasjerer deg videre, spør deg selv: er denne kampen verdt prisen? Noen ganger er det klokeste trekket å legge ned sverdet og gå derfra hel.",
+      "future": "En konflikt kan oppstå, men velg dine kamper med omhu. Seieren som er tilgjengelig kan vise seg å være tom, og kostnaden ved å kjempe kan overstige det du står til å vinne. Vit når du skal gå."
+    },
+    "swords-6": {
+      "keywords": "overgang, å gå videre, roligere vann, helbredelsesreise",
+      "meaning": "Sverd Seks bærer deg over urolige vann mot en roligere kyst. Reisen er stille og bittersøt — å forlate vanskeligheter bak seg mens du bærer med deg visdommen de ga.",
+      "past": "En nødvendig overgang førte deg en gang bort fra turbulente omstendigheter mot noe roligere. Den bittersøte avreisen — å forlate smerte bak seg — var en handling av selvbevaring og visdom.",
+      "present": "Du er på reise mellom den du var og den du holder på å bli. Vannet kan fremdeles være urolig, men kysten foran er roligere. Fortsett fremover — du er på vei i riktig retning.",
+      "future": "En overgang til roligere vann nærmer seg. Du vil legge bak deg et vanskelig kapittel og bevege deg mot fred. Reisen vil være stille, men destinasjonen vil bringe lindring."
+    },
+    "swords-7": {
+      "keywords": "strategi, bedrag, list, hemmelighet",
+      "meaning": "Sverd Sju beveger seg i skygger, avhengig av strategi og list. Ikke alle kamper vinnes gjennom direkte konfrontasjon — noen ganger ligger visdom i å vite hva man skal ta, hva man skal legge igjen, og når man skal bevege seg usett.",
+      "past": "En situasjon i fortiden krevde list fremfor direkte konfrontasjon. Enten du var strategen eller den som ble utmanøvrert, skjerpet opplevelsen din bevissthet om skjulte motiver.",
+      "present": "Vær strategisk i hvordan du går frem. Ikke alle rundt deg viser hele hånden sin. Stol på instinktene dine, beskytt planene dine og beveg deg med bevisst intensjon.",
+      "future": "En situasjon som krever strategisk tenkning nærmer seg. Du kan trenge å være smart fremfor kraftfull. Hold deg oppmerksom på det som skjer bak kulissene og planlegg trekkene dine nøye."
+    },
+    "swords-8": {
+      "keywords": "begrensning, selvpålagt hindring, fangenskap, offermentalitet",
+      "meaning": "Sverd Åtte står bundet og med bind for øynene, omringet av blad — men bindene er løse og buret har ingen dør. Fengselet er mentalt. Frihet begynner i det øyeblikk du tror det er mulig.",
+      "past": "En periode med å føle seg fanget eller begrenset dominerte en gang din opplevelse. Når du ser tilbake, kan du se at mange av de begrensningene var mer mentale enn reelle — et bur av din egen konstruksjon.",
+      "present": "Du føler deg fanget, men sprinklene i buret ditt er laget av tanke og frykt, ikke jern. Sverdene rundt deg er ikke så nærme som de virker. Ta et åndedrett, fjern bindelet og gå fritt.",
+      "future": "En følelse av begrensning kan oppstå, men gjenkjenn den for hva den er — en mental konstruksjon, ikke en fysisk virkelighet. I det øyeblikk du nekter å tro på buret, oppløses det."
+    },
+    "swords-9": {
+      "keywords": "angst, mareritt, bekymring, fortvilelse",
+      "meaning": "Sverd Ni sitter opp i mørket, plaget av engstelige tanker. Sverdene over er vekten av bekymring og frykt — men gryet vil komme, og det som hjemsøker natten overlever sjelden dagens lys.",
+      "past": "En periode med intens angst eller søvnløse bekymringer plaget deg en gang. De mørke sjelsnettene — selv om de var kvalfulle — ga til slutt plass for dagslys og erkjennelsen av at du overlevde.",
+      "present": "Sinnet ditt kjører et mareritt på gjentakelse. Angsten føles overveldende, men husk — dette er tanker, ikke sannheter. Frykten som virker monstrøs klokken tre på natten krymper i morgenlyset.",
+      "future": "Engstelige tanker kan intensiveres før de slipper taket. En periode med bekymring er mulig, men det er mørket før gryet. Det sinnet ditt frykter er sjelden det som faktisk skjer."
+    },
+    "swords-10": {
+      "keywords": "bunnen, slutt, forræderi, gry",
+      "meaning": "Sverd Ti markerer den absolutte slutten — det siste sverdet har falt, og det er ingenting igjen å ta. Men se på horisonten: gryet bryter frem. Du har overlevd det verste, og nå er det bare opp å gå.",
+      "past": "En ødeleggende slutt eller et forræderi brakte deg en gang i kne. Men det absolutte bunnpunktet ble fundamentet du bygde på nytt fra — for når du treffer bunnen, er den eneste retningen opp.",
+      "present": "Dette er slutten på en smertefull syklus. Det kan føles som om alt er tatt, men legg merke til lyset på horisonten. Det verste er over. Herfra kan ting bare bli bedre.",
+      "future": "En definitiv slutt nærmer seg, og den kan føles hard. Men dette er det siste kapittelet i en gammel historie — det siste sverdet. Når det faller, bryter gryet frem og en helt ny begynnelse er din."
+    },
+    "swords-page": {
+      "keywords": "nysgjerrighet, nye ideer, kommunikasjon, aktsomhet",
+      "meaning": "Sverd Knekt holder bladet høyt med rastløs, skarpøyd nysgjerrighet. Kvikk i tanken og ivrig etter sannhet, bringer denne budbringeren nye ideer og den skarpe energien av intellektuell oppvåkning.",
+      "past": "Et utbrudd av intellektuell nysgjerrighet eller en skarp ny idé elektrifiserte en gang din tenkning. Den rastløse hungeren etter sannhet og kunnskap satte deg på en vei av mental skarphet du fremdeles går.",
+      "present": "Hold deg oppmerksom og nysgjerrig. Ny informasjon ankommer, og ditt kvikke sinn trengs for å vurdere den. Kommuniser klart, tenk kritisk og hold dømmekraftens sverd skarpt.",
+      "future": "En stimulerende ny idé eller et viktig budskap er på vei. Hold deg mentalt smidig og klar til å motta — informasjonen som ankommer vil åpne nytt intellektuelt terreng."
+    },
+    "swords-knight": {
+      "keywords": "ambisjon, handling, driv, å storme fremover",
+      "meaning": "Sverd Ridder stormer inn i stormen med målfokusert besluttsomhet. Rask, direkte og ustoppelig — dette er energien av bestemt handling drevet av intellektuell overbevisning.",
+      "past": "En tid der du stormet hodestups inn i handling demonstrerte en gang din voldsomme besluttsomhet. Det utbruddet av mental energi og besluttsom kraft — på godt og vondt — beviste kraften i engasjert handling.",
+      "present": "Nå er tiden for rask, bestemt handling. Du har analysert nok — storm fremover med overbevisningen av dine ideer. Hurtighet og direktehet er dine allierte akkurat nå.",
+      "future": "En periode med rask, kraftfull handling nærmer seg. Begivenheter vil akselerere, og du vil trenge å tenke og bevege deg raskt. Forandringens vinder favoriserer de dristige og bestemte."
+    },
+    "swords-queen": {
+      "keywords": "uavhengighet, klar tenkning, direkte kommunikasjon, persepsjon",
+      "meaning": "Sverd Dronning ser gjennom ethvert slør med sylskarp presisjon. Hennes uavhengige sinn, klare kommunikasjon og avvisning av komfortable løgner gjør henne til en formidabel sannhetssøker.",
+      "past": "En periode med voldsom uavhengighet og klarsyn formet din intellektuelle karakter. Evnen til å skjære gjennom bedrag og snakke sannhet direkte ble en av dine definerende styrker.",
+      "present": "Se ting som de er, ikke som du ønsker de var. Kommuniser med presisjon og ærlighet. Din klarhet i sinnet er ditt skarpeste verktøy — bruk det uten unnskyldning.",
+      "future": "Du skjerpes til et blad av intellektuell klarhet og uavhengig tenkning. Evnen til å se sannhet, si den klart og stå alene i dine overbevisninger vil tjene deg kraftfullt."
+    },
+    "swords-king": {
+      "keywords": "intellektuell autoritet, sannhet, klart skjønn, etisk lederskap",
+      "meaning": "Sverd Konge hersker med autoriteten til et skarpt og disiplinert sinn. Hans dommer er rettferdige, hans tenkning er klar, og hans forpliktelse til sannhet er absolutt.",
+      "past": "En skikkelse av intellektuell autoritet eller en periode med disiplinert, klar tenkning ga en gang struktur til din mentale verden. Den innflytelsen lærte deg kraften i prinsippfast dømmekraft.",
+      "present": "Led med sinnet ditt. Situasjonen krever klar, rasjonell tenkning og rettferdige dommer. Sett følelser til side og la logikk, etikk og sannhet veilede dine beslutninger.",
+      "future": "En posisjon som krever intellektuelt lederskap og rettferdige dommer former seg foran. Din evne til klar, etisk tenkning vil bli etterspurt — og den vil vise seg mer enn god nok for oppgaven."
+    },
+    "pentacles-1": {
+      "keywords": "ny mulighet, velstand, manifestasjon, overflod",
+      "meaning": "Pentakler Ess presenterer en gyllen mynt fra himmelen — en håndgripelig ny mulighet for velstand, helse eller materiell suksess. Overflodens frø plasseres i dine hender.",
+      "past": "En gyllen mulighet dukket en gang opp i livet ditt og tilbød frøet til materiell eller fysisk suksess. Hvordan du nærte det frøet bestemte velstanden som fulgte.",
+      "present": "En håndgripelig ny mulighet tilbys deg. Dette er ekte — ikke fantasi — og det krever praktisk handling for å realisere sitt fulle potensial. Grip det med begge hender.",
+      "future": "En betydelig mulighet for velstand eller materiell vekst nærmer seg. Hold øynene åpne og hendene klare — overflodens frø er i ferd med å bli tilbudt."
+    },
+    "pentacles-2": {
+      "keywords": "balanse, tilpasningsdyktighet, sjonglering, fleksibilitet",
+      "meaning": "Pentakler To sjonglerer konkurrerende krav med leken fingerferdighet. Livet ber deg håndtere flere prioriteringer — og hemmeligheten er ikke rigid kontroll, men fleksibel, tilpasningsdyktig flyt.",
+      "past": "En periode med å sjonglere mange krav testet en gang din tilpasningsevne og oppfinnsomhet. Den balansegangens dans — uansett hvor kaotisk — lærte deg å holde deg flytende i urolige vann.",
+      "present": "Du balanserer flere prioriteringer, og dansen krever din fulle oppmerksomhet. Hold deg fleksibel, hold deg leken og stol på din evne til å holde alt i bevegelse. Du er smidigere enn du tror.",
+      "future": "En periode med å sjonglere konkurrerende krav nærmer seg. Nøkkelen vil være tilpasningsdyktighet, ikke perfeksjon. Stol på din evne til å finne rytme i kaoset og holde dansen i gang."
+    },
+    "pentacles-3": {
+      "keywords": "teamarbeid, håndverk, samarbeid, ferdighet",
+      "meaning": "Pentakler Tre feirer magien i dyktig samarbeid. Mestring møter teamarbeid — når individuell ekspertise kombineres med delt visjon, bygges ekstraordinære strukturer.",
+      "past": "Et samarbeidsprosjekt eller en visning av håndverk produserte en gang noe av varig kvalitet. Den opplevelsen av dyktig teamarbeid viste deg hva som blir mulig når talenter forenes.",
+      "present": "Dine ferdigheter trengs som del av noe større. Samarbeid, bidra med din ekspertise og stol på prosessen. Arbeidet som gjøres sammen er større enn noe du kunne bygget alene.",
+      "future": "En mulighet for meningsfullt samarbeid nærmer seg. Dine ferdigheter vil bli anerkjent og etterspurt. Prosjektet foran krever teamarbeid, og ditt bidrag vil være essensielt."
+    },
+    "pentacles-4": {
+      "keywords": "sikkerhet, kontroll, eierskapsfølelse, bevaring",
+      "meaning": "Pentakler Fire griper hardt om det som er ervervet. Sikkerhet er verdifullt, men når grepet blir for stramt, forvandles det fra beskyttelse til fengsel. Vit når du skal holde og når du skal slippe.",
+      "past": "En periode med å holde hardt på ressurser, sikkerhet eller kontroll formet ditt forhold til stabilitet. Enten grepet var klokt eller overdrevent, lærte det deg om sann sikkerhets natur.",
+      "present": "Du holder hardt fast — på penger, på kontroll, på stabilitet. Spør deg selv: er dette beskyttelse eller er dette frykt? Sann sikkerhet kommer ikke av å klamre seg, men av å stole på din evne til å generere mer.",
+      "future": "Et spørsmål om sikkerhet og kontroll nærmer seg. Du vil stå overfor et valg mellom å holde hardt og å åpne hendene. Husk at det som strømmer fritt alltid kommer tilbake mangfoldig."
+    },
+    "pentacles-5": {
+      "keywords": "motgang, økonomisk tap, isolasjon, bekymring",
+      "meaning": "Pentakler Fem trasker gjennom kulden, utestengt fra varme og overflod. Motgangen er ekte, men legg merke til det lysende vinduet — hjelp og tilflukt er nærmere enn du tror.",
+      "past": "En tid med materiell motgang eller å føle seg utestengt i kulden testet en gang din motstandskraft. Den kampen — selv om den var smertefull — førte til slutt til at du fant ressurser og styrke du ikke visste du hadde.",
+      "present": "Du opplever kanskje økonomisk press eller en følelse av å være utestengt i kulden. Men se deg rundt — støtte finnes hvis du er villig til å se den og be om den. Du er ikke så alene som du føler.",
+      "future": "En periode med materiell utfordring kan ligge foran, men den er midlertidig. Hjelp vil være tilgjengelig selv i det mørkeste øyeblikk. La ikke stolthet hindre deg fra å gå gjennom døren merket 'tilflukt'."
+    },
+    "pentacles-6": {
+      "keywords": "generøsitet, å gi og motta, veldedighet, ressursbalanse",
+      "meaning": "Pentakler Seks veier generøsitet på sine vektskåler. Strømmen av å gi og motta må være i balanse — sann overflod hamstres ikke, men deles, og de som gir klokt mottar rikelig.",
+      "past": "En handling av generøsitet — gitt eller mottatt — skapte en gang en ringvirkning av overflod i livet ditt. Den opplevelsen av balansert utveksling lærte deg kraften i gi-og-motta-syklusen.",
+      "present": "Vurder balansen mellom å gi og motta i livet ditt. Har du mye, del generøst. Trenger du hjelp, ta imot med takknemlighet. Vektskålen fungerer best når begge sider strømmer.",
+      "future": "En mulighet for meningsfull generøsitet eller mottak av nødvendig hjelp nærmer seg. Strømmen av ressurser skifter i din favør — delta i syklusen med et åpent hjerte."
+    },
+    "pentacles-7": {
+      "keywords": "tålmodighet, vurdering, langsiktig investering, utholdenhet",
+      "meaning": "Pentakler Sju stanser for å vurdere den voksende avlingen. Arbeidet er gjort, frøene er sådd, men høsten er ikke her ennå. Tålmodighet — frukten vil komme når tiden er riktig.",
+      "past": "En periode med tålmodig investering og nøye dyrking testet en gang din evne til å vente på resultater. Den disiplinen av å stelle og stole på prosessen beviste til slutt sin verdi.",
+      "present": "Du har sådd frøene og gjort arbeidet. Nå er tiden for å ta en pause, vurdere din fremgang og stole på veksten. Ikke grav opp røttene for å sjekke — tålmodighet er din klokeste investering.",
+      "future": "Fruktene av ditt arbeid nærmer seg, men de trenger mer tid. Fortsett å stelle det du har plantet med tålmodighet og omsorg. Høsten vil komme, og den vil belønne din utholdenhet."
+    },
+    "pentacles-8": {
+      "keywords": "mestring, ferdighetsutvikling, flid, dedikasjon",
+      "meaning": "Pentakler Åtte hamrer bort med fokusert dedikasjon, og perfeksjonerer hver mynt med større ferdighet. Dette er kortet for den dedikerte håndverkeren — mestring kommer gjennom tålmodig, repetitiv, hengiven praksis.",
+      "past": "En periode med dedikert ferdighetsbygging og fokusert øvelse formet dine evner. Den forpliktelsen til å mestre ditt håndverk — slag for slag, dag for dag — bygde noe av varig verdi.",
+      "present": "Senk hodet og forplikt deg til arbeidet. Mestring fødes ikke av talent alene, men av dedikert, fokusert praksis. Hver repetisjon bringer deg nærmere fortreffelighet. Fortsett å hamre.",
+      "future": "En periode med intensiv ferdighetsutvikling nærmer seg. Muligheten til å fordype din ekspertise og mestre ditt håndverk vil presentere seg. Forplikt deg fullt — resultatene vil tale for seg selv."
+    },
+    "pentacles-9": {
+      "keywords": "luksus, selvstendighet, uavhengighet, raffinement",
+      "meaning": "Pentakler Ni vandrer gjennom sin private hage av overflod — skapt helt og holdent av egne hender. Dette er kortet for fortjent luksus, selvstendighet og den raffinerte nytelsen av det du har bygget.",
+      "past": "En periode med å nyte fruktene av eget arbeid viste deg en gang hva sann uavhengighet føler seg som. Den selvstendigheten — fortjent gjennom innsats — ga deg en levestandard som er helt din egen.",
+      "present": "Verdsett det du har bygget gjennom din egen innsats. Du har fortjent denne komforten, denne overfloden, denne uavhengigheten. Nyt den uten skyldfølelse — den er produktet av din dedikasjon.",
+      "future": "En tilstand av fortjent overflod og selvstendighet former seg foran. Det harde arbeidet du investerer nå vil blomstre til et liv av raffinert uavhengighet og materiell komfort."
+    },
+    "pentacles-10": {
+      "keywords": "arv, rikdom, familie, langsiktig suksess",
+      "meaning": "Pentakler Ti representerer den ultimate materielle oppfyllelsen — varig rikdom, familiearv og den dype tilfredsstillelsen av å bygge noe som varer utover et enkelt liv.",
+      "past": "En arv av familie, rikdom eller varig prestasjon formet fundamentet du står på. Arbeidet til de som kom før deg — eller ditt eget langsiktige byggverk — skapte noe varig.",
+      "present": "Du er omgitt av fruktene av langsiktig investering — i familie, i rikdom, i arv. Verdsett stabiliteten og overfloden som er bygget over tid. Dette er din arv å hedre.",
+      "future": "En arv formes av valgene du gjør nå. Rikdommen, stabiliteten og familiebåndene du bygger i dag vil vare langt utover det nåværende øyeblikk. Tenk i generasjoner."
+    },
+    "pentacles-page": {
+      "keywords": "ambisjon, studier, nytt foretak, praktisk sans",
+      "meaning": "Pentakler Knekt stirrer på den gylne mynten med studerende fascinasjon. Dette er begynnelsen på en praktisk reise — et nytt foretak, et studium eller en ambisiøs plan som tar sin første håndgripelige form.",
+      "past": "Et øyeblikk av praktisk inspirasjon eller begynnelsen på et nytt foretak fanget en gang oppmerksomheten din. Den første fascinasjonen for å bygge noe ekte satte deg på en produktiv vei.",
+      "present": "En praktisk ny mulighet fanger øyet ditt. Studer den nøye, planlegg grundig og ta de første små stegene. Store imperier begynner med en enkelt, velplassert stein.",
+      "future": "En ny mulighet for praktisk vekst eller studier nærmer seg. Hold deg jordnær og oppmerksom — foretaket som presenterer seg kan starte smått, men bærer enormt potensial."
+    },
+    "pentacles-knight": {
+      "keywords": "pålitelighet, hardt arbeid, rutine, stabil fremgang",
+      "meaning": "Pentakler Ridder avanserer med metodisk, urokkelig besluttsomhet. Langsom, men absolutt ustoppelig — dette er energien av stabil fremgang, pålitelig innsats og kraften i å møte opp hver eneste dag.",
+      "past": "En periode med stabil, pålitelig innsats brakte deg en gang fremover gjennom ren utholdenhet. Den langsomme, metodiske tilnærmingen — selv om den var uglamorøs — bygde noe solid som raskere metoder ikke kunne.",
+      "present": "Nå er ikke tiden for snarveier eller blaff. Møt opp, gjør arbeidet og stol på prosessen med stabil fremgang. Pentakler Ridder vinner ikke med fart, men ved aldri å stoppe.",
+      "future": "En fase med stabil, metodisk fremgang ligger foran. Tempoet kan føles langsomt, men hvert steg er solid. Stol på at denne pålitelige, utholdende energien vil bære deg til målet."
+    },
+    "pentacles-queen": {
+      "keywords": "overflod, omsorg, praktisk visdom, komfort",
+      "meaning": "Pentakler Dronning skaper en verden av varme, overflod og praktisk skjønnhet. Hun nærer med begge hender fast på bakken — der andre drømmer, bygger hun. Der andre bekymrer seg, sørger hun for.",
+      "past": "Et nærende nærvær eller en periode med jordnær, praktisk visdom skapte en gang et fundament av komfort og overflod i livet ditt. Den energien av varm, praktisk omsorg formet din følelse av sikkerhet.",
+      "present": "Jord deg i praktisk visdom. Skap komfort, nær overflod og ta vare på den fysiske verden med omhu. Din evne til å kombinere varme med praktisk sans er din superkraft akkurat nå.",
+      "future": "En periode med jordnær overflod og nærende velstand former seg foran. Din praktiske visdom og varme generøsitet vil skape et tilfluktssted av komfort for deg selv og dem du elsker."
+    },
+    "pentacles-king": {
+      "keywords": "rikdom, forretningsmestring, sikkerhet, disiplin",
+      "meaning": "Pentakler Konge sitter på en trone av fortjent overflod. Mester av den materielle verden, hans rikdom er ingen tilfeldighet — den er produktet av disiplin, skarpt skjønn og urokkelig besluttsomhet.",
+      "past": "En skikkelse av materiell mestring eller en periode med disiplinert rikdomsbygging formet ditt forhold til velstand. Den innflytelsen demonstrerte hva som blir mulig gjennom klokt, tålmodig styring.",
+      "present": "Styr din materielle verden med autoriteten og disiplinen til en erfaren hersker. Ditt praktiske skjønn er pålitelig — stol på det. Bygg, invester og skap med mestringens selvtillit.",
+      "future": "Materiell mestring og velstående stabilitet krystalliserer seg foran. Disiplinen og det skarpe skjønnet du anvender nå vil forrente seg til en posisjon av ekte, varig rikdom."
+    },
+    "wands-1": {
+      "keywords": "inspirasjon, ny lidenskap, kreativ gnist, potensial",
+      "meaning": "Staver Ess bryter ut med rå kreativ ild. En ny lidenskap, inspirasjon eller kreativ gnist tenner — grip tak i denne levende flammen og kanaliser den til noe ekstraordinært.",
+      "past": "Et glimt av kreativ inspirasjon eller en ny lidenskap satte en gang sjelen din i brann. Den første gnisten — vill, spennende, full av potensial — lanserte en reise med kreativt uttrykk som fremdeles brenner inni.",
+      "present": "Kreativ ild strømmer gjennom deg akkurat nå. En ny lidenskap eller inspirasjon krever uttrykk. Ikke overtenk det — grip denne energien og la den strømme ut i handling.",
+      "future": "En kraftfull kreativ gnist eller ny lidenskap er i ferd med å tenne. Flammen som nærmer seg bærer enormt potensial. Vær klar til å fatte ild og la den bære deg et sted ekstraordinært."
+    },
+    "wands-2": {
+      "keywords": "planlegging, visjon, fremtidige muligheter, oppdagelse",
+      "meaning": "Staver To står på kanten av den kjente verden og stirrer på den enorme horisonten av muligheter. Den første staven er plantet fast — den andre peker mot ukjent territorium. Det er på tide å planlegge din ekspansjon.",
+      "past": "Et øyeblikk av visjonær planlegging satte deg en gang på en ekspansiv vei. Stående ved veiskillet med verden foran deg, våget du å forestille deg noe større — og den visjonen formet det som fulgte.",
+      "present": "Du står mellom den verden du kjenner og den verden som kan være. Visjonen tar form — nå planlegg neste trekk nøye. Tenk stort, planlegg praktisk og forbered deg på å ekspandere utover kjente grenser.",
+      "future": "En ekspansiv visjon er i ferd med å krystallisere seg. Horisonten vil åpne seg foran deg og avsløre muligheter du ikke hadde vurdert. Forbered deg på å bevege deg utover grensene til din nåværende verden."
+    },
+    "wands-3": {
+      "keywords": "ekspansjon, fremsynthet, utenlandske muligheter, fremgang",
+      "meaning": "Staver Tre ser skipene seile mot fjerne horisonter. Dine anstrengelser er i bevegelse, visjonen din ekspanderer, og avkastningen av din fremsynthet er på vei tilbake til deg.",
+      "past": "En periode med ekspansjon og vidtrekkende visjon sendte en gang dine anstrengelser ut i den videre verden. De skipene du sendte ut bar ambisjonene dine lenger enn du forestilte deg.",
+      "present": "Planene dine er i bevegelse og horisonten åpner seg. Det du satte i gang utvikler seg — stol på din fremsynthet og fortsett å tenke ekspansivt. Skipene kommer hjem.",
+      "future": "Ekspansjon og fruktene av din fremsynthet nærmer seg. Det du har sett for deg og jobbet mot er i ferd med å returnere til deg, med resultater fra langt utenfor din umiddelbare rekkevidde."
+    },
+    "wands-4": {
+      "keywords": "feiring, hjemkomst, harmoni, milepæl",
+      "meaning": "Staver Fire reiser en baldakin av feiring. En milepæl er nådd, en hjemkomst er for hånden, og tiden er kommet for å feire det du har bygget med dem som betyr mest.",
+      "past": "En gledelig milepæl eller feiring markerte en gang et høydepunkt på din reise. Det øyeblikket av delt lykke og stolt prestasjon forblir et gyllent minne som varmer din ånd.",
+      "present": "En milepæl er her — feire den. Du har fortjent dette øyeblikket av glede, harmoni og delt prestasjon. Reis stavene, samle dine folk og hed det som er oppnådd.",
+      "future": "En feiring eller gledelig milepæl er i horisonten. Det harde arbeidet og dedikasjonen du investerer nå leder mot et øyeblikk av triumf som kaller på festivitas."
+    },
+    "wands-5": {
+      "keywords": "konkurranse, konflikt, spenning, meningsforskjeller",
+      "meaning": "Staver Fem kolliderer i en floke av konkurrerende energier. Flere krefter kjemper om dominans — men denne konflikten, selv om den er kaotisk, kan være den kreative friksjonen som smir noe sterkere.",
+      "past": "En periode med konkurranse eller sammenstøtende ideer utfordret deg en gang til å kjempe for din posisjon. Den friksjonen — selv om den var ukomfortabel — skjerpet dine evner og klargjorde din visjon.",
+      "present": "Du er midt i konkurrerende energier og motstridende meninger. I stedet for å søke å eliminere konflikten, kanaliser den. Kreativ spenning, riktig styrt, produserer gjennombrudd.",
+      "future": "En periode med konkurranse eller kreativ konflikt nærmer seg. Flere krefter vil kollidere, men fra denne friksjonen kan noe kraftfullt oppstå. Stå din grunn og la gnistene fly."
+    },
+    "wands-6": {
+      "keywords": "seier, anerkjennelse, suksess, offentlig hyldest",
+      "meaning": "Staver Seks rider i triumf, staven holdt høyt til mengdens jubel. Dette er øyeblikket av offentlig seier og velfortjent anerkjennelse — dine anstrengelser har blitt sett, og verden applauderer.",
+      "past": "Et øyeblikk av triumf og offentlig anerkjennelse kronet en gang dine anstrengelser med glans. Den seieren — feiret av andre — beviste at ditt arbeid og mot virkelig var eksepsjonelt.",
+      "present": "Seieren er din, og verden legger merke til det. Ta imot anerkjennelsen med ynde — du har fortjent den. Dette er ditt øyeblikk til å ri høyt og la din suksess inspirere andre.",
+      "future": "Offentlig anerkjennelse og triumf nærmer seg. Dine anstrengelser er i ferd med å bli kronet med suksess som andre kan se og feire. Seierrittet kommer — forbered deg på å bli sett."
+    },
+    "wands-7": {
+      "keywords": "forsvar, utholdenhet, å stå sin grunn, utfordring",
+      "meaning": "Staver Sju står på høyere grunn og forsvarer seg mot utfordrere nedenfra. Du har fortjent din posisjon — forsvar den nå med den voldsomme besluttsomheten til en som kjenner sin verdi.",
+      "past": "En tid da du måtte forsvare din posisjon mot utfordringer og motstand testet en gang din besluttsomhet. Å stå din grunn — selv om det var utmattende — beviste at posisjonen din var verdt å kjempe for.",
+      "present": "Utfordringer kommer fra alle kanter, men du holder den høye grunnen. Ikke trekk deg tilbake. Selve det faktum at andre presser mot deg beviser verdien av der du står. Hold stand.",
+      "future": "En utfordring mot din posisjon nærmer seg. Andre kan stille spørsmål ved eller motsi det du har bygget. Stå din grunn med selvtillit — du fortjente plassen din, og du har styrken til å forsvare den."
+    },
+    "wands-8": {
+      "keywords": "fart, momentum, rask handling, hurtig fremgang",
+      "meaning": "Staver Åtte flyr gjennom luften med flammende fart. Alt akselererer — beskjeder ankommer, hendelser utfolder seg, og momentum strømmer fremover med ustoppelig hastighet. Hold deg fast.",
+      "past": "En periode med raskt, berusende momentum feide en gang gjennom livet ditt som en løpeild. Hendelser utfoldet seg i lysfart, og akselerasjonen bar deg lenger enn du noen gang forventet.",
+      "present": "Ting går fort. Hendelser, beskjeder og muligheter flyr mot deg med ekstraordinær hastighet. Dette er ikke tiden for å nøle — match momentumet og ri på bølgen.",
+      "future": "Et utbrudd av rask akselerasjon nærmer seg. Forvent hurtige utviklinger, raske muligheter og et tempo som vil ta pusten fra deg. Vær klar til å handle når stavene flyr."
+    },
+    "wands-9": {
+      "keywords": "motstandskraft, utholdenhet, siste skanse, besluttsomhet",
+      "meaning": "Staver Ni står slått, men ubrutt, og klamrer seg til den siste staven. Du har vært gjennom ilden og bærer hvert arr — men du står fremdeles. Et press til, og seieren er din.",
+      "past": "Du utholdt en gang en grusom serie av utfordringer som testet deg til din absolutte grense. Slått og utmattet nektet du å falle. Den motstandskraften beviste at du er langt seigere enn du visste.",
+      "present": "Du er utmattet, arret og lurer på om du kan fortsette. Det kan du. Du har overlevd alt som kom før dette øyeblikket — et press til er alt som står mellom deg og mållinjen.",
+      "future": "En utholdenhetstest nærmer seg — den siste prøven før et gjennombrudd. Du vil føle deg utslitt, men du har motstandskraften til å holde ut. Ikke gi opp nå. Slutten er nærmere enn den ser ut."
+    },
+    "wands-10": {
+      "keywords": "byrde, ansvar, hardt arbeid, overbelastning",
+      "meaning": "Staver Ti vakler under vekten av alle ti staver. Byrden er enorm — ansvaret, forpliktelsene, den rene vekten av alt du har tatt på deg. Det er på tide å sette noen ned.",
+      "past": "En periode med overveldende ansvar knuste deg en gang under sin vekt. Å bære for mye for lenge lærte deg den harde lærdommen om å kjenne dine grenser og nødvendigheten av å delegere.",
+      "present": "Du bærer for mye. Byrden av ansvar, forpliktelser og selvpålagte forventninger bøyer ryggen din. Du må sette noen staver ned — ikke alt er ditt å bære.",
+      "future": "En periode med tungt ansvar nærmer seg. Byrden vil føles overveldende, men husk — du trenger ikke bære alle ti stavene alene. Deleger, prioriter og beskytt energien din."
+    },
+    "wands-page": {
+      "keywords": "utforskning, entusiasme, oppdagelse, fri sjel",
+      "meaning": "Staver Knekt stirrer på flammen på toppen av staven med vidøyde entusiasme. Dette er budbringeren av eventyr, kreativ utforskning og den uimotståelige trangen til å oppdage noe nytt.",
+      "past": "Et utbrudd av entusiastisk utforskning eller et dristig nytt foretak tente en gang din eventyrlyst. Det øyeblikket av storøyd oppdagelse vekket en kreativ nysgjerrighet som fremdeles driver deg.",
+      "present": "Et spennende nytt eventyr eller kreativ utforskning kaller. Nærm deg det med entusiasme og et åpent sinn — Staver Knekt minner deg om at de beste oppdagelsene kommer fra lekent mot.",
+      "future": "En invitasjon til å utforske, skape eller oppleve eventyr nærmer seg. Energien vil være ungdommelig, entusiastisk og full av potensial. Si ja til gnisten — den vil lede et sted ekstraordinært."
+    },
+    "wands-knight": {
+      "keywords": "lidenskap, eventyr, impulsivitet, dristig handling",
+      "meaning": "Staver Ridder stormer fremover på en flamme av lidenskap og fryktløs energi. Dristig, eventyrlysten og fullstendig uhemmet — dette er kraften av ren kreativ ild i bevegelse.",
+      "past": "En periode med dristig, lidenskapelig handling flommet en gang gjennom livet ditt med kraften av en løpeild. Den fryktløse stormen — impulsiv, men berusende — bar deg inn i territorier du aldri forventet å nå.",
+      "present": "La lidenskapen ta føringen. Staver Ridder krever handling drevet av ild — vær dristig, vær eventyrlysten og storm mot det som begeistrer deg uten å overtenke konsekvensene.",
+      "future": "En bølge av lidenskapelig, eventyrlysten energi nærmer seg. Noe vil tenne din ånd og kreve dristig handling. Når ilden reiser seg, stol på den — hopp før flammen rekker å kjølne."
+    },
+    "wands-queen": {
+      "keywords": "selvtillit, uavhengighet, besluttsomhet, varme",
+      "meaning": "Staver Dronning utstråler magnetisk selvtillit og kreativ kraft. Hun krever oppmerksomhet ikke gjennom makt, men gjennom den rene varmen og vitaliteten i sitt nærvær. Hennes ild inspirerer alle som nærmer seg.",
+      "past": "En skikkelse av strålende selvtillit og kreativ kraft inspirerte og påvirket en gang livet ditt. Den magnetiske energien — varm, uavhengig og voldsomt levende — viste deg hva det betyr å skinne.",
+      "present": "Tre inn i din kraft med varme og selvtillit. Din kreative energi og personlige magnetisme er på sitt høydepunkt. Led med entusiasme, inspirer andre med din vitalitet og eie din flamme.",
+      "future": "Du vokser til å bli en kraft av magnetisk, kreativ selvtillit. Varmen og besluttsomheten som utvikler seg i deg vil snart gjøre deg til en kilde av inspirasjon og kraft for deg selv og andre."
+    },
+    "wands-king": {
+      "keywords": "visjonært lederskap, dristighet, entreprenørskap, karisma",
+      "meaning": "Staver Konge hersker med ilden til en visjonær leder. Dristig, karismatisk og drevet av en urokkelig kreativ visjon, forvandler han ideer til imperier og lidenskap til varig prestasjon.",
+      "past": "En visjonær leder eller en periode med dristig, karismatisk lederskap formet din forståelse av hva kreativ kraft kan oppnå. Den innflytelsen lærte deg å lede med ild og bygge med lidenskap.",
+      "present": "Led med visjon og dristighet. Din kreative ild og naturlige karisma er dine største fordeler akkurat nå. Tenk som en visjonær, handle som en entreprenør og inspirer som en konge.",
+      "future": "Visjonært lederskap og dristig kreativ mestring er din skjebne. Karismaen, besluttsomheten og den entreprenørielle ilden som vokser i deg vil snart kreve et kongerike verdig dine ambisjoner."
+    }
+  },
+  "readingTemplates": {
+    "intros": [
+      "Kortene er trukket, og skjebneveverens tapestri folder seg ut foran oss. {card1}, {card2} og {card3} — en kombinasjon av slående kraft og ubestridelig betydning.",
+      "Tre kort trer frem fra kortstokkens skygger: {card1}, {card2} og {card3}. Sammen vever de en historie universet har ventet med å fortelle deg.",
+      "Sløret deler seg, og tre budbringere trer frem: {card1}, {card2} og {card3}. Deres samlede visdom taler direkte til kreftene som former din skjebne.",
+      "Fra kortstokkens uendelige muligheter har {card1}, {card2} og {card3} valgt deg. Ja — kortene velger leseren like mye som leseren velger kortene.",
+      "En mektig treenighet avsløres: {card1}, {card2} og {card3}. Energien mellom disse tre kortene knitrer av mening — lytt nøye til hva de sier.",
+      "Stjernene har samlet seg for å bringe frem {card1}, {card2} og {card3}. Dette er ingen tilfeldighet — disse kortene bærer et budskap som har søkt deg.",
+      "Se de tre kortene som trer frem fra den kosmiske stokken: {card1}, {card2} og {card3}. Deres samlede energi maler et portrett av din reise med bemerkelsesverdig klarhet.",
+      "Stokken har talt med overbevisning og plassert {card1}, {card2} og {card3} foran deg. Hvert kort alene er kraftfullt — sammen danner de en åpenbaring."
+    ],
+    "bridges": [
+      "Når vi beveger oss fra fortid til nåtid, skifter energien. Det som ble sådd bærer nå frukt i det nåværende øyeblikk.",
+      "Fortidstrådene veves inn i stoffet til din nåværende virkelighet. Legg merke til hvordan det ene glir over i det andre.",
+      "Fra ekkoet av det som var, ankommer vi ved pulsen av det som er. Forbindelsen mellom disse energiene er umiskjennelig.",
+      "Fortiden har satt scenen, og nå faller søkelyset på dette øyeblikket. Kortene taler om din nåtid med hastegrad."
+    ],
+    "futureBridges": [
+      "Og nå speider kortene forbi tidens slør for å opplyse det som nærmer seg.",
+      "Det siste kortet løfter blikket mot horisonten og avslører formen på det som kommer.",
+      "Det fortiden sådde og nåtiden steller, vil fremtiden høste. Det tredje kortet taler om det som venter.",
+      "Det mest mystiske kortet av alle — det som taler om det som ennå ikke har skjedd — avslører sitt budskap."
+    ],
+    "closings": [
+      "Sammen maler disse tre kortene en reise av bemerkelsesverdig betydning. Kreftene som virker i livet ditt er kraftfulle, målbevisste og samstemt med noe større enn tilfeldigheter.",
+      "Tolkningen er fullført, men dens ekko vil fortsette å gi gjenklang. Bær visdommen fra disse tre kortene med deg når du navigerer veien fremover — de har gitt deg alt du trenger.",
+      "Kortene har talt sin sannhet. Denne treenigheten av visdom — som spenner over fortid, nåtid og fremtid — tilbyr deg et kompass for reisen fremover. Stol på det som har blitt avdekket.",
+      "Denne kraftfulle leggingen avslører at kreftene som omgir deg beveger seg med intensjon og hensikt. Universet har tilbudt sin veiledning — resten er i dine hender.",
+      "Kortene tier, men budskapet deres henger i luften. Det som har blitt avdekket er både et speil og et kart — det reflekterer der du har vært og opplyser der du er på vei."
+    ],
+    "pastPrefix": "Ditt første kort, {card}, taler til energiene i din fortid. ",
+    "presentPrefix": "{card} står i nåtidsposisjon. ",
+    "futurePrefix": "{card} avslører hva fremtiden bringer. "
+  }
+}
