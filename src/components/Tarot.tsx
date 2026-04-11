@@ -1,7 +1,10 @@
+"use client";
+
 import Medallion3 from "@/assets/svg/medallion3.svg";
 import Medallion4 from "@/assets/svg/medallion4.svg";
 
 import {useEffect, useState} from "react";
+import { useTranslations } from "next-intl";
 import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
 import {useAppContext} from "@/AppProvider";
@@ -10,6 +13,7 @@ import Footer from "@/components/Footer";
 
 export const Tarot = () => {
     const { state, setState } = useAppContext();
+    const t = useTranslations("ui");
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
 
@@ -99,17 +103,17 @@ export const Tarot = () => {
                                 onClick={handleRetry}
                                 disabled={state.isResponseLoading}
                             >
-                                Revoke and Retry
+                                {t("revokeAndRetry")}
                             </button>
                         ) : (
-                            <h2 className="tarot__title title">Unveil Your Destiny, Card by Card...</h2>
+                            <h2 className="tarot__title title">{t("unveilDestiny")}</h2>
                         )}
                     </div>
                 </div>
                 <Modal
                     isOpen={state.isPredictionReady && !modalDismissed}
                     onClose={() => setModalDismissed(true)}
-                    title={state.response ? "The Cards Have Spoken" : "The cards are still silent..."}
+                    title={state.response ? t("cardsHaveSpoken") : t("cardsStillSilent")}
                 >
                     <div className="tarot__result">
                         {state.response && <p className="tarot__result-text">{state.response}</p>}

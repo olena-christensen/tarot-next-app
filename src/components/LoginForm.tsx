@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 type LoginFormProps = {
   onSuccess?: () => void;
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const t = useTranslations("ui");
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +24,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setError("");
 
     if (isSignUp && !acceptTerms) {
-      setError("Please accept the Terms of Service and Privacy Policy to continue.");
+      setError(t("acceptTermsError"));
       return;
     }
 
@@ -52,12 +54,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       });
 
       if (result?.error) {
-        setError("Invalid email or password");
+        setError(t("invalidCredentials"));
       } else {
         onSuccess?.();
       }
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(t("somethingWentWrong"));
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +67,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   const handleGoogleSignIn = () => {
     if (isSignUp && !acceptTerms) {
-      setError("Please accept the Terms of Service and Privacy Policy to continue.");
+      setError(t("acceptTermsError"));
       return;
     }
     if (isSignUp) {
@@ -81,7 +83,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       {isSignUp && (
         <div className="form__input-block">
           <label htmlFor="name" className="form__label">
-            What Shall We Call You?
+            {t("whatShallWeCallYou")}
           </label>
           <input
             type="text"
@@ -94,7 +96,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       )}
       <div className="form__input-block">
         <label htmlFor="email" className="form__label">
-          Pledge Your Soul (Or Just Your Email)
+          {t("pledgeYourSoul")}
         </label>
         <input
           type="email"
@@ -106,7 +108,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         />
       </div>
       <div className="form__input-block">
-        <label htmlFor="password" className="form__label">Enchanted Phrase</label>
+        <label htmlFor="password" className="form__label">{t("enchantedPhrase")}</label>
         <div className="form__input-wrap form__input-wrap--password">
           <input
             type="password"
@@ -130,13 +132,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               onChange={(e) => setAcceptTerms(e.target.checked)}
             />
             <span>
-              I agree to the{" "}
+              {t("iAgreeTo")}{" "}
               <Link href="/terms" target="_blank" className="form__link">
-                Terms of Service
+                {t("termsOfService")}
               </Link>{" "}
-              and{" "}
+              {t("and")}{" "}
               <Link href="/privacy" target="_blank" className="form__link">
-                Privacy Policy
+                {t("privacyPolicy")}
               </Link>
               .
             </span>
@@ -157,10 +159,10 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           disabled={isLoading}
         >
           {isLoading
-            ? "Channeling..."
+            ? t("channeling")
             : isSignUp
-              ? "Begin the Ritual"
-              : "Complete the Ritual"
+              ? t("beginTheRitual")
+              : t("completeTheRitual")
           }
         </button>
 
@@ -169,7 +171,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           className="btn form__btn form__btn--google"
           onClick={handleGoogleSignIn}
         >
-          Let Google Speak Your Name
+          {t("letGoogleSpeak")}
         </button>
 
         <a
@@ -180,8 +182,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           }}
         >
           {isSignUp
-            ? "Already initiated? Enter the Sanctum"
-            : "New to the craft? Join the Circle of the Chosen"
+            ? t("alreadyInitiated")
+            : t("newToTheCraft")
           }
         </a>
       </div>

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
-import { PLANS, type PlanId } from "@/lib/plans";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { type PlanId } from "@/lib/plans";
 
 type UserProfileProps = {
   onClose?: () => void;
@@ -11,6 +12,8 @@ type UserProfileProps = {
 
 export const UserProfile = ({ onClose }: UserProfileProps) => {
   const { data: session, update } = useSession();
+  const t = useTranslations("ui");
+  const tPlans = useTranslations("plans");
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -68,7 +71,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
   const handleSaveName = async () => {
     const trimmed = nameInput.trim();
     if (!trimmed) {
-      setError("Name cannot be empty");
+      setError(t("nameCannotBeEmpty"));
       return;
     }
 
@@ -84,14 +87,14 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || "Failed to update name");
+        setError(data.error || t("failedToUpdateName"));
         return;
       }
 
       await update({ name: trimmed });
       setIsEditingName(false);
     } catch {
-      setError("Failed to update name");
+      setError(t("failedToUpdateName"));
     } finally {
       setIsSaving(false);
     }
@@ -116,12 +119,12 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
     setPasswordSuccess("");
 
     if (newPassword.length < 8) {
-      setPasswordError("Password must be at least 8 characters");
+      setPasswordError(t("passwordMinLength"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords do not match");
+      setPasswordError(t("passwordsDoNotMatch"));
       return;
     }
 
@@ -139,18 +142,18 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
 
       if (!res.ok) {
         const data = await res.json();
-        setPasswordError(data.error || "Failed to update password");
+        setPasswordError(data.error || t("failedToUpdatePassword"));
         return;
       }
 
-      setPasswordSuccess("Password updated");
+      setPasswordSuccess(t("passwordUpdated"));
       setHasPassword(true);
       setTimeout(() => {
         setIsEditingPassword(false);
         setPasswordSuccess("");
       }, 1500);
     } catch {
-      setPasswordError("Failed to update password");
+      setPasswordError(t("failedToUpdatePassword"));
     } finally {
       setPasswordSaving(false);
     }
@@ -165,7 +168,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
   return (
     <div className="user-profile">
       <div className="user-profile__field">
-        <span className="user-profile__label">Name</span>
+        <span className="user-profile__label">{t("name")}</span>
         {isEditingName ? (
           <div className="user-profile__edit">
             <input
@@ -187,56 +190,56 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
                 onClick={handleSaveName}
                 disabled={isSaving}
               >
-                {isSaving ? "Saving..." : "Save"}
+                {isSaving ? t("saving") : t("save")}
               </button>
               <button
                 className="user-profile__edit-btn user-profile__edit-btn--cancel"
                 onClick={handleCancelEdit}
                 disabled={isSaving}
               >
-                Cancel
+                {t("cancel")}
               </button>
             </div>
             {error && <span className="user-profile__error">{error}</span>}
           </div>
         ) : (
           <span className="user-profile__value user-profile__value--editable" onClick={handleEditName}>
-            {session?.user?.name || "Mystic One"}
+            {session?.user?.name || t("mysticOne")}
           </span>
         )}
       </div>
       <div className="user-profile__field">
-        <span className="user-profile__label">Email</span>
+        <span className="user-profile__label">{t("email")}</span>
         <span className="user-profile__value">{session?.user?.email}</span>
       </div>
       {memberSince && (
         <div className="user-profile__field">
-          <span className="user-profile__label">Member since</span>
+          <span className="user-profile__label">{t("memberSince")}</span>
           <span className="user-profile__value">{memberSince}</span>
         </div>
       )}
       <div className="user-profile__field">
-        <span className="user-profile__label">Current plan</span>
+        <span className="user-profile__label">{t("currentPlan")}</span>
         <span className="user-profile__value">
-          {planId ? PLANS[planId].name : "—"}
+          {planId ? tPlans(`${planId}.name`) : "—"}
           <Link
             href="/subscription"
             className="user-profile__upgrade"
             onClick={() => onClose?.()}
           >
-            → Upgrade
+            {"→ " + t("upgrade")}
           </Link>
         </span>
       </div>
       <div className="user-profile__field">
-        <span className="user-profile__label">Password</span>
+        <span className="user-profile__label">{t("password")}</span>
         {isEditingPassword ? (
           <div className="user-profile__edit">
             {hasPassword && (
               <input
                 className="user-profile__input"
                 type="password"
-                placeholder="Current password"
+                placeholder={t("currentPasswordPlaceholder")}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 disabled={passwordSaving}
@@ -245,7 +248,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
             <input
               className="user-profile__input"
               type="password"
-              placeholder="New password"
+              placeholder={t("newPasswordPlaceholder")}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               disabled={passwordSaving}
@@ -254,7 +257,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
             <input
               className="user-profile__input"
               type="password"
-              placeholder="Confirm new password"
+              placeholder={t("confirmPasswordPlaceholder")}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               onKeyDown={(e) => {
@@ -269,14 +272,14 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
                 onClick={handleSavePassword}
                 disabled={passwordSaving}
               >
-                {passwordSaving ? "Saving..." : "Save"}
+                {passwordSaving ? t("saving") : t("save")}
               </button>
               <button
                 className="user-profile__edit-btn user-profile__edit-btn--cancel"
                 onClick={handleCancelPassword}
                 disabled={passwordSaving}
               >
-                Cancel
+                {t("cancel")}
               </button>
             </div>
             {passwordError && <span className="user-profile__error">{passwordError}</span>}
@@ -284,7 +287,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
           </div>
         ) : (
           <span className="user-profile__value user-profile__value--editable" onClick={handleEditPassword}>
-            {hasPassword ? "Change password" : "Set password"}
+            {hasPassword ? t("changePassword") : t("setPassword")}
           </span>
         )}
       </div>
@@ -295,7 +298,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
           signOut({ callbackUrl: "/" });
         }}
       >
-        Slip Into the Shadows
+        {t("slipIntoShadows")}
       </button>
     </div>
   );

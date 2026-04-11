@@ -1,0 +1,36 @@
+{
+  "plans": {
+    "FREE": {
+      "name": "Free",
+      "features": ["3 readings per day", "Resets at midnight"]
+    },
+    "SINGLE": {
+      "name": "Single reading",
+      "features": ["One extra reading", "No subscription"]
+    },
+    "MONTHLY": {
+      "name": "Monthly",
+      "features": [
+        "Unlimited readings",
+        "Reading history",
+        "Choose your deck",
+        "Choose your diviner",
+        "Long-form interpretations",
+        "Daily card email",
+        "Export readings as PDF",
+        "Favorites & personal notes",
+        "Reminder notifications",
+        "Ad-free"
+      ]
+    },
+    "YEARLY": {
+      "name": "Yearly",
+      "features": [
+        "Everything in Monthly",
+        "Save 58% vs monthly",
+        "Exclusive seasonal decks",
+        "Early access to new diviners & decks"
+      ]
+    }
+  }
+}

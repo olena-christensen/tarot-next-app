@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 type MainMenuProps = {
     onOpenLogin: () => void;
@@ -10,13 +11,14 @@ type MainMenuProps = {
 
 export default function MainMenu({ onOpenLogin, onOpenProfile }: MainMenuProps) {
     const { data: session, status } = useSession();
+    const t = useTranslations("ui");
 
     return (
         <nav className="main-menu">
             <ul className="main-menu__list">
                 <li className="main-menu__item">
                     <Link className="main-menu__link" href="/subscription">
-                        Pricing
+                        {t("pricing")}
                     </Link>
                 </li>
                 {status === "loading" ? null : session ? (
@@ -26,7 +28,7 @@ export default function MainMenu({ onOpenLogin, onOpenProfile }: MainMenuProps) 
                                 className="btn main-menu__link"
                                 onClick={onOpenProfile}
                             >
-                                Welcome, {session.user?.name || "Mystic One"}
+                                {t("welcome", { name: session.user?.name || t("mysticOne") })}
                             </button>
                         </li>
                     </>
@@ -36,7 +38,7 @@ export default function MainMenu({ onOpenLogin, onOpenProfile }: MainMenuProps) 
                             className="btn main-menu__link"
                             onClick={onOpenLogin}
                         >
-                            Reveal Yourself
+                            {t("revealYourself")}
                         </button>
                     </li>
                 )}
