@@ -1,6 +1,6 @@
 .subscription {
   position: relative;
-  padding: 60px 0 100px;
+  padding: 160px 0 100px;
   background-color: $dark-bg;
   color: $primary;
   font-family: $font-family;
@@ -142,8 +142,17 @@
     }
   }
 
+  .modal & {
+    padding: 0;
+    background: none;
+
+    .container {
+      padding: 0;
+    }
+  }
+
   @media (max-width: 720px) {
-    padding: 48px 0 80px;
+    padding: 120px 0 80px;
 
     &__title {
       font-size: 1.9rem;

@@ -8,9 +8,10 @@ type ModalProps = {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  wide?: boolean;
 };
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, wide }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -30,7 +31,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
 
   return (
     <div className="modal" onClick={onClose}>
-      <div className="modal__content" onClick={(e) => e.stopPropagation()}>
+      <div className={`modal__content${wide ? " modal__content--wide" : ""}`} onClick={(e) => e.stopPropagation()}>
         <button className="modal__close" onClick={onClose}>
           <Skull />
         </button>

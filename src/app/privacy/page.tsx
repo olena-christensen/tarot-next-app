@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Tarot",
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
+    <PageShell>
     <main className="legal-page container">
       <article className="legal-page__content">
         <h1>Privacy Policy</h1>
@@ -155,10 +156,6 @@ export default function PrivacyPage() {
           <a href="mailto:privacy@example.com">privacy@example.com</a>.
         </p>
 
-        <p>
-          <Link href="/">← Back to home</Link>
-        </p>
-
         <hr />
         <p>
           <small>
@@ -169,5 +166,6 @@ export default function PrivacyPage() {
         </p>
       </article>
     </main>
+    </PageShell>
   );
 }

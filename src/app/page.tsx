@@ -5,6 +5,7 @@ import {Tarot} from "@/components/Tarot";
 import {Modal} from "@/components/Modal";
 import {LoginForm} from "@/components/LoginForm";
 import {UserProfile} from "@/components/UserProfile";
+import {SubscriptionPlans} from "@/components/SubscriptionPlans";
 import {Loader} from "@/components/Loader";
 import {useEffect, useState} from "react";
 import {Header} from "@/components/Header";
@@ -14,6 +15,7 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -28,6 +30,7 @@ export default function Home() {
                   <main className="">
                     <OfferBlock
                         onOpenLogin={() => setIsLoginOpen(true)}
+                        onOpenSubscription={() => setIsSubscriptionOpen(true)}
                     />
                     <Tarot/>
                   </main>
@@ -44,6 +47,14 @@ export default function Home() {
                     onClose={() => setIsProfileOpen(false)}
                   >
                     <UserProfile onClose={() => setIsProfileOpen(false)} />
+                  </Modal>
+                  <Modal
+                    title="Choose Your Path"
+                    isOpen={isSubscriptionOpen}
+                    onClose={() => setIsSubscriptionOpen(false)}
+                    wide
+                  >
+                    <SubscriptionPlans showHeader={false} />
                   </Modal>
                 </>
             )

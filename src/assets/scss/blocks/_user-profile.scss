@@ -35,6 +35,19 @@
     }
   }
 
+  .user-profile__upgrade {
+    margin-left: 1rem;
+    color: $primary;
+    text-decoration: none;
+    cursor: pointer;
+    transition: text-decoration 0.2s;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+  }
+
   .user-profile__edit {
     display: flex;
     flex-direction: column;

@@ -1,3 +1,5 @@
+"use client";
+
 import { PLAN_ORDER, PLANS, type Plan } from "@/lib/plans";
 
 const intervalSuffix = (interval: Plan["interval"]): string => {
@@ -11,16 +13,22 @@ const intervalSuffix = (interval: Plan["interval"]): string => {
   }
 };
 
-export const SubscriptionPlans = () => {
+type SubscriptionPlansProps = {
+  showHeader?: boolean;
+};
+
+export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps) => {
   return (
     <section className="subscription">
       <div className="container">
-        <header className="subscription__header">
-          <h1 className="subscription__title">Choose your path</h1>
-          <p className="subscription__subtitle">
-            One reading at a time, or unlimited every day.
-          </p>
-        </header>
+        {showHeader && (
+          <header className="subscription__header">
+            <h1 className="subscription__title">Choose your path</h1>
+            <p className="subscription__subtitle">
+              One reading at a time, or unlimited every day.
+            </p>
+          </header>
+        )}
 
         <div className="subscription__grid">
           {PLAN_ORDER.map((id) => {

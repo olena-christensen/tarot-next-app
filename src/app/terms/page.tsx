@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Tarot",
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
+    <PageShell>
     <main className="legal-page container">
       <article className="legal-page__content">
         <h1>Terms of Service</h1>
@@ -111,10 +112,6 @@ export default function TermsPage() {
           <a href="mailto:support@example.com">support@example.com</a>.
         </p>
 
-        <p>
-          <Link href="/">← Back to home</Link>
-        </p>
-
         <hr />
         <p>
           <small>
@@ -124,5 +121,6 @@ export default function TermsPage() {
         </p>
       </article>
     </main>
+    </PageShell>
   );
 }

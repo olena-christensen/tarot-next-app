@@ -219,14 +219,14 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
         <span className="user-profile__label">Current plan</span>
         <span className="user-profile__value">
           {planId ? PLANS[planId].name : "—"}
+          <Link
+            href="/subscription"
+            className="user-profile__upgrade"
+            onClick={() => onClose?.()}
+          >
+            → Upgrade
+          </Link>
         </span>
-        <Link
-          href="/subscription"
-          className="user-profile__value user-profile__value--editable"
-          onClick={() => onClose?.()}
-        >
-          Upgrade →
-        </Link>
       </div>
       <div className="user-profile__field">
         <span className="user-profile__label">Password</span>
