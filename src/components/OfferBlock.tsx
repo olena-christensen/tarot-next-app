@@ -17,26 +17,46 @@ import {useAppContext} from "@/AppProvider";
 
 type OfferBlockProps = {
     onOpenLogin: () => void;
+    onOpenSubscription: () => void;
 };
 
+const FREE_SHAKE_LIMIT = 3;
+
 export const OfferBlock = ({
-   onOpenLogin
+   onOpenLogin,
+   onOpenSubscription,
 }: OfferBlockProps) => {
     const { data: session } = useSession();
     const { state, setState } = useAppContext();
     const [isLoaded, setIsLoaded] = useState(false);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
+    const [planId, setPlanId] = useState<string | null>(null);
 
     useEffect(() => {
         setIsLoaded(true);
-
     }, []);
 
+    useEffect(() => {
+        if (session) {
+            fetch("/api/user/plan")
+                .then((res) => res.json())
+                .then((data) => setPlanId(data.planId ?? "FREE"))
+                .catch(() => setPlanId("FREE"));
+        }
+    }, [session]);
+
     const handleClick = () => {
+        const isFree = !planId || planId === "FREE";
+        if (isFree && state.shakeCount >= FREE_SHAKE_LIMIT) {
+            onOpenSubscription();
+            return;
+        }
+
         const chosenCards = pickRandomCards({ cards: state.tarots, count: 3 });
         setState(prevState => ({
             ...prevState,
             chosenCards,
+            shakeCount: prevState.shakeCount + 1,
         }));
         setIsDeckShaking(true);
         setTimeout(() => {

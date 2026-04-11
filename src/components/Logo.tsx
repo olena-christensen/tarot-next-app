@@ -1,8 +1,9 @@
+import Link from "next/link";
 import LogoImg from "../assets/svg/logo.svg";
 export default function Logo() {
     return (
-        <div className="logo">
+        <Link href="/" className="logo">
             <LogoImg />
-        </div>
+        </Link>
     );
 };

@@ -13,6 +13,7 @@ type AppState = {
     response: string;
     isResponseLoading: boolean;
     isCardsModalOpen: boolean;
+    shakeCount: number;
 };
 
 type AppContextType = {
@@ -29,6 +30,7 @@ const defaultState: AppContextType = {
         response: '',
         isResponseLoading: false,
         isCardsModalOpen: false,
+        shakeCount: 0,
     },
     setState: () => {},
 };

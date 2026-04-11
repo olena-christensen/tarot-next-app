@@ -1,0 +1,10 @@
+.legal-page {
+  padding-top: 160px;
+  padding-bottom: 100px;
+  min-height: 100dvh;
+
+  @media (max-width: 720px) {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+}
