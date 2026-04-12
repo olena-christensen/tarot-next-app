@@ -102,6 +102,7 @@ Required (see `.env.example`):
 - **Card names and readings** are no longer in TypeScript files — they live in `messages/{locale}/cards.json` and `readings.json`.
 - **Plan names and features** are no longer in `plans.ts` — they live in `messages/{locale}/plans.json`. `plans.ts` only keeps `id`, `priceLabel`, `interval`.
 - **Reading generation:** `src/lib/generateReading.ts` takes translated messages and card IDs to produce locale-aware readings.
+- **Russian translations are gender-neutral.** Russian past-tense verbs require gender agreement, so all `ru` reading texts avoid gendered verb forms with "ты" — using present tense, impersonal constructions, infinitives, and passive/reflexive forms instead. Preserve this when editing `messages/ru/readings.json`.
 
 ## Gotchas
 
