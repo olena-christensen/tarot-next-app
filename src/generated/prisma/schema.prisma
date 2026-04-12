@@ -45,6 +45,7 @@ model User {
   image           String?
   createdAt       DateTime      @default(now())
   termsAcceptedAt DateTime?
+  preferredDeck   String        @default("Rider-Waite")
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

@@ -22,6 +22,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
   const [planId, setPlanId] = useState<PlanId | null>(null);
+  const [deckId, setDeckId] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -53,6 +54,21 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
       }
     }
     loadPlan();
+  }, []);
+
+  useEffect(() => {
+    async function loadDeck() {
+      try {
+        const res = await fetch("/api/user/deck");
+        if (res.ok) {
+          const data = await res.json();
+          setDeckId(data.deck);
+        }
+      } catch {
+        // silent — UI falls back to "—"
+      }
+    }
+    loadDeck();
   }, []);
 
   const memberSince = session?.user?.createdAt
@@ -228,6 +244,21 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
             onClick={() => onClose?.()}
           >
             {"→ " + t("upgrade")}
+          </Link>
+        </span>
+      </div>
+      <div className="user-profile__field">
+        <span className="user-profile__label">{t("deck")}</span>
+        <span className="user-profile__value">
+          {deckId === "Rider-Waite" ? t("deckRiderWaite") :
+           deckId === "Klimt" ? t("deckKlimt") :
+           deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
+          <Link
+            href="/decks"
+            className="user-profile__upgrade"
+            onClick={() => onClose?.()}
+          >
+            {"→ " + t("chooseDeck")}
           </Link>
         </span>
       </div>

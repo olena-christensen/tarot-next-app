@@ -63,6 +63,14 @@
     "newToTheCraft": "Ny i kunsten? Bli med i De Utvalgtes Sirkel",
     "drawThreeCards": "Trekk tre kort for å motta din tolkning.",
     "spiritsUnclear": "Åndene er uklare. Vennligst trekk på nytt.",
-    "language": "Språk"
+    "language": "Språk",
+    "deck": "Kortstokk",
+    "chooseDeck": "Velg Din Kortstokk",
+    "deckRiderWaite": "Rider-Waite",
+    "deckKlimt": "Klimt",
+    "deckGothicVintage": "Gotisk Vintage",
+    "selected": "Valgt",
+    "selectDeck": "Velg",
+    "signInToSelectDeck": "Logg inn for å velge kortstokk"
   }
 }

@@ -63,6 +63,14 @@
     "newToTheCraft": "New to the craft? Join the Circle of the Chosen",
     "drawThreeCards": "Draw three cards to receive your reading.",
     "spiritsUnclear": "The spirits are unclear. Please draw again.",
-    "language": "Language"
+    "language": "Language",
+    "deck": "Deck",
+    "chooseDeck": "Choose Your Deck",
+    "deckRiderWaite": "Rider-Waite",
+    "deckKlimt": "Klimt",
+    "deckGothicVintage": "Gothic Vintage",
+    "selected": "Selected",
+    "selectDeck": "Select",
+    "signInToSelectDeck": "Sign in to choose your deck"
   }
 }

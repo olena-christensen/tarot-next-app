@@ -46,6 +46,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           image: user.image,
           createdAt: user.createdAt,
+          preferredDeck: user.preferredDeck,
         };
       },
     }),
@@ -60,9 +61,15 @@ export const authOptions: NextAuthOptions = {
         token.createdAt = user.createdAt
           ? new Date(user.createdAt).toISOString()
           : undefined;
+        token.preferredDeck = user.preferredDeck ?? "Rider-Waite";
       }
-      if (trigger === "update" && updateData?.name) {
-        token.name = updateData.name;
+      if (trigger === "update") {
+        if (updateData?.name) {
+          token.name = updateData.name;
+        }
+        if (updateData?.preferredDeck) {
+          token.preferredDeck = updateData.preferredDeck;
+        }
       }
       return token;
     },
@@ -73,6 +80,7 @@ export const authOptions: NextAuthOptions = {
         if (token.name) {
           session.user.name = token.name as string;
         }
+        session.user.preferredDeck = token.preferredDeck as string | undefined;
       }
       return session;
     },
