@@ -1,8 +1,10 @@
-import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import React, {createContext, ReactNode, useContext, useEffect, useMemo, useState} from 'react';
 import {useMessages} from "next-intl";
+import {useSession} from "next-auth/react";
 import {Card} from "@/types/Types";
 import {tarots} from "@/data";
 import {generateReading} from "@/lib/generateReading";
+import {getCardImagePath, DEFAULT_DECK} from "@/lib/decks";
 
 type AppState = {
     tarots: Card[];
@@ -20,9 +22,9 @@ type AppContextType = {
     setState: React.Dispatch<React.SetStateAction<AppState>>;
 };
 
-const defaultState: AppContextType = {
+const AppContext = createContext<AppContextType>({
     state: {
-        tarots: tarots,
+        tarots: [],
         chosenCards: [],
         resetFlipped: false,
         isPredictionReady: false,
@@ -32,17 +34,41 @@ const defaultState: AppContextType = {
         shakeCount: 0,
     },
     setState: () => {},
-};
-
-const AppContext = createContext<AppContextType>(defaultState);
+});
 
 type AppProviderProps = {
     children: ReactNode;
 };
 
 export function AppProvider({ children }: AppProviderProps) {
-    const [state, setState] = useState<AppState>(defaultState.state);
+    const { data: session } = useSession();
+    const deck = session?.user?.preferredDeck ?? DEFAULT_DECK;
+
+    const resolvedTarots = useMemo(() =>
+        tarots.map(card => ({
+            ...card,
+            image: getCardImagePath(deck, card.image),
+        })),
+        [deck]
+    );
+
+    const [state, setState] = useState<AppState>({
+        tarots: resolvedTarots,
+        chosenCards: [],
+        resetFlipped: false,
+        isPredictionReady: false,
+        response: '',
+        isResponseLoading: false,
+        isCardsModalOpen: false,
+        shakeCount: 0,
+    });
+
     const messages = useMessages();
+
+    // Update tarots when deck changes
+    useEffect(() => {
+        setState(prev => ({ ...prev, tarots: resolvedTarots }));
+    }, [resolvedTarots]);
 
     useEffect(() => {
         if (state.chosenCards.length > 0) {

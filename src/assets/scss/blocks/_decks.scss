@@ -1,0 +1,127 @@
+.decks {
+  position: relative;
+  padding: 160px 0 100px;
+  background-color: $dark-bg;
+  color: $primary;
+  font-family: $font-family;
+  font-weight: $general-font-weight;
+
+  .container {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    z-index: 1;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.04em;
+    margin: 0 0 16px;
+    color: $primary;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  &__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(9, 9, 9, 0.6);
+    border: $border;
+    border-radius: $border-radius;
+    padding: 28px;
+    transition: border-color 0.2s ease;
+
+    &--selected {
+      border: 1px solid $primary;
+    }
+  }
+
+  &__preview {
+    width: 160px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+
+  &__card-name {
+    font-size: 1.25rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+    color: $primary;
+    text-align: center;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: $dark-bg;
+    color: $primary;
+    border: 1px solid $primary;
+    border-radius: $border-radius;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    font-weight: $general-font-weight;
+  }
+
+  &__cta {
+    background: transparent;
+    color: $primary;
+    border: 1px solid $primary;
+    border-radius: $border-radius;
+    padding: 12px 20px;
+    font-family: $font-family;
+    font-size: 0.95rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    margin-top: auto;
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+
+  &__sign-in-prompt {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 1rem;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 720px) {
+    padding: 120px 0 80px;
+
+    &__title {
+      font-size: 1.9rem;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__preview {
+      width: 140px;
+    }
+  }
+}
