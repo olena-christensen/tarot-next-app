@@ -31,12 +31,12 @@ export const OfferBlock = ({
     const { data: session } = useSession();
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
-    const [isLoaded, setIsLoaded] = useState(false);
     const [skipIntro] = useState(() => {
         const skip = hasPlayedIntro;
         hasPlayedIntro = true;
         return skip;
     });
+    const [isLoaded, setIsLoaded] = useState(skipIntro);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
     const [planId, setPlanId] = useState<string | null>(null);
 

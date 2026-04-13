@@ -164,13 +164,11 @@
   }
 
   &.skip-intro {
-    &, & *, & *::before, & *::after {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
-    }
-
+    .offer-block__title,
+    .moon,
+    .offer-block__screen--cards,
     .smoke-animation {
-      animation-duration: 3s !important;
+      animation-duration: 0s !important;
       animation-delay: 0s !important;
     }
   }
