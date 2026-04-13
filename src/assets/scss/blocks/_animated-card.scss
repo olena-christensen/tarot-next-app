@@ -67,6 +67,12 @@
   }
 }
 
+.animated-card__back {
+  img {
+    object-fit: contain;
+  }
+}
+
 .flipped {
   .animated-card__front {
     transform: rotateY(180deg);
