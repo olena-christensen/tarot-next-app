@@ -75,6 +75,9 @@
     "chooseYourReader": "Choose Who Reads For You",
     "readerSelectionSubtitle": "Three readers wait in the dark. They will not introduce themselves — you must choose.",
     "hoverToLearn": "Hover a reader to learn their nature.",
-    "summonReader": "Summon {name}"
+    "summonReader": "Summon {name}",
+    "yourReaderIs": "Your Reader",
+    "changeYourReader": "Change Your Reader",
+    "upgradeToUnlock": "Upgrade to Unlock"
   }
 }

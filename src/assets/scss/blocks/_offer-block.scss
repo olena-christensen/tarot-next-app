@@ -167,9 +167,138 @@
     .offer-block__title,
     .moon,
     .offer-block__screen--cards,
+    .offer-block__reader,
     .smoke-animation {
       animation-duration: 0s !important;
       animation-delay: 0s !important;
+    }
+  }
+
+  .offer-block__reader {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 24px;
+    text-align: center;
+    opacity: 0;
+    animation: offerBlockCardBlockAnimation 5s forwards;
+    animation-delay: 8s;
+  }
+
+  .offer-block__reader-portrait {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 40%,
+      var(--reader-accent, #{$primary}),
+      $dark-bg 80%
+    );
+    border: 1px solid var(--reader-accent, #{$primary});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offer-block__reader-initial {
+    font-family: $font-family;
+    font-size: 2.75rem;
+    font-weight: $general-font-weight;
+    line-height: 1;
+    color: $primary;
+  }
+
+  .offer-block__reader-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $primary;
+    opacity: 0.55;
+    margin: 0;
+  }
+
+  .offer-block__reader-name {
+    font-size: 1.6rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.04em;
+    color: $primary;
+    margin: 0;
+  }
+
+  .offer-block__reader-bio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: $primary;
+    opacity: 0.7;
+    font-style: italic;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .offer-block__reader-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .offer-block__summon-btn {
+    appearance: none;
+    background: transparent;
+    color: var(--reader-accent, #{$primary});
+    border: 1px solid var(--reader-accent, #{$primary});
+    border-radius: $border-radius;
+    padding: 14px 32px;
+    font-family: $font-family;
+    font-size: 0.9rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      box-shadow 0.25s ease,
+      letter-spacing 0.25s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: $primary;
+      background: rgba(250, 225, 163, 0.06);
+      box-shadow: 0 0 24px -4px var(--reader-accent, #{$primary});
+      letter-spacing: 0.22em;
+      outline: none;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  .offer-block__change-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: $primary;
+    opacity: 0.5;
+    font-family: $font-family;
+    font-size: 0.8rem;
+    font-weight: $general-font-weight;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.85;
+      outline: none;
     }
   }
 

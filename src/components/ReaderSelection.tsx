@@ -2,11 +2,17 @@
 
 import { useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
-import { READERS, READER_IDS, type ReaderId } from "@/lib/readers";
+import { READERS, READER_IDS, DEFAULT_READER, type ReaderId } from "@/lib/readers";
 
 interface ReaderSelectionProps {
-  /** Called when the user commits to a reader. Parent advances the flow. */
+  /** Called when the user commits to a reader. */
   onSelect: (readerId: ReaderId) => void;
+  /** Currently active reader — shown with a visual indicator. */
+  currentReader: ReaderId;
+  /** Whether the user has a paid subscription (unlocks non-default readers). */
+  isSubscriber: boolean;
+  /** Called when a locked reader's "Upgrade to unlock" is clicked. */
+  onOpenSubscription: () => void;
 }
 
 /**
@@ -18,7 +24,12 @@ interface ReaderSelectionProps {
  * theming borders, glows, and the CTA. Each card also carries its own
  * --card-accent (resting tint) regardless of focus.
  */
-export const ReaderSelection = ({ onSelect }: ReaderSelectionProps) => {
+export const ReaderSelection = ({
+  onSelect,
+  currentReader,
+  isSubscriber,
+  onOpenSubscription,
+}: ReaderSelectionProps) => {
   const t = useTranslations("ui");
   // Reader copy lives in messages/{lang}/readings.json under "readers.{id}".
   const tReader = useTranslations("readers");
@@ -26,8 +37,16 @@ export const ReaderSelection = ({ onSelect }: ReaderSelectionProps) => {
 
   const focusedReader = focused ? READERS[focused] : null;
 
+  const isLocked = (id: ReaderId) =>
+    id !== DEFAULT_READER && !isSubscriber;
+
   const handleSummon = () => {
-    if (focused) onSelect(focused);
+    if (!focused) return;
+    if (isLocked(focused)) {
+      onOpenSubscription();
+    } else {
+      onSelect(focused);
+    }
   };
 
   return (
@@ -61,11 +80,12 @@ export const ReaderSelection = ({ onSelect }: ReaderSelectionProps) => {
               type="button"
               role="radio"
               aria-checked={isFocused}
-              className={
-                isFocused
-                  ? "reader-selection__card reader-selection__card--focused"
-                  : "reader-selection__card"
-              }
+              className={[
+                "reader-selection__card",
+                isFocused ? "reader-selection__card--focused" : "",
+                id === currentReader ? "reader-selection__card--current" : "",
+                isLocked(id) ? "reader-selection__card--locked" : "",
+              ].filter(Boolean).join(" ")}
               onMouseEnter={() => setFocused(id)}
               onFocus={() => setFocused(id)}
               onClick={() => setFocused(id)}
@@ -109,10 +129,14 @@ export const ReaderSelection = ({ onSelect }: ReaderSelectionProps) => {
             </p>
             <button
               type="button"
-              className="reader-selection__summon-btn"
+              className={`reader-selection__summon-btn${
+                isLocked(focused!) ? " reader-selection__summon-btn--locked" : ""
+              }`}
               onClick={handleSummon}
             >
-              {t("summonReader", { name: tReader(`${focused}.displayName`) })}
+              {isLocked(focused!)
+                ? t("upgradeToUnlock")
+                : t("summonReader", { name: tReader(`${focused}.displayName`) })}
             </button>
           </>
         ) : (

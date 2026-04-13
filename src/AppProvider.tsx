@@ -16,17 +16,8 @@ type AppState = {
     isResponseLoading: boolean;
     isCardsModalOpen: boolean;
     shakeCount: number;
-    /**
-     * Reader chosen for the current reading session.
-     * - null = the user hasn't picked yet (Tarot.tsx will show the selection screen)
-     * - any ReaderId = use that reader's voice in generateReading
-     *
-     * Tarot.tsx is responsible for setting this back to null when the modal
-     * closes (for logged-in users), and Tarot.tsx also decides whether to
-     * even show the selection step (anonymous users + locales without
-     * translated readers skip it).
-     */
-    selectedReader: ReaderId | null;
+    /** Reader voice used for generateReading. Always set, defaults to DEFAULT_READER. */
+    selectedReader: ReaderId;
 };
 
 type AppContextType = {
@@ -44,7 +35,7 @@ const AppContext = createContext<AppContextType>({
         isResponseLoading: false,
         isCardsModalOpen: false,
         shakeCount: 0,
-        selectedReader: null,
+        selectedReader: DEFAULT_READER,
     },
     setState: () => {},
 });
@@ -74,7 +65,7 @@ export function AppProvider({ children }: AppProviderProps) {
         isResponseLoading: false,
         isCardsModalOpen: false,
         shakeCount: 0,
-        selectedReader: null,
+        selectedReader: DEFAULT_READER,
     });
 
     const messages = useMessages();
@@ -98,7 +89,7 @@ export function AppProvider({ children }: AppProviderProps) {
                 messages as any,
                 (messages as any).ui?.drawThreeCards ?? "Draw three cards to receive your reading.",
                 (messages as any).ui?.spiritsUnclear ?? "The spirits are unclear. Please draw again.",
-                state.selectedReader ?? DEFAULT_READER,
+                state.selectedReader,
             );
             setState(prevState => ({
                 ...prevState,

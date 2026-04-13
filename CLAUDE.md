@@ -151,11 +151,13 @@ Required (see `.env.example`):
 - **Available readers:** Madame Vespera (default), The Crow, Reginald Ash. Each reader is a "voice" persona that reshapes the reading's intro, bridges, closings, and card prefixes.
 - Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (CSS color for theming), and `avatar` path (placeholder — images don't exist yet).
 - Display strings (name, title, tagline, bio) and voice templates (intros, bridges, futureBridges, closings, pastPrefix/presentPrefix/futurePrefix) live in `messages/{locale}/readings.json` under `"readers.{id}"`. The registry file has no text.
-- **Reader selection is session-scoped, not persisted.** `AppProvider` holds `selectedReader: ReaderId | null` in state. It resets to `null` when the tarot modal closes.
-- `Tarot.tsx` gates the selection step: shows `ReaderSelection` component if (a) user is logged in AND (b) the current locale has a `readers` block in its `readings.json`. Anonymous users and untranslated locales skip straight to cards with `DEFAULT_READER`.
+- **Reader selection is session-scoped, not persisted.** `AppProvider` holds `selectedReader: ReaderId` in state (non-nullable, defaults to `DEFAULT_READER`). The reader persists across readings within the session — it is NOT reset when the tarot modal closes.
+- **Main page flow:** OfferBlock shows the current reader (avatar, name, tagline) with "Summon [Name]" and "Change your reader" buttons. "Summon" reveals the deck; "Change" opens an overlay modal with all 3 readers. The deck is hidden until summoned.
+- **Subscription gating:** In the "Change your reader" modal, non-default readers have their summon button replaced with "Upgrade to unlock" for free/anonymous users. Only subscribers can pick a different reader.
+- `Tarot.tsx` has no reader selection logic — it just uses `state.selectedReader` as-is.
 - `generateReading()` accepts an optional `readerId` param. If that reader's block exists in the messages, it uses the reader's voice templates; otherwise falls back to `readingTemplates`.
-- Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon CTA). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties.
-- **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales skip the selection screen entirely.
+- Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon CTA, used inside a Modal overlay). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties.
+- **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales show hardcoded defaults for the reader presentation and hide the "Change" button.
 - **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
 
 ## Animations
@@ -168,15 +170,14 @@ The main page has a multi-stage intro: moon rises and falls, title slides in, ca
 
 - Module-level `let hasPlayedIntro = false` in `OfferBlock.tsx` (and `hasPlayedHeaderIntro` in `Header.tsx`) — resets on page refresh (JS reloads), persists on client-side navigation.
 - `useState` initializer checks and sets the flag. When skipping, `isLoaded` starts as `true` (no loading flash).
-- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
+- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.offer-block__reader`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
 - **NEVER use wildcard selectors** (`*`) for skip-intro — it kills unrelated animations (deck glow, card twist). Always list specific elements.
 - Header uses the same pattern with its own `skip-intro` class in `_main-header.scss`.
 
 ### Reading reveal flow
 
-After the user opens the tarot modal (`Tarot.tsx`):
+After the user clicks the deck (which appears after clicking "Summon" on the main page):
 
-0. (Logged-in users with translated readers) Reader selection screen → user picks a reader → advances to cards
 1. "Unveil Your Destiny" text visible while cards are being flipped
 2. Last card clicked → flip animation plays (2s)
 3. After flip completes (2s timeout) → `showLoader` = true, text fades out (`tarot__title--hidden`), ouroboros SVG fades in (`tarot__loader` with `tarotLoaderFadeIn`)

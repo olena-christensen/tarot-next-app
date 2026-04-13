@@ -263,6 +263,41 @@
     }
   }
 
+  &__card--current {
+    border-color: var(--card-accent);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--card-accent);
+      box-shadow: 0 0 8px var(--card-accent);
+    }
+  }
+
+  &__card--locked {
+    opacity: 0.6;
+
+    &::after {
+      content: "★";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.75rem;
+      color: var(--card-accent);
+      opacity: 0.8;
+    }
+  }
+
+  &__summon-btn--locked {
+    border-style: dashed;
+    opacity: 0.7;
+  }
+
   @media (max-width: 860px) {
     padding: 40px 20px 32px;
     gap: 32px;
