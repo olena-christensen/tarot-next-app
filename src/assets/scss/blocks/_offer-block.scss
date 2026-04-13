@@ -134,6 +134,12 @@
   .animated-card {
     width: 250px !important;
     height: 307px !important;
+
+    &.glowing::before {
+      inset: 0;
+      margin: auto;
+      animation: glowPulseDeck 2.5s ease-in-out infinite;
+    }
   }
 
   &.loaded {
@@ -158,13 +164,11 @@
   }
 
   &.skip-intro {
-    &, & *, & *::before, & *::after {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
-    }
-
+    .offer-block__title,
+    .moon,
+    .offer-block__screen--cards,
     .smoke-animation {
-      animation-duration: 3s !important;
+      animation-duration: 0s !important;
       animation-delay: 0s !important;
     }
   }
@@ -197,6 +201,17 @@
         fill: #443523;
       }
     }
+  }
+}
+
+@keyframes glowPulseDeck {
+  0%, 100% {
+    filter: blur(12px);
+    transform: scale(0.8);
+  }
+  50% {
+    filter: blur(18px);
+    transform: scale(0.84);
   }
 }
 

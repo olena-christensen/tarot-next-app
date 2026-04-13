@@ -1,18 +1,67 @@
 .language-switcher {
-  background: transparent;
-  color: $primary;
-  border: $border;
-  border-radius: $border-radius;
-  padding: 6px 12px;
-  font-family: $font-family;
-  font-size: 0.85rem;
-  font-weight: $general-font-weight;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
+  position: relative;
 
-  option {
-    background: $dark-bg;
+  &__trigger {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
     color: $primary;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      stroke: $primary;
+
+      &:last-child {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    padding: 4px 0;
+    list-style: none;
+    background: $dark-bg;
+    border: $border;
+    border-radius: $border-radius;
+    min-width: 120px;
+    z-index: 200;
+  }
+
+  &__option {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    color: $primary;
+    font-family: $font-family;
+    font-size: 0.85rem;
+    font-weight: $general-font-weight;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      background: rgba(250, 225, 163, 0.1);
+    }
+
+    &--active {
+      opacity: 0.5;
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+      }
+    }
   }
 }

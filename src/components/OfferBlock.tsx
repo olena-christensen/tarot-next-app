@@ -31,12 +31,12 @@ export const OfferBlock = ({
     const { data: session } = useSession();
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
-    const [isLoaded, setIsLoaded] = useState(false);
     const [skipIntro] = useState(() => {
         const skip = hasPlayedIntro;
         hasPlayedIntro = true;
         return skip;
     });
+    const [isLoaded, setIsLoaded] = useState(skipIntro);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
     const [planId, setPlanId] = useState<string | null>(null);
 
@@ -108,17 +108,6 @@ export const OfferBlock = ({
                                 </div>
                             </div>
                             <div className="inner-wrap">
-                                <div className="offer-block__btn offer-block__btn--left">
-                                    <button
-                                        className="btn border-dashed"
-                                        onClick={() => {
-                                            handleClick();
-                                        }}
-                                        disabled={state.isResponseLoading}
-                                    >
-                                        {t("shakeDeck")}
-                                    </button>
-                                </div>
                                 <div
                                     className="center"
                                     onClick={() => {
@@ -129,19 +118,10 @@ export const OfferBlock = ({
                                         frontUrl="/decor-img/card.webp"
                                         backUrl="/decor-img/card1.webp"
                                         isDeckShaking={isDeckShaking}
+                                        isGlowing={!isDeckShaking && !state.isCardsModalOpen}
                                         animation="cardTwistAnimation 3s infinite"
                                     />
                                     <div className="hand"><Hand/></div>
-                                </div>
-                                <div className="offer-block__btn offer-block__btn--right"
-                                     style={session ? {visibility: 'hidden'} : undefined}
-                                >
-                                    <button
-                                        className="btn border-dashed"
-                                        onClick={onOpenLogin}
-                                    >
-                                        {t("joinTheCircle")}
-                                    </button>
                                 </div>
                             </div>
                         </div>
