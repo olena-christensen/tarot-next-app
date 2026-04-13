@@ -143,3 +143,32 @@ Required (see `.env.example`):
 - **Only logged-in users can select a deck.** Anonymous users see the page but cannot select. Future: restrict to paid subscribers.
 - **Mystical-SVG deck is excluded** — exists in `public/Cards/` but not in the catalog.
 - **Adding a new deck:** Add card images to `public/Cards/{NewDeck}/` (same folder structure/filenames as Rider-Waite), add an entry to `DECKS` in `src/lib/decks.ts`, add a `deck{Name}` translation key to all `ui.json` files, and update `DECK_NAME_KEYS` in `DeckSelector.tsx`.
+
+## Animations
+
+### Intro animations (play once per session)
+
+The main page has a multi-stage intro: moon rises and falls, title slides in, cards section fades in, smoke fades in, header slides down. These are CSS animations triggered by the `loaded` class on the offer-block, with staggered `animation-delay` values.
+
+**Skip-intro pattern:** Animations play on first visit and page refresh, but NOT on client-side navigation (clicking logo, changing language, navigating back from other pages).
+
+- Module-level `let hasPlayedIntro = false` in `OfferBlock.tsx` (and `hasPlayedHeaderIntro` in `Header.tsx`) — resets on page refresh (JS reloads), persists on client-side navigation.
+- `useState` initializer checks and sets the flag. When skipping, `isLoaded` starts as `true` (no loading flash).
+- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
+- **NEVER use wildcard selectors** (`*`) for skip-intro — it kills unrelated animations (deck glow, card twist). Always list specific elements.
+- Header uses the same pattern with its own `skip-intro` class in `_main-header.scss`.
+
+### Reading reveal flow
+
+After the user flips all 3 cards in the tarot modal (`Tarot.tsx`):
+
+1. "Unveil Your Destiny" text visible while cards are being flipped
+2. Last card clicked → flip animation plays (2s)
+3. After flip completes (2s timeout) → `showLoader` = true, text fades out (`tarot__title--hidden`), ouroboros SVG fades in (`tarot__loader` with `tarotLoaderFadeIn`)
+4. 3 more seconds (5s total) → `isPredictionReady` = true, reading modal appears, loader fades out (`tarot__loader--hidden`)
+
+**Key:** The loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component (which is full-screen `position: fixed`).
+
+### Deck card glow
+
+The deck card on the main page has a `glowing` effect (conic-gradient `::before` pseudo-element). It uses a custom `glowPulseDeck` keyframe scaled to 0.8 (defined in `_offer-block.scss`). Glow is active when the deck is idle (`!isDeckShaking && !state.isCardsModalOpen`).
