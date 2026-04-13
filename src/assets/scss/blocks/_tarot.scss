@@ -91,6 +91,11 @@
   z-index: 5;
   opacity: 0;
   animation: tarotCardAppear 0.8s ease-out 3.2s forwards;
+  transition: opacity 0.8s ease-out;
+
+  &--hidden {
+    opacity: 0 !important;
+  }
 }
 
 .tarot__action-area {
@@ -163,6 +168,46 @@
   position: relative;
   z-index: 1;
   margin-top: 1rem;
+}
+
+.tarot__loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: tarotLoaderFadeIn 0.8s ease-out 0.4s forwards;
+  transition: opacity 0.8s ease-out;
+
+  &--hidden {
+    opacity: 0 !important;
+  }
+
+  svg {
+    width: 60px;
+    height: 60px;
+    fill: rgba(250, 225, 163, 0.75);
+    animation: loaderAnimation 1s infinite;
+
+    path {
+      fill: rgba(250, 225, 163, 0.75);
+    }
+  }
+}
+
+@keyframes tarotLoaderFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes tarotModalFadeIn {

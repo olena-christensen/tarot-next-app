@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import { useTranslations } from "next-intl";
 import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
+import LoaderSvg from "@/assets/svg/ouroboros.svg";
 import {useAppContext} from "@/AppProvider";
 import {pickRandomCards} from "@/utils";
 import Footer from "@/components/Footer";
@@ -16,6 +17,8 @@ export const Tarot = () => {
     const t = useTranslations("ui");
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
+    const allFlipped = flippedCards.every(card => card);
 
     const chosenCards = state.chosenCards;
     const glowingIndex = chosenCards.length > 0 ? flippedCards.indexOf(false) : -1;
@@ -47,6 +50,7 @@ export const Tarot = () => {
         }));
         setFlippedCards([false, false, false]);
         setModalDismissed(false);
+        setShowLoader(false);
     };
 
     const handleRetry = () => {
@@ -62,15 +66,20 @@ export const Tarot = () => {
     };
 
     useEffect(() => {
-        if (flippedCards.every(card => card)) {
+        if (allFlipped) {
+            // Wait for the last card's flip animation (2s) before showing loader
+            setTimeout(() => {
+                setShowLoader(true);
+            }, 2000);
+            // Then wait another 3s with loader visible before showing reading
             setTimeout(() => {
                 setState(prevState => ({
                     ...prevState,
                     isPredictionReady: true,
                 }));
-            }, 2000)
+            }, 5000);
         }
-    }, [flippedCards]);
+    }, [allFlipped]);
 
     useEffect(() => {
         if (state.isCardsModalOpen) {
@@ -106,7 +115,16 @@ export const Tarot = () => {
                                 {t("revokeAndRetry")}
                             </button>
                         ) : (
-                            <h2 className="tarot__title title">{t("unveilDestiny")}</h2>
+                            <>
+                                <h2 className={`tarot__title title${showLoader ? " tarot__title--hidden" : ""}`}>
+                                    {t("unveilDestiny")}
+                                </h2>
+                                {showLoader && (
+                                    <div className={`tarot__loader${state.isPredictionReady ? " tarot__loader--hidden" : ""}`}>
+                                        <LoaderSvg />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

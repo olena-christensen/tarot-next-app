@@ -26,7 +26,7 @@
 - DO NOT revert or undo changes without asking
 - Keep it direct — just do the work, don't over-explain
 - The database and Vercel setup took significant effort — do not break or replace it
-- **NEVER commit without explicit user permission** — always ask before committing, even during plan execution. Subagents must NOT commit.
+- **NEVER run git add, git commit, git stage, or any git write operation** — the user handles all git operations in WebStorm. Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
 - **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task
 
 ## Commands
@@ -50,6 +50,7 @@ src/
     [locale]/
       layout.tsx       # Locale-aware layout (NextIntlClientProvider, font)
       page.tsx         # Main tarot page
+      decks/           # Deck selection page
       subscription/    # Pricing page
       terms/           # Terms of Service (page.tsx + TermsContent.tsx)
       privacy/         # Privacy Policy (page.tsx + PrivacyContent.tsx)
@@ -60,17 +61,18 @@ src/
   middleware.ts        # next-intl locale detection + routing
   components/          # AnimatedCard, Tarot, Login, LoginForm, Modal,
                        # UserProfile, MainMenu, Header, Footer,
-                       # PageShell, LanguageSwitcher, etc.
+                       # PageShell, LanguageSwitcher, DeckSelector, etc.
   lib/
     auth.ts            # NextAuth config (Credentials + Google)
     prisma.ts          # Prisma client singleton
+    decks.ts           # Deck catalog (DECKS, DeckId, getCardImagePath)
     plans.ts           # Plan config (id, price, interval — no text)
     subscription.ts    # getUserPlan helper
     generateReading.ts # Reading generation from translated messages
   generated/prisma/    # Prisma client output (custom location)
   assets/scss/         # All styles
-  data.ts              # Card data (id, image, value — no names)
-  AppProvider.tsx
+  data.ts              # Card data (id, image, value — no names; paths are deck-relative)
+  AppProvider.tsx       # App state + deck-aware card image resolution
 messages/
   en/                  # English translations (source of truth)
   no/                  # Norwegian translations
@@ -125,4 +127,19 @@ Required (see `.env.example`):
 - Client-side: fetch `GET /api/user/plan` (mirrors the `password-status` pattern).
 - Pricing page lives at `/subscription`, rendered by `src/components/SubscriptionPlans.tsx` (4-column classic layout). Styles: `src/assets/scss/blocks/_subscription.scss`.
 - **Payments are not wired yet.** All upgrade CTAs are disabled with tooltip "Payments launching soon". When integrating a payment provider, the `Subscription` row should be created/updated server-side after a successful checkout — `expiresAt` exists for that purpose.
-- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), reading history UI, deck selection, diviner selection.
+- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), reading history UI, diviner selection.
+
+## Deck Selection
+
+- **Available decks:** Rider-Waite (default), Klimt, Gothic-Vintage. Card images live under `public/Cards/{deckName}/` with identical folder structures and filenames across all decks.
+- Deck catalog is **static config** in `src/lib/decks.ts` (`DECKS`, `DECK_IDS`, `DeckId` type, `DEFAULT_DECK`). Display names live in translation files (`ui.json`), not here.
+- `getCardImagePath(deck, cardImage)` helper prepends `/Cards/{deck}` to a deck-relative path.
+- DB stores preference via `preferredDeck` field on the `User` model (`String @default("Rider-Waite")`). No enum — adding a new deck requires no migration.
+- **Card image paths in `data.ts` are deck-relative** (e.g. `/MajorArcana/fool.webp`, not `/Cards/Rider-Waite/MajorArcana/fool.webp`). `AppProvider` resolves them at render time using the user's deck preference from their session.
+- `preferredDeck` flows through NextAuth: stored in JWT token, exposed via `session.user.preferredDeck`, updatable via `session.update({ preferredDeck })`.
+- Client-side: fetch `GET /api/user/deck`, update via `PATCH /api/user/deck`.
+- Deck selection page lives at `/decks`, rendered by `src/components/DeckSelector.tsx` (3-column card grid). Styles: `src/assets/scss/blocks/_decks.scss`.
+- UserProfile shows current deck name with a link to `/decks` (same pattern as plan/upgrade link).
+- **Only logged-in users can select a deck.** Anonymous users see the page but cannot select. Future: restrict to paid subscribers.
+- **Mystical-SVG deck is excluded** — exists in `public/Cards/` but not in the catalog.
+- **Adding a new deck:** Add card images to `public/Cards/{NewDeck}/` (same folder structure/filenames as Rider-Waite), add an entry to `DECKS` in `src/lib/decks.ts`, add a `deck{Name}` translation key to all `ui.json` files, and update `DECK_NAME_KEYS` in `DeckSelector.tsx`.
