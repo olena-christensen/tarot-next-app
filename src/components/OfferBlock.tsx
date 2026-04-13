@@ -22,6 +22,7 @@ type OfferBlockProps = {
 };
 
 const FREE_SHAKE_LIMIT = 3;
+let hasPlayedIntro = false;
 
 export const OfferBlock = ({
    onOpenLogin,
@@ -31,6 +32,11 @@ export const OfferBlock = ({
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const [isLoaded, setIsLoaded] = useState(false);
+    const [skipIntro] = useState(() => {
+        const skip = hasPlayedIntro;
+        hasPlayedIntro = true;
+        return skip;
+    });
     const [isDeckShaking, setIsDeckShaking] = useState(false);
     const [planId, setPlanId] = useState<string | null>(null);
 
@@ -72,7 +78,7 @@ export const OfferBlock = ({
     };
 
     return (
-        <section className={`offer-block ${isLoaded ? "loaded" : ""}`}>
+        <section className={`offer-block${isLoaded ? " loaded" : ""}${skipIntro ? " skip-intro" : ""}`}>
             {!isLoaded
                 ? <div>{t("loading")}</div>
                 : (

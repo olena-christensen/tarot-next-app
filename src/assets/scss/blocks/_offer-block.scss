@@ -157,6 +157,18 @@
     }
   }
 
+  &.skip-intro {
+    &, & *, & *::before, & *::after {
+      animation-duration: 0s !important;
+      animation-delay: 0s !important;
+    }
+
+    .smoke-animation {
+      animation-duration: 3s !important;
+      animation-delay: 0s !important;
+    }
+  }
+
   .offer-block__screen-bg {
     display: flex;
     flex-direction: column;
