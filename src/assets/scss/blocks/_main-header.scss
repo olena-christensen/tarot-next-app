@@ -12,6 +12,11 @@
   transform: translateY(-20px);
   animation: headerSlideIn 1s ease-out 1.5s forwards;
 
+  &.skip-intro {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+
   .logo {
     width: 80px;
     height: 80px;
