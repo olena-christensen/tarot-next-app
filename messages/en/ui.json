@@ -71,6 +71,10 @@
     "deckGothicVintage": "Gothic Vintage",
     "selected": "Selected",
     "selectDeck": "Select",
-    "signInToSelectDeck": "Sign in to choose your deck"
+    "signInToSelectDeck": "Sign in to choose your deck",
+    "chooseYourReader": "Choose Who Reads For You",
+    "readerSelectionSubtitle": "Three readers wait in the dark. They will not introduce themselves — you must choose.",
+    "hoverToLearn": "Hover a reader to learn their nature.",
+    "summonReader": "Summon {name}"
   }
 }
