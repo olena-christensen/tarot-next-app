@@ -570,5 +570,93 @@
     "pastPrefix": "{card} i fortidsposisjonen: ",
     "presentPrefix": "{card} i nåtiden: ",
     "futurePrefix": "{card} for fremtiden: "
+  },
+  "readers": {
+    "vespera": {
+      "displayName": "Madame Vespera",
+      "title": "Forkynner av Det Fløyelsmyke Sløret",
+      "tagline": "Sett deg nærmere, kjære. Kortene har ventet.",
+      "bio": "Tre generasjoner med medier i familien. Vespera leser med ærbødighet, tar seg god tid, og behandler hvert kort som om det kom spesielt for deg.",
+      "intros": [
+        "Tre kort, kjære: {card1}, {card2} og {card3}. De dukket ikke opp sammen ved en tilfeldighet.",
+        "{card1}, {card2} og {card3}. Mm. Kortstokken har valgt omhyggelig i kveld.",
+        "Se — {card1}, {card2}, {card3}. En kombinasjon det er verdt å lytte til.",
+        "{card1}, {card2}, {card3}. Slå deg ned. Disse tre har noe å si."
+      ],
+      "bridges": [
+        "Men fortiden er bare døråpningen. Nåtiden er der arbeidet skjer.",
+        "Fra det som var, til det som er — følg med her, kjære."
+      ],
+      "futureBridges": [
+        "Og nå — det som kommer. Kortene lener seg frem.",
+        "Det tredje kortet. Det vi alltid kommer for."
+      ],
+      "closings": [
+        "Så. Ta imot det som ble gitt. Noe av det vil først gi mening senere.",
+        "Leggingen tilhører deg nå. Hold den varsomt.",
+        "Det var hva kortene tilbød. Sitt med det en stund før du går videre."
+      ],
+      "pastPrefix": "{card}, i fortiden — ",
+      "presentPrefix": "{card}, her i nåtiden — ",
+      "futurePrefix": "{card}, foran deg — "
+    },
+
+    "crow": {
+      "displayName": "Kråken",
+      "title": "Leser av Den Siste Timen",
+      "tagline": "Sett deg. Ikke snakk. Kortene vet allerede.",
+      "bio": "Ingen introduksjoner. Ingen formildning. Kråken forteller deg hva kortene sier og ingenting mer.",
+      "intros": [
+        "{card1}. {card2}. {card3}. Tre kort. Ingen tilfeldigheter.",
+        "{card1}, {card2}, {card3}. Se på dem.",
+        "Trukket: {card1}, {card2}, {card3}. De betyr det de betyr.",
+        "{card1}. Så {card2}. Så {card3}. En setning universet holder på å fullføre."
+      ],
+      "bridges": [
+        "Det var da. Dette er nå.",
+        "Fortiden er låst. Nåtiden er det ikke."
+      ],
+      "futureBridges": [
+        "Fremover.",
+        "Det som ikke har skjedd ennå."
+      ],
+      "closings": [
+        "Det er leggingen.",
+        "Kortene er ferdige. Det er ikke du.",
+        "Tre kort. Én retning. Gå."
+      ],
+      "pastPrefix": "{card}. Fortid: ",
+      "presentPrefix": "{card}. Nå: ",
+      "futurePrefix": "{card}. Kommer: "
+    },
+
+    "reginald": {
+      "displayName": "Reginald Ash",
+      "title": "Motvillig Utøver, Est. 1847",
+      "tagline": "Greit. Sett deg. La oss bli ferdige med dette.",
+      "bio": "Har lest kort lenger enn han orker å diskutere. Tar arbeidet på alvor, tar de fleste spørrere mindre alvorlig. Du får sannheten — formulert akkurat slik han ser det.",
+      "intros": [
+        "Greit. {card1}, {card2}, {card3}. Jeg har sett denne kombinasjonen før. Den betyr fortsatt noe. La oss fortsette.",
+        "{card1}, {card2} og {card3}. En legging med faktisk substans, for en gangs skyld.",
+        "{card1}, {card2}, {card3}. Ikke spør om det er gode nyheter. Bare lytt.",
+        "Hm. {card1}, så {card2}, så {card3}. Forbered deg — denne fortjener honoraret."
+      ],
+      "bridges": [
+        "Fortiden er over, til tross for dens vane med å late som noe annet. Videre.",
+        "Ja, ja, det var den gang. Nåtiden er mer presserende."
+      ],
+      "futureBridges": [
+        "Og nå — fremtiden. Den delen du faktisk kom for.",
+        "Det tredje kortet. Prøv å se fattet ut."
+      ],
+      "closings": [
+        "Det er leggingen. Ta den alvorlig eller la være — men nå er du i det minste blitt fortalt.",
+        "Ferdig. Du gjør det du gjør. De fleste gjør det.",
+        "Så. Fritt for teater, som lovet. Du kan vise deg selv ut."
+      ],
+      "pastPrefix": "{card}, i fortiden — og ærlig talt, dette forklarer mye: ",
+      "presentPrefix": "{card}, i nåtiden. Dette er, dessverre, der du befinner deg: ",
+      "futurePrefix": "{card}, fremover. Jeg skal ikke pynte på det: "
+    }
   }
 }

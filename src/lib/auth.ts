@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
           image: user.image,
           createdAt: user.createdAt,
           preferredDeck: user.preferredDeck,
+          preferredReader: user.preferredReader,
         };
       },
     }),
@@ -62,6 +63,7 @@ export const authOptions: NextAuthOptions = {
           ? new Date(user.createdAt).toISOString()
           : undefined;
         token.preferredDeck = user.preferredDeck ?? "Rider-Waite";
+        token.preferredReader = user.preferredReader ?? "vespera";
       }
       if (trigger === "update") {
         if (updateData?.name) {
@@ -69,6 +71,9 @@ export const authOptions: NextAuthOptions = {
         }
         if (updateData?.preferredDeck) {
           token.preferredDeck = updateData.preferredDeck;
+        }
+        if (updateData?.preferredReader) {
+          token.preferredReader = updateData.preferredReader;
         }
       }
       return token;
@@ -81,6 +86,7 @@ export const authOptions: NextAuthOptions = {
           session.user.name = token.name as string;
         }
         session.user.preferredDeck = token.preferredDeck as string | undefined;
+        session.user.preferredReader = token.preferredReader as string | undefined;
       }
       return session;
     },

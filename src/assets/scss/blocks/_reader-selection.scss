@@ -4,13 +4,12 @@
 // each card carries its own --card-accent for resting-state tinting.
 
 .reader-selection {
-  --reader-accent: var(--primary);
-
+  flex: 1;
   position: relative;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 24px 40px;
+  padding-top: 3rem;
   color: var(--primary);
   font-family: var(--font-family);
   font-weight: var(--font-weight);
@@ -20,43 +19,8 @@
   gap: 48px;
   z-index: 1;
 
-  // soft aura wash behind everything
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(250, 225, 163, 0.08),
-      transparent 60%
-    );
-    pointer-events: none;
-    transition: opacity 0.6s ease;
-  }
-
-  &__header {
-    text-align: center;
-    max-width: 640px;
-  }
-
-  &__title {
-    font-size: 2.25rem;
-    font-weight: var(--font-weight);
-    letter-spacing: 0.04em;
-    margin: 0 0 16px;
-    color: var(--primary);
-  }
-
-  &__subtitle {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--primary);
-    opacity: 0.7;
-    margin: 0;
-    font-style: italic;
-  }
-
   &__deck {
+    flex: 1;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 280px));
     gap: 24px;
@@ -65,19 +29,17 @@
   }
 
   &__card {
-    --card-accent: var(--primary);
-
     position: relative;
     appearance: none;
     background: rgba(9, 9, 9, 0.55);
     border: var(--border);
     border-radius: var(--border-radius);
     padding: 0;
+    max-height: 450px;
     cursor: pointer;
     color: inherit;
     font: inherit;
     text-align: left;
-    aspect-ratio: 2 / 3;
     overflow: hidden;
     transition:
       transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -167,7 +129,6 @@
     text-transform: uppercase;
     color: var(--card-accent);
     margin: 0 0 8px;
-    opacity: 0.95;
     font-style: italic;
   }
 
@@ -183,8 +144,7 @@
     margin-top: auto;
     font-size: 0.92rem;
     line-height: 1.5;
-    color: var(--primary);
-    opacity: 0.75;
+    color: var(--text-faint);
     text-align: center;
     font-style: italic;
   }
@@ -214,53 +174,21 @@
   }
 
   &__bio {
+    flex: 1;
+    display: flex;
+    align-items: center;
     font-size: 1rem;
     line-height: 1.65;
-    color: var(--primary);
-    opacity: 0.85;
+    color: var(--text-soft);
     margin: 0;
     font-style: italic;
   }
 
   &__placeholder {
     font-size: 0.95rem;
-    color: var(--primary);
-    opacity: 0.5;
+    color: var(--text-faint);
     margin: 0;
     font-style: italic;
-  }
-
-  &__summon-btn {
-    appearance: none;
-    background: transparent;
-    color: var(--reader-accent);
-    border: 1px solid var(--reader-accent);
-    border-radius: var(--border-radius);
-    padding: 14px 32px;
-    font-family: var(--font-family);
-    font-size: 0.9rem;
-    font-weight: var(--font-weight);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background-color 0.25s ease,
-      color 0.25s ease,
-      box-shadow 0.25s ease,
-      letter-spacing 0.25s ease;
-
-    &:hover,
-    &:focus-visible {
-      color: var(--primary);
-      background: rgba(250, 225, 163, 0.06);
-      box-shadow: 0 0 24px -4px var(--reader-accent);
-      letter-spacing: 0.22em;
-      outline: none;
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
   }
 
   &__card--current {
@@ -293,16 +221,9 @@
     }
   }
 
-  &__summon-btn--locked {
-    border-style: dashed;
-    opacity: 0.7;
-  }
-
   @media (max-width: 860px) {
     padding: 40px 20px 32px;
     gap: 32px;
-
-    &__title { font-size: 1.75rem; }
 
     &__deck {
       grid-template-columns: 1fr;

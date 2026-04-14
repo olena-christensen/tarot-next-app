@@ -56,7 +56,7 @@
     }
 
     &--active {
-      opacity: 0.5;
+      color: var(--text-faint);
       cursor: default;
 
       &:hover {

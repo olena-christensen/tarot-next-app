@@ -5,6 +5,10 @@
   background-color: var(--bg);
   opacity: 0;
   animation: tarotModalFadeIn 0.5s ease-out forwards;
+
+  &--closing {
+    animation: tarotModalFadeOut 0.5s ease-in forwards;
+  }
 }
 
 .tarot-modal__inner {
@@ -157,29 +161,19 @@
   text-align: left;
 }
 
-.btn-try-again {
-  flex: 1 1 30%;
-  min-width: 100px;
-  text-align: left;
-  font-size: 30px;
-}
-
 .tarot__post-actions {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   animation: fadeIn 0.5s ease-out;
+
+  .mystic-btn {
+    flex: 1 1 30%;
+    min-width: 100px;
+    text-align: left;
+  }
 }
 
-.tarot__revoke-btn {
-  position: relative;
-  z-index: 1;
-}
-
-.tarot__sanctum-btn {
-  position: relative;
-  z-index: 1;
-}
 
 .tarot__loader {
   position: absolute;
@@ -227,6 +221,15 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes tarotModalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 

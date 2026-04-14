@@ -234,8 +234,7 @@
     font-size: 0.8rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--primary);
-    opacity: 0.55;
+    color: var(--text-faint);
     margin: 0;
   }
 
@@ -250,8 +249,7 @@
   .offer-block__reader-bio {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: var(--primary);
-    opacity: 0.7;
+    color: var(--text-faint);
     font-style: italic;
     margin: 0;
     max-width: 480px;
@@ -259,51 +257,18 @@
 
   .offer-block__reader-actions {
     display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 1rem;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .offer-block__summon-btn {
-    appearance: none;
-    background: transparent;
-    color: var(--reader-accent, var(--primary));
-    border: 1px solid var(--reader-accent, var(--primary));
-    border-radius: var(--border-radius);
-    padding: 14px 32px;
-    font-family: var(--font-family);
-    font-size: 0.9rem;
-    font-weight: var(--font-weight);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background-color 0.25s ease,
-      color 0.25s ease,
-      box-shadow 0.25s ease,
-      letter-spacing 0.25s ease;
-
-    &:hover,
-    &:focus-visible {
-      color: var(--primary);
-      background: rgba(250, 225, 163, 0.06);
-      box-shadow: 0 0 24px -4px var(--reader-accent, var(--primary));
-      letter-spacing: 0.22em;
-      outline: none;
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
   }
 
   .offer-block__change-btn {
     appearance: none;
     background: transparent;
     border: none;
-    color: var(--primary);
-    opacity: 0.5;
+    color: var(--text-faint);
     font-family: var(--font-family);
     font-size: 0.8rem;
     font-weight: var(--font-weight);
@@ -312,11 +277,11 @@
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 4px;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 
     &:hover,
     &:focus-visible {
-      opacity: 0.85;
+      color: var(--text-soft);
       outline: none;
     }
   }

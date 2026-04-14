@@ -41,6 +41,7 @@
   }
 
   .modal__title {
+    flex: none;
     margin-block: 0 2.5rem;
     padding: 0;
     border: none;
@@ -69,6 +70,7 @@
 
 @media (min-width: 768px) {
   .modal .modal__content {
+    padding: 2.5rem;
     max-width: 740px;
     width: 740px;
     height: auto;
@@ -79,6 +81,20 @@
     &--wide {
       max-width: 1150px;
       width: 1150px;
+      height: 90dvh;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(250, 225, 163, 0.08),
+          transparent 60%
+        );
+        pointer-events: none;
+        border-radius: inherit;
+      }
     }
   }
 }

@@ -46,6 +46,7 @@ model User {
   createdAt       DateTime      @default(now())
   termsAcceptedAt DateTime?
   preferredDeck   String        @default("Rider-Waite")
+  preferredReader String        @default("vespera")
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

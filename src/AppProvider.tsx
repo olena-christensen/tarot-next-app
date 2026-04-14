@@ -5,7 +5,7 @@ import {Card} from "@/types/Types";
 import {tarots} from "@/data";
 import {generateReading} from "@/lib/generateReading";
 import {getCardImagePath, DEFAULT_DECK} from "@/lib/decks";
-import {DEFAULT_READER, type ReaderId} from "@/lib/readers";
+import {DEFAULT_READER, isReaderId, type ReaderId} from "@/lib/readers";
 
 type AppState = {
     tarots: Card[];
@@ -47,6 +47,8 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
     const { data: session } = useSession();
     const deck = session?.user?.preferredDeck ?? DEFAULT_DECK;
+    const sessionReader = session?.user?.preferredReader;
+    const reader: ReaderId = isReaderId(sessionReader) ? sessionReader : DEFAULT_READER;
 
     const resolvedTarots = useMemo(() =>
         tarots.map(card => ({
@@ -65,7 +67,7 @@ export function AppProvider({ children }: AppProviderProps) {
         isResponseLoading: false,
         isCardsModalOpen: false,
         shakeCount: 0,
-        selectedReader: DEFAULT_READER,
+        selectedReader: reader,
     });
 
     const messages = useMessages();
@@ -74,6 +76,11 @@ export function AppProvider({ children }: AppProviderProps) {
     useEffect(() => {
         setState(prev => ({ ...prev, tarots: resolvedTarots }));
     }, [resolvedTarots]);
+
+    // Update reader when session preference changes
+    useEffect(() => {
+        setState(prev => ({ ...prev, selectedReader: reader }));
+    }, [reader]);
 
     useEffect(() => {
         if (state.chosenCards.length > 0) {

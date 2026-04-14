@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface User {
     createdAt?: Date;
     preferredDeck?: string;
+    preferredReader?: string;
   }
   interface Session {
     user: {
@@ -14,6 +15,7 @@ declare module "next-auth" {
       image?: string | null;
       createdAt?: string;
       preferredDeck?: string;
+      preferredReader?: string;
     };
   }
 }
@@ -23,5 +25,6 @@ declare module "next-auth/jwt" {
     id: string;
     createdAt?: string;
     preferredDeck?: string;
+    preferredReader?: string;
   }
 }

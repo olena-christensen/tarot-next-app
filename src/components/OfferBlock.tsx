@@ -18,6 +18,7 @@ import {useAppContext} from "@/AppProvider";
 import {READERS, DEFAULT_READER} from "@/lib/readers";
 import {ReaderSelection} from "@/components/ReaderSelection";
 import {Modal} from "@/components/Modal";
+import {MysticButton} from "@/components/MysticButton";
 
 type OfferBlockProps = {
     onOpenLogin: () => void;
@@ -31,7 +32,7 @@ export const OfferBlock = ({
    onOpenLogin,
    onOpenSubscription,
 }: OfferBlockProps) => {
-    const { data: session } = useSession();
+    const { data: session, update } = useSession();
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const [skipIntro] = useState(() => {
@@ -69,7 +70,7 @@ export const OfferBlock = ({
     }, [session]);
 
     useEffect(() => {
-        if (!state.isCardsModalOpen && isDeckRevealed) {
+        if (state.isCardsModalOpen && isDeckRevealed) {
             setIsDeckRevealed(false);
         }
     }, [state.isCardsModalOpen]);
@@ -105,6 +106,15 @@ export const OfferBlock = ({
     const handleReaderSelect = (readerId: typeof state.selectedReader) => {
         setState(prev => ({ ...prev, selectedReader: readerId }));
         setIsReaderModalOpen(false);
+        setIsDeckRevealed(true);
+
+        if (session?.user) {
+            fetch("/api/user/reader", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ reader: readerId }),
+            }).then(() => update({ preferredReader: readerId }));
+        }
     };
 
     return (
@@ -160,9 +170,8 @@ export const OfferBlock = ({
                                             : ""}
                                     </p>
                                     <div className="offer-block__reader-actions">
-                                        <button
+                                        <MysticButton
                                             type="button"
-                                            className="offer-block__summon-btn"
                                             onClick={handleSummon}
                                         >
                                             {t("summonReader", {
@@ -170,7 +179,7 @@ export const OfferBlock = ({
                                                     ? tReader(`${state.selectedReader}.displayName`)
                                                     : "Madame Vespera"
                                             })}
-                                        </button>
+                                        </MysticButton>
                                         {session && messages?.readers && (
                                             <button
                                                 type="button"

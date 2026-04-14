@@ -6,6 +6,7 @@ import {Modal} from "@/components/Modal";
 import {LoginForm} from "@/components/LoginForm";
 import {UserProfile} from "@/components/UserProfile";
 import {SubscriptionPlans} from "@/components/SubscriptionPlans";
+import {ReaderSelectionModal} from "@/components/ReaderSelectionModal";
 import {Loader} from "@/components/Loader";
 import {useEffect, useState} from "react";
 import {Header} from "@/components/Header";
@@ -18,6 +19,7 @@ export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
+  const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -48,7 +50,13 @@ export default function Home() {
                     isOpen={isProfileOpen}
                     onClose={() => setIsProfileOpen(false)}
                   >
-                    <UserProfile onClose={() => setIsProfileOpen(false)} />
+                    <UserProfile
+                      onClose={() => setIsProfileOpen(false)}
+                      onOpenReaderSelection={() => {
+                        setIsProfileOpen(false);
+                        setIsReaderSelectOpen(true);
+                      }}
+                    />
                   </Modal>
                   <Modal
                     title={t("chooseYourPath")}
@@ -58,6 +66,11 @@ export default function Home() {
                   >
                     <SubscriptionPlans showHeader={false} />
                   </Modal>
+                  <ReaderSelectionModal
+                    isOpen={isReaderSelectOpen}
+                    onClose={() => setIsReaderSelectOpen(false)}
+                    onOpenSubscription={() => setIsSubscriptionOpen(true)}
+                  />
                 </>
             )
         }

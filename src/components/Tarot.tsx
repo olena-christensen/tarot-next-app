@@ -9,6 +9,7 @@ import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
 import LoaderSvg from "@/assets/svg/ouroboros.svg";
 import {useAppContext} from "@/AppProvider";
+import {MysticButton} from "@/components/MysticButton";
 import {pickRandomCards} from "@/utils";
 import Footer from "@/components/Footer";
 
@@ -18,6 +19,7 @@ export const Tarot = () => {
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
     const allFlipped = flippedCards.every(card => card);
 
     const chosenCards = state.chosenCards;
@@ -40,17 +42,21 @@ export const Tarot = () => {
     }
 
     const handleClose = () => {
-        setState(prevState => ({
-            ...prevState,
-            isCardsModalOpen: false,
-            chosenCards: [],
-            isPredictionReady: false,
-            response: '',
-            resetFlipped: true,
-        }));
-        setFlippedCards([false, false, false]);
-        setModalDismissed(false);
-        setShowLoader(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setState(prevState => ({
+                ...prevState,
+                isCardsModalOpen: false,
+                chosenCards: [],
+                isPredictionReady: false,
+                response: '',
+                resetFlipped: true,
+            }));
+            setFlippedCards([false, false, false]);
+            setModalDismissed(false);
+            setShowLoader(false);
+            setIsClosing(false);
+        }, 500);
     };
 
     const handleRetry = () => {
@@ -109,7 +115,7 @@ export const Tarot = () => {
     if (!state.isCardsModalOpen) return null;
 
     return (
-        <div className="tarot-modal">
+        <div className={`tarot-modal${isClosing ? " tarot-modal--closing" : ""}`}>
             <div className="tarot-modal__inner">
                 <div className="tarot-modal__bg">
                     <Medallion3/>
@@ -122,19 +128,15 @@ export const Tarot = () => {
                     <div className="tarot__action-area">
                         {modalDismissed ? (
                             <div className="tarot__post-actions">
-                                <button
-                                    className="btn btn-try-again border-dashed tarot__revoke-btn"
+                                <MysticButton
                                     onClick={handleRetry}
                                     disabled={state.isResponseLoading}
                                 >
                                     {t("unveilAnotherFate")}
-                                </button>
-                                <button
-                                    className="btn btn-try-again border-dashed tarot__sanctum-btn"
-                                    onClick={handleBackToSanctum}
-                                >
+                                </MysticButton>
+                                <MysticButton onClick={handleBackToSanctum}>
                                     {t("backToSanctum")}
-                                </button>
+                                </MysticButton>
                             </div>
                         ) : (
                             <>
