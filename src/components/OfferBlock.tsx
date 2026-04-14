@@ -32,7 +32,7 @@ export const OfferBlock = ({
    onOpenLogin,
    onOpenSubscription,
 }: OfferBlockProps) => {
-    const { data: session } = useSession();
+    const { data: session, update } = useSession();
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const [skipIntro] = useState(() => {
@@ -107,6 +107,14 @@ export const OfferBlock = ({
         setState(prev => ({ ...prev, selectedReader: readerId }));
         setIsReaderModalOpen(false);
         setIsDeckRevealed(true);
+
+        if (session?.user) {
+            fetch("/api/user/reader", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ reader: readerId }),
+            }).then(() => update({ preferredReader: readerId }));
+        }
     };
 
     return (

@@ -73,6 +73,8 @@
     "deckGothicVintage": "Готический Винтаж",
     "selected": "Выбрано",
     "selectDeck": "Выбрать",
-    "signInToSelectDeck": "Войдите, чтобы выбрать колоду"
+    "signInToSelectDeck": "Войдите, чтобы выбрать колоду",
+    "reader": "Гадалка",
+    "chooseReader": "Выбери Гадалку"
   }
 }

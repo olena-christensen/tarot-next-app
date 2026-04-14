@@ -5,15 +5,18 @@ import { useSession, signOut } from "next-auth/react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { type PlanId } from "@/lib/plans";
+import { type ReaderId } from "@/lib/readers";
 
 type UserProfileProps = {
   onClose?: () => void;
+  onOpenReaderSelection?: () => void;
 };
 
-export const UserProfile = ({ onClose }: UserProfileProps) => {
+export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps) => {
   const { data: session, update } = useSession();
   const t = useTranslations("ui");
   const tPlans = useTranslations("plans");
+  const tReaders = useTranslations("readers");
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -23,6 +26,7 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
   const [planId, setPlanId] = useState<PlanId | null>(null);
   const [deckId, setDeckId] = useState<string | null>(null);
+  const [readerId, setReaderId] = useState<ReaderId | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -54,6 +58,21 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
       }
     }
     loadPlan();
+  }, []);
+
+  useEffect(() => {
+    async function loadReader() {
+      try {
+        const res = await fetch("/api/user/reader");
+        if (res.ok) {
+          const data = await res.json();
+          setReaderId(data.reader as ReaderId);
+        }
+      } catch {
+        // silent — UI falls back to "—"
+      }
+    }
+    loadReader();
   }, []);
 
   useEffect(() => {
@@ -260,6 +279,24 @@ export const UserProfile = ({ onClose }: UserProfileProps) => {
           >
             {"→ " + t("chooseDeck")}
           </Link>
+        </span>
+      </div>
+      <div className="user-profile__field">
+        <span className="user-profile__label">{t("reader")}</span>
+        <span className="user-profile__value">
+          {readerId ? tReaders(`${readerId}.displayName`) : "—"}
+          {onOpenReaderSelection && (
+            <button
+              type="button"
+              className="user-profile__upgrade"
+              onClick={() => {
+                onClose?.();
+                onOpenReaderSelection();
+              }}
+            >
+              {"→ " + t("chooseReader")}
+            </button>
+          )}
         </span>
       </div>
       <div className="user-profile__field">

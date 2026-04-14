@@ -73,6 +73,8 @@
     "deckGothicVintage": "Gotisk Vintage",
     "selected": "Valgt",
     "selectDeck": "Velg",
-    "signInToSelectDeck": "Logg inn for å velge kortstokk"
+    "signInToSelectDeck": "Logg inn for å velge kortstokk",
+    "reader": "Leser",
+    "chooseReader": "Velg Din Leser"
   }
 }

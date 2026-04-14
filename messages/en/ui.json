@@ -80,6 +80,8 @@
     "summonReader": "Summon {name}",
     "yourReaderIs": "Your Reader",
     "changeYourReader": "Change Your Reader",
-    "upgradeToUnlock": "Upgrade to Unlock"
+    "upgradeToUnlock": "Upgrade to Unlock",
+    "reader": "Reader",
+    "chooseReader": "Choose Your Reader"
   }
 }
