@@ -122,104 +122,85 @@ export const OfferBlock = ({
                         <div className="offer-block__screen offer-block__screen--moon">
                             <div className="moon"></div>
                         </div>
-                        {isDeckRevealed ? (
-                            <div className="offer-block__screen offer-block__screen--cards">
-                                <div className="offer-block__screen-bg">
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion1/>
-                                        <Medallion2/>
-                                    </div>
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion3/>
-                                        <Medallion4/>
-                                    </div>
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion5/>
-                                        <Medallion6/>
-                                    </div>
+                        <div className="offer-block__screen offer-block__screen--cards">
+                            <div className="offer-block__screen-bg">
+                                <div className="offer-block__screen-bg-inner-wrap">
+                                    <Medallion1/>
+                                    <Medallion2/>
                                 </div>
-                                <div className="inner-wrap">
-                                    <div
-                                        className="center"
-                                        onClick={() => {
-                                            handleClick();
-                                        }}
-                                    >
-                                        <AnimatedCard
-                                            frontUrl="/decor-img/card.webp"
-                                            backUrl="/decor-img/card1.webp"
-                                            isDeckShaking={isDeckShaking}
-                                            isGlowing={!isDeckShaking && !state.isCardsModalOpen}
-                                            animation="cardTwistAnimation 3s infinite"
-                                        />
-                                        <div className="hand"><Hand/></div>
-                                    </div>
+                                <div className="offer-block__screen-bg-inner-wrap">
+                                    <Medallion3/>
+                                    <Medallion4/>
+                                </div>
+                                <div className="offer-block__screen-bg-inner-wrap">
+                                    <Medallion5/>
+                                    <Medallion6/>
                                 </div>
                             </div>
-                        ) : (
-                            <div className="offer-block__screen offer-block__screen--cards">
-                                <div className="offer-block__screen-bg">
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion1/>
-                                        <Medallion2/>
-                                    </div>
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion3/>
-                                        <Medallion4/>
-                                    </div>
-                                    <div className="offer-block__screen-bg-inner-wrap">
-                                        <Medallion5/>
-                                        <Medallion6/>
-                                    </div>
-                                </div>
-                                <div className="inner-wrap">
-                                    <div className="offer-block__reader"
-                                         style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
-                                    >
-                                        <div className="offer-block__reader-portrait" aria-hidden="true">
-                                            <span className="offer-block__reader-initial">
-                                                {messages?.readers
-                                                    ? tReader(`${state.selectedReader}.displayName`).charAt(0)
-                                                    : "V"}
-                                            </span>
-                                        </div>
-                                        <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
-                                        <h2 className="offer-block__reader-name">
+                            <div className={`inner-wrap inner-wrap--reader${isDeckRevealed ? " inner-wrap--hidden" : ""}`}>
+                                <div className="offer-block__reader"
+                                     style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
+                                >
+                                    <div className="offer-block__reader-portrait" aria-hidden="true">
+                                        <span className="offer-block__reader-initial">
                                             {messages?.readers
-                                                ? tReader(`${state.selectedReader}.displayName`)
-                                                : "Madame Vespera"}
-                                        </h2>
-                                        <p className="offer-block__reader-bio">
-                                            {messages?.readers
-                                                ? tReader(`${state.selectedReader}.tagline`)
-                                                : ""}
-                                        </p>
-                                        <div className="offer-block__reader-actions">
+                                                ? tReader(`${state.selectedReader}.displayName`).charAt(0)
+                                                : "V"}
+                                        </span>
+                                    </div>
+                                    <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
+                                    <h2 className="offer-block__reader-name">
+                                        {messages?.readers
+                                            ? tReader(`${state.selectedReader}.displayName`)
+                                            : "Madame Vespera"}
+                                    </h2>
+                                    <p className="offer-block__reader-bio">
+                                        {messages?.readers
+                                            ? tReader(`${state.selectedReader}.tagline`)
+                                            : ""}
+                                    </p>
+                                    <div className="offer-block__reader-actions">
+                                        <button
+                                            type="button"
+                                            className="offer-block__summon-btn"
+                                            onClick={handleSummon}
+                                        >
+                                            {t("summonReader", {
+                                                name: messages?.readers
+                                                    ? tReader(`${state.selectedReader}.displayName`)
+                                                    : "Madame Vespera"
+                                            })}
+                                        </button>
+                                        {session && messages?.readers && (
                                             <button
                                                 type="button"
-                                                className="offer-block__summon-btn"
-                                                onClick={handleSummon}
+                                                className="offer-block__change-btn"
+                                                onClick={() => setIsReaderModalOpen(true)}
                                             >
-                                                {t("summonReader", {
-                                                    name: messages?.readers
-                                                        ? tReader(`${state.selectedReader}.displayName`)
-                                                        : "Madame Vespera"
-                                                })}
+                                                {t("changeYourReader")}
                                             </button>
-                                            {session && messages?.readers && (
-                                                <button
-                                                    type="button"
-                                                    className="offer-block__change-btn"
-                                                    onClick={() => setIsReaderModalOpen(true)}
-                                                >
-                                                    {t("changeYourReader")}
-                                                </button>
-                                            )}
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
-                        )}
+                            <div className={`inner-wrap inner-wrap--deck${isDeckRevealed ? " inner-wrap--visible" : ""}`}>
+                                <div
+                                    className="center"
+                                    onClick={() => {
+                                        handleClick();
+                                    }}
+                                >
+                                    <AnimatedCard
+                                        frontUrl="/decor-img/card.webp"
+                                        backUrl="/decor-img/card1.webp"
+                                        isDeckShaking={isDeckShaking}
+                                        isGlowing={!isDeckShaking && !state.isCardsModalOpen}
+                                        animation="cardTwistAnimation 3s infinite"
+                                    />
+                                    <div className="hand"><Hand/></div>
+                                </div>
+                            </div>
+                        </div>
                         {messages?.readers && (
                             <Modal
                                 title={t("chooseYourReader")}
