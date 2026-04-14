@@ -74,6 +74,13 @@
     "selected": "Valgt",
     "selectDeck": "Velg",
     "signInToSelectDeck": "Logg inn for å velge kortstokk",
+    "chooseYourReader": "Velg Hvem Som Leser For Deg",
+    "readerSelectionSubtitle": "Tre lesere venter i mørket. De vil ikke presentere seg — du må velge.",
+    "hoverToLearn": "Hold over en leser for å lære deres natur.",
+    "summonReader": "Påkall {name}",
+    "yourReaderIs": "Din Leser",
+    "changeYourReader": "Bytt Leser",
+    "upgradeToUnlock": "Oppgrader for å Låse Opp",
     "reader": "Leser",
     "chooseReader": "Velg Din Leser"
   }
