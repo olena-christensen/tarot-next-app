@@ -172,48 +172,50 @@ export const OfferBlock = ({
                                         <Medallion6/>
                                     </div>
                                 </div>
-                                <div className="offer-block__reader"
-                                     style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
-                                >
-                                    <div className="offer-block__reader-portrait" aria-hidden="true">
-                                        <span className="offer-block__reader-initial">
+                                <div className="inner-wrap">
+                                    <div className="offer-block__reader"
+                                         style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
+                                    >
+                                        <div className="offer-block__reader-portrait" aria-hidden="true">
+                                            <span className="offer-block__reader-initial">
+                                                {messages?.readers
+                                                    ? tReader(`${state.selectedReader}.displayName`).charAt(0)
+                                                    : "V"}
+                                            </span>
+                                        </div>
+                                        <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
+                                        <h2 className="offer-block__reader-name">
                                             {messages?.readers
-                                                ? tReader(`${state.selectedReader}.displayName`).charAt(0)
-                                                : "V"}
-                                        </span>
-                                    </div>
-                                    <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
-                                    <h2 className="offer-block__reader-name">
-                                        {messages?.readers
-                                            ? tReader(`${state.selectedReader}.displayName`)
-                                            : "Madame Vespera"}
-                                    </h2>
-                                    <p className="offer-block__reader-bio">
-                                        {messages?.readers
-                                            ? tReader(`${state.selectedReader}.tagline`)
-                                            : ""}
-                                    </p>
-                                    <div className="offer-block__reader-actions">
-                                        <button
-                                            type="button"
-                                            className="offer-block__summon-btn"
-                                            onClick={handleSummon}
-                                        >
-                                            {t("summonReader", {
-                                                name: messages?.readers
-                                                    ? tReader(`${state.selectedReader}.displayName`)
-                                                    : "Madame Vespera"
-                                            })}
-                                        </button>
-                                        {session && messages?.readers && (
+                                                ? tReader(`${state.selectedReader}.displayName`)
+                                                : "Madame Vespera"}
+                                        </h2>
+                                        <p className="offer-block__reader-bio">
+                                            {messages?.readers
+                                                ? tReader(`${state.selectedReader}.tagline`)
+                                                : ""}
+                                        </p>
+                                        <div className="offer-block__reader-actions">
                                             <button
                                                 type="button"
-                                                className="offer-block__change-btn"
-                                                onClick={() => setIsReaderModalOpen(true)}
+                                                className="offer-block__summon-btn"
+                                                onClick={handleSummon}
                                             >
-                                                {t("changeYourReader")}
+                                                {t("summonReader", {
+                                                    name: messages?.readers
+                                                        ? tReader(`${state.selectedReader}.displayName`)
+                                                        : "Madame Vespera"
+                                                })}
                                             </button>
-                                        )}
+                                            {session && messages?.readers && (
+                                                <button
+                                                    type="button"
+                                                    className="offer-block__change-btn"
+                                                    onClick={() => setIsReaderModalOpen(true)}
+                                                >
+                                                    {t("changeYourReader")}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

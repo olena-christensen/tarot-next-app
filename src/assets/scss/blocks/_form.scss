@@ -17,19 +17,19 @@
     height: 50px;
     font-size: 1.1rem;
     font-weight: 200;
-    font-family: $font-family;
-    color: $text-color;
-    background-color: $form-input-bg;
-    border: $border;
-    border-radius: $border-radius;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--input-bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
 
     &:focus {
-      border: $border;
+      border: var(--border);
       outline: none;
     }
 
     &:-internal-autofill-selected {
-      background-color: $form-input-bg;
+      background-color: var(--input-bg);
     }
   }
 
@@ -56,21 +56,21 @@
 }
 
 .form__error {
-  color: #e74c3c;
+  color: var(--error);
   font-size: 0.9rem;
   text-align: center;
 }
 
 .form__btn--google {
   background-color: transparent;
-  border: $border;
-  color: $text-color;
+  border: var(--border);
+  color: var(--text-color);
   font-size: 0.9rem;
 }
 
 .form__toggle {
   margin-top: 1rem;
-  color: $primary;
+  color: var(--primary);
   cursor: pointer;
   text-align: center;
   font-size: 0.9rem;

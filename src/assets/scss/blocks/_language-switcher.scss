@@ -9,12 +9,12 @@
     border: none;
     cursor: pointer;
     padding: 6px;
-    color: $primary;
+    color: var(--primary);
 
     svg {
       width: 20px;
       height: 20px;
-      stroke: $primary;
+      stroke: var(--primary);
 
       &:last-child {
         width: 14px;
@@ -30,9 +30,9 @@
     margin-top: 8px;
     padding: 4px 0;
     list-style: none;
-    background: $dark-bg;
-    border: $border;
-    border-radius: $border-radius;
+    background: var(--bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
     min-width: 120px;
     z-index: 200;
   }
@@ -43,10 +43,10 @@
     padding: 8px 16px;
     background: transparent;
     border: none;
-    color: $primary;
-    font-family: $font-family;
+    color: var(--primary);
+    font-family: var(--font-family);
     font-size: 0.85rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     text-align: left;
     cursor: pointer;
     white-space: nowrap;

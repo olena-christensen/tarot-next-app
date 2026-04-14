@@ -1,7 +1,7 @@
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,7 +31,7 @@
     right: 2rem;
     background: none;
     border: none;
-    color: $primary;
+    color: var(--primary);
     cursor: pointer;
 
     svg {
@@ -73,8 +73,8 @@
     width: 740px;
     height: auto;
     max-height: 90dvh;
-    border: $border;
-    border-radius: $border-radius;
+    border: var(--border);
+    border-radius: var(--border-radius);
 
     &--wide {
       max-width: 1150px;

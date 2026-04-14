@@ -11,9 +11,9 @@
 //   3. The selection UI and reading generator pick it up automatically.
 
 export const READERS = {
-  vespera:  { id: "vespera",  aura: "#7a1f3d", avatar: "/readers/vespera.webp" },
-  crow:     { id: "crow",     aura: "#c8c4b8", avatar: "/readers/crow.webp" },
-  reginald: { id: "reginald", aura: "#6b7a3d", avatar: "/readers/reginald.webp" },
+  vespera:  { id: "vespera",  aura: "var(--text-color)", avatar: "/readers/vespera.webp" },
+  crow:     { id: "crow",     aura: "var(--text-color)", avatar: "/readers/crow.webp" },
+  reginald: { id: "reginald", aura: "var(--text-color)", avatar: "/readers/reginald.webp" },
 } as const;
 
 export type ReaderId = keyof typeof READERS;

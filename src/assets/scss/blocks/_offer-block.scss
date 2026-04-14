@@ -14,7 +14,7 @@
     height: 80%;
     background-image: linear-gradient(
                     to top,
-                    $dark-bg 0%,
+                    var(--bg) 0%,
                     rgba(9, 9, 9, 0.92) 13%,
                     rgba(9, 9, 9, 0) 96%,
     );
@@ -109,7 +109,7 @@
         width: 130px;
         height: 103px;
         path {
-          fill: $primary;
+          fill: var(--primary);
         }
       }
     }
@@ -175,7 +175,6 @@
   }
 
   .offer-block__reader {
-    position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -183,9 +182,6 @@
     gap: 20px;
     padding: 0 24px;
     text-align: center;
-    opacity: 0;
-    animation: offerBlockCardBlockAnimation 5s forwards;
-    animation-delay: 8s;
   }
 
   .offer-block__reader-portrait {
@@ -194,44 +190,44 @@
     border-radius: 50%;
     background: radial-gradient(
       circle at 50% 40%,
-      var(--reader-accent, #{$primary}),
-      $dark-bg 80%
+      var(--reader-accent, var(--primary)),
+      var(--bg) 80%
     );
-    border: 1px solid var(--reader-accent, #{$primary});
+    border: 1px solid var(--reader-accent, var(--primary));
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .offer-block__reader-initial {
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 2.75rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     line-height: 1;
-    color: $primary;
+    color: var(--primary);
   }
 
   .offer-block__reader-label {
     font-size: 0.8rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.55;
     margin: 0;
   }
 
   .offer-block__reader-name {
     font-size: 1.6rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.04em;
-    color: $primary;
+    color: var(--primary);
     margin: 0;
   }
 
   .offer-block__reader-bio {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.7;
     font-style: italic;
     margin: 0;
@@ -249,13 +245,13 @@
   .offer-block__summon-btn {
     appearance: none;
     background: transparent;
-    color: var(--reader-accent, #{$primary});
-    border: 1px solid var(--reader-accent, #{$primary});
-    border-radius: $border-radius;
+    color: var(--reader-accent, var(--primary));
+    border: 1px solid var(--reader-accent, var(--primary));
+    border-radius: var(--border-radius);
     padding: 14px 32px;
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 0.9rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     cursor: pointer;
@@ -267,9 +263,9 @@
 
     &:hover,
     &:focus-visible {
-      color: $primary;
+      color: var(--primary);
       background: rgba(250, 225, 163, 0.06);
-      box-shadow: 0 0 24px -4px var(--reader-accent, #{$primary});
+      box-shadow: 0 0 24px -4px var(--reader-accent, var(--primary));
       letter-spacing: 0.22em;
       outline: none;
     }
@@ -283,11 +279,11 @@
     appearance: none;
     background: transparent;
     border: none;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.5;
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 0.8rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
@@ -327,7 +323,7 @@
       opacity: 0.3;
 
       path {
-        fill: #443523;
+        fill: var(--medallion-fill);
       }
     }
   }
@@ -350,7 +346,7 @@
     &::before {
       background-image: linear-gradient(
                       to top,
-                      $dark-bg 0%,
+                      var(--bg) 0%,
                       rgba(9, 9, 9, 0.92) 13%,
                       rgba(9, 9, 9, 0.5) 30%,
                       rgba(9, 9, 9, 0) 96%,

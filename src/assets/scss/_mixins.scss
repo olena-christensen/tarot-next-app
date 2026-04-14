@@ -65,5 +65,5 @@
 
 @mixin border-dashed {
   border: 1px solid !important;
-  border-image: repeating-linear-gradient(45deg, $primary, transparent, $primary 10px) 10 !important;
+  border-image: repeating-linear-gradient(45deg, var(--primary), transparent, var(--primary) 10px) 10 !important;
 }

@@ -16,7 +16,7 @@
   }
   to {
     opacity: 1;
-    fill: rgba(250, 225, 163, 0.75);
+    fill: var(--text-color);
     transform: scale(1);
   }
 }
@@ -43,7 +43,7 @@
   }
   to {
     opacity: 1;
-    fill: rgba(250, 225, 163, 0.75);
+    fill: var(--text-color);
     transform: scale(1.03);
   }
 }

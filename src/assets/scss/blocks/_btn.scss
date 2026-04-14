@@ -1,11 +1,11 @@
 .btn {
   padding: 1rem 2.25rem;
-  color: $text-color;
-  font-weight: $general-font-weight;
+  color: var(--text-color);
+  font-weight: var(--font-weight);
   line-height: 1;
   text-transform: uppercase;
-  border: $border;
-  border-radius: $border-radius;
+  border: var(--border);
+  border-radius: var(--border-radius);
   background-color: transparent;
   box-shadow: none;
   transition: all 0.5s ease-in-out;
@@ -13,7 +13,7 @@
 
 .btn-try-again {
   padding: 2rem;
-  border: $border;
+  border: var(--border);
   border-style: dashed;
   background-image: url("/decor-img/hand-with-cards.png");
   background-repeat: no-repeat;

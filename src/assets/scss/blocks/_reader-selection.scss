@@ -4,16 +4,16 @@
 // each card carries its own --card-accent for resting-state tinting.
 
 .reader-selection {
-  --reader-accent: #{$primary};
+  --reader-accent: var(--primary);
 
   position: relative;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 60px 24px 40px;
-  color: $primary;
-  font-family: $font-family;
-  font-weight: $general-font-weight;
+  color: var(--primary);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,16 +41,16 @@
 
   &__title {
     font-size: 2.25rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.04em;
     margin: 0 0 16px;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__subtitle {
     font-size: 1rem;
     line-height: 1.6;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.7;
     margin: 0;
     font-style: italic;
@@ -65,13 +65,13 @@
   }
 
   &__card {
-    --card-accent: #{$primary};
+    --card-accent: var(--primary);
 
     position: relative;
     appearance: none;
     background: rgba(9, 9, 9, 0.55);
-    border: $border;
-    border-radius: $border-radius;
+    border: var(--border);
+    border-radius: var(--border-radius);
     padding: 0;
     cursor: pointer;
     color: inherit;
@@ -140,7 +140,7 @@
     background: radial-gradient(
       circle at 50% 40%,
       var(--card-accent),
-      $dark-bg 80%
+      var(--bg) 80%
     );
     border: 1px solid var(--card-accent);
     display: flex;
@@ -150,11 +150,11 @@
   }
 
   &__portrait-initial {
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 2.5rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     line-height: 1;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__meta {
@@ -173,17 +173,17 @@
 
   &__card-name {
     font-size: 1.35rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.04em;
     margin: 0;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__card-tagline {
     margin-top: auto;
     font-size: 0.92rem;
     line-height: 1.5;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.75;
     text-align: center;
     font-style: italic;
@@ -216,7 +216,7 @@
   &__bio {
     font-size: 1rem;
     line-height: 1.65;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.85;
     margin: 0;
     font-style: italic;
@@ -224,7 +224,7 @@
 
   &__placeholder {
     font-size: 0.95rem;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.5;
     margin: 0;
     font-style: italic;
@@ -235,11 +235,11 @@
     background: transparent;
     color: var(--reader-accent);
     border: 1px solid var(--reader-accent);
-    border-radius: $border-radius;
+    border-radius: var(--border-radius);
     padding: 14px 32px;
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 0.9rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     cursor: pointer;
@@ -251,7 +251,7 @@
 
     &:hover,
     &:focus-visible {
-      color: $primary;
+      color: var(--primary);
       background: rgba(250, 225, 163, 0.06);
       box-shadow: 0 0 24px -4px var(--reader-accent);
       letter-spacing: 0.22em;

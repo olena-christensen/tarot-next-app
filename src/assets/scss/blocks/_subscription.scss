@@ -1,10 +1,10 @@
 .subscription {
   position: relative;
   padding: 160px 0 100px;
-  background-color: $dark-bg;
-  color: $primary;
-  font-family: $font-family;
-  font-weight: $general-font-weight;
+  background-color: var(--bg);
+  color: var(--primary);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
 
   .container {
     position: relative;
@@ -21,18 +21,18 @@
 
   &__title {
     font-size: 2.5rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.04em;
     margin: 0 0 16px;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__subtitle {
     font-size: 1.05rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     max-width: 560px;
     margin: 0 auto;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.85;
   }
 
@@ -47,13 +47,13 @@
     display: flex;
     flex-direction: column;
     background: rgba(9, 9, 9, 0.6);
-    border: $border;
-    border-radius: $border-radius;
+    border: var(--border);
+    border-radius: var(--border-radius);
     padding: 28px;
     transition: border-color 0.2s ease;
 
     &--popular {
-      border: 1px solid $primary;
+      border: 1px solid var(--primary);
     }
   }
 
@@ -61,31 +61,31 @@
     position: absolute;
     top: -12px;
     right: 20px;
-    background: $dark-bg;
-    color: $primary;
-    border: 1px solid $primary;
-    border-radius: $border-radius;
+    background: var(--bg);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
     font-size: 0.7rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 4px 10px;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
   }
 
   &__card-name {
     font-size: 1.25rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     margin: 0 0 12px;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__card-price {
     font-size: 2.2rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     margin-bottom: 24px;
-    color: $primary;
+    color: var(--primary);
   }
 
   &__card-interval {
@@ -105,26 +105,26 @@
     position: relative;
     padding: 6px 0 6px 22px;
     font-size: 0.95rem;
-    font-weight: $general-font-weight;
-    color: $primary;
+    font-weight: var(--font-weight);
+    color: var(--primary);
 
     &::before {
       content: "✓";
       position: absolute;
       left: 0;
-      color: $primary;
+      color: var(--primary);
     }
   }
 
   &__cta {
     background: transparent;
-    color: $primary;
-    border: 1px solid $primary;
-    border-radius: $border-radius;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
     padding: 12px 20px;
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 0.95rem;
-    font-weight: $general-font-weight;
+    font-weight: var(--font-weight);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
