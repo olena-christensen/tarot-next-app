@@ -60,9 +60,9 @@ src/
     navigation.ts      # Locale-aware Link, useRouter, usePathname
   middleware.ts        # next-intl locale detection + routing
   components/          # AnimatedCard, Tarot, Login, LoginForm, Modal,
-                       # UserProfile, MainMenu, Header, Footer,
-                       # PageShell, LanguageSwitcher, DeckSelector,
-                       # ReaderSelection, etc.
+                       # MysticButton, UserProfile, MainMenu, Header,
+                       # Footer, PageShell, LanguageSwitcher,
+                       # DeckSelector, ReaderSelection, etc.
   lib/
     auth.ts            # NextAuth config (Credentials + Google)
     prisma.ts          # Prisma client singleton
@@ -113,7 +113,8 @@ Required (see `.env.example`):
 All colors, typography, and border values are defined as CSS custom properties in `src/assets/scss/_variables.scss` using a two-layer system:
 
 - **Palette layer:** Raw color values (`--gold`, `--primary`, `--dark`, `--black`, `--brown`, `--grey`, `--grey-dark`, `--red`, `--green`).
-- **Semantic layer:** Usage-specific variables that reference the palette (`--text-color`, `--bg`, `--border-color`, `--input-bg`, `--overlay`, `--scrollbar-thumb`, `--medallion-fill`, `--error`, `--success`, `--font-family`, `--font-weight`, `--border-radius`, `--border`).
+- **Semantic layer:** Usage-specific variables that reference the palette (`--text-color`, `--text-soft`, `--text-faint`, `--bg`, `--border-color`, `--input-bg`, `--overlay`, `--scrollbar-thumb`, `--medallion-fill`, `--error`, `--success`, `--font-family`, `--font-weight`, `--border-radius`, `--border`).
+- **Text color hierarchy:** `--text-soft` (0.9 alpha) for near-primary text, `--text-faint` (0.7 alpha) for secondary/muted text. **Never use `opacity` to vary text color** — use these variables instead.
 
 **There are NO SCSS variables for colors/typography/borders.** Everything uses `var(--xxx)` directly. The only SCSS variables that exist are mixin parameters.
 
@@ -168,9 +169,11 @@ All colors, typography, and border values are defined as CSS custom properties i
 - **Main page flow:** OfferBlock shows the current reader (avatar, name, tagline) with "Summon [Name]" and "Change your reader" buttons. "Summon" cross-fades from reader to deck (0.8s CSS transition via `inner-wrap--reader`/`inner-wrap--deck` classes); "Change" opens an overlay modal with all 3 readers. Both reader and deck live inside the same `offer-block__screen--cards` container — no conditional rendering, just visibility toggling.
 - **Subscription gating:** In the "Change your reader" modal, non-default readers have their summon button replaced with "Upgrade to unlock" for free/anonymous users. Only subscribers can pick a different reader.
 - `Tarot.tsx` has no reader selection logic — it just uses `state.selectedReader` as-is.
-- **Post-reading actions:** After the reading modal is dismissed, two buttons appear side by side: "Unveil Another Fate" (reshuffles cards, stays in tarot modal) and "Back to the Sanctum" (closes everything, returns to main page with reader visible). Translation keys: `unveilAnotherFate`, `backToSanctum`.
+- **Post-reading actions:** After the reading modal is dismissed, two `<MysticButton>` components appear side by side: "Unveil Another Fate" (reshuffles cards, stays in tarot modal) and "Back to the Sanctum" (fades out the cards screen over 0.5s, returns to main page with reader visible). Translation keys: `unveilAnotherFate`, `backToSanctum`.
+- **Selecting a reader from the modal** closes the modal AND reveals the deck (same as clicking "Summon" on the main page).
+- **Deck dismisses when cards modal opens** — not when it closes. This prevents a flash of the deck when returning to the main page.
 - `generateReading()` accepts an optional `readerId` param. If that reader's block exists in the messages, it uses the reader's voice templates; otherwise falls back to `readingTemplates`.
-- Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon CTA, used inside a Modal overlay). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties.
+- Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon `<MysticButton>`, used inside a Modal overlay). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties (set inline by React, no CSS defaults).
 - **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales show hardcoded defaults for the reader presentation and hide the "Change" button.
 - **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
 
@@ -196,7 +199,7 @@ After the user clicks the deck (which appears after clicking "Summon" on the mai
 2. Last card clicked → flip animation plays (2s)
 3. After flip completes (2s timeout) → `showLoader` = true, text fades out (`tarot__title--hidden`), ouroboros SVG fades in (`tarot__loader` with `tarotLoaderFadeIn`)
 4. 3 more seconds (5s total) → `isPredictionReady` = true, reading modal appears, loader fades out (`tarot__loader--hidden`)
-5. User closes reading modal → two buttons appear in `tarot__post-actions` (flex row): "Unveil Another Fate" reshuffles and resets cards in-place; "Back to the Sanctum" calls `handleClose()` which resets all state and returns to main page with reader
+5. User closes reading modal → two `<MysticButton>` components appear in `tarot__post-actions` (flex row): "Unveil Another Fate" reshuffles and resets cards in-place; "Back to the Sanctum" triggers a 0.5s fade-out (`tarot-modal--closing` class + `tarotModalFadeOut` keyframe) before unmounting and returning to main page with reader
 
 **Key:** The loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component (which is full-screen `position: fixed`).
 
