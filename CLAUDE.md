@@ -7,7 +7,7 @@
 - **Prisma version:** v6 — DO NOT UPGRADE
 - **Auth:** NextAuth v4 with Prisma adapter
 - **Framework:** Next.js 14, App Router, React 18, TypeScript
-- **Styling:** SCSS (`src/assets/scss/`)
+- **Styling:** SCSS (`src/assets/scss/`), CSS custom properties (two-layer system in `_variables.scss`)
 
 ## Rules
 
@@ -108,6 +108,19 @@ Required (see `.env.example`):
 - **Reading generation:** `src/lib/generateReading.ts` takes translated messages, card IDs, and an optional `readerId` to produce locale-aware readings in the chosen reader's voice. Falls back to `readingTemplates` when no reader block exists.
 - **Russian translations are gender-neutral.** Russian past-tense verbs require gender agreement, so all `ru` reading texts avoid gendered verb forms with "ты" — using present tense, impersonal constructions, infinitives, and passive/reflexive forms instead. Preserve this when editing `messages/ru/readings.json`.
 
+## CSS Variables
+
+All colors, typography, and border values are defined as CSS custom properties in `src/assets/scss/_variables.scss` using a two-layer system:
+
+- **Palette layer:** Raw color values (`--gold`, `--primary`, `--dark`, `--black`, `--brown`, `--grey`, `--grey-dark`, `--red`, `--green`).
+- **Semantic layer:** Usage-specific variables that reference the palette (`--text-color`, `--bg`, `--border-color`, `--input-bg`, `--overlay`, `--scrollbar-thumb`, `--medallion-fill`, `--error`, `--success`, `--font-family`, `--font-weight`, `--border-radius`, `--border`).
+
+**There are NO SCSS variables for colors/typography/borders.** Everything uses `var(--xxx)` directly. The only SCSS variables that exist are mixin parameters.
+
+- **Never hardcode color values** in SCSS files — always use the CSS custom properties.
+- **Never introduce new colors** without explicit approval. Use existing palette variables.
+- When you need an opacity variant of a palette color, use `rgba(250, 225, 163, 0.XX)` with the raw values (CSS `var()` can't be decomposed inside `rgba()`).
+
 ## Gotchas
 
 - **Prisma schema lives at `src/generated/prisma/schema.prisma`**, not the conventional `prisma/` directory. This is set via the `prisma.schema` field in `package.json`. Don't move it.
@@ -149,12 +162,13 @@ Required (see `.env.example`):
 ## Reader Selection
 
 - **Available readers:** Madame Vespera (default), The Crow, Reginald Ash. Each reader is a "voice" persona that reshapes the reading's intro, bridges, closings, and card prefixes.
-- Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (CSS color for theming), and `avatar` path (placeholder — images don't exist yet).
+- Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (currently all use `var(--text-color)` — no per-reader colors without approval), and `avatar` path (placeholder — images don't exist yet).
 - Display strings (name, title, tagline, bio) and voice templates (intros, bridges, futureBridges, closings, pastPrefix/presentPrefix/futurePrefix) live in `messages/{locale}/readings.json` under `"readers.{id}"`. The registry file has no text.
 - **Reader selection is session-scoped, not persisted.** `AppProvider` holds `selectedReader: ReaderId` in state (non-nullable, defaults to `DEFAULT_READER`). The reader persists across readings within the session — it is NOT reset when the tarot modal closes.
-- **Main page flow:** OfferBlock shows the current reader (avatar, name, tagline) with "Summon [Name]" and "Change your reader" buttons. "Summon" reveals the deck; "Change" opens an overlay modal with all 3 readers. The deck is hidden until summoned.
+- **Main page flow:** OfferBlock shows the current reader (avatar, name, tagline) with "Summon [Name]" and "Change your reader" buttons. "Summon" cross-fades from reader to deck (0.8s CSS transition via `inner-wrap--reader`/`inner-wrap--deck` classes); "Change" opens an overlay modal with all 3 readers. Both reader and deck live inside the same `offer-block__screen--cards` container — no conditional rendering, just visibility toggling.
 - **Subscription gating:** In the "Change your reader" modal, non-default readers have their summon button replaced with "Upgrade to unlock" for free/anonymous users. Only subscribers can pick a different reader.
 - `Tarot.tsx` has no reader selection logic — it just uses `state.selectedReader` as-is.
+- **Post-reading actions:** After the reading modal is dismissed, two buttons appear side by side: "Unveil Another Fate" (reshuffles cards, stays in tarot modal) and "Back to the Sanctum" (closes everything, returns to main page with reader visible). Translation keys: `unveilAnotherFate`, `backToSanctum`.
 - `generateReading()` accepts an optional `readerId` param. If that reader's block exists in the messages, it uses the reader's voice templates; otherwise falls back to `readingTemplates`.
 - Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon CTA, used inside a Modal overlay). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties.
 - **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales show hardcoded defaults for the reader presentation and hide the "Change" button.
@@ -182,6 +196,7 @@ After the user clicks the deck (which appears after clicking "Summon" on the mai
 2. Last card clicked → flip animation plays (2s)
 3. After flip completes (2s timeout) → `showLoader` = true, text fades out (`tarot__title--hidden`), ouroboros SVG fades in (`tarot__loader` with `tarotLoaderFadeIn`)
 4. 3 more seconds (5s total) → `isPredictionReady` = true, reading modal appears, loader fades out (`tarot__loader--hidden`)
+5. User closes reading modal → two buttons appear in `tarot__post-actions` (flex row): "Unveil Another Fate" reshuffles and resets cards in-place; "Back to the Sanctum" calls `handleClose()` which resets all state and returns to main page with reader
 
 **Key:** The loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component (which is full-screen `position: fixed`).
 
