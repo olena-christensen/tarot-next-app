@@ -54,6 +54,20 @@ export const Tarot = () => {
     };
 
     const handleRetry = () => {
+        setState(prevState => ({
+            ...prevState,
+            isPredictionReady: false,
+            response: '',
+            resetFlipped: true,
+            chosenCards: pickRandomCards({ cards: state.tarots, count: 3 }),
+            shakeCount: prevState.shakeCount + 1,
+        }));
+        setFlippedCards([false, false, false]);
+        setModalDismissed(false);
+        setShowLoader(false);
+    };
+
+    const handleBackToSanctum = () => {
         handleClose();
     };
 
@@ -107,13 +121,21 @@ export const Tarot = () => {
                     </div>
                     <div className="tarot__action-area">
                         {modalDismissed ? (
-                            <button
-                                className="btn btn-try-again border-dashed tarot__revoke-btn"
-                                onClick={handleRetry}
-                                disabled={state.isResponseLoading}
-                            >
-                                {t("revokeAndRetry")}
-                            </button>
+                            <div className="tarot__post-actions">
+                                <button
+                                    className="btn btn-try-again border-dashed tarot__revoke-btn"
+                                    onClick={handleRetry}
+                                    disabled={state.isResponseLoading}
+                                >
+                                    {t("unveilAnotherFate")}
+                                </button>
+                                <button
+                                    className="btn btn-try-again border-dashed tarot__sanctum-btn"
+                                    onClick={handleBackToSanctum}
+                                >
+                                    {t("backToSanctum")}
+                                </button>
+                            </div>
                         ) : (
                             <>
                                 <h2 className={`tarot__title title${showLoader ? " tarot__title--hidden" : ""}`}>
