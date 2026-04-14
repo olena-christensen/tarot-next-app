@@ -3,6 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import { useTranslations } from "next-intl";
 import { READERS, READER_IDS, DEFAULT_READER, type ReaderId } from "@/lib/readers";
+import { MysticButton } from "@/components/MysticButton";
 
 interface ReaderSelectionProps {
   /** Called when the user commits to a reader. */
@@ -59,13 +60,6 @@ export const ReaderSelection = ({
       }
       data-has-focus={focusedReader ? "true" : "false"}
     >
-      <header className="reader-selection__header">
-        <h1 className="reader-selection__title">{t("chooseYourReader")}</h1>
-        <p className="reader-selection__subtitle">
-          {t("readerSelectionSubtitle")}
-        </p>
-      </header>
-
       <div
         className="reader-selection__deck"
         role="radiogroup"
@@ -127,17 +121,15 @@ export const ReaderSelection = ({
             <p className="reader-selection__bio">
               {tReader(`${focused}.bio`)}
             </p>
-            <button
+            <MysticButton
               type="button"
-              className={`reader-selection__summon-btn${
-                isLocked(focused!) ? " reader-selection__summon-btn--locked" : ""
-              }`}
+              locked={isLocked(focused!)}
               onClick={handleSummon}
             >
               {isLocked(focused!)
                 ? t("upgradeToUnlock")
                 : t("summonReader", { name: tReader(`${focused}.displayName`) })}
-            </button>
+            </MysticButton>
           </>
         ) : (
           <p className="reader-selection__placeholder">{t("hoverToLearn")}</p>

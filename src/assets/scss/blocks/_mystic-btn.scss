@@ -1,0 +1,43 @@
+.mystic-btn {
+  padding: 2rem;
+  font-size: 26px;
+  font-weight: var(--font-weight);
+  font-family: var(--font-family);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-color);
+  background-color: transparent;
+  background-image: url("/decor-img/hand-with-cards.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  border: var(--border);
+  border-style: dashed;
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+
+  &:hover {
+    color: var(--text-soft);
+    transform: scale(0.99);
+    border-color: rgba(250, 225, 163, 0.65);
+    border-image: repeating-linear-gradient(
+      45deg,
+      rgba(250, 225, 163, 0.65),
+      transparent,
+      rgba(250, 225, 163, 0.65) 10px
+    ) 10;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--locked {
+    border-style: dashed;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

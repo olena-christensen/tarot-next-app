@@ -9,6 +9,7 @@ import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
 import LoaderSvg from "@/assets/svg/ouroboros.svg";
 import {useAppContext} from "@/AppProvider";
+import {MysticButton} from "@/components/MysticButton";
 import {pickRandomCards} from "@/utils";
 import Footer from "@/components/Footer";
 
@@ -122,19 +123,15 @@ export const Tarot = () => {
                     <div className="tarot__action-area">
                         {modalDismissed ? (
                             <div className="tarot__post-actions">
-                                <button
-                                    className="btn btn-try-again border-dashed tarot__revoke-btn"
+                                <MysticButton
                                     onClick={handleRetry}
                                     disabled={state.isResponseLoading}
                                 >
                                     {t("unveilAnotherFate")}
-                                </button>
-                                <button
-                                    className="btn btn-try-again border-dashed tarot__sanctum-btn"
-                                    onClick={handleBackToSanctum}
-                                >
+                                </MysticButton>
+                                <MysticButton onClick={handleBackToSanctum}>
                                     {t("backToSanctum")}
-                                </button>
+                                </MysticButton>
                             </div>
                         ) : (
                             <>
