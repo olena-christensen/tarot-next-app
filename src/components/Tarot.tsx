@@ -19,6 +19,7 @@ export const Tarot = () => {
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
     const allFlipped = flippedCards.every(card => card);
 
     const chosenCards = state.chosenCards;
@@ -41,17 +42,21 @@ export const Tarot = () => {
     }
 
     const handleClose = () => {
-        setState(prevState => ({
-            ...prevState,
-            isCardsModalOpen: false,
-            chosenCards: [],
-            isPredictionReady: false,
-            response: '',
-            resetFlipped: true,
-        }));
-        setFlippedCards([false, false, false]);
-        setModalDismissed(false);
-        setShowLoader(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setState(prevState => ({
+                ...prevState,
+                isCardsModalOpen: false,
+                chosenCards: [],
+                isPredictionReady: false,
+                response: '',
+                resetFlipped: true,
+            }));
+            setFlippedCards([false, false, false]);
+            setModalDismissed(false);
+            setShowLoader(false);
+            setIsClosing(false);
+        }, 500);
     };
 
     const handleRetry = () => {
@@ -110,7 +115,7 @@ export const Tarot = () => {
     if (!state.isCardsModalOpen) return null;
 
     return (
-        <div className="tarot-modal">
+        <div className={`tarot-modal${isClosing ? " tarot-modal--closing" : ""}`}>
             <div className="tarot-modal__inner">
                 <div className="tarot-modal__bg">
                     <Medallion3/>

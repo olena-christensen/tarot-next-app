@@ -70,7 +70,7 @@ export const OfferBlock = ({
     }, [session]);
 
     useEffect(() => {
-        if (!state.isCardsModalOpen && isDeckRevealed) {
+        if (state.isCardsModalOpen && isDeckRevealed) {
             setIsDeckRevealed(false);
         }
     }, [state.isCardsModalOpen]);
@@ -106,6 +106,7 @@ export const OfferBlock = ({
     const handleReaderSelect = (readerId: typeof state.selectedReader) => {
         setState(prev => ({ ...prev, selectedReader: readerId }));
         setIsReaderModalOpen(false);
+        setIsDeckRevealed(true);
     };
 
     return (
