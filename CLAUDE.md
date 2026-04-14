@@ -108,6 +108,7 @@ Required (see `.env.example`):
 - **Plan names and features** are no longer in `plans.ts` — they live in `messages/{locale}/plans.json`. `plans.ts` only keeps `id`, `priceLabel`, `interval`.
 - **Reading generation:** `src/lib/generateReading.ts` takes translated messages, card IDs, and an optional `readerId` to produce locale-aware readings in the chosen reader's voice. Falls back to `readingTemplates` when no reader block exists.
 - **Russian translations are gender-neutral.** Russian past-tense verbs require gender agreement, so all `ru` reading texts avoid gendered verb forms with "ты" — using present tense, impersonal constructions, infinitives, and passive/reflexive forms instead. Preserve this when editing `messages/ru/readings.json`.
+- **Russian UI uses formal "вы" (not "ты").** All UI strings in `messages/ru/ui.json` must address the user formally. Reader voice lines (inside `readers` block in `readings.json`) are in-character and may use "ты" at the reader's discretion.
 
 ## CSS Variables
 
@@ -179,7 +180,7 @@ All colors, typography, and border values are defined as CSS custom properties i
 - `generateReading()` accepts an optional `readerId` param. If that reader's block exists in the messages, it uses the reader's voice templates; otherwise falls back to `readingTemplates`.
 - Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon `<MysticButton>`). Wrapped by `src/components/ReaderSelectionModal.tsx` (self-contained: handles modal, DB persist, session update, AppProvider sync). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties (set inline by React, no CSS defaults).
 - UserProfile shows current reader name with a "→ Choose Your Reader" button that closes the profile modal and opens the reader selection modal. Both `page.tsx` and `PageShell.tsx` wire up the `ReaderSelectionModal`.
-- **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales show hardcoded defaults for the reader presentation and hide the "Change" button.
+- **All three locales have reader translations.** English, Norwegian, and Russian `readings.json` files all have a `readers` block and corresponding UI keys in `ui.json`. Russian reader and UI translations need polish — quality is rough.
 - **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
 
 ## Animations
