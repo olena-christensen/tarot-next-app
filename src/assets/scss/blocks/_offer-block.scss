@@ -14,7 +14,7 @@
     height: 80%;
     background-image: linear-gradient(
                     to top,
-                    $dark-bg 0%,
+                    var(--bg) 0%,
                     rgba(9, 9, 9, 0.92) 13%,
                     rgba(9, 9, 9, 0) 96%,
     );
@@ -70,6 +70,29 @@
       width: 100%;
       height: 70%;
       transform: translate(-50%, 0);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .inner-wrap--reader {
+      opacity: 1;
+
+      &.inner-wrap--hidden {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.95);
+        pointer-events: none;
+      }
+    }
+
+    .inner-wrap--deck {
+      opacity: 0;
+      transform: translate(-50%, 0) scale(1.05);
+      pointer-events: none;
+
+      &.inner-wrap--visible {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+        pointer-events: auto;
+      }
     }
 
     .center {
@@ -109,7 +132,7 @@
         width: 130px;
         height: 103px;
         path {
-          fill: $primary;
+          fill: var(--primary);
         }
       }
     }
@@ -167,9 +190,134 @@
     .offer-block__title,
     .moon,
     .offer-block__screen--cards,
+    .offer-block__reader,
     .smoke-animation {
       animation-duration: 0s !important;
       animation-delay: 0s !important;
+    }
+  }
+
+  .offer-block__reader {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .offer-block__reader-portrait {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 40%,
+      var(--reader-accent, var(--primary)),
+      var(--bg) 80%
+    );
+    border: 1px solid var(--reader-accent, var(--primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offer-block__reader-initial {
+    font-family: var(--font-family);
+    font-size: 2.75rem;
+    font-weight: var(--font-weight);
+    line-height: 1;
+    color: var(--primary);
+  }
+
+  .offer-block__reader-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary);
+    opacity: 0.55;
+    margin: 0;
+  }
+
+  .offer-block__reader-name {
+    font-size: 1.6rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.04em;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .offer-block__reader-bio {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--primary);
+    opacity: 0.7;
+    font-style: italic;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .offer-block__reader-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .offer-block__summon-btn {
+    appearance: none;
+    background: transparent;
+    color: var(--reader-accent, var(--primary));
+    border: 1px solid var(--reader-accent, var(--primary));
+    border-radius: var(--border-radius);
+    padding: 14px 32px;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      box-shadow 0.25s ease,
+      letter-spacing 0.25s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--primary);
+      background: rgba(250, 225, 163, 0.06);
+      box-shadow: 0 0 24px -4px var(--reader-accent, var(--primary));
+      letter-spacing: 0.22em;
+      outline: none;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  .offer-block__change-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    opacity: 0.5;
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.85;
+      outline: none;
     }
   }
 
@@ -198,7 +346,7 @@
       opacity: 0.3;
 
       path {
-        fill: #443523;
+        fill: var(--medallion-fill);
       }
     }
   }
@@ -221,7 +369,7 @@
     &::before {
       background-image: linear-gradient(
                       to top,
-                      $dark-bg 0%,
+                      var(--bg) 0%,
                       rgba(9, 9, 9, 0.92) 13%,
                       rgba(9, 9, 9, 0.5) 30%,
                       rgba(9, 9, 9, 0) 96%,

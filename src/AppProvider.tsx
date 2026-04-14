@@ -5,6 +5,7 @@ import {Card} from "@/types/Types";
 import {tarots} from "@/data";
 import {generateReading} from "@/lib/generateReading";
 import {getCardImagePath, DEFAULT_DECK} from "@/lib/decks";
+import {DEFAULT_READER, type ReaderId} from "@/lib/readers";
 
 type AppState = {
     tarots: Card[];
@@ -15,6 +16,8 @@ type AppState = {
     isResponseLoading: boolean;
     isCardsModalOpen: boolean;
     shakeCount: number;
+    /** Reader voice used for generateReading. Always set, defaults to DEFAULT_READER. */
+    selectedReader: ReaderId;
 };
 
 type AppContextType = {
@@ -32,6 +35,7 @@ const AppContext = createContext<AppContextType>({
         isResponseLoading: false,
         isCardsModalOpen: false,
         shakeCount: 0,
+        selectedReader: DEFAULT_READER,
     },
     setState: () => {},
 });
@@ -61,6 +65,7 @@ export function AppProvider({ children }: AppProviderProps) {
         isResponseLoading: false,
         isCardsModalOpen: false,
         shakeCount: 0,
+        selectedReader: DEFAULT_READER,
     });
 
     const messages = useMessages();
@@ -84,6 +89,7 @@ export function AppProvider({ children }: AppProviderProps) {
                 messages as any,
                 (messages as any).ui?.drawThreeCards ?? "Draw three cards to receive your reading.",
                 (messages as any).ui?.spiritsUnclear ?? "The spirits are unclear. Please draw again.",
+                state.selectedReader,
             );
             setState(prevState => ({
                 ...prevState,
@@ -91,7 +97,7 @@ export function AppProvider({ children }: AppProviderProps) {
                 response: response,
             }));
         }
-    }, [state.chosenCards, messages]);
+    }, [state.chosenCards, messages, state.selectedReader]);
 
     return (
         <AppContext.Provider value={{ state, setState }}>

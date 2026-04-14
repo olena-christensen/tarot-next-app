@@ -6,8 +6,8 @@
     margin-bottom: 4rem;
     padding: 1rem;
     font-size: 35px;
-    border: $border;
-    border-radius: $border-radius;
+    border: var(--border);
+    border-radius: var(--border-radius);
   }
 
   &--third {

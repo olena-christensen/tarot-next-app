@@ -15,29 +15,29 @@
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: $primary;
+    color: var(--primary);
     opacity: 0.7;
   }
 
   .user-profile__value {
     font-size: 1.1rem;
-    color: $primary;
+    color: var(--primary);
 
     &--editable {
       cursor: pointer;
-      border-bottom: 1px dashed $border-color;
+      border-bottom: 1px dashed var(--border-color);
       padding-bottom: 0.15rem;
       transition: border-color 0.2s;
 
       &:hover {
-        border-bottom-color: $primary;
+        border-bottom-color: var(--primary);
       }
     }
   }
 
   .user-profile__upgrade {
     margin-left: 1rem;
-    color: $primary;
+    color: var(--primary);
     text-decoration: none;
     cursor: pointer;
     transition: text-decoration 0.2s;
@@ -59,15 +59,15 @@
     height: 40px;
     font-size: 1.1rem;
     font-weight: 200;
-    font-family: $font-family;
-    color: $text-color;
-    background-color: $form-input-bg;
-    border: $border;
-    border-radius: $border-radius;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--input-bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
     width: 100%;
 
     &:focus {
-      border: $border;
+      border: var(--border);
       outline: none;
     }
   }
@@ -80,9 +80,9 @@
   .user-profile__edit-btn {
     padding: 0.35rem 0.75rem;
     font-size: 0.85rem;
-    font-family: $font-family;
-    border-radius: $border-radius;
-    border: $border;
+    font-family: var(--font-family);
+    border-radius: var(--border-radius);
+    border: var(--border);
     cursor: pointer;
     transition: opacity 0.2s;
 
@@ -93,7 +93,7 @@
 
     &--save {
       background-color: rgba(250, 225, 163, 0.15);
-      color: $primary;
+      color: var(--primary);
 
       &:hover:not(:disabled) {
         background-color: rgba(250, 225, 163, 0.25);
@@ -102,7 +102,7 @@
 
     &--cancel {
       background-color: transparent;
-      color: $primary;
+      color: var(--primary);
       opacity: 0.7;
 
       &:hover:not(:disabled) {
@@ -112,12 +112,12 @@
   }
 
   .user-profile__error {
-    color: #e74c3c;
+    color: var(--error);
     font-size: 0.85rem;
   }
 
   .user-profile__success {
-    color: #2ecc71;
+    color: var(--success);
     font-size: 0.85rem;
   }
 

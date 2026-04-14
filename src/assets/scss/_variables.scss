@@ -1,12 +1,31 @@
-$primary: rgba(250, 225, 163, 0.75);//rgb(250, 250, 250);
-$dark-bg: rgb(9, 9, 9);
+:root {
+  // ── Palette ──
+  --gold: #fae1a3;
+  --primary: rgba(250, 225, 163, 0.75);
+  --dark: #090909;
+  --black: #000000;
+  --brown: #443523;
+  --grey: #3d3d3d;
+  --grey-dark: #1e1e1e;
+  --red: #e74c3c;
+  --green: #2ecc71;
 
-$font-family: "Raleway", system-ui;
-$text-color: $primary;
-$general-font-weight: 100;
+  // ── Semantic: Colors ──
+  --text-color: var(--primary);
+  --bg: var(--dark);
+  --border-color: rgba(250, 225, 163, 0.35);
+  --input-bg: var(--grey-dark);
+  --overlay: rgba(0, 0, 0, 0.85);
+  --scrollbar-thumb: var(--grey);
+  --medallion-fill: var(--brown);
+  --error: var(--red);
+  --success: var(--green);
 
-$border-radius: 0.5rem;
-$border-color: rgba(250, 225, 163, 0.35);
-$border: 1px solid $border-color;
+  // ── Semantic: Typography ──
+  --font-family: "Raleway", system-ui;
+  --font-weight: 100;
 
-$form-input-bg: #1e1e1e;
+  // ── Semantic: Borders ──
+  --border-radius: 0.5rem;
+  --border: 1px solid var(--border-color);
+}

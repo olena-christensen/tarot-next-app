@@ -574,5 +574,94 @@
     "pastPrefix": "{card} in the past position: ",
     "presentPrefix": "{card} in the present: ",
     "futurePrefix": "{card} for the future: "
+  },
+
+  "readers": {
+    "vespera": {
+      "displayName": "Madame Vespera",
+      "title": "Conduit of the Velvet Veil",
+      "tagline": "Sit closer, darling. The cards have been waiting.",
+      "bio": "Three generations of mediums in the family. Vespera reads with reverence, takes her time, and treats every card like it came specifically for you.",
+      "intros": [
+        "Three cards, darling: {card1}, {card2}, and {card3}. They didn't arrive together by accident.",
+        "{card1}, {card2}, and {card3}. Mm. The deck has chosen carefully tonight.",
+        "Look — {card1}, {card2}, {card3}. A combination worth listening to.",
+        "{card1}, {card2}, {card3}. Settle in. These three have something to say."
+      ],
+      "bridges": [
+        "But the past is only the doorway. The present is where the work happens.",
+        "From what was, to what is — pay attention here, dear."
+      ],
+      "futureBridges": [
+        "And now — what's coming. The cards lean in.",
+        "The third card. The one we always come for."
+      ],
+      "closings": [
+        "There. Take what was given. Some of it will only make sense later.",
+        "The reading is yours now. Hold it carefully.",
+        "That's what the cards offered. Sit with it before you move on."
+      ],
+      "pastPrefix": "{card}, in the past — ",
+      "presentPrefix": "{card}, here in the present — ",
+      "futurePrefix": "{card}, ahead of you — "
+    },
+
+    "crow": {
+      "displayName": "The Crow",
+      "title": "Reader of the Last Hour",
+      "tagline": "Sit. Don't speak. The cards already know.",
+      "bio": "No introductions. No softening. The Crow tells you what the cards say and nothing more.",
+      "intros": [
+        "{card1}. {card2}. {card3}. Three cards. No accidents.",
+        "{card1}, {card2}, {card3}. Look at them.",
+        "Drawn: {card1}, {card2}, {card3}. They mean what they mean.",
+        "{card1}. Then {card2}. Then {card3}. A sentence the universe is finishing."
+      ],
+      "bridges": [
+        "That was before. This is now.",
+        "The past is fixed. The present isn't."
+      ],
+      "futureBridges": [
+        "Ahead.",
+        "What hasn't happened yet."
+      ],
+      "closings": [
+        "That's the reading.",
+        "The cards are done. You aren't.",
+        "Three cards. One direction. Go."
+      ],
+      "pastPrefix": "{card}. Past: ",
+      "presentPrefix": "{card}. Now: ",
+      "futurePrefix": "{card}. Coming: "
+    },
+
+    "reginald": {
+      "displayName": "Reginald Ash",
+      "title": "Reluctant Practitioner, Est. 1847",
+      "tagline": "Fine. Sit down. Let's get this over with.",
+      "bio": "Has been reading cards for longer than he cares to discuss. Takes the work seriously, takes most querents less so. You'll get the truth — phrased exactly as he sees fit.",
+      "intros": [
+        "Right. {card1}, {card2}, {card3}. I've seen this combination before. It still means something. Let's proceed.",
+        "{card1}, {card2}, and {card3}. A spread with actual substance, for once.",
+        "{card1}, {card2}, {card3}. Don't ask if it's good news. Just listen.",
+        "Hm. {card1}, then {card2}, then {card3}. Brace yourself — this one earns its fee."
+      ],
+      "bridges": [
+        "The past is finished, despite its habit of pretending otherwise. Onward.",
+        "Yes, yes, that was then. The present is more pressing."
+      ],
+      "futureBridges": [
+        "And now — the future. The part you actually came for.",
+        "The third card. Try to look composed."
+      ],
+      "closings": [
+        "That's the reading. Take it seriously or don't — but at least now you've been told.",
+        "Done. You'll do what you'll do. Most people do.",
+        "There. Free of theatrics, as promised. You may show yourself out."
+      ],
+      "pastPrefix": "{card}, in the past — and frankly, this explains a great deal: ",
+      "presentPrefix": "{card}, in the present. This is, I'm afraid, where you live: ",
+      "futurePrefix": "{card}, ahead. I won't soften it: "
+    }
   }
 }

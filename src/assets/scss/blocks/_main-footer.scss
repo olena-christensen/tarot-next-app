@@ -14,7 +14,7 @@
     text-align: center;
     .main-footer__link {
       @include link-style;
-      color: $primary;
+      color: var(--primary);
       font-size: 1.2rem;
     }
   }

@@ -2,16 +2,16 @@
 body {
   display: block;
   margin: 0;
-  font-family: $font-family;
-  font-weight: $general-font-weight;
-  color: $text-color;
-  background-color: $dark-bg;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+  color: var(--text-color);
+  background-color: var(--bg);
 }
 
 button {
-  font-family: $font-family;
-  font-weight: $general-font-weight;
-  color: $text-color;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+  color: var(--text-color);
 }
 
 a {
@@ -26,8 +26,8 @@ div#root {
   @include list-style;
 }
 input:-internal-autofill-selected {
-  background-color: $form-input-bg !important;
-  color: $text-color !important;
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
@@ -36,7 +36,7 @@ input:-webkit-autofill:focus {
 
 //* {
 //  scrollbar-width: thin;
-//  scrollbar-color: #3d3d3d $dark;
+//  scrollbar-color: var(--scrollbar-thumb) $dark;
 //}
 
 .hidden {
@@ -68,7 +68,7 @@ img {
   ::-webkit-scrollbar-thumb {
     width: 6px;
     height: 6px;
-    background-color: #3d3d3d;
+    background-color: var(--scrollbar-thumb);
     border-radius: 6px;
   }
 }

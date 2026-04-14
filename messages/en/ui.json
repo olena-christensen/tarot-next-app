@@ -13,6 +13,8 @@
     "mysticOne": "Mystic One",
     "unveilDestiny": "Unveil Your Destiny, Card by Card...",
     "revokeAndRetry": "Revoke and Retry",
+    "unveilAnotherFate": "Unveil Another Fate",
+    "backToSanctum": "Back to the Sanctum",
     "cardsHaveSpoken": "The Cards Have Spoken",
     "cardsStillSilent": "The cards are still silent...",
     "stepThroughTheVeil": "Step Through the Veil",
@@ -71,6 +73,13 @@
     "deckGothicVintage": "Gothic Vintage",
     "selected": "Selected",
     "selectDeck": "Select",
-    "signInToSelectDeck": "Sign in to choose your deck"
+    "signInToSelectDeck": "Sign in to choose your deck",
+    "chooseYourReader": "Choose Who Reads For You",
+    "readerSelectionSubtitle": "Three readers wait in the dark. They will not introduce themselves — you must choose.",
+    "hoverToLearn": "Hover a reader to learn their nature.",
+    "summonReader": "Summon {name}",
+    "yourReaderIs": "Your Reader",
+    "changeYourReader": "Change Your Reader",
+    "upgradeToUnlock": "Upgrade to Unlock"
   }
 }

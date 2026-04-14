@@ -61,14 +61,16 @@ src/
   middleware.ts        # next-intl locale detection + routing
   components/          # AnimatedCard, Tarot, Login, LoginForm, Modal,
                        # UserProfile, MainMenu, Header, Footer,
-                       # PageShell, LanguageSwitcher, DeckSelector, etc.
+                       # PageShell, LanguageSwitcher, DeckSelector,
+                       # ReaderSelection, etc.
   lib/
     auth.ts            # NextAuth config (Credentials + Google)
     prisma.ts          # Prisma client singleton
     decks.ts           # Deck catalog (DECKS, DeckId, getCardImagePath)
+    readers.ts         # Reader catalog (READERS, ReaderId, DEFAULT_READER)
     plans.ts           # Plan config (id, price, interval — no text)
     subscription.ts    # getUserPlan helper
-    generateReading.ts # Reading generation from translated messages
+    generateReading.ts # Reading generation from translated messages (reader-aware)
   generated/prisma/    # Prisma client output (custom location)
   assets/scss/         # All styles
   data.ts              # Card data (id, image, value — no names; paths are deck-relative)
@@ -94,7 +96,7 @@ Required (see `.env.example`):
 - **Translation files:** `messages/{locale}/` with 5 JSON files per locale:
   - `ui.json` — UI strings (buttons, labels, headings, errors)
   - `cards.json` — 78 card names
-  - `readings.json` — 78 card readings + reading templates
+  - `readings.json` — 78 card readings + reading templates + per-reader voice blocks
   - `plans.json` — plan names and feature lists
   - `legal.json` — Terms of Service + Privacy Policy
 - **Config files:** `src/i18n/routing.ts` (locales), `src/i18n/request.ts` (message loading), `src/i18n/navigation.ts` (locale-aware Link/useRouter)
@@ -103,7 +105,7 @@ Required (see `.env.example`):
 - **Translations in components:** Use `useTranslations("namespace")` hook. Namespaces match the top-level key in each JSON file (`ui`, `cards`, `readings`, `plans`, `legal`).
 - **Card names and readings** are no longer in TypeScript files — they live in `messages/{locale}/cards.json` and `readings.json`.
 - **Plan names and features** are no longer in `plans.ts` — they live in `messages/{locale}/plans.json`. `plans.ts` only keeps `id`, `priceLabel`, `interval`.
-- **Reading generation:** `src/lib/generateReading.ts` takes translated messages and card IDs to produce locale-aware readings.
+- **Reading generation:** `src/lib/generateReading.ts` takes translated messages, card IDs, and an optional `readerId` to produce locale-aware readings in the chosen reader's voice. Falls back to `readingTemplates` when no reader block exists.
 - **Russian translations are gender-neutral.** Russian past-tense verbs require gender agreement, so all `ru` reading texts avoid gendered verb forms with "ты" — using present tense, impersonal constructions, infinitives, and passive/reflexive forms instead. Preserve this when editing `messages/ru/readings.json`.
 
 ## Gotchas
@@ -127,7 +129,7 @@ Required (see `.env.example`):
 - Client-side: fetch `GET /api/user/plan` (mirrors the `password-status` pattern).
 - Pricing page lives at `/subscription`, rendered by `src/components/SubscriptionPlans.tsx` (4-column classic layout). Styles: `src/assets/scss/blocks/_subscription.scss`.
 - **Payments are not wired yet.** All upgrade CTAs are disabled with tooltip "Payments launching soon". When integrating a payment provider, the `Subscription` row should be created/updated server-side after a successful checkout — `expiresAt` exists for that purpose.
-- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), reading history UI, diviner selection.
+- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), reading history UI.
 
 ## Deck Selection
 
@@ -144,6 +146,20 @@ Required (see `.env.example`):
 - **Mystical-SVG deck is excluded** — exists in `public/Cards/` but not in the catalog.
 - **Adding a new deck:** Add card images to `public/Cards/{NewDeck}/` (same folder structure/filenames as Rider-Waite), add an entry to `DECKS` in `src/lib/decks.ts`, add a `deck{Name}` translation key to all `ui.json` files, and update `DECK_NAME_KEYS` in `DeckSelector.tsx`.
 
+## Reader Selection
+
+- **Available readers:** Madame Vespera (default), The Crow, Reginald Ash. Each reader is a "voice" persona that reshapes the reading's intro, bridges, closings, and card prefixes.
+- Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (CSS color for theming), and `avatar` path (placeholder — images don't exist yet).
+- Display strings (name, title, tagline, bio) and voice templates (intros, bridges, futureBridges, closings, pastPrefix/presentPrefix/futurePrefix) live in `messages/{locale}/readings.json` under `"readers.{id}"`. The registry file has no text.
+- **Reader selection is session-scoped, not persisted.** `AppProvider` holds `selectedReader: ReaderId` in state (non-nullable, defaults to `DEFAULT_READER`). The reader persists across readings within the session — it is NOT reset when the tarot modal closes.
+- **Main page flow:** OfferBlock shows the current reader (avatar, name, tagline) with "Summon [Name]" and "Change your reader" buttons. "Summon" reveals the deck; "Change" opens an overlay modal with all 3 readers. The deck is hidden until summoned.
+- **Subscription gating:** In the "Change your reader" modal, non-default readers have their summon button replaced with "Upgrade to unlock" for free/anonymous users. Only subscribers can pick a different reader.
+- `Tarot.tsx` has no reader selection logic — it just uses `state.selectedReader` as-is.
+- `generateReading()` accepts an optional `readerId` param. If that reader's block exists in the messages, it uses the reader's voice templates; otherwise falls back to `readingTemplates`.
+- Selection UI lives in `src/components/ReaderSelection.tsx` (3-column card grid with hover-to-reveal bio + summon CTA, used inside a Modal overlay). Styles: `src/assets/scss/blocks/_reader-selection.scss`. Aura color flows via `--reader-accent` / `--card-accent` CSS custom properties.
+- **Only English has reader translations.** Norwegian and Russian `readings.json` files don't have a `readers` block yet, so those locales show hardcoded defaults for the reader presentation and hide the "Change" button.
+- **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
+
 ## Animations
 
 ### Intro animations (play once per session)
@@ -154,13 +170,13 @@ The main page has a multi-stage intro: moon rises and falls, title slides in, ca
 
 - Module-level `let hasPlayedIntro = false` in `OfferBlock.tsx` (and `hasPlayedHeaderIntro` in `Header.tsx`) — resets on page refresh (JS reloads), persists on client-side navigation.
 - `useState` initializer checks and sets the flag. When skipping, `isLoaded` starts as `true` (no loading flash).
-- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
+- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.offer-block__reader`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
 - **NEVER use wildcard selectors** (`*`) for skip-intro — it kills unrelated animations (deck glow, card twist). Always list specific elements.
 - Header uses the same pattern with its own `skip-intro` class in `_main-header.scss`.
 
 ### Reading reveal flow
 
-After the user flips all 3 cards in the tarot modal (`Tarot.tsx`):
+After the user clicks the deck (which appears after clicking "Summon" on the main page):
 
 1. "Unveil Your Destiny" text visible while cards are being flipped
 2. Last card clicked → flip animation plays (2s)
