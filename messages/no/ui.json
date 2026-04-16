@@ -30,7 +30,6 @@
     "upgrade": "Oppgrader",
     "name": "Navn",
     "email": "E-post",
-    "memberSince": "Medlem siden",
     "currentPlan": "Nåværende plan",
     "password": "Passord",
     "save": "Lagre",

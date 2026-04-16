@@ -30,7 +30,6 @@
     "upgrade": "Upgrade",
     "name": "Name",
     "email": "Email",
-    "memberSince": "Member since",
     "currentPlan": "Current plan",
     "password": "Password",
     "save": "Save",
