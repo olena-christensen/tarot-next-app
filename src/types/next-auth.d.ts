@@ -6,6 +6,7 @@ declare module "next-auth" {
     createdAt?: Date;
     preferredDeck?: string;
     preferredReader?: string;
+    preferredLocale?: string;
   }
   interface Session {
     user: {
@@ -16,6 +17,7 @@ declare module "next-auth" {
       createdAt?: string;
       preferredDeck?: string;
       preferredReader?: string;
+      preferredLocale?: string;
     };
   }
 }
@@ -26,5 +28,6 @@ declare module "next-auth/jwt" {
     createdAt?: string;
     preferredDeck?: string;
     preferredReader?: string;
+    preferredLocale?: string;
   }
 }

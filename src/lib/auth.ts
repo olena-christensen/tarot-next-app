@@ -48,6 +48,7 @@ export const authOptions: NextAuthOptions = {
           createdAt: user.createdAt,
           preferredDeck: user.preferredDeck,
           preferredReader: user.preferredReader,
+          preferredLocale: user.preferredLocale,
         };
       },
     }),
@@ -64,6 +65,7 @@ export const authOptions: NextAuthOptions = {
           : undefined;
         token.preferredDeck = user.preferredDeck ?? "Rider-Waite";
         token.preferredReader = user.preferredReader ?? "vespera";
+        token.preferredLocale = user.preferredLocale ?? "en";
       }
       if (trigger === "update") {
         if (updateData?.name) {
@@ -74,6 +76,9 @@ export const authOptions: NextAuthOptions = {
         }
         if (updateData?.preferredReader) {
           token.preferredReader = updateData.preferredReader;
+        }
+        if (updateData?.preferredLocale) {
+          token.preferredLocale = updateData.preferredLocale;
         }
       }
       return token;
@@ -87,6 +92,7 @@ export const authOptions: NextAuthOptions = {
         }
         session.user.preferredDeck = token.preferredDeck as string | undefined;
         session.user.preferredReader = token.preferredReader as string | undefined;
+        session.user.preferredLocale = token.preferredLocale as string | undefined;
       }
       return session;
     },

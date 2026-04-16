@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import GlobeIcon from "@/assets/svg/globe.svg";
@@ -17,6 +18,7 @@ export const LanguageSwitcher = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { data: session, update: updateSession } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,9 +32,24 @@ export const LanguageSwitcher = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelect = (loc: string) => {
+  const handleSelect = async (loc: string) => {
     setIsOpen(false);
     router.replace(pathname, { locale: loc });
+
+    if (session?.user?.id) {
+      try {
+        const res = await fetch("/api/user/locale", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ locale: loc }),
+        });
+        if (res.ok) {
+          await updateSession({ preferredLocale: loc });
+        }
+      } catch {
+        // Non-critical — URL change still takes effect for this session.
+      }
+    }
   };
 
   return (
