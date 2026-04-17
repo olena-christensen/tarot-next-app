@@ -7,7 +7,6 @@
     "shakeDeck": "Перетасовать Колоду",
     "joinTheCircle": "Вступите в Круг Избранных",
     "loading": "Загрузка...",
-    "pricing": "Тарифы",
     "revealYourself": "Раскройте себя",
     "welcome": "Добро пожаловать, {name}",
     "mysticOne": "Мистик",
@@ -27,10 +26,9 @@
     "paymentsLaunchingSoon": "Оплата скоро будет доступна",
     "termsOfService": "Условия использования",
     "privacyPolicy": "Политика конфиденциальности",
-    "upgrade": "Улучшить",
+    "initiation": "Посвящение",
     "name": "Имя",
     "email": "Эл. почта",
-    "memberSince": "Участник с",
     "currentPlan": "Текущий тариф",
     "password": "Пароль",
     "save": "Сохранить",
@@ -80,7 +78,7 @@
     "summonReader": "Призвать {name}",
     "yourReaderIs": "Ваш Таролог",
     "changeYourReader": "Сменить Таролога",
-    "upgradeToUnlock": "Подписка для Доступа",
+    "beginInitiation": "Начать Посвящение",
     "reader": "Таролог",
     "chooseReader": "Выберите Таролога"
   }

@@ -47,6 +47,7 @@ model User {
   termsAcceptedAt DateTime?
   preferredDeck   String        @default("Rider-Waite")
   preferredReader String        @default("vespera")
+  preferredLocale String        @default("en")
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

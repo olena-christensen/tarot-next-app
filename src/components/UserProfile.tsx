@@ -2,21 +2,27 @@
 
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { Link, useRouter, usePathname } from "@/i18n/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { routing } from "@/i18n/routing";
 import { type PlanId } from "@/lib/plans";
 import { type ReaderId } from "@/lib/readers";
+import { ReaderSelectionModal } from "@/components/ReaderSelectionModal";
 
-type UserProfileProps = {
-  onClose?: () => void;
-  onOpenReaderSelection?: () => void;
+const LOCALE_NAMES: Record<string, string> = {
+  en: "English",
+  no: "Norsk",
+  ru: "Русский",
 };
 
-export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps) => {
+export const UserProfile = () => {
   const { data: session, update } = useSession();
   const t = useTranslations("ui");
   const tPlans = useTranslations("plans");
   const tReaders = useTranslations("readers");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -27,6 +33,8 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
   const [planId, setPlanId] = useState<PlanId | null>(null);
   const [deckId, setDeckId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<ReaderId | null>(null);
+  const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
+  const [localeSaving, setLocaleSaving] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -89,13 +97,6 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
     }
     loadDeck();
   }, []);
-
-  const memberSince = session?.user?.createdAt
-    ? new Date(session.user.createdAt).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      })
-    : null;
 
   const handleEditName = () => {
     setNameInput(session?.user?.name || "");
@@ -200,6 +201,26 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
     setPasswordSuccess("");
   };
 
+  const handleSelectLocale = async (loc: string) => {
+    if (loc === locale || localeSaving) return;
+    setLocaleSaving(loc);
+    try {
+      const res = await fetch("/api/user/locale", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale: loc }),
+      });
+      if (res.ok) {
+        await update({ preferredLocale: loc });
+        router.replace(pathname, { locale: loc });
+      }
+    } catch {
+      // silent — user can retry
+    } finally {
+      setLocaleSaving(null);
+    }
+  };
+
   return (
     <div className="user-profile">
       <div className="user-profile__field">
@@ -247,22 +268,12 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
         <span className="user-profile__label">{t("email")}</span>
         <span className="user-profile__value">{session?.user?.email}</span>
       </div>
-      {memberSince && (
-        <div className="user-profile__field">
-          <span className="user-profile__label">{t("memberSince")}</span>
-          <span className="user-profile__value">{memberSince}</span>
-        </div>
-      )}
       <div className="user-profile__field">
         <span className="user-profile__label">{t("currentPlan")}</span>
         <span className="user-profile__value">
           {planId ? tPlans(`${planId}.name`) : "—"}
-          <Link
-            href="/subscription"
-            className="user-profile__upgrade"
-            onClick={() => onClose?.()}
-          >
-            {"→ " + t("upgrade")}
+          <Link href="/subscription" className="user-profile__upgrade">
+            {"→ " + t("initiation")}
           </Link>
         </span>
       </div>
@@ -272,11 +283,7 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
           {deckId === "Rider-Waite" ? t("deckRiderWaite") :
            deckId === "Klimt" ? t("deckKlimt") :
            deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
-          <Link
-            href="/decks"
-            className="user-profile__upgrade"
-            onClick={() => onClose?.()}
-          >
+          <Link href="/decks" className="user-profile__upgrade">
             {"→ " + t("chooseDeck")}
           </Link>
         </span>
@@ -285,19 +292,30 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
         <span className="user-profile__label">{t("reader")}</span>
         <span className="user-profile__value">
           {readerId ? tReaders(`${readerId}.displayName`) : "—"}
-          {onOpenReaderSelection && (
-            <button
-              type="button"
-              className="user-profile__upgrade"
-              onClick={() => {
-                onClose?.();
-                onOpenReaderSelection();
-              }}
-            >
-              {"→ " + t("chooseReader")}
-            </button>
-          )}
+          <button
+            type="button"
+            className="user-profile__upgrade"
+            onClick={() => setIsReaderSelectOpen(true)}
+          >
+            {"→ " + t("chooseReader")}
+          </button>
         </span>
+      </div>
+      <div className="user-profile__field">
+        <span className="user-profile__label">{t("language")}</span>
+        <div className="user-profile__language-options">
+          {routing.locales.map((loc) => (
+            <button
+              key={loc}
+              type="button"
+              className={`user-profile__language-option${loc === locale ? " user-profile__language-option--active" : ""}`}
+              onClick={() => handleSelectLocale(loc)}
+              disabled={localeSaving !== null}
+            >
+              {LOCALE_NAMES[loc]}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="user-profile__field">
         <span className="user-profile__label">{t("password")}</span>
@@ -361,13 +379,15 @@ export const UserProfile = ({ onClose, onOpenReaderSelection }: UserProfileProps
       </div>
       <button
         className="btn user-profile__btn"
-        onClick={() => {
-          onClose?.();
-          signOut({ callbackUrl: "/" });
-        }}
+        onClick={() => signOut({ callbackUrl: "/" })}
       >
         {t("slipIntoShadows")}
       </button>
+      <ReaderSelectionModal
+        isOpen={isReaderSelectOpen}
+        onClose={() => setIsReaderSelectOpen(false)}
+        onOpenSubscription={() => router.push("/subscription")}
+      />
     </div>
   );
 };

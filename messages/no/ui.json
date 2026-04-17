@@ -7,7 +7,6 @@
     "shakeDeck": "Bland Kortene",
     "joinTheCircle": "Bli Med i De Utvalgtes Sirkel",
     "loading": "Laster...",
-    "pricing": "Priser",
     "revealYourself": "Avslør Deg Selv",
     "welcome": "Velkommen, {name}",
     "mysticOne": "Mystiske Sjel",
@@ -27,10 +26,9 @@
     "paymentsLaunchingSoon": "Betaling lanseres snart",
     "termsOfService": "Vilkår for bruk",
     "privacyPolicy": "Personvernerklæring",
-    "upgrade": "Oppgrader",
+    "initiation": "Innvielse",
     "name": "Navn",
     "email": "E-post",
-    "memberSince": "Medlem siden",
     "currentPlan": "Nåværende plan",
     "password": "Passord",
     "save": "Lagre",
@@ -80,7 +78,7 @@
     "summonReader": "Påkall {name}",
     "yourReaderIs": "Din Leser",
     "changeYourReader": "Bytt Leser",
-    "upgradeToUnlock": "Oppgrader for å Låse Opp",
+    "beginInitiation": "Påbegynn Innvielse",
     "reader": "Leser",
     "chooseReader": "Velg Din Leser"
   }

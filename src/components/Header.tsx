@@ -9,10 +9,9 @@ let hasPlayedHeaderIntro = false;
 
 type HeaderProps = {
     onOpenLogin: () => void;
-    onOpenProfile: () => void;
 };
 
-export const Header = ({onOpenLogin, onOpenProfile}: HeaderProps) => {
+export const Header = ({onOpenLogin}: HeaderProps) => {
     const [skipIntro] = useState(() => {
         const skip = hasPlayedHeaderIntro;
         hasPlayedHeaderIntro = true;
@@ -22,7 +21,7 @@ export const Header = ({onOpenLogin, onOpenProfile}: HeaderProps) => {
     return (
         <header className={`main-header container${skipIntro ? " skip-intro" : ""}`}>
             <Logo />
-            <MainMenu onOpenLogin={onOpenLogin} onOpenProfile={onOpenProfile} />
+            <MainMenu onOpenLogin={onOpenLogin} />
             <LanguageSwitcher />
         </header>
     );

@@ -12,7 +12,7 @@ interface ReaderSelectionProps {
   currentReader: ReaderId;
   /** Whether the user has a paid subscription (unlocks non-default readers). */
   isSubscriber: boolean;
-  /** Called when a locked reader's "Upgrade to unlock" is clicked. */
+  /** Called when a locked reader's summon is clicked — routes to the subscription page. */
   onOpenSubscription: () => void;
 }
 
@@ -123,11 +123,10 @@ export const ReaderSelection = ({
             </p>
             <MysticButton
               type="button"
-              locked={isLocked(focused!)}
               onClick={handleSummon}
             >
               {isLocked(focused!)
-                ? t("upgradeToUnlock")
+                ? t("beginInitiation")
                 : t("summonReader", { name: tReader(`${focused}.displayName`) })}
             </MysticButton>
           </>
