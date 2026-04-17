@@ -15,11 +15,6 @@ export default function MainMenu({ onOpenLogin }: MainMenuProps) {
     return (
         <nav className="main-menu">
             <ul className="main-menu__list">
-                <li className="main-menu__item">
-                    <Link className="main-menu__link" href="/subscription">
-                        {t("pricing")}
-                    </Link>
-                </li>
                 {status === "loading" ? null : session ? (
                     <li className="main-menu__item">
                         <Link className="btn main-menu__link" href="/profile">

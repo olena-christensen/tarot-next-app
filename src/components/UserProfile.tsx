@@ -273,7 +273,7 @@ export const UserProfile = () => {
         <span className="user-profile__value">
           {planId ? tPlans(`${planId}.name`) : "—"}
           <Link href="/subscription" className="user-profile__upgrade">
-            {"→ " + t("upgrade")}
+            {"→ " + t("initiation")}
           </Link>
         </span>
       </div>

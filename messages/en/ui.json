@@ -7,7 +7,6 @@
     "shakeDeck": "Shake the Deck",
     "joinTheCircle": "Join the Circle of the Chosen",
     "loading": "Loading...",
-    "pricing": "Pricing",
     "revealYourself": "Reveal Yourself",
     "welcome": "Welcome, {name}",
     "mysticOne": "Mystic One",
@@ -27,7 +26,7 @@
     "paymentsLaunchingSoon": "Payments launching soon",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "upgrade": "Upgrade",
+    "initiation": "Initiation",
     "name": "Name",
     "email": "Email",
     "currentPlan": "Current plan",
@@ -79,7 +78,7 @@
     "summonReader": "Summon {name}",
     "yourReaderIs": "Your Reader",
     "changeYourReader": "Change Your Reader",
-    "upgradeToUnlock": "Upgrade to Unlock",
+    "beginInitiation": "Begin Initiation",
     "reader": "Reader",
     "chooseReader": "Choose Your Reader"
   }

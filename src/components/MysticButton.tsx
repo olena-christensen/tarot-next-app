@@ -2,17 +2,9 @@
 
 import { type ButtonHTMLAttributes } from "react";
 
-interface MysticButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  locked?: boolean;
-}
-
-export const MysticButton = ({ className, locked, ...props }: MysticButtonProps) => (
+export const MysticButton = ({ className, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     {...props}
-    className={[
-      "mystic-btn",
-      locked ? "mystic-btn--locked" : "",
-      className,
-    ].filter(Boolean).join(" ")}
+    className={["mystic-btn", className].filter(Boolean).join(" ")}
   />
 );
