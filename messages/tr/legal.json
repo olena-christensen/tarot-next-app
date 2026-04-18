@@ -1,0 +1,161 @@
+{
+  "legal": {
+    "terms": {
+      "title": "Kullanım Koşulları",
+      "metaTitle": "Kullanım Koşulları | Tarot",
+      "metaDescription": "Tarot okuma uygulaması için Kullanım Koşulları.",
+      "lastUpdated": "Son güncelleme: 6 Nisan 2026",
+      "intro": "Tarot'a (\"Hizmet\", \"biz\") hoş geldiniz. Hizmete erişerek ya da onu kullanarak bu Kullanım Koşulları'na (\"Koşullar\") bağlı kalmayı kabul ediyorsunuz. Kabul etmiyorsanız lütfen Hizmeti kullanmayın.",
+      "section1": {
+        "title": "1. Yalnızca Eğlence Amaçlıdır",
+        "content": "Hizmet, yalnızca eğlence amaçlı olarak tarot kart okumaları ve ilgili içerikleri sunar. Okumalar tıbbi, hukuki, psikolojik veya finansal tavsiye dahil olmak üzere profesyonel tavsiyenin yerini almaz. Hizmet tarafından üretilen içeriğe dayanarak aldığınız kararlardan yalnızca siz sorumlusunuz."
+      },
+      "section2": {
+        "title": "2. Uygunluk",
+        "content": "Hizmeti kullanmak için en az 16 yaşında olmanız gerekir. Hizmeti kullanarak bu koşulu karşıladığınızı beyan etmiş olursunuz."
+      },
+      "section3": {
+        "title": "3. Hesaplar",
+        "content": "Bazı özellikler bir hesap oluşturmanızı gerektirir. Doğru bilgi vermeyi, kimlik bilgilerinizi güvende tutmayı ve yetkisiz kullanım durumunda bizi bilgilendirmeyi kabul edersiniz. Hesabınızda gerçekleşen tüm faaliyetlerden siz sorumlusunuz. Bu Koşulları ihlal eden hesapları askıya alabilir veya sonlandırabiliriz."
+      },
+      "section4": {
+        "title": "4. Kabul Edilebilir Kullanım",
+        "content": "Şunları yapmamayı kabul edersiniz:",
+        "items": [
+          "Hizmeti yasa dışı herhangi bir amaçla kullanmak;",
+          "Hizmeti bozmaya, tersine mühendisliğe tabi tutmaya ya da yetkisiz erişim sağlamaya çalışmak;",
+          "Zararlı içerik yüklemek ya da diğer kullanıcıları taciz etmek;",
+          "Hizmetten içeriği izinsiz kazımak, kopyalamak ya da yeniden satmak."
+        ]
+      },
+      "section5": {
+        "title": "5. Fikri Mülkiyet",
+        "content": "Hizmetteki tüm içerik, tasarım, metin, grafik ve kod bize veya lisans verenlerimize aittir; telif hakkı ve diğer yasalarla korunur. Size Hizmeti kişisel, ticari olmayan amaçlarla kullanmak üzere sınırlı, münhasır olmayan ve devredilemez bir lisans verilir."
+      },
+      "section6": {
+        "title": "6. Kullanıcı İçeriği",
+        "content": "İçerik (sorular, notlar, geri bildirimler) gönderdiğinizde, bu içeriği yalnızca Hizmeti işletmek ve geliştirmek amacıyla kullanmamız, saklamamız ve görüntülememiz için bize dünya çapında, telifsiz bir lisans vermiş olursunuz."
+      },
+      "section7": {
+        "title": "7. Feragatnameler",
+        "content": "Hizmet, herhangi bir garanti olmaksızın \"olduğu gibi\" sunulur. Doğruluğu, kullanılabilirliği veya belirli bir amaca uygunluğu garanti etmiyoruz. Tarot okumaları yalnızca eğlence amacıyla üretilir ve hiçbir öngörü garantisi taşımaz."
+      },
+      "section8": {
+        "title": "8. Sorumluluğun Sınırlandırılması",
+        "content": "Yasaların izin verdiği azami ölçüde, Hizmeti kullanmanızdan doğan dolaylı, arızi, özel veya sonuç olarak ortaya çıkan zararlardan sorumlu olmayacağız. Toplam sorumluluğumuz, talepten önceki on iki ay içinde bize ödediğiniz tutarı veya hiçbir şey ödemediyseniz 50 EUR'yu aşmayacaktır."
+      },
+      "section9": {
+        "title": "9. Hizmette veya Koşullarda Değişiklikler",
+        "content": "Hizmeti veya bu Koşulları herhangi bir zamanda değiştirebiliriz. Önemli değişiklikler güncellenmiş bir \"son güncelleme\" tarihiyle bu sayfada duyurulacaktır. Değişikliklerden sonra kullanmaya devam etmeniz kabul anlamına gelir."
+      },
+      "section10": {
+        "title": "10. Fesih",
+        "content": "Hizmeti kullanmayı istediğiniz zaman bırakabilirsiniz. Bu Koşulları ihlal etmeniz durumunda erişiminizi askıya alabilir veya sonlandırabiliriz."
+      },
+      "section11": {
+        "title": "11. Geçerli Hukuk",
+        "content": "Bu Koşullar, kanunlar ihtilafı ilkelerine bakılmaksızın, Avrupa Birliği'nin ve Hizmet operatörünün kurulu olduğu ülkenin kanunlarına tabidir. AB tüketicileri, yerel zorunlu hukukun korumalarını saklı tutar."
+      },
+      "section12": {
+        "title": "12. İletişim",
+        "content": "Bu Koşullar hakkında sorularınız için {email} adresinden bize ulaşın.",
+        "email": "support@example.com"
+      },
+      "note": "Not: Bu bir taslak şablondur ve hukuki tavsiye niteliği taşımaz. Lütfen yayına almadan önce nitelikli bir avukat tarafından incelenmesini sağlayın."
+    },
+    "privacy": {
+      "title": "Gizlilik Politikası",
+      "metaTitle": "Gizlilik Politikası | Tarot",
+      "metaDescription": "Tarot okuma uygulaması için Gizlilik Politikası.",
+      "lastUpdated": "Son güncelleme: 6 Nisan 2026",
+      "intro": "Bu Gizlilik Politikası, Tarot'un (\"biz\") Hizmetimizi kullanırken kişisel verilerinizi nasıl topladığını, kullandığını ve koruduğunu açıklar. AB Genel Veri Koruma Yönetmeliği'ne (GDPR) ve uygulanabilir olduğunda Kaliforniya Tüketici Gizliliği Yasası'na (CCPA) uyarız.",
+      "section1": {
+        "title": "1. Veri Sorumlusu",
+        "content": "Kişisel verilerinizden sorumlu veri sorumlusu, bu Hizmetin operatörüdür. Gizlilik soruları için {email} adresinden bize ulaşın.",
+        "email": "privacy@example.com"
+      },
+      "section2": {
+        "title": "2. Topladığımız Veriler",
+        "items": [
+          "Hesap verileri: e-posta adresi, görünen ad, hashlenmiş şifre (veya üçüncü taraf OAuth tanımlayıcısı).",
+          "Kullanım verileri: okuma geçmişi, gönderdiğiniz sorular, zaman damgaları ve tercihler.",
+          "Teknik veriler: IP adresi, tarayıcı türü, cihaz bilgileri ve temel analitik.",
+          "Çerezler: kimlik doğrulama oturumu çerezleri ve uygun olduğunda analitik çerezler (yalnızca onayınızla)."
+        ]
+      },
+      "section3": {
+        "title": "3. İşleme için Hukuki Dayanak (GDPR)",
+        "items": [
+          "Sözleşme: talep ettiğiniz Hizmeti sunmak için (Madde 6(1)(b) GDPR).",
+          "Onay: isteğe bağlı analitik ve pazarlama için (Madde 6(1)(a) GDPR).",
+          "Meşru menfaat: Hizmeti güvence altına almak ve kötüye kullanımı önlemek için (Madde 6(1)(f) GDPR).",
+          "Yasal yükümlülük: yasanın gerektirdiği durumlarda (Madde 6(1)(c) GDPR)."
+        ]
+      },
+      "section4": {
+        "title": "4. Verilerinizi Nasıl Kullanıyoruz",
+        "items": [
+          "Hesabınızı oluşturmak ve yönetmek için;",
+          "Tarot okumaları ve ilgili özellikleri sunmak için;",
+          "Hizmetle ilgili önemli güncellemeleri iletmek için;",
+          "Hizmeti güvence altına almak, dolandırıcılık ve kötüye kullanımı önlemek için;",
+          "Yasal yükümlülüklere uymak için."
+        ]
+      },
+      "section5": {
+        "title": "5. Üçüncü Taraf İşleyiciler",
+        "content": "Hizmeti işletmek için güvenilir hizmet sağlayıcılarından yararlanırız. Bu işleyiciler, veri işleme sözleşmeleri çerçevesinde bizim adımıza hareket eder:",
+        "items": [
+          "Vercel Inc. — barındırma ve altyapı (ABD / AB bölgeleri);",
+          "PostgreSQL veritabanı sağlayıcısı — veri depolama (Vercel Marketplace aracılığıyla);",
+          "NextAuth OAuth sağlayıcıları — üçüncü taraf oturum açma için, kullanılıyorsa (örneğin Google);",
+          "E-posta teslim sağlayıcısı — işlemsel e-postalar için, geçerliyse."
+        ]
+      },
+      "section6": {
+        "title": "6. Uluslararası Aktarımlar",
+        "content": "Bazı işleyiciler Avrupa Ekonomik Alanı dışında bulunabilir. Bu durumlarda, GDPR'ın gerektirdiği şekilde Standart Sözleşme Hükümlerine veya eşdeğer güvencelere dayanırız."
+      },
+      "section7": {
+        "title": "7. Veri Saklama",
+        "content": "Hesabınız aktif olduğu sürece hesap verilerinizi saklarız. Hesabınızı silerseniz, saklama yasa tarafından gerekli kılınmadığı sürece kişisel verileri 30 gün içinde siler veya anonimleştiririz."
+      },
+      "section8": {
+        "title": "8. Haklarınız (GDPR / CCPA)",
+        "content": "Şu haklara sahipsiniz:",
+        "items": [
+          "Hakkınızda tuttuğumuz kişisel verilere erişim;",
+          "Yanlış verilerin düzeltilmesini talep etme;",
+          "Silmeyi talep etme (\"unutulma hakkı\");",
+          "İşlemeyi kısıtlama ya da buna itiraz etme;",
+          "Veri taşınabilirliği;",
+          "Onayı istediğiniz zaman geri çekme;",
+          "Yerel denetim makamına şikayette bulunma."
+        ],
+        "ccpaNote": "Kaliforniya sakinlerinin CCPA kapsamında ek hakları vardır; bunlar arasında topladığımız kişisel verileri bilme ve kişisel verilerin satışına itiraz etme hakkı bulunur. Kişisel verileri satmıyoruz."
+      },
+      "section9": {
+        "title": "9. Çerezler",
+        "content": "Kimlik doğrulama için yalnızca kesinlikle gerekli çerezleri kullanırız. İsteğe bağlı analitik çerezler, yalnızca çerez banner'ımız aracılığıyla onayınızı verdikten sonra ayarlanır. Onayınızı istediğiniz zaman tarayıcı ayarları üzerinden geri çekebilirsiniz."
+      },
+      "section10": {
+        "title": "10. Güvenlik",
+        "content": "Verilerinizi korumak için aktarım sırasında şifreleme (HTTPS), hashlenmiş şifreler ve erişim kontrolleri dahil olmak üzere makul teknik ve organizasyonel önlemler uyguluyoruz. Hiçbir sistem tamamen güvenli değildir ve mutlak güvenliği garanti edemeyiz."
+      },
+      "section11": {
+        "title": "11. Çocuklar",
+        "content": "Hizmet 16 yaşın altındaki çocuklara yönelik değildir. Bilerek çocuklardan kişisel veri toplamıyoruz. Bir çocuğun bize veri sağladığına inanıyorsanız, silinmesi için lütfen bizimle iletişime geçin."
+      },
+      "section12": {
+        "title": "12. Bu Politikadaki Değişiklikler",
+        "content": "Bu Gizlilik Politikasını güncelleyebiliriz. Önemli değişiklikler güncellenmiş bir \"son güncelleme\" tarihiyle bu sayfada duyurulacaktır."
+      },
+      "section13": {
+        "title": "13. İletişim",
+        "content": "Gizlilikle ilgili sorular veya haklarınızı kullanmak için {email} adresinden bize ulaşın.",
+        "email": "privacy@example.com"
+      },
+      "note": "Not: Bu bir taslak şablondur ve hukuki tavsiye niteliği taşımaz. Lütfen yayına almadan önce nitelikli bir avukat tarafından incelenmesini sağlayın ve gerçek şirket adı, adresi ile iletişim bilgilerini doldurun."
+    }
+  }
+}

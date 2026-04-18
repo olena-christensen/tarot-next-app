@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import { useTranslations, useMessages } from "next-intl";
 import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
+import Image from "next/image";
 import {pickRandomCards} from "@/utils";
 import {useAppContext} from "@/AppProvider";
 import {READERS, DEFAULT_READER} from "@/lib/readers";
@@ -152,11 +153,13 @@ export const OfferBlock = ({
                                      style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
                                 >
                                     <div className="offer-block__reader-portrait" aria-hidden="true">
-                                        <span className="offer-block__reader-initial">
-                                            {messages?.readers
-                                                ? tReader(`${state.selectedReader}.displayName`).charAt(0)
-                                                : "V"}
-                                        </span>
+                                        <Image
+                                            src={READERS[state.selectedReader].avatar}
+                                            alt=""
+                                            width={100}
+                                            height={100}
+                                            className="offer-block__reader-image"
+                                        />
                                     </div>
                                     <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
                                     <h2 className="offer-block__reader-name">

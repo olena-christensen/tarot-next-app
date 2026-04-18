@@ -12,6 +12,8 @@ const localeNames: Record<string, string> = {
   en: "English",
   no: "Norsk",
   ru: "Русский",
+  uk: "Українська",
+  tr: "Türkçe",
 };
 
 export const LanguageSwitcher = () => {

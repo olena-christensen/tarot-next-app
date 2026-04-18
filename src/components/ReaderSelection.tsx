@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { READERS, READER_IDS, DEFAULT_READER, type ReaderId } from "@/lib/readers";
 import { MysticButton } from "@/components/MysticButton";
@@ -87,10 +88,13 @@ export const ReaderSelection = ({
             >
               <div className="reader-selection__card-inner">
                 <div className="reader-selection__portrait" aria-hidden="true">
-                  {/* Placeholder until avatars exist at /readers/{id}.webp */}
-                  <span className="reader-selection__portrait-initial">
-                    {tReader(`${id}.displayName`).charAt(0)}
-                  </span>
+                  <Image
+                    src={reader.avatar}
+                    alt=""
+                    width={88}
+                    height={88}
+                    className="reader-selection__portrait-image"
+                  />
                 </div>
 
                 <div className="reader-selection__meta">

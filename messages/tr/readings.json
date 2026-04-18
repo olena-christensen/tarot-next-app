@@ -1,0 +1,667 @@
+{
+  "readings": {
+    "arcana-0": {
+      "keywords": "başlangıçlar, masumiyet, içtenlik, özgür ruh",
+      "meaning": "Deli, bir uçurumun kenarında yalnızca güvenle duruyor. Yeni başlangıçlar, boş bir sayfa, bilinmeyene bir adım. Bir şey başlamak üzere — ve senden fazla düşünmemeni istiyor.",
+      "past": "Bir atlayış vardı — güvenli olan yerine bilinmeyeni seçtiğin bir an. O karar, pervasız ya da cesur, her şeyi harekete geçirdi.",
+      "present": "Yeni bir başlangıç seni çağırıyor. Ayrıntılar henüz net değil, ve asıl mesele de bu. Planlamayı bırak, adımı at.",
+      "future": "Tamamen yeni bir şey geliyor. Buna hazırlanamayacaksın — ve hazırlanman gerekmeyecek. Açık ellerle karşıla."
+    },
+    "arcana-1": {
+      "keywords": "tezahür, irade, beceri, beceriklilik",
+      "meaning": "Büyücü'nün masasında her araç var ve onları tam olarak nasıl kullanacağını biliyor. Bu odaklanma, beceri ve niyeti eyleme dönüştürmekle ilgili. İhtiyacın olan sende — şimdi kullan.",
+      "past": "Her şeyin yerine oturduğu bir dönem — beceri fırsatla buluştu ve gerçek bir şey yaratıldı. O yetenek hiçbir yere gitmedi.",
+      "present": "Tüm parçalar önünde. Şüphe ya da tereddüt zamanı değil — kesinlikle hareket etme zamanı.",
+      "future": "Yeteneklerinin sınanıp kanıtlanacağı bir an yaklaşıyor. Öğrenmekte olduğun şey çok yakında çok faydalı olacak."
+    },
+    "arcana-2": {
+      "keywords": "sezgi, gizem, içsel bilgi, bilinçaltı",
+      "meaning": "Yüksek Rahibe görülen ile saklı olan arasında oturur. Yüksek sesle konuşmaz — buna ihtiyacı yoktur. Cevap zaten içinde, duyabilecek kadar sessizleşmeni bekliyor.",
+      "past": "Nasıl bildiğini bilmeden bir şeyi bildiğin bir zaman vardı. O içgüdü seni iyi yönlendirdi. O zamandan beri sezgini sorgular oldun — sorgulama.",
+      "present": "Dışarıda cevap aramayı bırak. İhtiyacın olan bilgi zaten burada — içgüdünde, rüyalarında, düşünceler arasındaki sessizlikte.",
+      "future": "Gizli bir şey yüzeye çıkacak. Çabayla değil, dinginlikle. Sana davetsizce gelene dikkat et."
+    },
+    "arcana-3": {
+      "keywords": "bolluk, besleme, bereket, yaratıcılık",
+      "meaning": "İmparatoriçe tam çiçek açmış bahçedir. Büyümeyi, duyarlılığı ve özenle bakıldığında gelen türden yaratımı temsil eder. Beslediğin şey gelişecek.",
+      "past": "Verimli bir dönem — bir şey büyüyordu ve sen ona yardım ediyordun. O besleyici enerji, bir kişiye ya da bir projeye yönelik, kalıcı bir şey üretti.",
+      "present": "Yarat. Bak. Besle. Şu anda neye dikkat verirsen o büyüyecek. Bu kısıtlama zamanı değil — bırak her şey bol olsun.",
+      "future": "Bolluk birikiyor. Özen gösterdiğin bir şey bu sabrı ödüllendirmek üzere. Hasat sandığından daha yakın."
+    },
+    "arcana-4": {
+      "keywords": "otorite, yapı, istikrar, disiplin",
+      "meaning": "İmparator kaostan düzen kurar. Taş duvarlar, net kurallar, sağlam bir el. Bu kart kontrolü almakla ilgili — duygusal olarak değil, yapısal olarak. Sınırı çiz. Kararı ver.",
+      "past": "Yapı dayatıldı — ya senin tarafından ya da sana. Bir baba figürü, bir sistem, bir kurallar dizisi nasıl işlediğini şekillendirdi. O çerçeve hâlâ ağırlığını korur.",
+      "present": "Durum liderlik istiyor, tartışma değil. Düzen kur. Çizgiyi çekip onu tutan kişi ol.",
+      "future": "Daha büyük bir otorite konumuna doğru ilerliyorsun. Şimdi uyguladığın disiplin daha sonrası için sağlam bir şey inşa ediyor."
+    },
+    "arcana-5": {
+      "keywords": "gelenek, rehberlik, uyum, mentorluk",
+      "meaning": "Aziz soy aracılığıyla gelen bilgeliği temsil eder — öğretmenler, gelenekler, kurumlar. Bazen kuralları yıkmadan önce öğrenmen gerekir. Bu kart der ki: öğretmeni bul.",
+      "past": "Bir mentor, bir gelenek ya da bir inanç sistemi sana bir temel verdi. Hâlâ ona uyuyor olsan da ona karşı çıkmış olsan da, yolunu şekillendirdi.",
+      "present": "Bu yoldan önce yürümüş birinden rehberlik iste. Yerleşik bilgelikten öğrenmekte utanılacak bir şey yok — her şeyin yeniden icat edilmesi gerekmez.",
+      "future": "Bildiğini aktarmaya çağrılacaksın. Öğretmen ya da rehber rolü, planlamış olsan da olmasan da önünde şekilleniyor."
+    },
+    "arcana-6": {
+      "keywords": "sevgi, seçim, birlik, değerler",
+      "meaning": "Aşıklar romantizmden çok seçimle ilgilidir. İki yol, iki güç, iki gerçek — ve seçmen gerekiyor. Asıl soru: kendini adayacak kadar neyi değerli buluyorsun?",
+      "past": "Belirleyici bir seçim yapıldı — seni derin bir düzeyde biriyle ya da bir şeyle hizalayan bir seçim. O karar hâlâ yankılanıyor.",
+      "present": "Özünde kim olduğuna dokunan bir seçimle yüz yüzesin. Kolay olanı seçme. Gerçek olanı seç.",
+      "future": "Önemli bir birlik ya da karar yaklaşıyor. Gerçekten ne istediğin konusunda dürüst olmanı isteyecek — istemen gerektiğini düşündüğünü değil."
+    },
+    "arcana-7": {
+      "keywords": "kararlılık, irade, zafer, kontrol",
+      "meaning": "Savaş Arabası saf irade gücüyle ilerler. İki karşıt güç, tek sürücü. Bu nazik bir ilerleme değil — hedefe yönelik kontrollü bir saldırganlıktır. Dizginleri sıkı tut.",
+      "past": "Bir şeyi salt kararlılıkla aştın. Zafer sana verilmedi — onu varlığa zorla soktun.",
+      "present": "Çatışma seni iki yöne çekiyor. İleriye giden tek yol her iki gücü de ustalaştırıp sürmekten geçiyor. Tereddüt edersen durursun.",
+      "future": "Bir atılım geliyor, ama zahmetsiz olmayacak. Her gram odaklanmaya ve iradeye ihtiyacın olacak. İyi haber: bunlara sahipsin."
+    },
+    "arcana-8": {
+      "keywords": "adalet, hakkaniyet, gerçek, hesap verebilirlik",
+      "meaning": "Adalet teraziyi ve kılıcı tutar. Bu sade biçimde neden ve sonuçla ilgilidir. Verdiğin geri döner. Gerçek tartılacak — ve karar adil olacak.",
+      "past": "Teraziyi dengeleyen bir karar verildi. Bir şey halledildi — adilce ya da değil — ve sonuçları olması gerektiği gibi ortaya çıktı.",
+      "present": "Dürüst ol. Kendine, başkalarına. Bir durum hakkaniyet ve berrak gerçek talep ediyor. Terazi izliyor.",
+      "future": "Bir hesaplaşma geliyor — ceza değil, denge. Hizada olmayan düzeltilecek. Sürece güven."
+    },
+    "arcana-9": {
+      "keywords": "yalnızlık, iç gözlem, rehberlik, bilgelik",
+      "meaning": "Ermiş yalnız tırmanır, elinde fener. Bu yalnızlık değil — seçilmiş tenhalıktır. Bazen cevaplar ancak gürültüden uzaklaşıp bir süre kendi yolunda yürüdüğünde gelir.",
+      "past": "Bir geri çekilme dönemi, sana başka kimsenin öğretemeyeceği bir şey öğretti. O yalnız zaman — gönüllü ya da değil — sana hâlâ taşıdığın netliği verdi.",
+      "present": "Geri çekil. Kalabalığın şu anda sana verecek cevabı yok. Feneri al ve içine yönel. Sessizlikte bulacakların yalnızlığa değecek.",
+      "future": "Gerekli bir yalnızlık dönemi yaklaşıyor. Rahat gelmeyebilir, ama kaçırdığın netliği sana verecek."
+    },
+    "arcana-10": {
+      "keywords": "döngüler, kader, dönüm noktası, değişim",
+      "meaning": "Çark döner — hep döndü, hep dönecek. Yukarıdaki aşağı iner, aşağıdaki yukarı çıkar. Bu kart hiçbir şeyin kalıcı olmadığını hatırlatır. Tek sabit dönmenin kendisidir.",
+      "past": "Büyük bir kayma her şeyi değiştirdi — talih döndü ve koşulların altüst oldu. O döngü hazır olsan da olmasan da kendini tamamladı.",
+      "present": "İşler harekete geçmiş durumda. Çarkı durduramazsın ama ona nasıl bineceğini seçebilirsin. Şu anda bir şey değişiyor.",
+      "future": "Bir kader dönüşü yaklaşıyor. Şans, koşul, zamanlama — bir şey lehine dönmek üzere. Harekete geçmeye hazır ol."
+    },
+    "arcana-11": {
+      "keywords": "cesaret, sabır, içsel güç, şefkat",
+      "meaning": "Güç aslan değil — ellerini onun çenesine koyan kadındır. Sessiz güç, nazik kontrol, kükremeye ihtiyacı olmayan türden cesaret. Başka bir şeye hakim olmaya çalışmadan önce kendine hakim ol.",
+      "past": "Derin bir içsel güç gerektiren bir şeyle karşılaştın — zor değil, dayanıklılık. O sessiz cesaret seni taşıdı.",
+      "present": "Durum güç değil, sabır istiyor. Meydan okumayı nazikçe ama kararlılıkla karşıla. Korktuğun şeyden daha güçlüsün.",
+      "future": "Sınanacaksın — dış bir düşman tarafından değil, kendi dürtülerin tarafından. İhtiyacın olan güç zaten içinde. Ona güven."
+    },
+    "arcana-12": {
+      "keywords": "teslimiyet, yeni perspektif, bırakma, duraksama",
+      "meaning": "Asılan Adam kendi isteğiyle asılıdır. Dünya baş aşağı farklı görünür — ve asıl mesele de bu. Bu gönüllü askıya alıştır, her şeyi değiştiren bir duraksama. Mücadeleyi bırak ve dinginliğin ne gösterdiğini gör.",
+      "past": "Bir bekleme ya da fedakarlık dönemi tüm bakış açını değiştirdi. Durgunluk gibi hissedilen aslında kılık değiştirmiş dönüşümdü.",
+      "present": "Harekete geçme ihtiyacını bırak. Cevap onu kovalamayı bıraktığında gelir. Teslimiyet yenilgi değil — stratejidir.",
+      "future": "Bir duraksama geliyor. Sinir bozucu hissedecek ama gerekli. Bu yeni açıdan göreceklerin yaklaşımını tamamen değiştirecek."
+    },
+    "arcana-13": {
+      "keywords": "sonlar, dönüşüm, geçiş, bırakma",
+      "meaning": "Ölüm alanı temizler. Kendi uğruna yıkım değil — bir sonrakine yer açan zorunlu sondur. Yeni bir şeyin yaşayabilmesi için bir şeyin ölmesi gerekir. Bırak.",
+      "past": "Bir şey sona erdi — bir ilişki, bir kimlik, bir bölüm. Acıttı. Ama bıraktığı alanda ne büyüdüğüne bak.",
+      "present": "Bir dönüşüm sürüyor. Direnirsen daha uzun acı çekersin. Sona eren şey amacına hizmet etti. Ona saygıyla veda et.",
+      "future": "Önemli bir son önünde. Bu bir trajedi değil — bir eşik. Ardından gelen, arkada bıraktığına değecek."
+    },
+    "arcana-14": {
+      "keywords": "denge, ölçülülük, sabır, amaç",
+      "meaning": "Ölçülülük iki kupa arasında su döker — ileri geri, asla dökmeden. Bu denge sanatıdır, karşıtları harmanlama, orta yolu bulma. Sabır ve ölçülülük seni güçten daha ileri götürecek.",
+      "past": "Aşırılıklardan sonra denge bulma dönemi. Belki de zor yoldan, orta yolun kenarlardan daha iyi işlediğini öğrendin.",
+      "present": "Sakinliği koru. Uğraştığın her ne ise dramatik değil, ölçülü bir yaklaşım istiyor. Harmanla, zorlama.",
+      "future": "Uyum inşa oluyor. Hayatındaki karşıt güçler bütünleşmeye doğru hareket ediyor. Zaman tanı — simya sabır ister."
+    },
+    "arcana-15": {
+      "keywords": "gölge, tutsaklık, maddiyat, bağlanma",
+      "meaning": "Şeytan takmayı seçtiğin zincirleri gösterir. Bağımlılık, takıntı, zehirli kalıplar — çıkamayacağını fark edene kadar rahat görünürler. Zincirler gevşek. Onları çıkarabilirsin. Çıkaracak mısın?",
+      "past": "Bir bağlılık kalıbı seni tuttu — bir alışkanlık, bir ilişki, seni küçük tutan bir inanç. Kafesi fark etmek dışarı çıkmanın ilk adımıydı.",
+      "present": "Bir şeyin üzerinde olması gerekenden fazla gücü var. Bir istek, bir korku, rahat bir tuzak. Dürüstçe adlandır. Zincirler kilitli değil.",
+      "future": "Dikkatli ol. Yaklaşan bir bağlılık ya da ayartma kısa vadede iyi hissettirecek, uzun vadede sana pahalıya patlayacak. Gördüğünde anlayacaksın."
+    },
+    "arcana-16": {
+      "keywords": "altüst oluş, ifşa, ani değişim, çöküş",
+      "meaning": "Kule'ye şimşek çarpar ve her şey yıkılır. Bu nazik bir değişim değil — sallantılı bir temel üzerine inşa edilmiş olanı parçalayan türden. Acımasız. Aynı zamanda gerekli.",
+      "past": "Bir şey aniden çöktü — bir inanç, bir yapı, bir ilişki. O zaman yıkıcıydı. Aynı zamanda olabilecek en dürüst şeydi.",
+      "present": "Her şey dağılıyor. Bırak dağılsın. Şimdi çöken başından beri sağlam değildi. Yıkım gerçek bir şey için zemin temizliyor.",
+      "future": "Önde ani bir bozulma var. Onu önleyemezsin ama sonra ne inşa edeceğini seçebilirsin. Eski yapı ayakta kalmayacak — ve mesele de bu."
+    },
+    "arcana-17": {
+      "keywords": "umut, inanç, yenilenme, ilham",
+      "meaning": "Yıldız Kule'den sonra gelir — fırtınadan sonra sakinlik. Çıplak, kırılgan, toprağa ve havuza su döker. Bu sessiz umuttur, en kötüsü geçtiğinde geri dönen.",
+      "past": "Karanlık bir dönemden sonra umut geri döndü. O yenilenme anı — kırılgan ama gerçek — seni daha iyi bir yola koydu.",
+      "present": "Nefes al. En kötüsü geçti. Bu iyileşme zamanı, seni ilhamlandırana yeniden bağlanma zamanı. Kendine yeniden umutlu hissetmesine izin ver.",
+      "future": "Yenilenme geliyor. Altüst oluştan sonra, mücadeleden sonra — berrak, yıldızlı bir gece. İnancını yeniden bulacaksın."
+    },
+    "arcana-18": {
+      "keywords": "yanılsama, korku, kaygı, bilinçaltı",
+      "meaning": "Ay tuhaf bir manzarayı aydınlatır — hiçbir şey göründüğü gibi değil. Korkular, yanılsamalar, karanlıkta yarım görülen şeyler. Bu kart der ki: korktuğun şey gerçek olmayabilir, ama korkunun kendisine dikkat etmen gerek.",
+      "past": "Bir karışıklık ya da aldatma dönemi deneyimini renklendirdi. İşler göründükleri gibi değildi ve belirsizlik iz bıraktı.",
+      "present": "Güven şu anda zayıf. Bir şey doğru gelmiyor ve tam olarak işaret edemiyorsun. Bu sisin içinde büyük kararlar verme — netlik için bekle.",
+      "future": "Önde bir belirsizlik dönemi var. Her şey göründüğü gibi olmayacak. Aklını başında tut ve kaygının seçimlerini yönlendirmesine izin verme."
+    },
+    "arcana-19": {
+      "keywords": "sevinç, başarı, canlılık, netlik",
+      "meaning": "Güneş özür dilemeden parlar. Sıcaklık, netlik, basit mutluluk — kendini haklı çıkarmaya gerek duymayan türden. Ay'ın karmaşasından sonra bu gün ışığıdır. Her şey görünür ve iyi.",
+      "past": "Gerçek bir mutluluk zamanı vardı — her şeyi aydınlatan karmaşık olmayan sevinç. O sıcaklık hikayenin bir parçası ve ona dönülebilir.",
+      "present": "İşler iyi. Gerçekten iyi. Diğer ayakkabının düşmesini beklemeden tadını çıkarmana izin ver. Bu güneşteki anın.",
+      "future": "Önde parlak günler var. Başarı, netlik ve sıcaklık geliyor. Üzerinde çalıştığın her ne ise ışığa adım atmak üzere."
+    },
+    "arcana-20": {
+      "keywords": "yansıma, hesaplaşma, uyanış, aklanma",
+      "meaning": "Mahkeme herkesi ayağa kalkmaya çağırır. Bu dışsal bir yargı değil — tüm hayatına baktığın ve neyin kalacağına, neyin bırakılacağına karar verdiğin andır. Yeni bir başlangıçtan önceki son hesaplaşma.",
+      "past": "Derin bir hesaplaşma anı yönünü değiştirdi. Nerede olduğuna dürüstçe baktın ve sonra nereye gideceğin konusunda bir seçim yaptın.",
+      "present": "Hesap vermeye çağrılıyorsun — kendin tarafından, başkaları tarafından değil. Ne öğrendin? Neyin affedilmesi gerek? Dürüstçe cevap ver ve özgür olursun.",
+      "future": "Önde bir uyanış var. Kule gibi ani değil, derin ve kasıtlı. Yolunu yeni bir netlikle göreceksin ve tam olarak ne yapacağını bileceksin."
+    },
+    "arcana-21": {
+      "keywords": "tamamlama, bütünleşme, başarı, bütünlük",
+      "meaning": "Dünya son karttır — yolculuğun sonundaki dans. Her şey tam bir daire çizdi. Bir bölüm tamamlandı ve sen onun içinde bütün durursun. Yeniden başlamadan önce kutla.",
+      "past": "Bir döngü tamamlandı. Uzun süre uğraştığın bir şey sonunda bir araya geldi. O başarı gerçek — sahiplen.",
+      "present": "Büyük bir bölümün sonundasın. Bütünleşme, tamamlama, vardığın hissi. Bir sonraki döngü başlamadan önce dur ve içine çek.",
+      "future": "Tamamlanma yaklaşıyor. Uzun süredir üzerinde olduğun yol varış noktasına ulaşıyor. Seni bütünlük ve tamamlanmış bir yolculuğun tatmini bekliyor."
+    },
+
+    "chalices-1": {
+      "keywords": "yeni aşk, duygusal başlangıç, sezgi, şefkat",
+      "meaning": "Kupa Ası taşan bir kadehtir. Yeni bir duygusal başlangıç — aşk, yaratıcı ilham ya da ruhsal bir açılış. Sana bir şey sunuluyor. Ellerini aç.",
+      "past": "Duygusal bir kapı açıldı — yeni aşk, yaratıcı bir kıvılcım ya da ruhsal bir uyanış. O açılım iç yaşamının seyrini değiştirdi.",
+      "present": "Kalbinde yeni bir şey kıpırdanıyor. Bir duygu, bir bağlantı, yaratıcı bir dürtü. Analiz etme — al.",
+      "future": "Yolunda duygusal bir armağan var. Yeni aşk, derin ilham ya da saf bir bağlantı anı. Gelene açık ol."
+    },
+    "chalices-2": {
+      "keywords": "ortaklık, karşılıklı çekim, bağlantı, uyum",
+      "meaning": "Karşılıklı tanınmayla kaldırılmış iki kadeh. Bu en basit haliyle ortaklıktır — iki insan birbirini net görüp bağlanmayı seçer. Eşit alışveriş, oyun yok.",
+      "past": "Anlamlı bir ortaklık seni şekillendirdi — romantik ya da değil. Karşılıklı saygı ve gerçek bağlantı kalıcı bir izlenim bıraktı.",
+      "present": "Gerçek karşılıklı çekime dayalı bir bağlantı oluşuyor. Bu dengeli, dürüst ve yatırım yapmaya değer.",
+      "future": "Önde önemli bir ortaklık var. Biri seni olduğun yerde karşılayacak — yapmacıksız, dengesizliksiz. Sadece dürüst bağlantı."
+    },
+    "chalices-3": {
+      "keywords": "kutlama, dostluk, topluluk, sevinç",
+      "meaning": "Kutlamada kaldırılmış üç kadeh. Arkadaşlar, topluluk, paylaşılan sevinç. Bu kart bir partidir — çılgın değil, etrafına baktığında gerçekten önem veren insanlarla çevrili olduğunu fark ettiğin türden.",
+      "past": "Bir kutlama ya da toplantı gerçek sevinç getirdi. O zamanki etrafındaki topluluk seni önemli biçimlerde yukarı kaldırdı.",
+      "present": "Sahip olduğunu kutla. Arkadaşları ara, bardağı kaldır, anın tadını çıkar. Her şeyin ağır ya da anlamlı olması gerekmez — bazen sevinç yeter.",
+      "future": "Önde bir toplantı ya da kutlama var. İyi arkadaşlar, paylaşılan mutluluk, aidiyetin sıcaklığı. Keyfini çıkarmana izin ver."
+    },
+    "chalices-4": {
+      "keywords": "kayıtsızlık, tefekkür, kopukluk, kaçırılan fırsat",
+      "meaning": "Dört kadeh — üçü yerde, biri buluttan uzanan bir el tarafından sunuluyor. Ama figür kolları çapraz, fark edemeyecek kadar sıkılmış ya da dalgın oturuyor. Aradığın şey zaten önünde olabilir.",
+      "past": "Sahip olmadığına kapıldığın için bir şeyi kaçırdın. Dikkatin başka yerdeyken bir fırsat ya da bağlantı fark edilmeden geçip gitti.",
+      "present": "Sıkıntı ya da tatminsizlik görüşünü bulandırıyor. Masada görmediğin bir teklif var. Başını kaldır.",
+      "future": "Sunulanı gözden kaçırmamaya dikkat et. Hoşnutsuzluk gerçek armağanlara seni kör edebilir. Dördüncü kadeh orada — sadece uzanman gerekiyor."
+    },
+    "chalices-5": {
+      "keywords": "keder, kayıp, pişmanlık, hayal kırıklığı",
+      "meaning": "Beş kadeh — üçü dökülmüş, ikisi hâlâ ayakta. Figür kayba bakıyor, sırtı kalanlara dönük. Keder gerçek, ama hayatta kalan da gerçek. Soru hangi kadehlere odaklanacağın.",
+      "past": "Bir kayıp ağır vurdu ve gidenin yasını tuttuğun zaman oldu. O keder geçerliydi — ama kalanları görmeni engellemiş olabilir.",
+      "present": "Neyin yanlış gittiğine odaklanmışsın. Bu anlaşılır. Ama dön — her şey kayıp değil. İki kadeh hâlâ ayakta.",
+      "future": "Önde bir hayal kırıklığı var, ama her şeyi götürmeyecek. Kendine yas tutma izni ver, sonra kalana bak. Sandığından daha fazla."
+    },
+    "chalices-6": {
+      "keywords": "nostalji, anılar, masumiyet, yeniden buluşma",
+      "meaning": "Çiçeklerle dolu altı kadeh, çocukluktan bir sahne. Bu kart büyükannenin evi gibi kokar. Nostalji, eski anılar, daha basit zamanların tatlılığı. Sadece orada yaşamamaya dikkat et.",
+      "past": "Geçmişinden bir anı ya da bir kişi önemli bir rol oynadı. O masumiyet ve sıcaklık, tam olarak değerini bilmediğin biçimlerde seni şekillendirdi.",
+      "present": "Geçmiş seni çağırıyor — eski bir dost, bir anı, bir zamanlar tanıdığın bir yer. Ziyaret etmek sorun değil ama hatırla: geriye bakarak ileri gidemezsin.",
+      "future": "Geçmişinden biri ya da bir şey yeniden görünecek. Bir yeniden buluşma, yeniden yüzeye çıkan bir anı ya da tanıdık bir şeye dönüş. Tadını çıkar, ama şimdinin içinde kal."
+    },
+    "chalices-7": {
+      "keywords": "fantezi, yanılsama, hülya, seçimler",
+      "meaning": "Yedi kadeh bulutlarda süzülür — her biri bir fantezi, bir dilek, bir dikkat dağıtıcı. Kaleler, mücevherler, ejderhalar, örtülü bir figür. Baştan çıkarıcı, ama henüz hiçbiri gerçek değil. Birini seç ve onu somutlaştır, ya da sonsuza dek hayal kurmaya devam et.",
+      "past": "Çok fazla seçenek ya da fantezi odağını dağıttı. Gerçek bir şeye bağlanmak yerine yanılsamaların peşinde zaman harcandı.",
+      "present": "Olasılıklar içinde kaybolmuş durumdasın. Bazıları gerçek, çoğu duman. Gerçekten ne istediğin konusunda dürüst ol — sonra ona bağlan.",
+      "future": "Göz alıcı bir seçenek dizisi kendini gösterecek. Çoğu dikkat dağıtıcı. Ayırt etme yeteneği en değerli becerin olacak."
+    },
+    "chalices-8": {
+      "keywords": "ayrılış, geri çekilme, bırakma, arayış",
+      "meaning": "Sekiz kadeh düzgünce istiflenmiş, bir figür hilal ayın altında yürüyerek uzaklaşıyor. Bir şey geride bırakılıyor — kötü olduğu için değil, artık yeterli olmadığı için. Bu sessiz, gerekli bir ayrılış.",
+      "past": "Dışarıdan iyi görünen ama içten boş hissettiren bir şeyden uzaklaştın. Kimse anlamasa bile o ayrılış cesaret istedi.",
+      "present": "Bir şey seni artık doldurmuyor. Kadehler orada, ama yeterli değiller. Uzaklaşıp eksik olanı aramanın zamanı.",
+      "future": "Bir durumu aştığın bir noktaya ulaşacaksın. Ayrılış sessiz ve kararlı olacak — dramatik değil, derinden gerekli."
+    },
+    "chalices-9": {
+      "keywords": "hoşnutluk, tatmin, şükran, gerçekleşmiş dilek",
+      "meaning": "Dokuz kadeh gururla sergileniyor, figür kollarını çaprazlamış ve tatmin olmuş bir sırıtışla oturuyor. Dilek kartı. İstediğin — elde ettin. Yeterince sahip olma anının tadını çıkar.",
+      "past": "Bir dilek gerçek oldu. Her şeyin umduğun gibi hizalandığı gerçek bir tatmin anı. O hoşnutluk hak edilmişti.",
+      "present": "Sahip olduğuna bak. Gerçekten bak. Bu bir gerçekleşme anı — belki mükemmellik değil, ama gerçek tatmin. Kendine tadını çıkarma izni ver.",
+      "future": "Bir dilek gerçekleşmek üzere. Peri masalı gibi değil, çalışmanın şansla buluştuğu gerçek, sağlam bir biçimde. Tadını çıkar."
+    },
+    "chalices-10": {
+      "keywords": "uyum, aile, mutluluk, duygusal doyum",
+      "meaning": "Mutlu bir ailenin üstünde gökkuşağı gibi kavislenmiş on kadeh. Duygusal tamamlanma — sevgi, aidiyet, tüm resim. Kalbin ihtiyacı olan her şeye sahip olduğunda işte böyle görünür.",
+      "past": "Derin duygusal doyumun olduğu bir zaman — aile, sevgi, aidiyet. O bütünlük deneyimi mutluluğun nasıl görünebileceğine bir ölçüt koydu.",
+      "present": "Duygusal bolluk seni sarıyor. Aile, sevgi, bağlantı — tam resim. Hafife alma. İnsanların peşinde koştuğu tam da bu.",
+      "future": "Önde kalıcı duygusal doyum var. Geçici bir yüksek değil, gerçek bağlantı ve sevgiden gelen derin, sağlam mutluluk."
+    },
+    "chalices-page": {
+      "keywords": "yaratıcı kıvılcım, merak, duyarlılık, yeni duygular",
+      "meaning": "Genç bir figür, içinden bir balık sıçrayan bir kadehe bakıyor — şaşırmış ve büyülenmiş. Yeni duygusal ya da yaratıcı kıpırdanışlar, derinden hissetmeyi yeni öğrenen birinin duyarlılığı.",
+      "past": "Erken bir duygusal deneyim içinde bir şeyi uyandırdı. İlk bir aşk, yaratıcı bir keşif, şaşırtıcı bir şefkat anı.",
+      "present": "Yeni bir duygu beliriyor — hassas, biçimsiz, olasılıklarla dolu. Ona şüpheyle değil, merakla yaklaş. Gelişmesine izin ver.",
+      "future": "Yoldan bir kalp mesajı geliyor. Yeni yaratıcı ilham ya da merak duygunu yeniden uyandıran duygusal bir sürpriz."
+    },
+    "chalices-knight": {
+      "keywords": "romantizm, çekicilik, idealizm, hayal gücü",
+      "meaning": "Kupa Şövalyesi yavaşça ilerler, kadehi bir sunu gibi uzatılmıştır. Romantik, şair, kalbi sorgusuzca takip eden kişi. Güzel — sadece gerçekle topraklı olduğundan emin ol.",
+      "past": "Romantik bir arayış ya da yaratıcı bir tutku seni sürükledi. Gerçeklik sonunda işleri karmaşıklaştırmış olsa bile idealizm gerçekti.",
+      "present": "Kalbini takip et — ama bir ayağını yerde tut. Büyük bir çekicilikle romantik ya da yaratıcı bir fırsat kendini gösteriyor. Tadını çıkar, ama uyanık kal.",
+      "future": "Romantik bir figür ya da yaratıcı bir fırsat yaklaşıyor. Çekici ve samimi olacak. Sadece hatırla: çekicilik ve öz her zaman aynı şey değildir."
+    },
+    "chalices-queen": {
+      "keywords": "şefkat, duygusal derinlik, sezgi, besleme",
+      "meaning": "Kupa Kraliçesi süslü bir kadeh tutarak suyun kenarında oturur. Her şeyi hisseder — ve bir şekilde boğulmaz. Derin duygusal zeka, kendini kaybetmeden şefkat.",
+      "past": "Derin şefkatli bir figür hayatını etkiledi — duyguları sezgisel olarak anlayan ve yargılamadan alan biri.",
+      "present": "Şu anda empatiyle yönet. Durum mantıktan çok duygusal zeka istiyor. Duygularına güven — odayı aklından daha iyi okuyorlar.",
+      "future": "Daha derin duygusal bilgeliğe büyüyorsun. Tüketilmeden derinden hissetme yeteneği gelişiyor — ve sana iyi hizmet edecek."
+    },
+    "chalices-king": {
+      "keywords": "duygusal olgunluk, diplomasi, sakinlik, bilgelik",
+      "meaning": "Kupa Kralı çalkantılı suların ortasında tahtında oturur, tamamen sakin. Her şeyi hisseder ama onunla yönetilmek yerine onu yönetir. Duygusal ustalık — derin su, sağlam el.",
+      "past": "Duygusal ustalık öğrenildi, muhtemelen zor bir deneyim aracılığıyla. Biri — belki sen — derin duygularda alabora olmadan yol almayı öğrendi.",
+      "present": "Duygusal akıntıda sakin kal. Derin hissedip yine de akıllıca kararlar verebilirsin. Bastırma — yönet.",
+      "future": "Gelen durumda duygusal olgunluk en büyük varlığın olacak. Sular derin olacak, ama onlarda ustalıkla yol alacaksın."
+    },
+
+    "swords-1": {
+      "keywords": "netlik, atılım, gerçek, yeni fikir",
+      "meaning": "Kılıç Ası sisi keser — tek bıçak, tek gerçek. Düşüncede bir atılım, bir netlik parıltısı, karmaşanın ayrıldığı ve her şeyi olduğu gibi gördüğün an.",
+      "past": "Ani bir netlik anı her şeyi değiştirdi. Bir fikir, bir gerçek, bir farkındalık gürültüyü kesti ve sana yön verdi.",
+      "present": "Gerçek şu anda senin için erişilebilir — keskin ve net. Karışıklığı kes. Söylenmesi gerekeni söyle. Net düşün.",
+      "future": "Bir atılım geliyor. Zihinsel netlik, yeni bir fikir ya da etrafında döndüğün bir gerçek aniden odağa girecek."
+    },
+    "swords-2": {
+      "keywords": "kararsızlık, çıkmaz, kaçınma, zor seçim",
+      "meaning": "Gözü bağlı bir figür çapraz iki kılıç tutar, deniz arkasında sakindir. Analizle felç. İki seçenek, hareket yok. Gözbağı cehalet değil — kaçınma. Bir kılıç seç.",
+      "past": "Bir kararsızlık dönemi seni tuttu. Seçemedin — ya da seçmeyecektin — ve çıkmaz sana zaman kaybettirdi.",
+      "present": "Bir karardan kaçınıyorsun. İki seçenek kendiliğinden çözülmeyecek. Gözbağını çıkar ve seç.",
+      "future": "Önde zor bir seçim var. İki taraf arasında dengede kalmak, ondan kaçınmak cazip olacak. Bunu yapma. Seç ve hareket et."
+    },
+    "swords-3": {
+      "keywords": "kalp kırıklığı, keder, acı, acı gerçek",
+      "meaning": "Bir kalbin içinden üç kılıç. Bunu nazikçe okumanın bir yolu yok — bu acıdır. Kalp kırıklığı, ihanet, kesen bir gerçek. Ama yağmur diniyor. Bu yara, hikayenin tamamı değil.",
+      "past": "Derin bir acı — ihanet, kalp kırıklığı ya da acı bir gerçek — iz bıraktı. Yara iyileşmiş olabilir, ama iz sana bir şey öğretti.",
+      "present": "Bir şey gerçek acıya neden oluyor. Küçümseme ya da hızla geçme. Tam hisset, sonra iyileşmeye başlamasına izin ver.",
+      "future": "Önde acılı bir deneyim var. Acıtacak, ama aynı zamanda dürüst olacak. Yavaş çürümektense temiz bir kesik daha iyi."
+    },
+    "swords-4": {
+      "keywords": "dinlenme, iyileşme, tefekkür, inziva",
+      "meaning": "Bir figür taş bir levhada yatıyor, duvarda üç kılıç, altında bir tane. Savaştan sonra dinlenme. Bu tembellik değil — gerekli iyileşmedir. Kılıcı bırak. Zihnin sessizliğe ihtiyacı var.",
+      "past": "Zor bir zamandan sonra zorunlu ya da seçilmiş bir dinlenme dönemi geldi. O duraklama hissettirdiğinden daha üretkendi — zihin sessizlikte iyileşti.",
+      "present": "Dinlen. Savaşıyordun — zihinsel, duygusal ya da her ikisi. Savaş bekleyebilir. Bir sonraki raunttan önce gücünü topla.",
+      "future": "Gerekli bir geri çekilme dönemi geliyor. Direnme. İyileşme seni sonrasına hazırlayacak."
+    },
+    "swords-5": {
+      "keywords": "çatışma, yenilgi, düşmanlık, bedel ödeyerek kazanma",
+      "meaning": "Beş kılıç, sırıtan bir galip, yenilgiye uğramış figürler uzaklaşıyor. Biri kazandı — ama ne pahasına? Bu kart sorar: zafer hasara değdi mi? Kazanmak her zaman kazanmak değildir.",
+      "past": "Bir çatışma enkaz bıraktı. Biri kazandı, biri kaybetti ve sonrası acıydı. Zafer, değerinden daha fazlasına mal olmuş olabilir.",
+      "present": "Bir çatışma sürüyor. Kazanmak için savaşmadan önce kendine sor — gerçekten ne kazanıyorsun ve süreçte neyi yok ediyorsun.",
+      "future": "Önde bir yüzleşme var. Savaşlarını dikkatle seç. Bazı kavgalar ödüle değmez ve bazı zaferler seni yenilgiden daha boş bırakır."
+    },
+    "swords-6": {
+      "keywords": "geçiş, ilerleme, geride bırakma, iyileşme",
+      "meaning": "Bir kayıkçı yolcuları ve altı kılıcı sakin suların karşısına taşır. Zor bir şeyden uzaklaşmak — kaçmak değil, kasıtlı olarak dalgalı suları geride bırakmak. Yolculuk bitmedi, ama en kötüsü bitti.",
+      "past": "Acılı bir durumdan uzaklaştın. Ayrılış sessiz ve gerekliydi — yüklerini daha sakin kıyılara taşımak.",
+      "present": "Zor bir durumu geride bırakma zamanı. Dramatik değil — sadece tekneye bin ve git. Daha sakin sular önünde.",
+      "future": "Zorluktan uzaklaşan bir geçiş geliyor. Ani değil, kademeli olacak ama yön huzura doğru."
+    },
+    "swords-7": {
+      "keywords": "aldatma, strateji, gizlilik, yırtıp kaçmak",
+      "meaning": "Bir figür beş kılıçla sinsice uzaklaşıyor, ikisi hâlâ toprağa saplı. Zeka mı yoksa hırsızlık mı? Strateji mi yoksa aldatma mı? Bu kart yargılamaz — sadece sorar: akıllı mı davranıyorsun, yoksa dürüstsüz mü?",
+      "past": "Biri kısa yola girdi — belki sen, belki biri başka. O zaman işe yaradı, ama etiği hâlâ uzanıyor.",
+      "present": "Stratejini kontrol et. Akıllıca ile aldatıcı arasındaki çizgi incedir. Sinsice davranman gerekiyorsa kendine neden diye sor.",
+      "future": "Biri seninle dürüstçe oynamıyor olabilir — ya da sen köşe kesmeye yöneleceksin. Kimse izlemese bile dürüstlüğünü koru."
+    },
+    "swords-8": {
+      "keywords": "kısıtlama, hapsolma, güçsüzlük, kendi koyduğu sınırlar",
+      "meaning": "Sekiz kılıç bağlanmış, gözü bağlı bir figürü çevreler. Umutsuz görünüyor — ama daha yakından bak. Bağlar gevşek. Çıkış yolu açık. Hapishane çoğunlukla akıldadır.",
+      "past": "Tuzağa düşmüş hissettin — koşullar tarafından, insanlar tarafından, kendi düşüncelerin tarafından. Ama kafes hiçbir zaman göründüğü kadar kilitli değildi.",
+      "present": "Gerçekte olduğundan çok kafanda takılısın. Hissettiğin kısıtlamalar en azından kısmen kendi kendine koyduğun. Gözlerini aç — çıkış yolu var.",
+      "future": "Bir durum seni güçsüz hissettirecek. Yenilgiyi kabul etmeden önce tekrar bak. Kısıtlamalar göründükleri kadar gerçek değil."
+    },
+    "swords-9": {
+      "keywords": "kaygı, endişe, kabuslar, umutsuzluk",
+      "meaning": "Bir figür yatakta başını ellerinin arasına alarak oturuyor, arkasındaki duvarda dokuz kılıç. Gecenin üçü kartı. Kaygı, yarışan düşünceler, seni uyandıran türden endişe. Korktuğun çoğu şey olmayacak — ama korku gerçek.",
+      "past": "Yoğun bir endişe ya da uykusuz gece dönemi bedel aldı. Kaygı gerçek tehdide orantısızdı ama o zaman ezici hissettiriyordu.",
+      "present": "Zihnin sana işkence ediyor. Korkular karanlıkta muazzam hissettiriyor — ama çoğu gölge. Gün ışığı onları küçültecek. Dayan.",
+      "future": "Kaygı önde yükselebilir. Hatırla: dokuz kılıç duvarda, bedeninde değil. Korku gerçek ama tehlike gerçek olmayabilir."
+    },
+    "swords-10": {
+      "keywords": "son, dibe vurma, ihanet, tam yenilgi",
+      "meaning": "Sırtta on kılıç — destedeki en dramatik kart. Tam son, tam yenilgi. Ama şu var: on kılıçtan sonra daha kılıç yok. En kötüsü bitti. Yukarıdan başka gidecek yer yok.",
+      "past": "Bir şey feci şekilde sona erdi. İhanet, çöküş, tam dibe vurmak. Berbattı — ve o bölümün sonuydu, hikayenin değil.",
+      "present": "Bu en kötüsü. Tam şu an. İyi haber şu ki daha kötüye gidemez, yani sadece iyiye gidebilir. Eski olanın tamamen ölmesine izin ver.",
+      "future": "Önde acılı bir son var. Çok fazla gibi hissettirecek. Ama bu temizlik — dramatik, kesin ve sonuç olarak özgürleştirici."
+    },
+    "swords-page": {
+      "keywords": "merak, zihinsel çeviklik, yeni fikirler, uyanıklık",
+      "meaning": "Genç bir figür kılıcı yukarı kaldırıp engebeli arazide duruyor, gökyüzünü izliyor. Keskin zihin, huzursuz merak, gerçeğe kesmeye istekli. Bıçağı iyi kullanmak için biraz daha deneyime ihtiyacı var.",
+      "past": "Entelektüel bir uyanış anı — zihnini yarıştıran yeni bir fikir ya da meydan okuyucu bir gerçek. O merak kapılar açtı.",
+      "present": "Zihinsel olarak keskin kal. Yeni bilgi geliyor ve hızlı düşünmen gerekecek. Meraklı ol, uyanık ol, ama sonuca atlama.",
+      "future": "Yolunda bir haber ya da yeni bir bakış açısı var. Düşünmeni meydan okuyacak — iyi bir şekilde. Açık kal ve zihnini çevik tut."
+    },
+    "swords-knight": {
+      "keywords": "hırs, hız, doğrudan eylem, saldırganlık",
+      "meaning": "Kılıç Şövalyesi tam hızla hücum eder, bıçağı kalkmış, tereddütsüz. Hızlı düşünme, hızlı eylem, kararlı ve durdurulamaz. Etkili — ama bazen hücum düşünmeden önce gerçekleşir.",
+      "past": "Acele bir karar ya da saldırgan bir eylem sonuç verdi — ama kaybolmadan değil. Hız, olmayana kadar bir güçtür.",
+      "present": "Hızlı ve kararlı hareket et. Durum keskin eylem istiyor, uzun düşünme değil. Sadece doğru hedefe hücum ettiğinden emin ol.",
+      "future": "Bir şey hızlı, kararlı eylem talep edecek. Aynı anda düşünmen ve hareket etmen gerekecek. İçgüdülerine güven ama nişanına dikkat et."
+    },
+    "swords-queen": {
+      "keywords": "netlik, bağımsızlık, algı, doğrudan iletişim",
+      "meaning": "Kılıç Kraliçesi kılıcı kalkık, yüzü net ve okunamaz oturur. Acıdan geçti ve daha keskin çıktı. Net düşünme, doğrudan konuşma, saçmalığa sıfır tolerans.",
+      "past": "Deneyim — muhtemelen acılı — saçma görünmezin içinden geçme yeteneğini biledi. O netlik zor yoldan kazanıldı ve sana iyi hizmet ediyor.",
+      "present": "Net düşün. Doğrudan konuş. Durum dürüstlük istiyor, diplomasi değil. Gürültüyü kes ve tam olarak ne demek istediğini söyle.",
+      "future": "Önde soğuk netlik kanalize etmen gerekecek. Etrafında duygular yüksek olacak, ama gerçeği sade şekilde görme yeteneğin en büyük varlığın olacak."
+    },
+    "swords-king": {
+      "keywords": "otorite, zeka, gerçek, analitik güç",
+      "meaning": "Kılıç Kralı bıçağını dik tutar — yargı, otorite, entelektüel komuta. Kararları kalbiyle değil, kafasıyla verir. Adil, keskin ve kolay aldanmaz.",
+      "past": "Bir otorite figürü ya da kendi analitik zihnin karışıklığı kesti ve düzen dayattı. O entelektüel netlik sonuçları kararlı biçimde şekillendirdi.",
+      "present": "Mantıkla yönet. Durum net, akılcı düşünme ve adil yargı talep ediyor. Duyguları kapıda bırak ve zihninle karar ver.",
+      "future": "Keskin zeka ve tarafsız yargı gerektiren bir karar önde. Analitik yeteneğine güven — görevin üstesinden gelecek."
+    },
+
+    "pentacles-1": {
+      "keywords": "fırsat, refah, yeni girişim, tezahür",
+      "meaning": "Buluttan çıkan uzatılmış bir elde altın bir sikke. Maddi bir fırsat — para, iş, girişim. Sunuluyor, ama onunla bir şey yapman gerek. Potansiyel kendiliğinden harcanmaz.",
+      "past": "Bir fırsat kendini gösterdi — finansal, profesyonel ya da maddi. O tohumla ne yaptığın şu anda nerede olduğun hakkında çok şey belirledi.",
+      "present": "Ellerinde somut bir fırsat var. Yeni bir girişim, finansal bir olasılık, sağlam bir şey. Sadece hayran olma — ek.",
+      "future": "Maddi bir fırsat geliyor. Para, iş ya da pratik bir girişim. Geldiğinde harekete geçmeye hazır ol."
+    },
+    "pentacles-2": {
+      "keywords": "denge, uyum sağlama, öncelikleri dengeleme, zaman yönetimi",
+      "meaning": "Sonsuzluk ilmeğinde jonglörlenen iki sikke. Birden fazla talep, sınırlı el. Bu kart hiçbir şeyi düşürmeden rekabet eden öncelikleri yönetmekle ilgilidir. Esnek, ama gerilmiş.",
+      "past": "Birden fazla talebi jonglörledi ve bir şekilde her şeyi havada tuttun. O dengeleme eylemi yorucuydu ama sana uyum sağlamayı öğretti.",
+      "present": "Aynı anda çok fazla şeyi yönetiyorsun. Şimdilik işe yarıyor, ama önceliklendirmezsen bir şey düşecek. Neyin en önemli olduğunu seç.",
+      "future": "Birden fazla talep dikkatin için yarışacak. Enerjinin nereye gittiği konusunda esnek ve stratejik olman gerekecek."
+    },
+    "pentacles-3": {
+      "keywords": "takım çalışması, ustalık, işbirliği, beceri geliştirme",
+      "meaning": "Bir katedralde çalışan üç figür — her biri kendi becerisini daha büyük bir şeye katkıda bulunuyor. İşbirliği, ustalık, başkalarıyla gerçek bir şey inşa etmenin tatmini. İş önemlidir.",
+      "past": "İşbirliği kalıcı bir şey üretti. Diğerleriyle yan yana çalışmak — her biri becerisini getirerek — hiçbirinizin tek başına inşa edemeyeceği bir şey yarattı.",
+      "present": "Bu takım çalışması zamanı. Becerilerini masaya getir ve diğerlerinin kendilerininkini getireceklerine güven. Proje herhangi bir kişiden büyük.",
+      "future": "İşbirlikçi bir çaba oluşuyor. Belirli becerilerin değerli olacak ve gerekli olacak. Önümüzdeki iş anlamlı — kendini adayla."
+    },
+    "pentacles-4": {
+      "keywords": "güvenlik, kontrol, sahiplenme, biriktirme",
+      "meaning": "Bir figür dört sikkeyi sıkıca tutar — her ayağının altında bir, başında bir, kollarında bir. Sıkı tutuyor. Güvenlik iyidir, ama bu kavramadır, vekillik değil. Kaybetmekten bu kadar korktuğun ne?",
+      "past": "Çok sıkı tutma dönemi — paraya, güvenliğe, kontrole. Kayıp korkusu esneklik gerektiğinde seni katılaştırdı.",
+      "present": "Çok sıkı kavrıyorsun. Güvenlik arzusu sahiplenici hale geldi. Tutuşunu gevşet — gerçekten senin olan ayrılmayacak.",
+      "future": "Maddi güvenliğe çok bağlanmamaya dikkat et. Biraz cömertlik ya da açıklık sana sıkılmış bir yumruktan daha iyi hizmet edecek."
+    },
+    "pentacles-5": {
+      "keywords": "zorluk, yoksulluk, izolasyon, endişe",
+      "meaning": "Karda iki figür, yalınayak, aydınlatılmış bir kilise penceresinin yanından geçiyor. Maddi zorluk, soğukta dışlanmış hissetmek. Yardım göründüğünden daha yakın olabilir — ama istemeye istekli olman gerek.",
+      "past": "Gerçek zorluk dönemi — finansal, fiziksel ya da her ikisi. İzolasyon acılıydı ve iyileşme zaman ve alçakgönüllülük aldı.",
+      "present": "İşler şu anda zayıf. Soğukta dışlanmış hissedebilirsin. Ama etrafına bak — destek var. Gurur, seni ondan alıkoyan tek şey olabilir.",
+      "future": "Önde maddi olarak zor bir süreç var. Yapabildiğin yerde hazırlan ve ihtiyacın olduğunda yardım istemek için fazla gururlu olma."
+    },
+    "pentacles-6": {
+      "keywords": "cömertlik, hayırseverlik, vermek, almak, kaynak dengesi",
+      "meaning": "Varlıklı bir figür ihtiyacı olanlara sikke dağıtır — bir elinde terazi, diğerinde sikkeler. Vermek ve almak, kaynakların akışı. Bu kart sorar: veren sen misin yoksa alan mı? Her ikisi de uygundur.",
+      "past": "Bir cömertlik eylemi — verilen ya da alınan — gerçek bir fark yarattı. O kaynak değişimi, miktarın önerdiğinden daha anlamlıydı.",
+      "present": "Kaynaklar akıyor. Yeterin varsa paylaş. Yardıma ihtiyacın varsa zarafetle kabul et. Vermek ve almak dengesi mesele.",
+      "future": "Cömertlik önde bir rol oynayacak — ya senin ya da başkasının. Kaynakların akışı sana fayda sağlayacak yönde kayıyor."
+    },
+    "pentacles-7": {
+      "keywords": "sabır, azim, yatırım, uzun vadeli görüş",
+      "meaning": "Bir figür çapaya yaslanıyor, bir çalıda büyüyen yedi sikkeye bakıyor. Bekleme. Yatırım yapıldı, iş yapıldı — şimdi sabır zamanı. Hasadı acele ettiremezsin.",
+      "past": "Zaman ve çabanın uzun bir yatırımı sonunda meyve verdi. Bekleme zordu ama sonuç buna değdiğini kanıtladı.",
+      "present": "Tohumlar ekildi, iş yapıldı. Şimdi bekle. Büyüyüp büyümediğini kontrol etmek için bahçeyi kazma — sürece güven.",
+      "future": "Bir ödül geliyor, ama hemen değil. Şimdi yaptığın yatırım — işte, beceride, sabırda — kendini ödeyecek. Zaman ver."
+    },
+    "pentacles-8": {
+      "keywords": "gayret, beceri geliştirme, ustalık, adanmışlık",
+      "meaning": "Bir figür dikkatlice sikke üzerine sikke oyar — odaklı, yetenekli, metodik. Bu çırak kartıdır. Tekrarlamayla ustalık, adanmışlıkla gelişme. İş göz alıcı değil, ama gerçek bir şey inşa ediyor.",
+      "past": "Adanmış bir uygulama ve beceri geliştirme dönemi yeteneklerinin temelini attı. O gayret — gün geçtikçe — gerçek yetkinlik yarattı.",
+      "present": "Başını eğ ve işi yap. Bu kısa yolların ya da büyük sıçramaların zamanı değil — istikrarlı, odaklı çabanın zamanı. Ustalık tekrarlamadan gelir.",
+      "future": "Önde yoğun bir beceri geliştirme dönemi var. Adanmışlık ve odak gerektirecek, ama geliştirdiğin yetkinlik kalıcı bir varlık olacak."
+    },
+    "pentacles-9": {
+      "keywords": "lüks, kendi kendine yeterlilik, finansal güvenlik, başarı",
+      "meaning": "Bir figür gür bir bahçede durur, elinde bir kuş, arkasında dokuz sikke. Onu o kurdu. Kendi yaptığı konfor, çabayla kazanılmış maddi güvenlik. Yarattığının tadını çıkar.",
+      "past": "Kendi çabanla rahatlık ve güvenlik yarattın. O kendi kendine yeterlilik zor kazanıldı ve hak edildi.",
+      "present": "Sağlam bir şey inşa ettin. Yetiştirdiğin bahçenin keyfini çıkarmak için bir an ayır. Kendi kendine yeterlilik iyi hissettirir — takdir etmene izin ver.",
+      "future": "Finansal güvenlik ve konfor oluşuyor. Üzerinde çalıştığın şey maddileşiyor. Bahçe neredeyse tam çiçek açmış."
+    },
+    "pentacles-10": {
+      "keywords": "miras, kalıt, aile serveti, uzun vadeli başarı",
+      "meaning": "Bir malikanede toplanmış bir ailenin etrafında düzenlenmiş on sikke. Bu kuşaklardır — servet, miras, senden sonra sürmek için inşa edilmiş bir şey. Maddi tamamlanmanın nihai kartı.",
+      "past": "Bir şey aktarıldı — bir miras, bir aile geleneği, senden öncekiler tarafından kurulmuş bir temel. O miras hâlâ hayatını destekliyor.",
+      "present": "Uzun vadeli düşün. Şimdi inşa ettiğin yalnızca sana değil — sonra gelenlere. Aile, miras, kalıcı etki.",
+      "future": "Kalıcı servet ya da anlamlı bir miras oluşuyor. Şimdi yarattıkların anı aşacak. Kalıcılığı düşünerek inşa et."
+    },
+    "pentacles-page": {
+      "keywords": "hırs, çalışkanlık, yeni fırsat, pratik planlama",
+      "meaning": "Genç bir figür tek bir sikkeyi ışığa tutarak dikkatlice inceliyor. Maddi dünyanın öğrencisi — pratik, meraklı, öğrenmeye hazır. Yeni bir finansal ya da kariyer fırsatı inceleniyor.",
+      "past": "İşte ya da parada erken bir fırsat pratik hırslarını ateşledi. Gerçek bir şey inşa etmenin o ilk tadı seni yoluna koydu.",
+      "present": "Önünde öğrenmek ya da kazanmak için yeni bir fırsat var. Kendini adamadan önce dikkatlice incele. Hırs doğru — planın da doğru olduğundan emin ol.",
+      "future": "Para, iş ya da eğitim hakkında iyi haber geliyor. Bu bir giriş noktası, rüzgarla gelen bir şey değil — gerçek değer öğreneceklerinde."
+    },
+    "pentacles-knight": {
+      "keywords": "güvenilirlik, sıkı çalışma, rutin, sabır",
+      "meaning": "Tılsım Şövalyesi yavaş ve istikrarlı şekilde ilerler — hücum etmeyen tek şövalye. Güvenilir, metodik, işi halleder. Gösterişli değil, ama gerçekten işte istediğin kişi.",
+      "past": "İstikrarlı, gösterişsiz çaba sağlam sonuçlar verdi. Biri — belki sen — sadece her gün görünüp işi yaptı.",
+      "present": "Yavaş ve istikrarlı. Bu dramatik eylem zamanı değil — güvenilir, tutarlı çaba zamanı. Görün, işi yap, tekrarla.",
+      "future": "İlerleme hızla değil, sabırla gelecek. Metodik yaklaşım dramatik olanı geçecek. Sürece güven."
+    },
+    "pentacles-queen": {
+      "keywords": "pratik besleme, finansal zeka, konfor, bolluk",
+      "meaning": "Tılsım Kraliçesi gür bir bahçede oturur, altın bir sikke tutar, kendi yetiştirdiği bollukla çevrilidir. Pratik, cömert, topraklı. Bir şeyleri nasıl büyüteceğini bilir — para, bahçeler, insanlar.",
+      "past": "Pratik, besleyici bir figür maddi dünyanı şekillendirdi — sağduyu ve özenle bolluk yaratmayı bilen biri.",
+      "present": "Topraklı bir yaklaşım benimse. Sahip olduğunu besle, kaynaklarını akıllıca yönet ve pratikten konfor yarat. Bolluk özenli bakımdan gelir.",
+      "future": "Pratik bilgelikle maddi bolluk büyüyor. Kaynakları — finansal ya da başka türlü — besleme yeteneğin gerçek sonuçlar üretecek."
+    },
+    "pentacles-king": {
+      "keywords": "servet, iş duygusu, disiplin, güvenlik",
+      "meaning": "Tılsım Kralı boğalarla süslenmiş bir tahtta oturur, elinde altın bir sikke, arkasında üzüm bağları. İmparatorluğu o kurdu. Disiplinli, varlıklı ve her şeyin değerini bilir. Maddi ustalık.",
+      "past": "Finansal disiplin ya da iş zekası — senin ya da başkasının — gerçek güvenlik temeli inşa etti. O başarı strateji ve sabırla kazanıldı.",
+      "present": "İnşaatçı gibi düşün. Kaynaklarını yönet, akıllıca yatırım yap, uzun oyun için planla. Maddi dünya şu anda disiplini ödüllendiriyor.",
+      "future": "Maddi başarı ve finansal güvenlik sağlamlaşıyor. Kurduğun imparatorluk — ne kadar küçük olursa olsun — şekil alıyor. Disiplinli kal."
+    },
+
+    "wands-1": {
+      "keywords": "ilham, yeni tutku, potansiyel, yaratıcı kıvılcım",
+      "meaning": "Buluttan bir el canlı bir asa tutar — yapraklar hâlâ sürmekte. Saf yaratıcı ateş, yeni bir tutkunun tutuşması, alevden önceki kıvılcım. Bir şey sana sesleniyor. Cevap ver.",
+      "past": "Bir ilham kıvılcımı yönünü değiştiren bir ateş yaktı. O tutkunun ilk patlaması önemli bir şeyi harekete geçirdi.",
+      "present": "Yeni bir yaratıcı ya da tutkulu dürtü dikkat talep ediyor. Bu ham potansiyel — gerçek bir şey olmak için eyleme ihtiyacı var. Demir tavında vur.",
+      "future": "Güçlü yeni bir ilham yolunda. Geldiğinde üzerine oturma. Kıvılcımın yakıta ihtiyacı var, ve yakıt senin eylemin."
+    },
+    "wands-2": {
+      "keywords": "planlama, kararlar, keşif, gelecek vizyonu",
+      "meaning": "Bir figür bir küre ve bir asa tutar, bir kaleden geniş manzaraya bakar. Dünya büyük ve planlar daha büyük. Bir şey başardın, ama zaten bir sonraki şeye bakıyorsun.",
+      "past": "Bir hırs ve planlama anı ufkunu genişletti. Bir kavşakta durarak daha büyük resme baktın ve plan yapmaya başladın.",
+      "present": "Bir şey başardın ama huzursuzsun. Daha büyük vizyon seni çağırıyor. Bir sonraki hamleni planlamaya başla — bölge sandığından daha geniş.",
+      "future": "Yönünle ilgili bir karar önde. Seçenekler geniş. Bir yola kendini adamadan önce manzarayı gözden geçirmek için zaman ayır."
+    },
+    "wands-3": {
+      "keywords": "genişleme, öngörü, ilerleme, denizaşırı fırsatlar",
+      "meaning": "Bir figür bir uçurumda duruyor, gemilerin uzaklara açılmasını izliyor. Temeller atıldı ve şimdi girişim genişliyor. Çabaların anlık kavrayışından daha öteye uzanıyor. İlerleme oluyor.",
+      "past": "Bir girişim ya da fikir orijinal kapsamının ötesinde genişledi. Küçük başlayan sanıp beklediğinden daha öteye ulaştı.",
+      "present": "İşler hareket ediyor. Başlattığın şey ivme kazanıyor ve yeni bölgeye ulaşıyor. Gözlerini ufukta tut — genişleme gerçek.",
+      "future": "Önde büyüme ve genişleme var. Uzanman şu an hayal ettiğinden daha ileri gidecek. İnşa ettiğin yolculuğa çıkmak üzere."
+    },
+    "wands-4": {
+      "keywords": "kutlama, eve dönüş, uyum, topluluk",
+      "meaning": "Dört asa çiçeklerle süslenmiş bir çatı oluşturur, altında kutlayan figürler. Bir dönüm noktası, bir eve dönüş, gerçek kutlamanın bir anı. Kadeh kaldırmaya değer bir şey inşa ettin.",
+      "past": "Bir kutlama gerçek bir başarıyı işaretledi — bir eve dönüş, bir dönüm noktası, her şeyin doğru hissettiği bir an. O sevinç hak edilmişti.",
+      "present": "Kutla. Bir dönüm noktasına ulaşıldı ve tanınmayı hak ediyor. İnsanlarını topla ve birlikte başardığınızın tadını çıkarın.",
+      "future": "Ufukta bir kutlama var. Bir dönüm noktası, bir karşılama, paylaşılan bir sevinç anı. Sabırsızlanmaya değer bir şey."
+    },
+    "wands-5": {
+      "keywords": "çatışma, rekabet, gerginlik, anlaşmazlık",
+      "meaning": "Beş figür asalarını birbirine sallıyor — kaotik, gürültülü, herkes kendi konumu için savaşıyor. Çatışma, ama öldürücü tür değil. Bu rekabet, yaratıcı sürtünme, işleri ayıklamanın dağınık süreci.",
+      "past": "Bir çatışma ya da rekabet dönemi seni sınadı. Mücadele sinir bozucuydu ama kararlılığını keskinleştirdi ve konumunu netleştirdi.",
+      "present": "Havada sürtüşme var. Birden fazla ses, rekabet eden ajandalar, herkes kendi açısını itiyor. Dağınık, ama bazen netlik kavgadan gelir.",
+      "future": "Önde rekabet ya da anlaşmazlık var. Kaçınma — onunla meşgul ol. Çatışma sonunda neyin önemli olduğunu netleştirecek."
+    },
+    "wands-6": {
+      "keywords": "zafer, tanınma, tez, halka açık başarı",
+      "meaning": "Defne çelengiyle taçlandırılmış bir binici, coşkulu bir kalabalık tarafından ileri taşınır. Halka açık zafer, çabayla kazanılmış tanınma. Bu zafer kartıdır — geçidi keyfine bak.",
+      "past": "Bir zafer halka açık biçimde tanındı. Başardın ve diğerleri gördü. O tanınma anı kabul etmek isteyebileceğinden daha önemliydi.",
+      "present": "Kazanıyorsun. Sessiz biçimde değil — insanların fark ettiği biçimde. Tanınmayı kabul et. Bunu kazandın.",
+      "future": "Önde halka açık tanınma ya da zafer var. Yaptığın iş kabul edilmek üzere. Anın tadını çıkar — kazandın."
+    },
+    "wands-7": {
+      "keywords": "savunma, azim, zeminini koruma, kararlılık",
+      "meaning": "Yüksek zeminde bir figür, altıya karşı bir asa tutuyor. Sayıca az ama yenilmiş değil. Bu baskı altında konumunu savunmakla ilgili. Avantaj sende — bırakma.",
+      "past": "Muhalefete karşı zeminini korudun. Sayıca ya da güççe az olsan da, salt kararlılıkla konumunu koruduğun.",
+      "present": "Meydan okunuyorsun. Zeminini koru. Yüksek konum senin ve avantaj gerçek, baskı yoğun olsa bile.",
+      "future": "Konumuna bir meydan okuma geliyor. Kurduğunu savunman gerekecek. Sağlam dur — altındaki zemin sağlam."
+    },
+    "wands-8": {
+      "keywords": "hız, hareket, hızlı eylem, ivme",
+      "meaning": "Sekiz asa havada yere doğru uçuyor. Hız, ivme, hızlı gerçekleşen şeyler. Harekette olan her şey inmek üzere. Bu kart saf hızdır.",
+      "past": "İşler hızlı hareket etti — mesajlar, olaylar, değişiklikler hepsi bir anda geldi. O hızlı hareket dönemi kısa zamanda çok yol aldı.",
+      "present": "Her şey hızlanıyor. Mesajlar, kararlar, olaylar — hepsi harekette. Onu yavaşlatmaya çalışmak yerine ivmeye bin.",
+      "future": "Hızlı gelişmeler geliyor. Her şey beklenenden daha hızlı hareket edecek. Geldiğinde hızlıca harekete geçmeye hazır ol."
+    },
+    "wands-9": {
+      "keywords": "dayanıklılık, ısrar, son duruş, metanet",
+      "meaning": "Yaralı bir figür bir asaya yaslanıyor, arkasında sekiz tane daha dikili. Hırpalanmış ama ayakta. Bu metanettir — her makul parçan bırakmak istediğinde dahi yere düşmeyi reddetmek.",
+      "past": "Yıpratıcı bir şeye dayandın. Hırpalanmış ve yorgun, her şey sana vazgeçmeni söylediğinde ayakta kaldın. O dayanıklılık seni tanımladı.",
+      "present": "Yorgunsun ve savaş bitmedi. Bir itme daha. Durmak için çok uzağa geldin, her kemiğin acısa bile. Dayan.",
+      "future": "Önde bir dayanıklılık testi var. Seni sınırlarına itecek. Bırakmak isteyeceksin — bırakma. Sandığından daha güçlüsün."
+    },
+    "wands-10": {
+      "keywords": "yük, sorumluluk, aşırı yüklenme, sıkı çalışma",
+      "meaning": "Bir figür on asanın hepsini taşıyor, yükün üzerinden güçlükle görebiliyor. Fazla, ama yine de ilerliyor. Bu aşırı taahhüt, çok fazla sorumluluk, her şeyi kendi üzerine almanın ağırlığıdır.",
+      "past": "Çok fazla taşıdın. Sorumluluklar yük ezici olana dek yığıldı. O deneyim sana sınırlar hakkında bir şey öğretti — ya da öğretmiş olmalı.",
+      "present": "Aşırı yüklüsün. Ağırlık gerçek ve sürdürülemez. Çökmeden önce bir şeyi bırak. Sırtındaki her şey taşıman gereken değil.",
+      "future": "Önde ağır bir sorumluluk yükü var. Her şeye evet demeden önce hatırla: on asa taşımak nereye gittiğini göremeyeceğin anlamına gelir."
+    },
+    "wands-page": {
+      "keywords": "coşku, keşif, keşfetme, özgür ruh",
+      "meaning": "Genç bir figür asasını büyük gözler ve sınırsız merakla inceler. Taze coşku, yeni keşfedilmiş bir tutku, ateşini yeni bulmuş birinin heyecanı. Dağılmadan önce onu yönlendir.",
+      "past": "Bir keşif ya da yeni ilgi tutkunu ateşledi. O gençlik coşkusu — ham ve yönsüz — sonrasında olacakların tonunu belirledi.",
+      "present": "Yeni bir şey dikkatini çekti ve enerjin yüksek. İyi. Şimdi onu odakla. Yönsüz coşku sadece gürültüdür.",
+      "future": "Heyecan verici bir mesaj ya da yeni tutku geliyor. Seni olasılıkla aydınlatacak. Kıvılcımın tadını çıkar, sonra yapı ver."
+    },
+    "wands-knight": {
+      "keywords": "macera, enerji, dürtüsellik, eylem",
+      "meaning": "Asa Şövalyesi ileri hücum eder, at şahlanmış, gözleri ufukta. Saf eylem, sıfır tereddüt, hep ateş. Heyecan verici ve etkili — planı olmadan her şeyi yakıp bitirene kadar.",
+      "past": "Dürtüsel bir hamle ya da cesur bir macera rotanı değiştirdi. Planlama olmasa bile enerji sarhoş ediciydi.",
+      "present": "Şimdi hareket et, sonra düşün — makul sınırlar içinde. Durum cesaret ve ateş istiyor, dikkatli düşünme değil. Sadece genel yönü bildiğinden emin ol.",
+      "future": "Önde bir macera ya da tutkulu bir arayış var. Hızlı hareket edecek ve tüm enerjini talep edecek. Fazla düşünme — hücum et."
+    },
+    "wands-queen": {
+      "keywords": "özgüven, sıcaklık, kararlılık, canlılık",
+      "meaning": "Asa Kraliçesi bir elinde ayçiçeği ve diğerinde asasıyla oturur, ayaklarının dibinde siyah bir kedi. Manyetik, özgüvenli, sıcak. Çabalamadan her odayı aydınlatır. Bu özgüvenle eşleşmiş tutkudur.",
+      "past": "Canlı, özgüvenli bir figür dünyanı şekillendirdi — sıcaklığı ve kararlılığı görmezden gelinemez olan biri.",
+      "present": "Gücüne sahip çık. Kendine hak ettiğinden daha manyetik ve yeteneklisin. Odaya ait olduğun gibi gir — çünkü ait.",
+      "future": "Cesur, sıcak bir otoriteye büyüyorsun. İçinde oluşan özgüven çevrendeki herkes için görünür hale gelmek üzere."
+    },
+    "wands-king": {
+      "keywords": "liderlik, vizyon, girişimcilik, cesur eylem",
+      "meaning": "Asa Kralı canlı asasını tutar ve şiddetli bir netlikle ileri bakar. Vizyoner, girişimci, eyleriyle ilham veren lider. Sadece fikirleri olmaz — onları gerçekleştirir.",
+      "past": "Cesur liderlik ya da girişimci vizyon gerçek yaratım dönemini sürükledi. Biri — belki sen — ateşi kalıcı bir şeye dönüştürdü.",
+      "present": "Vizyon ve cesaretle yönet. Bu senin sorumluluğu alma, diğerlerine ilham verme ve hırsı eyleme dönüştürme anın. İzin bekleme.",
+      "future": "Önde bir liderlik rolü ya da girişimci fırsat var. Vizyonun ve enerjin gerekli olacak. Ona tamamen adım at — tereddüt sana yakışmıyor."
+    }
+  },
+  "readingTemplates": {
+    "intros": [
+      "Üç kart ortaya çıktı: {card1}, {card2} ve {card3}. Bakalım ne söyleyecekler.",
+      "{card1}, {card2} ve {card3} — ilginç bir kombinasyon. İşte kartların açıkladıkları.",
+      "Önünüzdeki kartlar {card1}, {card2} ve {card3}. Birlikte net bir hikaye anlatıyorlar.",
+      "{card1}, {card2}, {card3}. Bu üçü bugün konuşmayı seçti — iyi dinleyin."
+    ],
+    "bridges": [
+      "Şimdi şimdiye dönelim.",
+      "Geçmişten, kartlar şimdi olanlara geçiyor."
+    ],
+    "futureBridges": [
+      "Ve önde olan —",
+      "Son kart ileriye bakıyor."
+    ],
+    "closings": [
+      "Kartlar konuştu. Yankılananı alın, yankılanmayanı bırakın — ama dikkat edin.",
+      "Bu sizin okumanız. İlerlemeden önce bir süre oturun.",
+      "Açılım tamamlandı. Bu kelimeleri okurken içinizde kıpırdanana güvenin."
+    ],
+    "pastPrefix": "{card} geçmiş konumunda: ",
+    "presentPrefix": "{card} şimdide: ",
+    "futurePrefix": "{card} gelecek için: "
+  },
+
+  "readers": {
+    "vespera": {
+      "displayName": "Madam Vespera",
+      "title": "Kadife Perdenin Aracısı",
+      "tagline": "Daha yakına gel, sevgilim. Kartlar bekliyordu.",
+      "bio": "Ailede üç kuşak medyum. Vespera saygıyla okur, acele etmez ve her kartı sanki özellikle senin için gelmiş gibi ele alır.",
+      "intros": [
+        "Üç kart, sevgilim: {card1}, {card2} ve {card3}. Birlikte tesadüfen gelmediler.",
+        "{card1}, {card2} ve {card3}. Hmm. Deste bu gece dikkatlice seçti.",
+        "Bak — {card1}, {card2}, {card3}. Dinlemeye değer bir kombinasyon.",
+        "{card1}, {card2}, {card3}. Rahatına bak. Bu üçünün söyleyeceği bir şey var."
+      ],
+      "bridges": [
+        "Ama geçmiş sadece bir kapı. Şimdi gerçek iş oluyor.",
+        "Olandan olana — burada dikkat et, canım."
+      ],
+      "futureBridges": [
+        "Ve şimdi — gelmekte olan. Kartlar yaklaşıyor.",
+        "Üçüncü kart. Hep onun için geldiğimiz."
+      ],
+      "closings": [
+        "İşte. Verileni al. Bir kısmı ancak daha sonra anlam kazanacak.",
+        "Okuma artık senin. Onu dikkatlice tut.",
+        "Kartların sunduğu buydu. İlerlemeden önce onunla otur."
+      ],
+      "pastPrefix": "{card}, geçmişte — ",
+      "presentPrefix": "{card}, burada şimdide — ",
+      "futurePrefix": "{card}, önünde — "
+    },
+
+    "crow": {
+      "displayName": "Karga",
+      "title": "Son Saatin Okuyucusu",
+      "tagline": "Otur. Konuşma. Kartlar zaten biliyor.",
+      "bio": "Tanıtım yok. Yumuşatma yok. Karga sana kartların söylediğini söyler, daha fazlasını değil.",
+      "intros": [
+        "{card1}. {card2}. {card3}. Üç kart. Kaza yok.",
+        "{card1}, {card2}, {card3}. Onlara bak.",
+        "Çekildi: {card1}, {card2}, {card3}. Ne demekse onu ifade ediyorlar.",
+        "{card1}. Sonra {card2}. Sonra {card3}. Evrenin bitirdiği bir cümle."
+      ],
+      "bridges": [
+        "O önceydi. Bu şimdi.",
+        "Geçmiş sabit. Şimdi değil."
+      ],
+      "futureBridges": [
+        "Önde.",
+        "Henüz olmamış olan."
+      ],
+      "closings": [
+        "İşte okuma.",
+        "Kartlar bitti. Sen değilsin.",
+        "Üç kart. Tek yön. Git."
+      ],
+      "pastPrefix": "{card}. Geçmiş: ",
+      "presentPrefix": "{card}. Şimdi: ",
+      "futurePrefix": "{card}. Gelen: "
+    },
+
+    "reginald": {
+      "displayName": "Reginald Ash",
+      "title": "İsteksiz Pratisyen, 1847'den Beri",
+      "tagline": "Peki. Oturun. Şunu bitirelim.",
+      "bio": "Konuşmak istemeyeceği kadar uzun süredir kart okuyor. İşi ciddiye alır, çoğu danışanı o kadar da değil. Gerçeği alacaksınız — tam olarak kendi uygun gördüğü şekilde ifade edilmiş.",
+      "intros": [
+        "Pekâlâ. {card1}, {card2}, {card3}. Bu kombinasyonu daha önce gördüm. Hâlâ bir şey ifade ediyor. Devam edelim.",
+        "{card1}, {card2} ve {card3}. Bir kez olsun gerçek içeriği olan bir açılım.",
+        "{card1}, {card2}, {card3}. İyi haber mi olduğunu sormayın. Sadece dinleyin.",
+        "Hmm. {card1}, sonra {card2}, sonra {card3}. Kendinizi hazırlayın — bu ücretini hak ediyor."
+      ],
+      "bridges": [
+        "Geçmiş bitti, aksini iddia etme alışkanlığına rağmen. İleri.",
+        "Evet, evet, o oydu. Şimdi daha acil."
+      ],
+      "futureBridges": [
+        "Ve şimdi — gelecek. Aslında geldiğiniz kısım.",
+        "Üçüncü kart. Toplu görünmeye çalışın."
+      ],
+      "closings": [
+        "İşte okuma. Ciddiye alın ya da almayın — ama en azından söylendi.",
+        "Bitti. Yapacağınızı yapacaksınız. Çoğu insan yapar.",
+        "İşte. Söz verildiği gibi dramasız. Kendinize yol gösterebilirsiniz."
+      ],
+      "pastPrefix": "{card}, geçmişte — ve açıkçası, bu pek çok şeyi açıklıyor: ",
+      "presentPrefix": "{card}, şimdide. Bu, korkarım, yaşadığınız yer: ",
+      "futurePrefix": "{card}, önde. Yumuşatmayacağım: "
+    }
+  }
+}
