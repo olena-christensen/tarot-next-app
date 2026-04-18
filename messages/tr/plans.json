@@ -1,0 +1,36 @@
+{
+  "plans": {
+    "FREE": {
+      "name": "Ücretsiz",
+      "features": ["Günde 3 okuma", "Gece yarısı sıfırlanır"]
+    },
+    "SINGLE": {
+      "name": "Tek okuma",
+      "features": ["Bir ek okuma", "Abonelik yok"]
+    },
+    "MONTHLY": {
+      "name": "Aylık",
+      "features": [
+        "Sınırsız okuma",
+        "Okuma geçmişi",
+        "Destenizi seçin",
+        "Falcınızı seçin",
+        "Uzun soluklu yorumlar",
+        "Günlük kart e-postası",
+        "Okumaları PDF olarak dışa aktarın",
+        "Favoriler ve kişisel notlar",
+        "Hatırlatma bildirimleri",
+        "Reklamsız"
+      ]
+    },
+    "YEARLY": {
+      "name": "Yıllık",
+      "features": [
+        "Aylıktaki her şey",
+        "Aylığa göre %58 tasarruf",
+        "Özel mevsimlik desteler",
+        "Yeni falcı ve destelere erken erişim"
+      ]
+    }
+  }
+}
