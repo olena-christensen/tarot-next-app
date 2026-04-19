@@ -1,0 +1,24 @@
+{
+  "seo": {
+    "siteName": "Tarot",
+    "home": {
+      "metaTitle": "Ücretsiz Tarot Falı — Mistik Online Tarot Uygulaması",
+      "metaDescription": "Geleceğinizin gizemlerini mistik tarot uygulamamızla keşfedin. Ücretsiz günlük okumalar, farklı desteler ve kişisel tarot okuyucuları.",
+      "keywords": "tarot, ücretsiz tarot falı, online tarot, tarot kartları, tarot uygulaması"
+    },
+    "decks": {
+      "metaTitle": "Tarot Destenizi Seçin",
+      "metaDescription": "Favori tarot destenizi seçin — Rider-Waite, Klimt veya Gothic-Vintage. Her deste okumanızın görsel hikâyesini yeniden şekillendirir.",
+      "keywords": "tarot destesi, rider-waite, klimt tarot, gothic tarot, tarot kartı"
+    },
+    "subscription": {
+      "metaTitle": "Abonelik Planları",
+      "metaDescription": "Tarot aboneliğiyle sınırsız okumaların, premium destelerin ve özel okuyucuların kilidini açın.",
+      "keywords": "tarot aboneliği, sınırsız tarot falı, premium tarot, tarot fiyatları"
+    },
+    "profile": {
+      "metaTitle": "Mistik Profiliniz",
+      "metaDescription": "Hesabınızı, okumalarınızı ve tercihlerinizi yönetin."
+    }
+  }
+}

@@ -1,57 +1,11 @@
-"use client";
+import { unstable_setRequestLocale } from "next-intl/server";
+import { HomePageClient } from "./HomePageClient";
 
-import {OfferBlock} from "@/components/OfferBlock";
-import {Tarot} from "@/components/Tarot";
-import {Modal} from "@/components/Modal";
-import {LoginForm} from "@/components/LoginForm";
-import {SubscriptionPlans} from "@/components/SubscriptionPlans";
-import {Loader} from "@/components/Loader";
-import {useEffect, useState} from "react";
-import {Header} from "@/components/Header";
-import {Providers} from "@/components/Providers";
-import { useTranslations } from "next-intl";
-
-export default function Home() {
-  const t = useTranslations("ui");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  return (
-    <Providers>
-        {!isLoaded
-            ? <Loader />
-            : (
-                <>
-                  <Header onOpenLogin={() => setIsLoginOpen(true)}/>
-                  <main className="">
-                    <OfferBlock
-                        onOpenLogin={() => setIsLoginOpen(true)}
-                        onOpenSubscription={() => setIsSubscriptionOpen(true)}
-                    />
-                    <Tarot/>
-                  </main>
-                  <Modal
-                    title={t("stepThroughTheVeil")}
-                    isOpen={isLoginOpen}
-                    onClose={() => setIsLoginOpen(false)}
-                  >
-                    <LoginForm onSuccess={() => setIsLoginOpen(false)} />
-                  </Modal>
-                  <Modal
-                    title={t("chooseYourPath")}
-                    isOpen={isSubscriptionOpen}
-                    onClose={() => setIsSubscriptionOpen(false)}
-                    wide
-                  >
-                    <SubscriptionPlans showHeader={false} />
-                  </Modal>
-                </>
-            )
-        }
-    </Providers>
-  );
+type Props = {
+  params: { locale: string };
 };
+
+export default function Home({ params }: Props) {
+  unstable_setRequestLocale(params.locale);
+  return <HomePageClient />;
+}
