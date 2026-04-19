@@ -1,0 +1,24 @@
+{
+  "seo": {
+    "siteName": "Tarot",
+    "home": {
+      "metaTitle": "Free Tarot Reading — Online Mystical Tarot App",
+      "metaDescription": "Unveil the mysteries of your future with our mystical tarot reading app. Free daily readings, multiple decks, and personal readers.",
+      "keywords": "tarot, free tarot reading, online tarot, tarot cards, tarot reading app, daily tarot"
+    },
+    "decks": {
+      "metaTitle": "Choose Your Tarot Deck",
+      "metaDescription": "Pick your favorite tarot deck — Rider-Waite, Klimt, or Gothic-Vintage. Each deck reshapes the visual story of your reading.",
+      "keywords": "tarot deck, rider-waite, klimt tarot, gothic tarot, tarot card deck"
+    },
+    "subscription": {
+      "metaTitle": "Subscription Plans",
+      "metaDescription": "Unlock unlimited readings, premium decks, and exclusive readers with a Tarot subscription.",
+      "keywords": "tarot subscription, unlimited tarot readings, premium tarot, tarot pricing"
+    },
+    "profile": {
+      "metaTitle": "Your Mystic Profile",
+      "metaDescription": "Manage your account, readings, and preferences."
+    }
+  }
+}
