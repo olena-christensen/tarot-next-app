@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { buildAlternates } from "@/lib/seo";
+import { buildAlternates, buildJsonLd } from "@/lib/seo";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -42,11 +42,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName,
       title,
       description,
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["/og-image.png"],
     },
   };
 }
@@ -60,9 +69,21 @@ export default async function LocaleLayout({ children, params }: Props) {
   unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const jsonLd = buildJsonLd({
+    locale,
+    siteName: t("siteName"),
+    description: t("home.metaDescription"),
+  });
+  const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+
   return (
     <html lang={locale}>
       <body className={raleway.className}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString }}
+        />
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

@@ -155,7 +155,7 @@ export const OfferBlock = ({
                                     <div className="offer-block__reader-portrait" aria-hidden="true">
                                         <Image
                                             src={READERS[state.selectedReader].avatar}
-                                            alt=""
+                                            alt={messages?.readers ? tReader(`${state.selectedReader}.displayName`) : "Tarot reader portrait"}
                                             width={100}
                                             height={100}
                                             className="offer-block__reader-image"

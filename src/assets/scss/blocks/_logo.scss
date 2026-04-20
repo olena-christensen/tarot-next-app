@@ -1,10 +1,7 @@
 .logo {
-
-  svg {
+  img {
     width: 100%;
     height: 100%;
-    path {
-      fill: var(--primary);
-    }
+    object-fit: contain;
   }
 }

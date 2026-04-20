@@ -80,6 +80,11 @@
     "changeYourReader": "Okuyucunuzu Değiştirin",
     "beginInitiation": "İnisiyasyonu Başlat",
     "reader": "Okuyucu",
-    "chooseReader": "Okuyucunuzu Seçin"
+    "chooseReader": "Okuyucunuzu Seçin",
+    "notFound": {
+      "title": "Peçe burada kapalı",
+      "description": "Bu sayfa peçenin ardına kaymış. Çembere dönün ve başka bir yol deneyin.",
+      "backHome": "Mabede geri dön"
+    }
   }
 }

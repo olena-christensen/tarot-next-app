@@ -16,6 +16,7 @@ import Footer from "@/components/Footer";
 export const Tarot = () => {
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
+    const tCards = useTranslations("cards");
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
@@ -33,6 +34,7 @@ export const Tarot = () => {
             height={447}
             frontUrl="/decor-img/Card-middle.webp"
             backUrl={chosenCards[i] ? chosenCards[i].image : "/decor-img/Card-middle.webp"}
+            backAlt={chosenCards[i] ? tCards(chosenCards[i].id) : undefined}
             animation="CardFlipAnimation 2s forwards"
             isGlowing={i === glowingIndex}
             disabled={i !== glowingIndex}
