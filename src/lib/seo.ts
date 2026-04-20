@@ -44,3 +44,39 @@ export function buildAlternates({ locale, path }: AlternatesInput) {
     languages,
   };
 }
+
+type JsonLdInput = {
+  locale: string;
+  siteName: string;
+  description: string;
+};
+
+export function buildJsonLd({ locale, siteName, description }: JsonLdInput) {
+  const siteUrl = getSiteUrl();
+  const orgId = `${siteUrl}/#organization`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": orgId,
+        name: siteName,
+        url: siteUrl,
+        logo: absoluteUrl("/logo-2.png"),
+      },
+      {
+        "@type": "WebApplication",
+        "@id": `${siteUrl}/#webapp`,
+        name: siteName,
+        url: absoluteUrl(localizedPath(locale, "/")),
+        description,
+        applicationCategory: "LifestyleApplication",
+        operatingSystem: "Web",
+        inLanguage: HREFLANG_MAP[locale] ?? locale,
+        image: absoluteUrl("/og-image.png"),
+        publisher: { "@id": orgId },
+      },
+    ],
+  };
+}

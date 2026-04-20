@@ -80,6 +80,11 @@
     "changeYourReader": "Bytt Leser",
     "beginInitiation": "Påbegynn Innvielse",
     "reader": "Leser",
-    "chooseReader": "Velg Din Leser"
+    "chooseReader": "Velg Din Leser",
+    "notFound": {
+      "title": "Sløret er lukket her",
+      "description": "Denne siden har forsvunnet bak sløret. Vend tilbake til sirkelen og prøv en annen vei.",
+      "backHome": "Tilbake til helligdommen"
+    }
   }
 }

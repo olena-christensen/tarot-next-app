@@ -7,6 +7,8 @@ type PropsType = {
     height?: number;
     frontUrl: string;
     backUrl: string;
+    frontAlt?: string;
+    backAlt?: string;
     animation: string;
     isDeckShaking?: boolean;
     isGlowing?: boolean;
@@ -19,6 +21,8 @@ export default function AnimatedCard({
  height = 450,
  frontUrl,
  backUrl,
+ frontAlt = "Tarot card back",
+ backAlt = "Tarot card",
  animation,
  isDeckShaking,
  isGlowing,
@@ -75,7 +79,7 @@ export default function AnimatedCard({
                 <div className="animated-card__front">
                     <Image
                         src={frontUrl}
-                        alt="Tarot Card"
+                        alt={frontAlt}
                         width={width}
                         height={height}
                     />
@@ -83,7 +87,7 @@ export default function AnimatedCard({
                 <div className="animated-card__back">
                     <Image
                         src={backUrl}
-                        alt="Tarot Card"
+                        alt={backAlt}
                         width={width}
                         height={height}
                     />

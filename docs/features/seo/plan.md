@@ -1,8 +1,19 @@
 # SEO Feature — Implementation Plan
 
-**Status:** Planned
+**Status:** Phases 1–5 complete. Phase 6 (content depth) + Phase 7 (verification) remain.
 **Created:** 2026-04-19
+**Last updated:** 2026-04-20
+**Production domain:** `https://theveil.app` (bought via Vercel)
 **Locales:** `en` (default), `no`, `uk`, `tr`, `ru`
+
+---
+
+## Decisions made
+
+- **Brand / domain:** `theveil.app` — purchased on Vercel. Domain being cryptic is fine; title tags, OG previews, and landing copy teach users what the app is (Co–Star, Sanctuary, Labyrinthos all rank with non-descriptive names).
+- **Production env var:** `NEXT_PUBLIC_SITE_URL=https://theveil.app` set on Vercel Production.
+- **Image generation service:** fal.ai (same tool used for reader avatars).
+- **Logo + OG image:** not yet done. Tomorrow's starting point.
 
 ---
 
@@ -21,7 +32,7 @@
 
 ---
 
-## Audit findings (baseline)
+## Audit findings (baseline — before any work)
 
 **In place**
 - `<html lang={locale}>` set dynamically in `[locale]/layout.tsx`.
@@ -29,173 +40,153 @@
 - `h1` on subscription, decks, profile, home (OfferBlock).
 - Terms & Privacy already use `generateMetadata`.
 
-**Critical gaps**
-1. `src/app/[locale]/page.tsx` is `"use client"` and renders `<Loader />` until hydration — bots see a spinner.
-2. No `metadataBase` → absolute URLs broken, Next.js warns on every build.
-3. No hreflang / `alternates.languages` for 5 locales.
-4. No `robots.ts`.
-5. No `sitemap.ts`.
-6. No Open Graph / Twitter Card metadata.
-7. No per-page metadata on `/`, `/decks`, `/subscription`, `/profile` — all inherit the bare `"Tarot"` title from root layout.
-8. No JSON-LD (Organization, WebApplication).
-9. No canonical URLs.
-10. Only `logo.svg` as icon — missing `favicon.ico`, `apple-touch-icon`, web manifest.
-11. Empty `alt=""` in `OfferBlock.tsx:158` and `ReaderSelection.tsx:93`; generic `"Tarot Card"` alt repeated 78× in `AnimatedCard.tsx`.
-12. `/profile` should be `noindex` (private).
-13. Stray `public/Cards/Card3 (1).png` with space in filename.
-14. No `not-found.tsx` (custom 404).
-15. `ui.json` has no `seo` namespace for metaTitle/metaDescription across pages.
+**Critical gaps addressed in Phase 1 & 2**
+1. ~~`src/app/[locale]/page.tsx` rendered `<Loader />` until hydration~~
+2. ~~No `metadataBase`~~
+3. ~~No hreflang~~
+4. ~~No `robots.ts`~~
+5. ~~No `sitemap.ts`~~
+6. ~~No Open Graph / Twitter Card metadata~~
+7. ~~No per-page metadata on `/`, `/decks`, `/subscription`, `/profile`~~
+12. ~~`/profile` not `noindex`~~
+
+**Remaining (Phase 3+)**
+8. No JSON-LD structured data
+9. No OG image asset
+10. Only `logo.svg` — no `favicon.ico`, `apple-touch-icon`, web manifest
+11. Empty `alt=""` in `OfferBlock.tsx:158` and `ReaderSelection.tsx:93`; generic `"Tarot Card"` alt 78× in `AnimatedCard.tsx`
+13. Stray `public/Cards/Card3 (1).png` filename with space
+14. No `not-found.tsx`
+15. ~~No `seo` namespace in translations~~ (done — `messages/{locale}/seo.json`)
 
 ---
 
-## Phase 1 — Foundation (highest ROI)
+## ✅ Phase 1 — Foundation (COMPLETE)
 
-Goal: make Google see the home page correctly with proper metadata and hreflang.
+Verified live on `https://theveil.app`:
+- `/robots.txt` — allows all, disallows `/api/` and `/*/profile`, references sitemap
+- `/sitemap.xml` — 25 URLs (5 locales × 5 public routes), each with full hreflang alternates
+- `/en` page — proper title, description, canonical, hreflang set (en, nb-NO, uk-UA, tr-TR, ru-RU, x-default), OG + Twitter tags
 
-- [ ] Add `NEXT_PUBLIC_SITE_URL` to `.env.example` and document in CLAUDE.md.
-- [ ] Add `metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!)` in `src/app/layout.tsx`.
-- [ ] Refactor `src/app/[locale]/page.tsx`:
-  - Remove `"use client"` from the page file.
-  - Extract modal/loader logic into `HomePageClient.tsx` (client component).
-  - Server page just calls `unstable_setRequestLocale(locale)` and renders `<HomePageClient />`.
-  - Kill the full-screen `<Loader />`-until-hydrated pattern — render `<Header/>`, `<OfferBlock/>`, `<Tarot/>` immediately.
-- [ ] Add `generateMetadata` to `src/app/[locale]/layout.tsx`:
-  - Per-locale `title` (template pattern: `"%s | Tarot"` with default), `description`, `keywords`.
-  - `alternates.canonical` = current locale path.
-  - `alternates.languages` = every locale (`en-US`, `nb-NO`, `uk-UA`, `tr-TR`, `ru-RU`) + `x-default`.
-- [ ] Add `src/app/robots.ts`:
-  - Allow all.
-  - Disallow `/api/*`, `/*/profile`.
-  - Sitemap URL.
-- [ ] Add `src/app/sitemap.ts`:
-  - Cross-product of locales × public routes (`/`, `/decks`, `/subscription`, `/terms`, `/privacy`).
-  - Include `alternates.languages` per entry.
-- [ ] Add new `messages/{locale}/ui.json` → `seo` namespace with `home.metaTitle`, `home.metaDescription`, `home.keywords` in all 5 locales.
-
-**Exit criteria:** View-source on `/` shows real HTML + proper `<title>`, `<meta description>`, `<link rel="alternate" hreflang>` tags. `/robots.txt` and `/sitemap.xml` resolve in dev.
+**Files added/changed:**
+- `.env.example` — added `NEXT_PUBLIC_SITE_URL`
+- `src/lib/seo.ts` — `getSiteUrl`, `buildAlternates`, `HREFLANG_MAP`, `PUBLIC_ROUTES`, `absoluteUrl`, `localizedPath`
+- `src/app/layout.tsx` — `metadataBase`
+- `src/app/[locale]/layout.tsx` — `generateMetadata` (canonical, hreflang, OG, Twitter)
+- `src/app/[locale]/page.tsx` — converted to server component
+- `src/app/[locale]/HomePageClient.tsx` — extracted client state (killed `<Loader />`-until-hydrated pattern)
+- `src/app/robots.ts`, `src/app/sitemap.ts`
+- `src/i18n/request.ts` — loads new `seo.json` namespace
+- `messages/{en,no,uk,tr,ru}/seo.json` — translation keys for all page metadata
 
 ---
 
-## Phase 2 — Per-page metadata
+## ✅ Phase 2 — Per-page metadata (COMPLETE)
 
-- [ ] Convert `src/app/[locale]/decks/page.tsx` to server component:
-  - Move `"use client"` bits into a `DecksPageClient.tsx`.
-  - Add `generateMetadata` using `seo.decks.*` keys.
-- [ ] Convert `src/app/[locale]/subscription/page.tsx` same way (`seo.subscription.*`).
-- [ ] Convert `src/app/[locale]/profile/page.tsx` same way:
-  - `generateMetadata` returns `{ robots: { index: false, follow: false } }`.
-- [ ] Add `seo.decks.*`, `seo.subscription.*`, `seo.profile.*` keys to every `ui.json`.
+Verified live on `https://theveil.app`:
+| Route | Title | Canonical | Robots | Hreflang |
+|---|---|---|---|---|
+| `/en/decks` | Choose Your Tarot Deck \| Tarot | `/en/decks` | index | full set |
+| `/no/decks` | Velg din tarotkortstokk \| Tarot | `/no/decks` | index | full set |
+| `/en/subscription` | Subscription Plans \| Tarot | `/en/subscription` | index | full set |
+| `/en/profile` | Your Mystic Profile \| Tarot | `/en/profile` | **noindex, nofollow** | none (correct) |
 
-**Exit criteria:** Each route has a unique `<title>` and meta description per locale; `/profile` is `noindex`.
-
----
-
-## Phase 3 — Social + structured data
-
-- [ ] Add OG + Twitter fields to `[locale]/layout.tsx` `generateMetadata`:
-  - `openGraph: { type: "website", locale, url, title, description, images: [ogImage], siteName }`.
-  - `twitter: { card: "summary_large_image", title, description, images: [ogImage] }`.
-- [ ] Produce `public/og-image.png` (1200×630) — brand artwork, reuse moon/card/logo elements from existing assets.
-- [ ] Optionally per-locale OG variants: `public/og-image-{locale}.png`.
-- [ ] Inject JSON-LD in `[locale]/layout.tsx`:
-  - `Organization` (name, url, logo, sameAs if social links exist).
-  - `WebApplication` (name, url, applicationCategory: "LifestyleApplication", offers if pricing is public).
-- [ ] (Optional) `FAQPage` JSON-LD if/when we add FAQ copy.
-
-**Exit criteria:** Facebook/Twitter sharing debuggers show rich previews; schema.org validator passes.
+**Files changed:**
+- `src/app/[locale]/decks/page.tsx` — server component + `generateMetadata`
+- `src/app/[locale]/subscription/page.tsx` — server component + `generateMetadata`
+- `src/app/[locale]/profile/page.tsx` — server component + `generateMetadata` with `noindex, nofollow`
+- `src/app/[locale]/profile/ProfilePageClient.tsx` — extracted client logic
 
 ---
 
-## Phase 4 — Icons & manifest
+## ✅ Phase 3a/b/c — Brand assets + social metadata (COMPLETE)
 
-- [ ] Generate icon set from `logo.svg`:
-  - `public/favicon.ico` (32×32 multi-res).
-  - `public/icon-192.png`, `public/icon-512.png`.
-  - `public/apple-touch-icon.png` (180×180).
-- [ ] Add `public/site.webmanifest` (name, short_name, icons, start_url, theme_color, background_color, display: "standalone").
-- [ ] Wire via Next.js file-convention icons (`src/app/icon.png`, `src/app/apple-icon.png`) OR `metadata.icons` + `metadata.manifest`.
-- [ ] Add `themeColor` and `viewport` to metadata.
+**3a. Logo** — generated via fal.ai (Flux Pro), cleaned with a sharp threshold script (distance-to-gold alpha mask), live as `/logo-2.png` (three-card fan in `#fae1a3` art-nouveau line art on real transparency). Header + favicon use it.
 
-**Exit criteria:** Lighthouse "installable" check passes; PWA icons show in mobile add-to-home-screen.
+**3b. OG image** — generated via fal.ai (Flux Pro, 1200×630), composed with sharp to overlay "The Veil" + "tarot reading" text in the dark left-half, saved at `public/og-image.png`.
+
+**3c. OG + Twitter metadata** — `openGraph.images` and `twitter.images` wired into `generateMetadata` in `[locale]/layout.tsx`. `metadataBase` resolves the relative URL to `https://theveil.app/og-image.png`. `siteName` updated to `"The Veil"` across all 5 locales' `seo.json`.
+
+**Files added/changed this round:**
+- `public/logo-2.png`, `public/og-image.png`
+- `src/components/Logo.tsx` — swapped from SVGR import to `next/image` on `/logo-2.png`
+- `src/assets/scss/blocks/_logo.scss` — replaced `svg path` fill rule with `img { object-fit: contain }`
+- `src/app/[locale]/layout.tsx` — added `openGraph.images` + `twitter.images`
+- `messages/{en,no,ru,tr,uk}/seo.json` — `siteName: "The Veil"`
+- `package.json` — added `sharp@^0.33` as devDep (image post-processing)
+
+**Orphans ready to delete** (kept as backups from the cleanup passes):
+- `public/logo-old.svg`, `src/assets/svg/logo.svg` (pre-rebrand)
+- `public/logo-generated.png`, `public/logo-1-generated.png`, `public/logo-2-generated.jpg`, `public/fav-icon-generated.png` (raw fal.ai outputs)
+- `public/og-raw.png`, `public/logo.png`, `public/logo-1.png` (unused logo variants)
 
 ---
 
-## Phase 5 — Content & a11y hygiene
+## ✅ Phase 3d — JSON-LD structured data (COMPLETE)
 
-- [ ] Fix `alt=""` on `OfferBlock.tsx:158` (reader avatar — use reader display name).
-- [ ] Fix `alt=""` on `ReaderSelection.tsx:93` (same).
-- [ ] Replace generic `alt="Tarot Card"` in `AnimatedCard.tsx` with `{cardName} — {deckName}` using translations.
-- [ ] Rename/delete `public/Cards/Card3 (1).png` (unused? confirm first).
-- [ ] Add `src/app/[locale]/not-found.tsx` with translated 404 copy + link back home.
-- [ ] Heading hierarchy sweep: ensure one `h1` per page, demote duplicate `title` elements if any.
+- `src/lib/seo.ts` — added `buildJsonLd({ locale, siteName, description })` helper emitting an `@graph` with:
+  - `Organization` — name, url, logo (absolute `/logo-2.png`), stable `@id` for cross-ref
+  - `WebApplication` — localized url, description, `applicationCategory: "LifestyleApplication"`, `operatingSystem: "Web"`, `inLanguage` from `HREFLANG_MAP`, image (absolute `/og-image.png`), `publisher` ref to Organization
+- `src/app/[locale]/layout.tsx` — JSON-LD injected as `<script type="application/ld+json">` at top of `<body>`, `<` escaped to `\u003c` for XSS hardening.
+- **Skipped intentionally:** `sameAs` (no socials yet), `Offer`/pricing (out of scope until payments wired).
 
-**Exit criteria:** axe/Lighthouse a11y shows no missing-alt issues; 404 pages render correctly.
+**Verify after deploy:** https://search.google.com/test/rich-results with `https://theveil.app/en`.
+
+---
+
+## ✅ Phase 4 — Icons & manifest (COMPLETE)
+
+Next.js 14 auto-picks up `app/icon.*`, `app/apple-icon.*`, `app/favicon.ico`, `app/manifest.ts` — no manual `metadata.icons` / `metadata.manifest` needed.
+
+- `src/app/icon.png` — 200×200 transparent (from cleaned fal.ai output)
+- `src/app/apple-icon.png` — 180×180 on `#090909` solid bg
+- `src/app/favicon.ico` — multi-res legacy fallback (from realfavicongenerator.net)
+- `public/web-app-manifest-192x192.png`, `public/web-app-manifest-512x512.png` — PWA install icons
+- `src/app/manifest.ts` — PWA metadata (name "The Veil", `theme_color` / `background_color` = `#090909`, `display: "standalone"`, both icons marked `maskable`)
+- `src/app/layout.tsx` — added `export const viewport` with `themeColor: "#090909"`, `width: "device-width"`, `initialScale: 1`
+
+---
+
+## ✅ Phase 5 — Content & a11y hygiene (COMPLETE)
+
+- `OfferBlock.tsx:158` — reader avatar alt now uses translated reader `displayName` (parent stays `aria-hidden="true"` to avoid double-announcement; alt still helps Google image search).
+- `ReaderSelection.tsx:93` — same treatment, reader `displayName` via `tReader`.
+- `AnimatedCard.tsx` — added optional `frontAlt` / `backAlt` props (defaults: `"Tarot card back"` / `"Tarot card"`). `Tarot.tsx` passes the chosen card's translated name as `backAlt`; the deck card on `OfferBlock` uses the generic defaults (it's the deck-back visual, not a specific card).
+- `public/Cards/Card3 (1).png` — deleted (was unused, and the stray space in the filename was a URL-encoding hazard).
+- `src/app/[locale]/not-found.tsx` — server component using `useTranslations("ui")`, wrapped in `PageShell`, with a `<Link>` back to `/`. Copy lives under `ui.notFound.{title,description,backHome}` in all 5 locales' `ui.json`. Styled via new `src/assets/scss/blocks/_not-found.scss`.
+- Heading hierarchy audit — **already clean**: every page has a single `<h1>` (`OfferBlock`, `DeckSelector`, `SubscriptionPlans`, `ProfilePageClient`, `TermsContent`, `PrivacyContent`, and now `NotFound`). Modals (`Login`, `Modal`, reader cards, deck cards) correctly use `<h2>` as subsections. No demotions needed.
 
 ---
 
 ## Phase 6 — Content depth (long-term organic traffic)
 
-Tarot apps rank on keyword-heavy content. This is where the traffic actually comes from. Scope separately — estimate 1–2 weeks of work.
+Per-content pages where most tarot-app organic traffic comes from. Scope separately — 1–2 weeks.
 
-- [ ] `/[locale]/cards/[cardId]` — per-card pages (78 cards × 5 locales = 390 pages):
-  - Pulls name + reading templates from `messages/{locale}/cards.json` + `readings.json`.
-  - Server-rendered, unique title/description/canonical per card.
-  - Schema.org `Article` JSON-LD.
-- [ ] `/[locale]/readers/[readerId]` — per-reader pages (3 × 5 = 15 pages):
-  - Uses `readers.{id}` translation block already in `readings.json`.
-- [ ] `/[locale]/decks/[deckId]` — per-deck pages (3 × 5 = 15 pages):
-  - Deck intro, sample cards, "pick this deck" CTA.
-- [ ] Internal linking: main page → readers, decks index → each deck, profile deck picker → each deck.
-- [ ] Update `sitemap.ts` to include all new routes.
-
-**Exit criteria:** 420+ indexable pages with unique content; internal link graph is connected.
+- `/[locale]/cards/[cardId]` — 78 cards × 5 locales = 390 pages
+- `/[locale]/readers/[readerId]` — 3 × 5 = 15 pages
+- `/[locale]/decks/[deckId]` — 3 × 5 = 15 pages
+- Internal linking between all three
+- Extend `sitemap.ts` to include new routes
 
 ---
 
-## Phase 7 — Verification
+## Phase 7 — Verification & launch
 
-- [ ] Add Search Console / Bing Webmaster verification meta tags (via `metadata.verification`).
-- [ ] Submit sitemap to both.
-- [ ] Run Lighthouse (Mobile) — target SEO ≥ 95 after Phase 1–2, ≥ 100 after Phase 5.
-- [ ] Check Google Rich Results Test for JSON-LD validity.
-- [ ] `site:tarot-app-domain.com` query after deploy to confirm indexing (wait 1–2 weeks).
-
----
-
-## File changes overview
-
-**New files**
-- `docs/features/seo/plan.md` (this file)
-- `src/app/robots.ts`
-- `src/app/sitemap.ts`
-- `src/app/[locale]/not-found.tsx`
-- `src/app/[locale]/HomePageClient.tsx`
-- `src/app/[locale]/decks/DecksPageClient.tsx`
-- `src/app/[locale]/subscription/SubscriptionPageClient.tsx`
-- `src/app/[locale]/profile/ProfilePageClient.tsx`
-- `src/lib/seo.ts` (helpers: `buildAlternates(path)`, `buildOpenGraph(locale, ...)`, `getSiteUrl()`)
-- `public/og-image.png`
-- `public/favicon.ico`, `public/apple-touch-icon.png`, icon PNGs
-- `public/site.webmanifest`
-- (Phase 6) `src/app/[locale]/cards/[cardId]/page.tsx` + `readers/[readerId]` + `decks/[deckId]`
-
-**Modified files**
-- `src/app/layout.tsx` — `metadataBase`, viewport, themeColor.
-- `src/app/[locale]/layout.tsx` — `generateMetadata`, JSON-LD injection.
-- `src/app/[locale]/page.tsx` — strip client code.
-- `src/app/[locale]/decks/page.tsx` — strip client code.
-- `src/app/[locale]/subscription/page.tsx` — strip client code.
-- `src/app/[locale]/profile/page.tsx` — strip client code, add `noindex`.
-- `src/components/OfferBlock.tsx`, `ReaderSelection.tsx`, `AnimatedCard.tsx` — alt fixes.
-- `messages/{en,no,uk,tr,ru}/ui.json` — add `seo` namespace.
-- `.env.example` — `NEXT_PUBLIC_SITE_URL`.
-- `CLAUDE.md` — document `NEXT_PUBLIC_SITE_URL`, SEO conventions.
+- Google Search Console — add `theveil.app` property, verify via DNS TXT, submit `https://theveil.app/sitemap.xml`.
+- Bing Webmaster Tools — same.
+- Run Lighthouse (Mobile) — target SEO ≥ 95 after Phase 1–2, ≥ 100 after Phase 5.
+- Google Rich Results Test for JSON-LD validity.
+- Facebook Sharing Debugger + Twitter Card Validator for OG image.
+- `site:theveil.app` query 1–2 weeks after submitting sitemap.
 
 ---
 
-## Open questions
+## Notes for next session
 
-1. What's the production domain? (Needed for `NEXT_PUBLIC_SITE_URL`, sitemap, canonical URLs.)
-2. Do we have social accounts to link via `sameAs` in Organization JSON-LD?
-3. Any brand guidelines for the 1200×630 OG image, or reuse existing hand/moon artwork?
-4. Phase 6 (per-card pages) — green-light now or defer until Phase 1–5 ship?
+Start here (two remaining phases, pick based on priority):
+1. **Phase 7 (Verification & launch, short)** — deploy, submit sitemap to Google Search Console + Bing, run Lighthouse, validate JSON-LD with Rich Results Test, refresh OG caches on FB/LI/Twitter. Probably <1 day.
+2. **Phase 6 (Content depth, 1–2 weeks)** — per-card / per-reader / per-deck pages for long-tail organic traffic. See phase 6 for scope.
+
+**Still unresolved:**
+- Social accounts for `Organization.sameAs` in JSON-LD — do we have any?
+- Payment provider / pricing JSON-LD — out of scope until payments are wired (see CLAUDE.md).

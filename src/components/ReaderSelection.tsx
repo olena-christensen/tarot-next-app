@@ -90,7 +90,7 @@ export const ReaderSelection = ({
                 <div className="reader-selection__portrait" aria-hidden="true">
                   <Image
                     src={reader.avatar}
-                    alt=""
+                    alt={tReader(`${id}.displayName`)}
                     width={88}
                     height={88}
                     className="reader-selection__portrait-image"

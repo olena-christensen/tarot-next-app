@@ -80,6 +80,11 @@
     "changeYourReader": "Change Your Reader",
     "beginInitiation": "Begin Initiation",
     "reader": "Reader",
-    "chooseReader": "Choose Your Reader"
+    "chooseReader": "Choose Your Reader",
+    "notFound": {
+      "title": "The veil is closed here",
+      "description": "This page has slipped beyond the veil. Return to the circle and try another path.",
+      "backHome": "Back to the sanctum"
+    }
   }
 }
