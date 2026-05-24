@@ -1,0 +1,129 @@
+.cookie-banner {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  background-color: var(--bg);
+  border-top: var(--border);
+  border-image: repeating-linear-gradient(
+    90deg,
+    rgba(250, 225, 163, 0.55),
+    transparent,
+    rgba(250, 225, 163, 0.55) 14px
+  ) 1;
+  backdrop-filter: blur(6px);
+  animation: cookieBannerSlideIn 0.45s ease-out both;
+
+  &--closing {
+    animation: cookieBannerFadeOut 0.3s ease-in forwards;
+  }
+}
+
+.cookie-banner__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+  padding-block: 1.25rem;
+}
+
+.cookie-banner__message {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-banner__link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--text-color);
+  }
+}
+
+.cookie-banner__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.cookie-banner__btn {
+  padding: 0.7rem 1.6rem;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: var(--font-weight);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color);
+  background-color: transparent;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--text-soft);
+    border-color: rgba(250, 225, 163, 0.65);
+  }
+
+  &--accept {
+    background-color: rgba(250, 225, 163, 0.12);
+  }
+
+  &--accept:hover {
+    background-color: rgba(250, 225, 163, 0.2);
+  }
+}
+
+@media (min-width: 700px) {
+  .cookie-banner__inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 1rem;
+  }
+
+  .cookie-banner__message {
+    flex: 1;
+    font-size: 15px;
+  }
+
+  .cookie-banner__actions {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes cookieBannerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cookieBannerFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-banner,
+  .cookie-banner--closing {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

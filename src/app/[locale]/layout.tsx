@@ -5,6 +5,7 @@ import { getMessages, getTranslations, unstable_setRequestLocale } from "next-in
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { buildAlternates, buildJsonLd } from "@/lib/seo";
+import { CookieBanner } from "@/components/CookieBanner";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -86,6 +87,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
         <NextIntlClientProvider messages={messages}>
           {children}
+          <CookieBanner />
         </NextIntlClientProvider>
       </body>
     </html>
