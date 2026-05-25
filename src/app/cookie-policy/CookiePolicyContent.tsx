@@ -113,7 +113,7 @@ const COOKIE_HTML_RAW = `<div data-custom-class="body">
       <div><br></div>
 
       <div><span data-custom-class="heading_1"><h2>Where can I get further information?</h2></span></div>
-      <div><span data-custom-class="body_text">If you have any questions about our use of cookies or other technologies, please email us at <a target="_blank" data-custom-class="link" href="mailto:founder@nothingweird.agency">founder@nothingweird.agency</a> or by post to:</span></div>
+      <div><span data-custom-class="body_text">If you have any questions about our use of cookies or other technologies, please email us at <a target="_blank" data-custom-class="link" href="mailto:privacy@nothingweird.agency">privacy@nothingweird.agency</a> or by post to:</span></div>
       <div><br></div>
       <div><span data-custom-class="body_text">Olena Christensen, Individual Entrepreneur (FOP)<br>Mykolaiv, Mykolaiv oblast 54028<br>Ukraine</span></div>
     </div>`;
