@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 
 export const TERMS_CONSENT_COOKIE = "tarot_terms_consent";
+export const AGE_CONSENT_COOKIE = "tarot_age_consent";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma as any) as NextAuthOptions["adapter"],
@@ -101,7 +102,9 @@ export const authOptions: NextAuthOptions = {
     async createUser({ user }) {
       // When the adapter creates a new OAuth user, record terms acceptance
       // based on the short-lived consent cookie set on the client before the
-      // OAuth redirect.
+      // OAuth redirect. The age cookie (AGE_CONSENT_COOKIE) is also set on
+      // the client; a corresponding ageAcceptedAt column would need a Prisma
+      // migration to persist it server-side.
       try {
         const consent = cookies().get(TERMS_CONSENT_COOKIE)?.value;
         if (consent === "1") {
