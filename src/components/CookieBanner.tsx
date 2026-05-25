@@ -45,7 +45,7 @@ export const CookieBanner = () => {
       <div className="cookie-banner__inner container">
         <p className="cookie-banner__message">
           {t("cookieBannerMessage")}{" "}
-          <Link href="/privacy" className="cookie-banner__link">
+          <Link href="/cookie-policy" className="cookie-banner__link">
             {t("cookieBannerLearnMore")}
           </Link>
         </p>
