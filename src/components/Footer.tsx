@@ -1,5 +1,5 @@
 "use client";
-import { Link } from "@/i18n/navigation";
+import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { resetCookieConsent } from "@/components/CookieBanner";
 
@@ -8,9 +8,9 @@ export default function Footer() {
     return (
         <footer className="main-footer container">
             <p className="main-footer__legal">
-                <Link className="main-footer__link" href="/terms">{t("termsOfService")}</Link>
+                <NextLink className="main-footer__link" href="/terms">{t("termsOfService")}</NextLink>
                 {" · "}
-                <Link className="main-footer__link" href="/privacy">{t("privacyPolicy")}</Link>
+                <NextLink className="main-footer__link" href="/privacy">{t("privacyPolicy")}</NextLink>
                 {" · "}
                 <button
                     type="button"

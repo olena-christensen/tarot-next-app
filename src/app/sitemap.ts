@@ -1,11 +1,17 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
-import { HREFLANG_MAP, PUBLIC_ROUTES, absoluteUrl, localizedPath } from "@/lib/seo";
+import {
+  GLOBAL_ROUTES,
+  HREFLANG_MAP,
+  PUBLIC_ROUTES,
+  absoluteUrl,
+  localizedPath,
+} from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  return PUBLIC_ROUTES.flatMap((route) =>
+  const localized = PUBLIC_ROUTES.flatMap((route) =>
     routing.locales.map((locale) => {
       const languages: Record<string, string> = {};
       for (const loc of routing.locales) {
@@ -23,4 +29,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       };
     }),
   );
+
+  const global = GLOBAL_ROUTES.map((route) => ({
+    url: absoluteUrl(route),
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.3,
+  }));
+
+  return [...localized, ...global];
 }

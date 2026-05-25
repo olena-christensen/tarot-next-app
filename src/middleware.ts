@@ -7,6 +7,20 @@ const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  if (pathname === "/privacy" || pathname === "/terms") {
+    return NextResponse.next();
+  }
+
+  const globalLocaleMatch = routing.locales
+    .flatMap((loc) => ["/privacy", "/terms"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
+    .find(({ full }) => pathname === full);
+  if (globalLocaleMatch) {
+    const url = req.nextUrl.clone();
+    url.pathname = globalLocaleMatch.target;
+    return NextResponse.redirect(url);
+  }
+
   const hasLocalePrefix = routing.locales.some(
     (loc) => pathname === `/${loc}` || pathname.startsWith(`/${loc}/`)
   );

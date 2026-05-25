@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 
 const STORAGE_KEY = "theveil_cookie_consent";
 const RESET_EVENT = "theveil:cookie-consent-reset";
