@@ -1,0 +1,8 @@
+{
+  "disclaimers": {
+    "ageConfirm": "Jeg bekrefter at jeg er 18 år eller eldre.",
+    "entertainmentShort": "Kun for underholdningsformål. Ikke en erstatning for profesjonell rådgivning.",
+    "entertainmentFull": "Denne tjenesten leveres kun for underholdningsformål. Tarotlesninger skal ikke brukes som erstatning for profesjonell medisinsk, juridisk, finansiell eller psykologisk rådgivning.",
+    "ageRequiredError": "Du må bekrefte at du er 18 år eller eldre for å fortsette."
+  }
+}

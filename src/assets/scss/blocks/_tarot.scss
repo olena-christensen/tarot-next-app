@@ -102,6 +102,18 @@
   }
 }
 
+.tarot__disclaimer {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto 1.25rem;
+  padding: 0 1rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: center;
+  z-index: 5;
+}
+
 .tarot__action-area {
   position: relative;
   display: flex;
@@ -269,6 +281,10 @@
 @media (min-width: 900px) {
   .tarot__title {
     font-size: 26px;
+  }
+
+  .tarot__disclaimer {
+    font-size: 0.85rem;
   }
 
   .tarot__cards-container {

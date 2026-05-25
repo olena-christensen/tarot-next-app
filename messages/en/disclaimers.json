@@ -1,0 +1,8 @@
+{
+  "disclaimers": {
+    "ageConfirm": "I confirm I am 18 years of age or older.",
+    "entertainmentShort": "For entertainment purposes only. Not a substitute for professional advice.",
+    "entertainmentFull": "This service is provided for entertainment purposes only. Tarot readings should not be used as a substitute for professional medical, legal, financial, or psychological advice.",
+    "ageRequiredError": "You must confirm you are 18 or older to continue."
+  }
+}

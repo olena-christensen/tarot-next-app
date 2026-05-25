@@ -1,0 +1,8 @@
+{
+  "disclaimers": {
+    "ageConfirm": "18 yaşında veya daha büyük olduğumu onaylıyorum.",
+    "entertainmentShort": "Yalnızca eğlence amaçlıdır. Profesyonel tavsiye yerine geçmez.",
+    "entertainmentFull": "Bu hizmet yalnızca eğlence amaçlı sunulmaktadır. Tarot okumaları, profesyonel tıbbi, hukuki, finansal veya psikolojik tavsiye yerine kullanılmamalıdır.",
+    "ageRequiredError": "Devam etmek için 18 yaşında veya daha büyük olduğunuzu onaylamanız gerekir."
+  }
+}

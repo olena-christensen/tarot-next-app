@@ -6,6 +6,7 @@ import { resetCookieConsent } from "@/components/CookieBanner";
 
 export default function Footer() {
     const t = useTranslations("ui");
+    const tDisc = useTranslations("disclaimers");
     return (
         <footer className="main-footer container">
             <p className="main-footer__legal">
@@ -25,6 +26,7 @@ export default function Footer() {
                     {t("cookieSettings")}
                 </button>
             </p>
+            <p className="main-footer__disclaimer">{tDisc("entertainmentShort")}</p>
         </footer>
     );
 };

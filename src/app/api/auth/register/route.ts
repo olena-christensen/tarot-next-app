@@ -4,11 +4,18 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, acceptTerms } = await request.json();
+    const { name, email, password, acceptTerms, acceptAge } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
+
+    if (!acceptAge) {
+      return NextResponse.json(
+        { error: "You must confirm you are 18 or older to register" },
         { status: 400 }
       );
     }
