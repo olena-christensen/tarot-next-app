@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
+import NextLink from "next/link";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
@@ -133,13 +133,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             />
             <span>
               {t("iAgreeTo")}{" "}
-              <Link href="/terms" target="_blank" className="form__link">
+              <NextLink href="/terms" target="_blank" className="form__link">
                 {t("termsOfService")}
-              </Link>{" "}
+              </NextLink>{" "}
               {t("and")}{" "}
-              <Link href="/privacy" target="_blank" className="form__link">
+              <NextLink href="/privacy" target="_blank" className="form__link">
                 {t("privacyPolicy")}
-              </Link>
+              </NextLink>
               .
             </span>
           </label>
