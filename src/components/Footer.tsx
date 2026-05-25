@@ -12,6 +12,8 @@ export default function Footer() {
                 {" · "}
                 <NextLink className="main-footer__link" href="/privacy">{t("privacyPolicy")}</NextLink>
                 {" · "}
+                <NextLink className="main-footer__link" href="/cookie-policy">{t("cookiePolicy")}</NextLink>
+                {" · "}
                 <button
                     type="button"
                     className="main-footer__link main-footer__link--button"
