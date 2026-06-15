@@ -9,6 +9,7 @@ export default function Footer() {
     const tDisc = useTranslations("disclaimers");
     return (
         <footer className="main-footer container">
+            <p className="main-footer__disclaimer">{tDisc("entertainmentFull")}</p>
             <p className="main-footer__legal">
                 <NextLink className="main-footer__link" href="/terms">{t("termsOfService")}</NextLink>
                 {" · "}
@@ -26,7 +27,6 @@ export default function Footer() {
                     {t("cookieSettings")}
                 </button>
             </p>
-            <p className="main-footer__disclaimer">{tDisc("entertainmentShort")}</p>
         </footer>
     );
 };

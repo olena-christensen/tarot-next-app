@@ -17,7 +17,6 @@ export const Tarot = () => {
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const tCards = useTranslations("cards");
-    const tDisc = useTranslations("disclaimers");
     const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
     const [modalDismissed, setModalDismissed] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
@@ -128,7 +127,6 @@ export const Tarot = () => {
                     <div className="tarot__cards-container">
                         {cards}
                     </div>
-                    <p className="tarot__disclaimer">{tDisc("entertainmentFull")}</p>
                     <div className="tarot__action-area">
                         {modalDismissed ? (
                             <div className="tarot__post-actions">

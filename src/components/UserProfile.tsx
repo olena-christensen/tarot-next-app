@@ -8,6 +8,9 @@ import { routing } from "@/i18n/routing";
 import { type PlanId } from "@/lib/plans";
 import { type ReaderId } from "@/lib/readers";
 import { ReaderSelectionModal } from "@/components/ReaderSelectionModal";
+import { Modal } from "@/components/Modal";
+
+const DELETE_CONFIRMATION_TOKEN = "DELETE";
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -43,6 +46,11 @@ export const UserProfile = () => {
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteConfirmInput, setDeleteConfirmInput] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     async function checkPassword() {
@@ -201,6 +209,47 @@ export const UserProfile = () => {
     setIsEditingPassword(false);
     setPasswordError("");
     setPasswordSuccess("");
+  };
+
+  const handleOpenDeleteModal = () => {
+    setDeleteConfirmInput("");
+    setDeleteError("");
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    if (isDeleting) return;
+    setIsDeleteModalOpen(false);
+    setDeleteConfirmInput("");
+    setDeleteError("");
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteConfirmInput !== DELETE_CONFIRMATION_TOKEN || isDeleting) return;
+
+    setIsDeleting(true);
+    setDeleteError("");
+
+    try {
+      const res = await fetch("/api/user/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: DELETE_CONFIRMATION_TOKEN }),
+      });
+
+      const data = await res.json().catch(() => ({ ok: false }));
+
+      if (!res.ok || !data.ok) {
+        setDeleteError(t("deleteAccountError"));
+        setIsDeleting(false);
+        return;
+      }
+
+      await signOut({ callbackUrl: "/" });
+    } catch {
+      setDeleteError(t("deleteAccountError"));
+      setIsDeleting(false);
+    }
   };
 
   const handleSelectLocale = async (loc: string) => {
@@ -385,11 +434,71 @@ export const UserProfile = () => {
       >
         {t("slipIntoShadows")}
       </button>
+      <section className="user-profile__danger-zone">
+        <h2 className="user-profile__danger-zone-title">
+          {t("deleteAccountHeading")}
+        </h2>
+        <button
+          type="button"
+          className="user-profile__danger-zone-trigger"
+          onClick={handleOpenDeleteModal}
+        >
+          {t("deleteAccountTrigger")}
+        </button>
+      </section>
       <ReaderSelectionModal
         isOpen={isReaderSelectOpen}
         onClose={() => setIsReaderSelectOpen(false)}
         onOpenSubscription={() => router.push("/subscription")}
       />
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        title={t("deleteAccountTrigger")}
+      >
+        <div className="delete-account-modal">
+          <p className="delete-account-modal__warning">
+            {t("deleteAccountWarning")}
+          </p>
+          <label className="delete-account-modal__label" htmlFor="delete-confirm">
+            {t("deleteAccountConfirmLabel")}
+          </label>
+          <input
+            id="delete-confirm"
+            className="delete-account-modal__input"
+            type="text"
+            value={deleteConfirmInput}
+            onChange={(e) => setDeleteConfirmInput(e.target.value)}
+            placeholder={t("deleteAccountConfirmPlaceholder")}
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            disabled={isDeleting}
+          />
+          <div className="delete-account-modal__actions">
+            <button
+              type="button"
+              className="delete-account-modal__cancel"
+              onClick={handleCloseDeleteModal}
+              disabled={isDeleting}
+            >
+              {t("deleteAccountCancel")}
+            </button>
+            <button
+              type="button"
+              className="delete-account-modal__confirm"
+              onClick={handleConfirmDelete}
+              disabled={deleteConfirmInput !== DELETE_CONFIRMATION_TOKEN || isDeleting}
+            >
+              {isDeleting ? t("deleteAccountSubmitting") : t("deleteAccountButton")}
+            </button>
+          </div>
+          {deleteError && (
+            <p className="delete-account-modal__error">{deleteError}</p>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };

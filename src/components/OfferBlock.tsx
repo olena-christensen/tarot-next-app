@@ -183,11 +183,17 @@ export const OfferBlock = ({
                                                     : "Madame Vespera"
                                             })}
                                         </MysticButton>
-                                        {session && messages?.readers && (
+                                        {messages?.readers && (
                                             <button
                                                 type="button"
                                                 className="offer-block__change-btn"
-                                                onClick={() => setIsReaderModalOpen(true)}
+                                                onClick={() => {
+                                                    if (!session) {
+                                                        onOpenLogin();
+                                                        return;
+                                                    }
+                                                    setIsReaderModalOpen(true);
+                                                }}
                                             >
                                                 {t("changeYourReader")}
                                             </button>
