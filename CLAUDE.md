@@ -115,14 +115,14 @@ In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in 
   - `cards.json` — 78 card names
   - `readings.json` — 78 card readings + reading templates + per-reader voice blocks
   - `plans.json` — plan names and feature lists
-  - `legal.json` — Legacy keys (most legal content now lives in static HTML blobs in `src/app/{privacy,terms,cookie-policy}/`)
+  - `disclaimers.json` — Entertainment-only + age-gate disclaimer strings (used by `Footer` and the age confirmation). Legal page bodies are NOT translated — they live as static English HTML blobs in `src/app/{privacy,terms,cookie-policy,refund}/`.
   - `seo.json` — Per-page meta titles/descriptions/keywords
   - `contact.json` — Contact form labels, categories, validation errors, success/error states
 - **Config files:** `src/i18n/routing.ts` (locales), `src/i18n/request.ts` (message loading), `src/i18n/navigation.ts` (locale-aware Link/useRouter)
 - **Adding a new locale:** Create a new folder under `messages/` with all 7 JSON files (same structure as `en/`), then add the locale code to `src/i18n/routing.ts`. If it has a non-standard hreflang, also update `HREFLANG_MAP` in `src/lib/seo.ts`.
 - **Adding a new namespace (JSON file):** Add the file in all 5 locale folders AND add a `...(await import(...)).default` line in `src/i18n/request.ts`. Forgetting the request.ts step means `useTranslations` silently returns the key name in production.
 - **Links:** Use `Link` from `@/i18n/navigation` instead of `next/link` in components — this auto-prefixes the locale. Exception: unprefixed legal pages (`/privacy`, `/terms`, `/cookie-policy`) use plain `next/link` because they bypass locale routing.
-- **Translations in components:** Use `useTranslations("namespace")` hook. Namespaces match the top-level key in each JSON file (`ui`, `cards`, `readings`, `plans`, `legal`, `seo`, `contact`).
+- **Translations in components:** Use `useTranslations("namespace")` hook. Namespaces match the top-level key in each JSON file (`ui`, `cards`, `readings`, `plans`, `disclaimers`, `seo`, `contact`).
 - **Card names and readings** are no longer in TypeScript files — they live in `messages/{locale}/cards.json` and `readings.json`.
 - **Plan names and features** are no longer in `plans.ts` — they live in `messages/{locale}/plans.json`. `plans.ts` only keeps `id`, `priceLabel`, `interval`.
 - **Reading generation:** `src/lib/generateReading.ts` takes translated messages, card IDs, and an optional `readerId` to produce locale-aware readings in the chosen reader's voice. Falls back to `readingTemplates` when no reader block exists.
