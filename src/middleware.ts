@@ -8,12 +8,17 @@ const intlMiddleware = createMiddleware(routing);
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname === "/privacy" || pathname === "/terms" || pathname === "/cookie-policy") {
+  if (
+    pathname === "/privacy" ||
+    pathname === "/terms" ||
+    pathname === "/cookie-policy" ||
+    pathname === "/refund"
+  ) {
     return NextResponse.next();
   }
 
   const globalLocaleMatch = routing.locales
-    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
+    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy", "/refund"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
     .find(({ full }) => pathname === full);
   if (globalLocaleMatch) {
     const url = req.nextUrl.clone();

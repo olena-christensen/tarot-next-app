@@ -18,7 +18,7 @@ const messages = {
   ...enDisclaimers,
 };
 
-export default function TermsLayout({
+export default function RefundLayout({
   children,
 }: {
   children: React.ReactNode;

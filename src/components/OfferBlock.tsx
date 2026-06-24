@@ -237,7 +237,7 @@ export const OfferBlock = ({
                                 />
                             </Modal>
                         )}
-                        <Footer />
+                        <Footer overlay />
                     </>
                 )
             }
