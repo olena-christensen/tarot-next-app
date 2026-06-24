@@ -1,11 +1,16 @@
 .main-footer {
-  position: fixed;
-  inset-inline: 0;
-  bottom: 0;
   padding-top: 2rem;
   padding-bottom: 16px;
-  z-index: 10;
-  pointer-events: none;
+
+  // Overlay variant: floats over the full-screen main/tarot views.
+  // Default (no modifier) sits in normal flow at the end of scrolling pages.
+  &--overlay {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
 
   .main-footer__link {
 

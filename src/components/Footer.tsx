@@ -4,11 +4,11 @@ import { Link as IntlLink } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { resetCookieConsent } from "@/components/CookieBanner";
 
-export default function Footer() {
+export default function Footer({ overlay = false }: { overlay?: boolean }) {
     const t = useTranslations("ui");
     const tDisc = useTranslations("disclaimers");
     return (
-        <footer className="main-footer container">
+        <footer className={`main-footer container${overlay ? " main-footer--overlay" : ""}`}>
             <p className="main-footer__disclaimer">{tDisc("entertainmentFull")}</p>
             <p className="main-footer__legal">
                 <NextLink className="main-footer__link" href="/terms">{t("termsOfService")}</NextLink>
@@ -16,6 +16,8 @@ export default function Footer() {
                 <NextLink className="main-footer__link" href="/privacy">{t("privacyPolicy")}</NextLink>
                 {" · "}
                 <NextLink className="main-footer__link" href="/cookie-policy">{t("cookiePolicy")}</NextLink>
+                {" · "}
+                <NextLink className="main-footer__link" href="/refund">{t("refundPolicy")}</NextLink>
                 {" · "}
                 <IntlLink className="main-footer__link" href="/contact">{t("contact")}</IntlLink>
                 {" · "}

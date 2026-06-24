@@ -185,7 +185,8 @@ All colors, typography, and border values are defined as CSS custom properties i
 ## Reader Selection
 
 - **Available readers:** Madame Vespera (default), The Crow, Reginald Ash. Each reader is a "voice" persona that reshapes the reading's intro, bridges, closings, and card prefixes.
-- Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (currently all use `var(--text-color)` — no per-reader colors without approval), and `avatar` path (placeholder — images don't exist yet).
+- Reader catalog is **static config** in `src/lib/readers.ts` (`READERS`, `READER_IDS`, `ReaderId` type, `DEFAULT_READER`). Each entry has `id`, `aura` (currently all use `var(--text-color)` — no per-reader colors without approval), and `avatar` path.
+- **Reader portrait art** lives at `public/readers/{vespera,crow,reginald}.webp` (exists; added 19 Apr 2026). **Generated with fal.ai** (https://fal.ai — multi-model image playground). Exact model + prompt per portrait are recoverable from the fal.ai request history if regeneration is needed; a `FLux` byte fragment in `reginald.webp` suggests a FLUX model was used, but this is unconfirmed (fal is multi-model). Source PNGs were converted to WebP, which stripped all provenance metadata — do NOT rely on the deployed files to identify the tool.
 - Display strings (name, title, tagline, bio) and voice templates (intros, bridges, futureBridges, closings, pastPrefix/presentPrefix/futurePrefix) live in `messages/{locale}/readings.json` under `"readers.{id}"`. The registry file has no text.
 - DB stores preference via `preferredReader` field on the `User` model (`String @default("vespera")`). No enum — adding a new reader requires no migration.
 - `preferredReader` flows through NextAuth: stored in JWT token, exposed via `session.user.preferredReader`, updatable via `session.update({ preferredReader })`.

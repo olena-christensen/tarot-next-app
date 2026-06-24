@@ -163,7 +163,7 @@ export const Tarot = () => {
                         {state.response && <p className="tarot__result-text">{state.response}</p>}
                     </div>
                 </Modal>
-                <Footer />
+                <Footer overlay />
             </div>
         </div>
     );
