@@ -88,4 +88,10 @@ model Subscription {
   expiresAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  monoInvoiceId String?
+  monoCardToken String?
+  paymentStatus String?
+  lastChargedAt DateTime?
+  nextChargeAt  DateTime?
 }
