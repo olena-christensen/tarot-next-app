@@ -10,22 +10,22 @@ export type Plan = {
 export const PLANS: Record<PlanId, Plan> = {
   FREE: {
     id: "FREE",
-    priceLabel: "$0",
+    priceLabel: "€0",
     interval: null,
   },
   SINGLE: {
     id: "SINGLE",
-    priceLabel: "$1",
+    priceLabel: "€1",
     interval: "one-time",
   },
   MONTHLY: {
     id: "MONTHLY",
-    priceLabel: "$10",
+    priceLabel: "€5",
     interval: "month",
   },
   YEARLY: {
     id: "YEARLY",
-    priceLabel: "$50",
+    priceLabel: "€39",
     interval: "year",
     highlight: true,
   },

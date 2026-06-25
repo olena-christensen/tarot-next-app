@@ -86,6 +86,7 @@ async function sendDeletionConfirmation(email: string) {
     "  • All linked sign-in providers (Google, etc.)",
     "  • Your reading history",
     "  • Any active subscription record",
+    "  • Your payment history",
     "  • Pending email verification tokens",
     "",
     `Deleted (UTC): ${timestamp}`,

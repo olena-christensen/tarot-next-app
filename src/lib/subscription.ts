@@ -13,3 +13,20 @@ export async function getUserPlan(userId: string): Promise<PlanId> {
     return "FREE";
   }
 }
+
+/**
+ * Returns the user's consumable one-off reading credits (SINGLE purchases).
+ * Kept separate from getUserPlan: credits are not a recurring tier.
+ */
+export async function getReadingCredits(userId: string): Promise<number> {
+  try {
+    const sub = await prisma.subscription.findUnique({
+      where: { userId },
+      select: { readingCredits: true },
+    });
+    return sub?.readingCredits ?? 0;
+  } catch (err) {
+    console.error("[getReadingCredits] failed, defaulting to 0", err);
+    return 0;
+  }
+}

@@ -52,6 +52,7 @@ model User {
   sessions        Session[]
   readings        Reading[]
   subscription    Subscription?
+  payments        Payment[]
 }
 
 model VerificationToken {
@@ -94,4 +95,28 @@ model Subscription {
   paymentStatus String?
   lastChargedAt DateTime?
   nextChargeAt  DateTime?
+
+  pendingPlanId      String? // what the user is currently trying to buy: "SINGLE"|"MONTHLY"|"YEARLY"
+  readingCredits     Int     @default(0) // consumable one-off extra readings
+  activatedInvoiceId String? // the invoiceId whose "success" we already applied (idempotency guard)
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  monoInvoiceId String   @unique // one ledger row per Mono invoice
+  reference     String? // our correlation reference
+  productType   String // "SINGLE" | "MONTHLY" | "YEARLY" (what was bought)
+  amount        Int // minor units (cents)
+  currency      String   @default("EUR")
+  status        String // last known: created/processing/success/failure/reversed
+  maskedPan     String? // from webhook paymentInfo.maskedPan when present
+  paymentSystem String? // visa/mastercard, from webhook when present
+  failureReason String? // from webhook when present
+  cardToken     String? // walletData.cardToken when present
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
 }

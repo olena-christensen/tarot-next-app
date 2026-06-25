@@ -50,6 +50,7 @@ src/generated/prisma/package.json
 src/generated/prisma/query_compiler_fast_bg.js
 src/generated/prisma/query_compiler_fast_bg.wasm
 src/generated/prisma/query_compiler_fast_bg.wasm-base64.js
+src/generated/prisma/wasm.js
 src/generated/prisma/runtime/
 src/generated/prisma/wasm-edge-light-loader.mjs
 src/generated/prisma/wasm-worker-loader.mjs
