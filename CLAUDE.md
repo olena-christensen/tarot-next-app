@@ -150,7 +150,7 @@ All colors, typography, and border values are defined as CSS custom properties i
 - Prisma client is imported via `src/lib/prisma.ts` singleton — use that, don't instantiate `PrismaClient` elsewhere.
 - NextAuth is **v4** (not v5/Auth.js). API routes use the `[...nextauth]/route.ts` pattern.
 - The Vercel Postgres product was discontinued; the DB is now provisioned through the Vercel Marketplace (Neon). Treat it as plain Postgres via `DATABASE_URL`.
-- **Most pages live under `src/app/[locale]/`** — but legal pages (`/privacy`, `/terms`, `/cookie-policy`) are deliberately UNPREFIXED at `src/app/{privacy,terms,cookie-policy}/`. Each has its own self-contained layout that renders `<html>/<body>` and preloads English messages directly (no `getMessages()` call). `src/middleware.ts` special-cases these three paths to bypass the next-intl middleware (otherwise it would 404 trying to find `/{locale}/privacy`). API routes stay at `src/app/api/` (no locale prefix).
+- **Most pages live under `src/app/[locale]/`** — but legal pages (`/privacy`, `/terms`, `/cookie-policy`) are deliberately UNPREFIXED at `src/app/{privacy,terms,cookie-policy}/`. Each has its own self-contained layout that renders `<html>/<body>` and preloads English messages directly (no `getMessages()` call). `src/middleware.ts` special-cases these paths (plus `/refund` and any `/payment/` route, e.g. the post-payment `/payment/result`) to bypass the next-intl middleware (otherwise it would 404 trying to find `/{locale}/privacy`). API routes stay at `src/app/api/` (no locale prefix).
 - **React inner-HTML prop security hook:** A pre-tool-use hook blocks Write/Edit operations containing the literal React prop string (spelled `d-a-n-g-e-r-o-u-s-l-y-S-e-t-I-n-n-e-r-H-T-M-L` with no dashes). Legal page content files need it for trusted hardcoded HTML. Workaround pattern (used by all three legal `*Content.tsx` files): `const HTML_PROP = ["dangerously", "SetInner", "HTML"].join("")` then spread `{...({ [HTML_PROP]: { __html: TRUSTED } } as Record<string, unknown>)}`. Don't try to concat the string in a type cast either — that also resolves at write time.
 - **`next-intl` v3 uses `unstable_setRequestLocale`** — not `setRequestLocale` (that's v4). Don't upgrade without checking the migration guide.
 - **`params` is a direct object in Next.js 14** — not a Promise. Don't add `await params` (that's Next.js 16+).
@@ -164,8 +164,11 @@ All colors, typography, and border values are defined as CSS custom properties i
 - Read current plan with `getUserPlan(userId)` from `src/lib/subscription.ts` — never query `prisma.subscription` directly from UI code.
 - Client-side: fetch `GET /api/user/plan` (mirrors the `password-status` pattern).
 - Pricing page lives at `/subscription`, rendered by `src/components/SubscriptionPlans.tsx` (4-column classic layout). Styles: `src/assets/scss/blocks/_subscription.scss`.
-- **Payments are not wired yet.** All upgrade CTAs are disabled with tooltip "Payments launching soon". When integrating a payment provider, the `Subscription` row should be created/updated server-side after a successful checkout — `expiresAt` exists for that purpose.
-- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), reading history UI.
+- **Payment BACKEND is wired** (Plata by mono). `POST /api/payments/create-invoice` + signature-verified `POST /api/payments/webhook` create invoices and activate the `Subscription` server-side on confirmed payment. See `docs/features/mono-payments.md` for the full design. Schema extended with payment fields + a `Payment` ledger model (migrations 2026-06-25).
+- **Payment FRONTEND is wired** (initiate + result page). `SubscriptionPlans.tsx` CTAs POST `/api/payments/create-invoice { planId }` and redirect the browser to Mono's `pageUrl` (per-button busy state; 401 → opens the branded login modal via `LoginContext`; other errors → visible `subscription__error` message). Mono redirects back to the top-level `/payment/result` page (`src/app/payment/`, outside `[locale]`, English-only, `middleware` bypasses it like the legal pages). That page re-checks `GET /api/user/plan` every ~1s for ~10s — confirming from server state (`paymentStatus`/`pendingPlanId`), never from the URL — and shows tier-active / credit-added / still-processing. `GET /api/user/plan` was extended to return `{ planId, readingCredits, paymentStatus, pendingPlanId }` (superset — the `{ planId }` shape still holds) via `getSubscriptionStatus` in `subscription.ts`. Still NOT built (separate slices): consuming `readingCredits` in the reading flow, free-tier gating, recurring renewal.
+- **Pricing:** SINGLE €1 is a consumable reading credit (`readingCredits`), NOT a tier. MONTHLY €5 / YEARLY €39 set `planId`. Recurring renewal is not built and is blocked on monobank enabling tokenization.
+- Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), credit consumption in the reading flow, reading history UI.
+- **Status tracking:** `docs/go-live.md` is the single source of truth for what remains before launch.
 
 ## Deck Selection
 
@@ -204,9 +207,9 @@ All colors, typography, and border values are defined as CSS custom properties i
 - **All three locales have reader translations.** English, Norwegian, and Russian `readings.json` files all have a `readers` block and corresponding UI keys in `ui.json`. Russian reader and UI translations need polish — quality is rough.
 - **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
 
-## Legal Pages (Privacy / Terms / Cookie Policy)
+## Legal Pages (Privacy / Terms / Cookie Policy / Refund)
 
-- **Routes:** `/privacy`, `/terms`, `/cookie-policy` — **unprefixed**, NOT under `[locale]`. Live at `src/app/{privacy,terms,cookie-policy}/`.
+- **Routes:** `/privacy`, `/terms`, `/cookie-policy`, `/refund` — **unprefixed**, NOT under `[locale]`. Live at `src/app/{privacy,terms,cookie-policy,refund}/`. (Refund Policy added 2026-06-25, same self-contained pattern.)
 - **File layout per page (3 files each):**
   - `page.tsx` — server component, exports `metadata`, delegates to the Content component.
   - `layout.tsx` — self-contained root layout. Renders its own `<html lang="en">` + `<body>`, loads Raleway, wraps children in `NextIntlClientProvider` preloaded with English JSON only, renders `<CookieBanner />`.

@@ -14,6 +14,51 @@ export async function getUserPlan(userId: string): Promise<PlanId> {
   }
 }
 
+export type SubscriptionStatus = {
+  planId: PlanId;
+  readingCredits: number;
+  /** Last Mono status string ("created" | "processing" | "success" | "failure" | "reversed" | null). */
+  paymentStatus: string | null;
+  /** The purchase in flight, if any ("SINGLE" | "MONTHLY" | "YEARLY"); cleared once settled. */
+  pendingPlanId: string | null;
+};
+
+/**
+ * Single-query snapshot used by the post-payment result page to decide whether a
+ * purchase has settled. paymentStatus/pendingPlanId are the authoritative
+ * "is it done yet" signal (set server-side by the webhook); planId + readingCredits
+ * describe the resulting entitlement.
+ */
+export async function getSubscriptionStatus(
+  userId: string
+): Promise<SubscriptionStatus> {
+  try {
+    const sub = await prisma.subscription.findUnique({
+      where: { userId },
+      select: {
+        planId: true,
+        readingCredits: true,
+        paymentStatus: true,
+        pendingPlanId: true,
+      },
+    });
+    return {
+      planId: (sub?.planId as PlanId | undefined) ?? "FREE",
+      readingCredits: sub?.readingCredits ?? 0,
+      paymentStatus: sub?.paymentStatus ?? null,
+      pendingPlanId: sub?.pendingPlanId ?? null,
+    };
+  } catch (err) {
+    console.error("[getSubscriptionStatus] failed, defaulting to FREE", err);
+    return {
+      planId: "FREE",
+      readingCredits: 0,
+      paymentStatus: null,
+      pendingPlanId: null,
+    };
+  }
+}
+
 /**
  * Returns the user's consumable one-off reading credits (SINGLE purchases).
  * Kept separate from getUserPlan: credits are not a recurring tier.
