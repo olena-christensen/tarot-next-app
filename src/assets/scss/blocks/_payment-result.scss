@@ -1,0 +1,58 @@
+.payment-result {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-color);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 520px;
+  }
+
+  &__spinner {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid rgba(250, 225, 163, 0.25);
+    border-top-color: var(--primary);
+    animation: paymentResultSpin 0.9s linear infinite;
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    color: var(--primary);
+  }
+
+  &__message {
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  &__link {
+    margin-top: 8px;
+    padding: 11px 26px;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(250, 225, 163, 0.12);
+    }
+  }
+}
+
+@keyframes paymentResultSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

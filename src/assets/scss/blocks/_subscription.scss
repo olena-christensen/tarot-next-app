@@ -129,10 +129,21 @@
     cursor: pointer;
     transition: opacity 0.2s ease, background-color 0.2s ease;
 
+    &:hover:not(:disabled) {
+      background-color: rgba(250, 225, 163, 0.12);
+    }
+
     &:disabled {
       opacity: 0.55;
       cursor: not-allowed;
     }
+  }
+
+  &__error {
+    margin-top: 20px;
+    color: var(--error);
+    text-align: center;
+    font-size: 0.95rem;
   }
 
   @media (max-width: 960px) {

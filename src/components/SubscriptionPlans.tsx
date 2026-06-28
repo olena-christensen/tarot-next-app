@@ -1,7 +1,9 @@
 "use client";
 
-import { PLAN_ORDER, PLANS, type Plan } from "@/lib/plans";
+import { useState } from "react";
+import { PLAN_ORDER, PLANS, type Plan, type PlanId } from "@/lib/plans";
 import { useTranslations } from "next-intl";
+import { useOpenLogin } from "@/components/LoginContext";
 
 const intervalSuffix = (interval: Plan["interval"]): string => {
   switch (interval) {
@@ -21,6 +23,52 @@ type SubscriptionPlansProps = {
 export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps) => {
   const t = useTranslations("ui");
   const tPlans = useTranslations("plans");
+  const openLogin = useOpenLogin();
+
+  // Which plan's invoice request is in flight (null = none). Disables that one
+  // button and shows a busy label; other buttons stay clickable.
+  const [busyPlan, setBusyPlan] = useState<PlanId | null>(null);
+  const [error, setError] = useState(false);
+
+  const handleSubscribe = async (planId: PlanId) => {
+    if (busyPlan) return;
+    setBusyPlan(planId);
+    setError(false);
+    try {
+      const res = await fetch("/api/payments/create-invoice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId }),
+      });
+
+      if (res.status === 401) {
+        // Not signed in — hand off to the branded login modal instead of failing.
+        openLogin();
+        setBusyPlan(null);
+        return;
+      }
+
+      if (!res.ok) {
+        setError(true);
+        setBusyPlan(null);
+        return;
+      }
+
+      const { pageUrl } = (await res.json()) as { pageUrl?: string };
+      if (!pageUrl) {
+        setError(true);
+        setBusyPlan(null);
+        return;
+      }
+
+      // Leave busyPlan set: the button stays in its busy state through the
+      // full-page navigation to Mono's hosted payment page.
+      window.location.assign(pageUrl);
+    } catch {
+      setError(true);
+      setBusyPlan(null);
+    }
+  };
 
   return (
     <section className="subscription">
@@ -39,10 +87,20 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
             const plan = PLANS[id];
             const isFree = plan.id === "FREE";
             const isPopular = plan.id === "MONTHLY";
+            const isOneTime = plan.interval === "one-time";
             const suffix = intervalSuffix(plan.interval);
+            const isBusy = busyPlan === plan.id;
             const cardClass = isPopular
               ? "subscription__card subscription__card--popular"
               : "subscription__card";
+
+            const label = isFree
+              ? t("currentPlanBtn")
+              : isBusy
+                ? t("processingBtn")
+                : isOneTime
+                  ? t("buyReadingBtn")
+                  : t("subscribeBtn");
 
             return (
               <article key={plan.id} className={cardClass}>
@@ -68,17 +126,22 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                 <button
                   type="button"
                   className="subscription__cta"
-                  disabled
-                  title={
-                    isFree ? undefined : t("paymentsLaunchingSoon")
-                  }
+                  disabled={isFree || Boolean(busyPlan)}
+                  aria-busy={isBusy}
+                  onClick={isFree ? undefined : () => handleSubscribe(plan.id)}
                 >
-                  {isFree ? t("currentPlanBtn") : t("comingSoon")}
+                  {label}
                 </button>
               </article>
             );
           })}
         </div>
+
+        {error && (
+          <p className="subscription__error" role="alert">
+            {t("paymentStartFailed")}
+          </p>
+        )}
       </div>
     </section>
   );

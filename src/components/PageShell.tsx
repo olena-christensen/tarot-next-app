@@ -6,6 +6,7 @@ import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
+import { LoginContext } from "@/components/LoginContext";
 import Footer from "@/components/Footer";
 
 type PageShellProps = {
@@ -19,7 +20,9 @@ export const PageShell = ({ children }: PageShellProps) => {
   return (
     <Providers>
       <Header onOpenLogin={() => setIsLoginOpen(true)} />
-      {children}
+      <LoginContext.Provider value={() => setIsLoginOpen(true)}>
+        {children}
+      </LoginContext.Provider>
       <Footer />
       <Modal
         title={t("stepThroughTheVeil")}

@@ -12,13 +12,14 @@ export default async function middleware(req: NextRequest) {
     pathname === "/privacy" ||
     pathname === "/terms" ||
     pathname === "/cookie-policy" ||
-    pathname === "/refund"
+    pathname === "/refund" ||
+    pathname.startsWith("/payment/")
   ) {
     return NextResponse.next();
   }
 
   const globalLocaleMatch = routing.locales
-    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy", "/refund"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
+    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy", "/refund", "/payment/result"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
     .find(({ full }) => pathname === full);
   if (globalLocaleMatch) {
     const url = req.nextUrl.clone();

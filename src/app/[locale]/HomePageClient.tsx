@@ -9,6 +9,7 @@ import { LoginForm } from "@/components/LoginForm";
 import { SubscriptionPlans } from "@/components/SubscriptionPlans";
 import { Header } from "@/components/Header";
 import { Providers } from "@/components/Providers";
+import { LoginContext } from "@/components/LoginContext";
 
 export function HomePageClient() {
   const t = useTranslations("ui");
@@ -38,7 +39,14 @@ export function HomePageClient() {
         onClose={() => setIsSubscriptionOpen(false)}
         wide
       >
-        <SubscriptionPlans showHeader={false} />
+        <LoginContext.Provider
+          value={() => {
+            setIsSubscriptionOpen(false);
+            setIsLoginOpen(true);
+          }}
+        >
+          <SubscriptionPlans showHeader={false} />
+        </LoginContext.Provider>
       </Modal>
     </Providers>
   );
