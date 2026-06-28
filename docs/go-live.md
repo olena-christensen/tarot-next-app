@@ -3,15 +3,16 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-06-25 (verified against the codebase, not from memory)
+**Last updated:** 2026-06-28 (verified against the codebase, not from memory)
 
 ---
 
 ## Current state — one line
 
-Legal documents are complete and live in the app. The Plata by mono payment **backend** is
-built, documented, and migrated. What remains is the payment **frontend**, credit consumption,
-recurring renewal (blocked on monobank tokenization), and a lawyer review (not a launch blocker).
+Legal documents are complete and live in the app. The Plata by mono payment **backend and the
+initiate + result frontend** are built, documented, and migrated. What remains is surfacing the
+credit balance in the persistent UI, credit consumption in the reading flow, recurring renewal
+(blocked on monobank tokenization), and a lawyer review (not a launch blocker).
 
 ---
 
@@ -47,31 +48,41 @@ recurring renewal (blocked on monobank tokenization), and a lawyer review (not a
 
 ---
 
-## 🔭 Open question — resolve via test, not assumption
+## ✅ Resolved question — tested 2026-06-28
 
-- **Is tokenization already enabled on the Mono account?** Recurring charges need Mono's
-  token feature ("робота з токенами"). It is OFF by default, but it may already be enabled
-  on this account. **Do not assume.** Test: run a MONTHLY or YEARLY payment (which already sends
-  `saveCardData`), then check whether `walletData.cardToken` comes back in the webhook. If it
-  does → tokenization is on. If not → contact Mono support to enable it. The frontend (below)
-  is what makes this test possible.
+- **Is tokenization enabled on the Mono account? → NO.** Confirmed by a real MONTHLY payment on
+  production (`https://theveil.app`) on 2026-06-28: the invoice sent `saveCardData: { saveCard: true }`,
+  the webhook fired and activated the tier, but **no `walletData.cardToken` came back** —
+  `Subscription.monoCardToken` and `Payment.cardToken` are both `null`. So token operations
+  ("робота з токенами") are **OFF** on this account.
+  - ➡️ **Update 2026-06-28: Mono support has ENABLED tokenization on the terminal** — it goes live
+    **~48h later (≈2026-06-30)**. Must re-confirm with a real MONTHLY/YEARLY payment that the webhook
+    now returns `walletData.cardToken`. (Mono's suggested "invoice creates without error" check is NOT
+    sufficient — that already passed while tokenization was off.) Once a token is stored, build the
+    renewal job.
+  - **Bonus:** this same payment verified the **entire payment pipeline end-to-end on production** —
+    invoice → Mono hosted page → signed webhook → tier activation (`planId=MONTHLY`,
+    `paymentStatus=success`, `expiresAt` = +1 month) → ledger row written (masked PAN, visa). The
+    live acquiring token works; the charge was real (≈254.6 UAH).
 
 ---
 
 ## 🔜 Remaining before launch
 
 ### Payment frontend (next feature — own branch)
-- [ ] Subscribe / buy buttons wired to `POST /api/payments/create-invoice`, then redirect to the returned `pageUrl` (the `/subscription` page CTAs are currently disabled placeholders).
-- [ ] `/payment/result` page — where Mono redirects the user's browser after payment (activation happens server-side via webhook; this page just shows status).
-- [ ] Surface plan + credit balance in the UI (`getUserPlan`, `getReadingCredits`).
+- [x] Subscribe / buy buttons wired to `POST /api/payments/create-invoice`, then redirect to the returned `pageUrl`. *(done 2026-06-28; per-button busy state, 401 → branded login modal via `LoginContext`, visible error on failure.)*
+- [x] `/payment/result` page — top-level route (outside `[locale]`, middleware-bypassed) that reflects server state: re-checks `GET /api/user/plan` every ~1s for ~10s and shows confirming / tier-active / credit-added / still-processing. Never reads the outcome from the URL. *(done 2026-06-28.)*
+- [ ] Surface plan + credit balance in the **persistent** UI. Plan is shown in UserProfile; `GET /api/user/plan` now also returns `readingCredits` (+ `paymentStatus`/`pendingPlanId`) via `getSubscriptionStatus`, and the result page shows the credit count — but UserProfile does not yet display the balance.
 
 ### Credit + tier enforcement
 - [ ] Reading flow consumes `readingCredits` (a purchased SINGLE credit is stored but never spent yet).
 - [ ] Free-tier gating treats a FREE user with `readingCredits > 0` as allowed an extra reading.
 - [ ] Free-tier daily limit enforcement (count readings/day) — separate spec, still open.
 
-### Recurring (blocked on the tokenization question above)
-- [ ] Renewal job — charge `monoCardToken` at `nextChargeAt` for MONTHLY/YEARLY via Mono's wallet/payment endpoint. Nothing auto-renews today; subscriptions lapse at `expiresAt`.
+### Recurring (UNBLOCKING — tokenization enabled by Mono 2026-06-28, live ≈2026-06-30)
+- [x] **Get Mono support to enable token operations** ("робота з токенами") — Mono enabled it on the terminal 2026-06-28; active ~48h later (≈2026-06-30).
+- [ ] **Re-confirm tokenization works** — after ≈2026-06-30, run a real MONTHLY/YEARLY payment and verify `walletData.cardToken` now lands (`Subscription.monoCardToken` / `Payment.cardToken` populated, not null).
+- [ ] Renewal job — charge `monoCardToken` at `nextChargeAt` for MONTHLY/YEARLY via Mono's wallet/payment endpoint. Nothing auto-renews today; subscriptions lapse at `expiresAt`. **(Now the active build — design in progress.)**
 
 ### Fiscal / tax
 - [ ] PRRO / digital fiscal receipts (Monobank built-in or Checkbox).
