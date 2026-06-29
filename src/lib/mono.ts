@@ -112,3 +112,48 @@ export async function verifyMonoWebhook(
     return false;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Merchant-initiated recurring charge (payment by saved card token)
+//
+// Used by the renewal cron to charge a stored card without the user present.
+// Drives the SAME signed webhook as invoice/create, so activation stays in one
+// place (src/app/api/payments/webhook/route.ts). Endpoint/body confirmed against
+// the acquiring OpenAPI: https://api.monobank.ua/docs/acquiring.html
+// ---------------------------------------------------------------------------
+
+export type ChargeByTokenParams = {
+  cardToken: string;
+  amount: number; // minor units (cents)
+  reference: string;
+  destination: string;
+};
+
+export type ChargeByTokenResult = {
+  invoiceId: string;
+  status?: string;
+};
+
+export async function chargeByToken(
+  params: ChargeByTokenParams
+): Promise<ChargeByTokenResult> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (!appUrl) {
+    throw new Error("[mono] missing NEXT_PUBLIC_APP_URL");
+  }
+
+  return monoFetch<ChargeByTokenResult>("/api/merchant/wallet/payment", {
+    method: "POST",
+    body: JSON.stringify({
+      cardToken: params.cardToken,
+      amount: params.amount,
+      ccy: CCY_EUR,
+      initiationKind: "merchant",
+      merchantPaymInfo: {
+        reference: params.reference,
+        destination: params.destination,
+      },
+      webHookUrl: `${appUrl}/api/payments/webhook`,
+    }),
+  });
+}

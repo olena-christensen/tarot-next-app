@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyMonoWebhook } from "@/lib/mono";
+import { PLAN_PRICES } from "@/lib/mono";
+import { sendRenewalReceiptEmail, sendPaymentFailedEmail } from "@/lib/mailer";
 import type { Prisma } from "@/generated/prisma";
 
 // Plata by mono webhook. Mono warns that deliveries can be duplicated and
@@ -108,8 +110,18 @@ export async function POST(req: Request) {
 
   const pendingPlanId = sub.pendingPlanId;
 
+  // Renewal = the activating tier already equals the current tier (a token
+  // charge re-buying the same plan), vs a first-time purchase from FREE.
+  // Captured BEFORE we clear pendingPlanId on the failure branch.
+  const isRenewal =
+    (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY") &&
+    pendingPlanId === sub.planId;
+
   if (status === "success") {
     const now = new Date();
+    // Hoisted so the renewal-receipt email below reuses the SAME expiry computed
+    // for activation, instead of recomputing it (which could drift).
+    let renewalExpiresAt: Date | null = null;
     const data: Prisma.SubscriptionUpdateManyMutationInput = {
       paymentStatus: "success",
       lastChargedAt: now,
@@ -120,18 +132,22 @@ export async function POST(req: Request) {
     if (pendingPlanId === "SINGLE") {
       // Consumable credit — never changes the recurring tier (planId).
       data.readingCredits = { increment: 1 };
-    } else if (pendingPlanId === "MONTHLY") {
-      const expiresAt = addMonths(now, 1);
-      data.planId = "MONTHLY";
-      data.startedAt = now;
+    } else if (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY") {
+      // Renewals extend from the PRIOR expiresAt (preserving the billing anchor
+      // and any grace days); first-time purchases start a fresh period at `now`.
+      const base = isRenewal && sub.expiresAt ? sub.expiresAt : now;
+      const expiresAt =
+        pendingPlanId === "MONTHLY" ? addMonths(base, 1) : addYears(base, 1);
+      data.planId = pendingPlanId;
       data.expiresAt = expiresAt;
       data.nextChargeAt = expiresAt;
-    } else if (pendingPlanId === "YEARLY") {
-      const expiresAt = addYears(now, 1);
-      data.planId = "YEARLY";
-      data.startedAt = now;
-      data.expiresAt = expiresAt;
-      data.nextChargeAt = expiresAt;
+      renewalExpiresAt = expiresAt;
+      if (isRenewal) {
+        // Successful renewal clears the dunning counter; keep original startedAt.
+        data.renewalAttempts = 0;
+      } else {
+        data.startedAt = now;
+      }
     } else {
       // success with no/unknown pending plan — record payment but don't grant
       // anything we can't attribute.
@@ -166,6 +182,25 @@ export async function POST(req: Request) {
     }
     // Ledger: record success unconditionally (success is never a downgrade).
     await updatePaymentLedger("success", false);
+
+    // Renewal receipt (best-effort; never blocks the ack). Only in the renewal
+    // context — first-time buyers saw the result live on Mono's page. Guarded by
+    // count > 0 so a duplicate delivery (already-applied) doesn't re-email.
+    if (isRenewal && count > 0 && renewalExpiresAt && (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY")) {
+      const user = await prisma.user.findUnique({
+        where: { id: sub.userId },
+        select: { email: true },
+      });
+      if (user?.email) {
+        await sendRenewalReceiptEmail({
+          to: user.email,
+          planId: pendingPlanId,
+          amountMinor: payload.amount ?? PLAN_PRICES[pendingPlanId],
+          // Reuse the activation expiry computed above (no recomputation/drift).
+          expiresAt: renewalExpiresAt,
+        });
+      }
+    }
     return NextResponse.json({ ok: true });
   }
 
@@ -179,6 +214,18 @@ export async function POST(req: Request) {
     });
     // Ledger: terminal status, mirrors Subscription (applied unconditionally).
     await updatePaymentLedger(status, false);
+
+    // Dunning email (best-effort) only for renewal failures — first-time
+    // purchase failures were shown live on Mono's page.
+    if (isRenewal && (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY")) {
+      const user = await prisma.user.findUnique({
+        where: { id: sub.userId },
+        select: { email: true },
+      });
+      if (user?.email) {
+        await sendPaymentFailedEmail({ to: user.email, planId: pendingPlanId });
+      }
+    }
     return NextResponse.json({ ok: true });
   }
 

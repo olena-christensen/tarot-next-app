@@ -105,6 +105,12 @@
     "deleteAccountError": "Something went wrong. Please contact privacy@nothingweird.agency",
     "deleteAccountEmailSubject": "[theveil] Account deleted",
     "deleteAccountEmailBody": "Your account at The Veil has been permanently deleted. This action is irreversible. If you did not request this, contact privacy@nothingweird.agency.",
+    "renewsOn": "Renews on {date}",
+    "accessUntil": "Access until {date}",
+    "renewal": "Renewal",
+    "cancelSubscription": "Cancel subscription",
+    "resumeSubscription": "Resume subscription",
+    "cancelSubscriptionConfirm": "Cancel auto-renew? You'll keep access until the end of your paid period.",
     "notFound": {
       "title": "The veil is closed here",
       "description": "This page has slipped beyond the veil. Return to the circle and try another path.",

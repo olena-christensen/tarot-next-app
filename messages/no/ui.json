@@ -105,6 +105,12 @@
     "deleteAccountError": "Something went wrong. Please contact privacy@nothingweird.agency",
     "deleteAccountEmailSubject": "[theveil] Account deleted",
     "deleteAccountEmailBody": "Your account at The Veil has been permanently deleted. This action is irreversible. If you did not request this, contact privacy@nothingweird.agency.",
+    "renewsOn": "Renews on {date}",
+    "accessUntil": "Access until {date}",
+    "renewal": "Renewal",
+    "cancelSubscription": "Cancel subscription",
+    "resumeSubscription": "Resume subscription",
+    "cancelSubscriptionConfirm": "Cancel auto-renew? You'll keep access until the end of your paid period.",
     "notFound": {
       "title": "Sløret er lukket her",
       "description": "Denne siden har forsvunnet bak sløret. Vend tilbake til sirkelen og prøv en annen vei.",
