@@ -93,8 +93,13 @@ depend on that redirect; it happens server-side from the webhook.
 | `src/lib/mono.ts` | Config (`MONO_API_BASE`, `CCY_EUR`, `PLAN_PRICES`) + `monoFetch` (X-Token wrapper) + `getMonoPubKey` (cached pubkey) + `verifyMonoWebhook` (signature check). |
 | `src/app/api/payments/create-invoice/route.ts` | `POST`. Auth, validate plan, call Mono to create the invoice, upsert the pending purchase on `Subscription`, **create the `Payment` ledger row** (`status="created"`, best-effort), return `pageUrl`. |
 | `src/app/api/payments/webhook/route.ts` | `POST`. Verify signature, look up the subscription by `monoInvoiceId`, run the idempotent status state machine, activate on `success`, **and update the `Payment` ledger row** (latest status + card details, no-downgrade, best-effort) on every handled status. |
-| `src/lib/subscription.ts` | Read helpers: `getUserPlan(userId)` → tier; `getReadingCredits(userId)` → credit count. |
-| `Subscription` model (`src/generated/prisma/schema.prisma`) | Per-user (`userId @unique`) row holding tier, pending purchase, credits, and Mono bookkeeping. |
+| `src/lib/subscription.ts` | Read helpers: `getUserPlan(userId)` → tier; `getReadingCredits(userId)` → credit count; `getSubscriptionStatus(userId)` → `{planId, readingCredits, paymentStatus, pendingPlanId, expiresAt, autoRenew}` (used by the result page + UserProfile). |
+| `src/lib/renewal.ts` | **Pure** dunning state machine `decideRenewalAction(sub, now)` → `none` / `downgrade(reason)` / `charge`. No DB/network — fully unit-tested (`renewal.test.ts`, 12 cases). |
+| `src/lib/mailer.ts` | Best-effort transactional email (Zoho SMTP, reuses the contact-route setup): `sendRenewalReceiptEmail`, `sendPaymentFailedEmail`, `sendSubscriptionEndedEmail`. Never throws. |
+| `src/app/api/cron/renew/route.ts` | `GET`, bearer-guarded by `CRON_SECRET`. Daily job: loads MONTHLY/YEARLY subs, applies `decideRenewalAction`, and either downgrades to FREE (+ email) or **initiates** a token charge via `chargeByToken`. Never activates — the webhook does. |
+| `src/app/api/user/subscription/route.ts` | `PATCH`, auth-gated. Toggle auto-renew (`{autoRenew}`); sets `canceledAt`. MONTHLY/YEARLY only. |
+| `chargeByToken` (in `src/lib/mono.ts`) | Merchant-initiated payment-by-token (`POST /api/merchant/wallet/payment`, `initiationKind:"merchant"`). Drives the same signed webhook as invoice/create. |
+| `Subscription` model (`src/generated/prisma/schema.prisma`) | Per-user (`userId @unique`) row holding tier, pending purchase, credits, renewal/dunning state, and Mono bookkeeping. |
 | `Payment` model (`src/generated/prisma/schema.prisma`) | Append-style ledger — one row per Mono invoice (`monoInvoiceId @unique`), `@@index([userId])`. Cascade-deletes with the user. |
 
 ## 4. Data model
@@ -110,12 +115,16 @@ One row per user (`userId @unique`); `create-invoice` upserts it.
 | `readingCredits` | `Int`, default `0` | Consumable extra-reading credits. Incremented by 1 on a `SINGLE` `success`. Nothing consumes it yet. |
 | `activatedInvoiceId` | `String?` | The `invoiceId` whose `success` was already applied. Idempotency guard. Set during the atomic activation write; reset to `null` by `create-invoice` when a new invoice is issued. |
 | `monoInvoiceId` | `String?` | Current Mono `invoiceId`. Written by `create-invoice`; the webhook looks the row up by this. |
-| `monoCardToken` | `String?` | Tokenized card for future recurring charges. Saved on `success` if Mono sends `walletData.cardToken`. Currently inert (see §8). |
-| `paymentStatus` | `String?` | Last Mono status string (`"created"`, `"processing"`, `"success"`, `"failure"`, `"reversed"`, …). Never downgraded away from `"success"` (see §5). |
+| `monoCardToken` | `String?` | Tokenized card for recurring charges. Saved on `success` if Mono sends `walletData.cardToken`. Consumed by the renewal cron (`chargeByToken`). **Inert until monobank enables tokenization** — see §8. |
+| `paymentStatus` | `String?` | Last Mono status string (`"created"`, `"processing"`, `"success"`, `"failure"`, `"reversed"`, …). Never downgraded away from `"success"` (see §5). The renewal cron resets it to `"created"` at the start of each attempt. |
 | `lastChargedAt` | `DateTime?` | Set to now on `success`. |
-| `nextChargeAt` | `DateTime?` | Set to `expiresAt` on a `MONTHLY`/`YEARLY` `success` (when the renewal job should charge). Unused for `SINGLE`. |
-| `startedAt` | `DateTime`, default now | Reset to now on a `MONTHLY`/`YEARLY` `success`. |
-| `expiresAt` | `DateTime?` | `now + 1 month` (MONTHLY) or `now + 1 year` (YEARLY) on `success`. Unused for `SINGLE`. |
+| `nextChargeAt` | `DateTime?` | When the renewal cron should next charge. Set to `expiresAt` on a `MONTHLY`/`YEARLY` `success`; `null` after downgrade. Unused for `SINGLE`. |
+| `startedAt` | `DateTime`, default now | Set to now on a **first** `MONTHLY`/`YEARLY` purchase; **preserved** (not reset) on a renewal. |
+| `expiresAt` | `DateTime?` | First purchase: `now + interval`. Renewal: **prior `expiresAt` + interval** (extends from the existing period so grace days aren't lost). Unused for `SINGLE`. |
+| `autoRenew` | `Boolean`, default `true` | `false` = cancel at period end. Toggled by `PATCH /api/user/subscription`. The cron downgrades a `false` sub once `expiresAt` passes. |
+| `canceledAt` | `DateTime?` | When the user turned off auto-renew. Cleared on resume. |
+| `renewalAttempts` | `Int`, default `0` | Dunning retry counter for the current cycle. Bumped per cron attempt; reset to `0` on a successful renewal and on downgrade. `>= 3` + a failed status → downgrade. |
+| `lastRenewalAttemptAt` | `DateTime?` | Spaces retries to at most one per day. |
 
 ### `Payment` — ledger (one row per Mono invoice)
 
@@ -206,27 +215,72 @@ the user (`onDelete: Cascade`).
 |-----|---------|
 | `MONO_ACQUIRING_TOKEN` | Mono acquiring token, sent as `X-Token` on every Mono API call. Required by `monoFetch` (throws if missing). |
 | `NEXT_PUBLIC_APP_URL` | Public origin used to build `redirectUrl` and `webHookUrl`. `create-invoice` returns `500` if unset. Dev: `http://localhost:3001`. |
+| `CRON_SECRET` | Bearer secret the renewal cron (`/api/cron/renew`) requires. Vercel attaches it automatically to cron invocations. The route returns `401` if the header mismatches **or** the var is unset. Mark Sensitive. Generate with `openssl rand -base64 32`. |
 
 Both must be set in **`.env` (local)** and in **Vercel** (all relevant environments). In Vercel,
 `NEXT_PUBLIC_APP_URL` must be the production origin (e.g. `https://theveil.app`) so Mono can
 reach the webhook. `MONO_ACQUIRING_TOKEN` is a secret — mark it Sensitive.
 
-## 8. NOT YET BUILT / TODO
+## 8. Recurring renewal engine (built 2026-06-29)
 
-Resume points — none of these exist yet:
+Built but **not yet verified live** — see the prerequisite below. Full design:
+`docs/superpowers/specs/2026-06-28-recurring-renewal-design.md`; plan:
+`docs/superpowers/plans/2026-06-29-recurring-renewal.md`.
 
-- **Tokenization is not enabled by monobank.** Recurring charges will not work until monobank
-  support enables token operations ("робота з токенами") for the merchant. `saveCardData:
-  { saveCard: true }` is already sent for MONTHLY/YEARLY and `monoCardToken` is saved when
-  present, but both are **inert** until support enables the feature.
-- **Recurring renewal job not built.** Nothing charges `monoCardToken` at `nextChargeAt`. After
-  a MONTHLY/YEARLY `expiresAt` passes, the subscription simply lapses with no auto-renewal.
-- **Frontend not built.** No subscribe button / pricing CTA wired to `POST
-  /api/payments/create-invoice`, and no `/payment/result` page for the post-payment redirect.
+**Flow.** A daily Vercel cron (`vercel.json`, `0 6 * * *`) hits `GET /api/cron/renew`. For each
+MONTHLY/YEARLY subscription it calls the pure `decideRenewalAction(sub, now)` and applies the result:
+
+- `none` → skip.
+- `downgrade(reason)` → set `planId=FREE`, `nextChargeAt=null`, **reset the dunning fields**
+  (`renewalAttempts=0`, `paymentStatus=null`, `canceledAt=null`), and send the "subscription ended"
+  email. (Resetting matters: a downgraded row must be pristine so a later resubscribe starts a clean
+  dunning cycle.)
+- `charge` → **reserve the attempt first** (same bookkeeping as create-invoice: `pendingPlanId=plan`,
+  `activatedInvoiceId=null`, `paymentStatus="created"`, bump `renewalAttempts`, set
+  `lastRenewalAttemptAt`), then call `chargeByToken`, store the new `monoInvoiceId`, and write a
+  `Payment` ledger row. **The cron never activates anything** — Mono fires the existing signed
+  webhook, which is the sole activator.
+
+**Webhook is renewal-aware.** It detects a renewal (`pendingPlanId === planId`, both MONTHLY/YEARLY)
+and, on `success`, extends `expiresAt` from the prior period, preserves `startedAt`, resets
+`renewalAttempts=0`, and sends a receipt (guarded by `count > 0` so a duplicate delivery doesn't
+re-email). First-time purchases keep their original behavior. On a renewal `failure`/`reversed` it
+sends the dunning email.
+
+**Dunning.** Charge on expiry; keep access during retries; retry once/day; after 3 failed attempts,
+downgrade. There is no separate grace timer — the retry cap **is** the grace boundary. The cron
+resetting `paymentStatus="created"` each attempt is what keeps the no-downgrade webhook guard from
+blocking the `failure` write mid-cycle.
+
+**Cancellation.** `PATCH /api/user/subscription {autoRenew}` — `false` cancels at period end
+(access until `expiresAt`, then the cron downgrades), `true` resumes. UserProfile shows the renewal
+date + a Cancel/Resume control (MONTHLY/YEARLY only).
+
+**Idempotency / safety.** Reserve-before-charge + the in-flight guard (`paymentStatus` in
+`created`/`processing` → `none`) + a fresh `monoInvoiceId` per attempt + the webhook's atomic
+`activatedInvoiceId` compare-and-set ⇒ at most one charge per cycle even on a double cron run. The
+endpoint is bearer-guarded (`CRON_SECRET`), 401 on mismatch **or** unset.
+
+### Hard prerequisite (gating live verification)
+The engine cannot be trusted until a real MONTHLY/YEARLY payment stores a **non-null**
+`monoCardToken`. Tokenization was OFF; monobank enabled it 2026-06-28, live ≈2026-06-30. Re-confirm
+with a real payment before relying on renewal. Building was possible without it; verification is not.
+
+### Known follow-up (not a blocker)
+No reconciliation backstop: if Mono never delivers a terminal webhook for a charge, the sub freezes
+at `paymentStatus="created"` (the in-flight guard prevents re-charge and downgrade). Add a
+timeout/reconciliation sweep later.
+
+## 8b. STILL NOT BUILT / TODO
+
 - **Reading flow does not consume `readingCredits`.** A purchased SINGLE credit is stored but
-  never spent.
-- **Free-tier gating ignores credits.** Free-tier enforcement does not yet treat a "FREE user
-  with `readingCredits > 0`" as allowed an extra reading.
+  never spent — a €1 purchase currently grants nothing usable.
+- **Free-tier daily limit not enforced** (e.g. 3 readings/day) — without it there's no enforced
+  reason to pay.
+- **Free-tier gating ignores credits.** A "FREE user with `readingCredits > 0`" is not yet treated
+  as allowed an extra reading.
+- **Credit balance not surfaced in the persistent UI.** `GET /api/user/plan` returns
+  `readingCredits`, but UserProfile doesn't display it.
 - **PRRO / digital fiscal receipts not wired.** No fiscalization integration.
 
 ## 9. Testing notes
