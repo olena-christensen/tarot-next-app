@@ -26,7 +26,7 @@
 - DO NOT revert or undo changes without asking
 - Keep it direct — just do the work, don't over-explain
 - The database and Vercel setup took significant effort — do not break or replace it
-- **NEVER run git add, git commit, git stage, or any git write operation** — the user handles all git operations in WebStorm. Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
+- **NEVER run git add, git commit, git stage, or any git write operation** — the user does their own commits. (Do not assume or name a specific editor/tool, and never explain how to commit/push.) Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
 - **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task
 
 ## Commands

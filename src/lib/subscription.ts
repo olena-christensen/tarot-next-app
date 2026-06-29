@@ -21,6 +21,10 @@ export type SubscriptionStatus = {
   paymentStatus: string | null;
   /** The purchase in flight, if any ("SINGLE" | "MONTHLY" | "YEARLY"); cleared once settled. */
   pendingPlanId: string | null;
+  /** ISO date the current paid period ends, or null. */
+  expiresAt: string | null;
+  /** Whether the subscription auto-renews (false = canceled at period end). */
+  autoRenew: boolean;
 };
 
 /**
@@ -40,6 +44,8 @@ export async function getSubscriptionStatus(
         readingCredits: true,
         paymentStatus: true,
         pendingPlanId: true,
+        expiresAt: true,
+        autoRenew: true,
       },
     });
     return {
@@ -47,6 +53,8 @@ export async function getSubscriptionStatus(
       readingCredits: sub?.readingCredits ?? 0,
       paymentStatus: sub?.paymentStatus ?? null,
       pendingPlanId: sub?.pendingPlanId ?? null,
+      expiresAt: sub?.expiresAt ? sub.expiresAt.toISOString() : null,
+      autoRenew: sub?.autoRenew ?? true,
     };
   } catch (err) {
     console.error("[getSubscriptionStatus] failed, defaulting to FREE", err);
@@ -55,6 +63,8 @@ export async function getSubscriptionStatus(
       readingCredits: 0,
       paymentStatus: null,
       pendingPlanId: null,
+      expiresAt: null,
+      autoRenew: true,
     };
   }
 }

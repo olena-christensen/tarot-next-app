@@ -18,11 +18,13 @@
 
 ## Payments — follow-ups
 
-**Status (2026-06-28):** Payment frontend is DONE and verified end-to-end on production —
-subscribe buttons → Mono hosted page → signed webhook → tier activation → `/payment/result`.
-A real MONTHLY payment cleared (`planId=MONTHLY`, `paymentStatus=success`). **Tokenization is
-confirmed OFF** → recurring renewal is blocked until Mono support enables it. Full launch status
-lives in `docs/go-live.md` (the source of truth); the items below are the remaining dev work.
+**Status (2026-06-29):** Payment frontend DONE + verified on production. **Recurring-renewal
+engine now BUILT** (branch `feature/mono-payments`, uncommitted) — daily cron + dunning state
+machine + token charge + renewal-aware webhook + cancel/resume + emails; built subagent-driven,
+per-task + whole-branch review clean. Plan: `docs/superpowers/plans/2026-06-29-recurring-renewal.md`.
+It is code-complete but **unverifiable live until tokenization is re-confirmed (≈2026-06-30)** with
+a real MONTHLY/YEARLY payment storing a non-null `monoCardToken`. Full launch status lives in
+`docs/go-live.md` (source of truth); items below are the remaining dev work.
 
 ### Next — core monetization loop (makes payments actually mean something)
 - [ ] Reading flow **consumes `readingCredits`** — a purchased SINGLE credit is stored but never spent today, so a €1 purchase currently grants nothing usable.
@@ -30,8 +32,14 @@ lives in `docs/go-live.md` (the source of truth); the items below are the remain
 - [ ] Free-tier gating treats a FREE user with `readingCredits > 0` as allowed an extra reading; MONTHLY/YEARLY bypass the limit entirely.
 - [ ] Surface the **credit balance** in the persistent UI (UserProfile shows the plan but not credits; `GET /api/user/plan` already returns `readingCredits`).
 
+### Recurring renewal — remaining to ship (engine is built)
+- [x] **Contact Mono support to enable tokenization** ("робота з токенами") — Mono enabled it 2026-06-28, live ≈2026-06-30.
+- [ ] **Re-confirm tokenization** with a real MONTHLY/YEARLY payment → `monoCardToken` non-null. HARD PREREQUISITE for the renewal e2e.
+- [ ] Set `CRON_SECRET` locally (`.env`/`.env.local`) and in Vercel (Sensitive); deploy so `vercel.json`'s daily cron is active.
+- [ ] Local cron smoke test, then live e2e (charge → webhook → period extend → receipt; decline → dunning → retry → downgrade).
+- [ ] Follow-up (not blocking): reconciliation sweep for a charge stuck at `paymentStatus="created"` if Mono never sends a terminal webhook.
+
 ### Business / ops (not code)
-- [ ] **Contact Mono support to enable tokenization** ("робота з токенами") — unblocks recurring renewal. Until then MONTHLY/YEARLY simply lapse at `expiresAt`.
 - [ ] Update prod env in Vercel if not already done: `GOOGLE_CLIENT_SECRET` (new value) + confirm `NEXT_PUBLIC_APP_URL=https://theveil.app`.
 
 ### Polish

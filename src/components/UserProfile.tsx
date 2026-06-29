@@ -36,6 +36,9 @@ export const UserProfile = () => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
   const [planId, setPlanId] = useState<PlanId | null>(null);
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
+  const [autoRenew, setAutoRenew] = useState<boolean>(true);
+  const [subSaving, setSubSaving] = useState(false);
   const [deckId, setDeckId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<ReaderId | null>(null);
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
@@ -70,6 +73,8 @@ export const UserProfile = () => {
         if (res.ok) {
           const data = await res.json();
           setPlanId(data.planId as PlanId);
+          setExpiresAt(data.expiresAt ?? null);
+          setAutoRenew(data.autoRenew ?? true);
         }
       } catch {
         // silent — UI falls back to "—"
@@ -272,6 +277,28 @@ export const UserProfile = () => {
     }
   };
 
+  const handleToggleAutoRenew = async () => {
+    if (subSaving) return;
+    // Turning auto-renew OFF asks for confirmation; turning it back ON does not.
+    if (autoRenew && !window.confirm(t("cancelSubscriptionConfirm"))) return;
+    setSubSaving(true);
+    try {
+      const res = await fetch("/api/user/subscription", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ autoRenew: !autoRenew }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAutoRenew(data.autoRenew);
+      }
+    } catch {
+      // silent — user can retry
+    } finally {
+      setSubSaving(false);
+    }
+  };
+
   return (
     <div className="user-profile">
       <div className="user-profile__field">
@@ -328,6 +355,25 @@ export const UserProfile = () => {
           </Link>
         </span>
       </div>
+      {(planId === "MONTHLY" || planId === "YEARLY") && (
+        <div className="user-profile__field">
+          <span className="user-profile__label">{t("renewal")}</span>
+          <span className="user-profile__value">
+            {expiresAt
+              ? (autoRenew ? t("renewsOn", { date: expiresAt.slice(0, 10) })
+                           : t("accessUntil", { date: expiresAt.slice(0, 10) }))
+              : "—"}
+            <button
+              type="button"
+              className="user-profile__upgrade"
+              onClick={handleToggleAutoRenew}
+              disabled={subSaving}
+            >
+              {"→ " + (autoRenew ? t("cancelSubscription") : t("resumeSubscription"))}
+            </button>
+          </span>
+        </div>
+      )}
       <div className="user-profile__field">
         <span className="user-profile__label">{t("deck")}</span>
         <span className="user-profile__value">

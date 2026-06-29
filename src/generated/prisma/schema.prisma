@@ -99,6 +99,11 @@ model Subscription {
   pendingPlanId      String? // what the user is currently trying to buy: "SINGLE"|"MONTHLY"|"YEARLY"
   readingCredits     Int     @default(0) // consumable one-off extra readings
   activatedInvoiceId String? // the invoiceId whose "success" we already applied (idempotency guard)
+
+  autoRenew            Boolean   @default(true) // false = cancel at period end
+  canceledAt           DateTime? // when the user turned off auto-renew
+  renewalAttempts      Int       @default(0) // dunning retry counter for the current cycle; reset to 0 on success
+  lastRenewalAttemptAt DateTime? // spaces retries to once per day
 }
 
 model Payment {

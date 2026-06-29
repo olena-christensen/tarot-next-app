@@ -105,6 +105,12 @@
     "deleteAccountError": "Что-то пошло не так. Пожалуйста, свяжитесь с privacy@nothingweird.agency",
     "deleteAccountEmailSubject": "[theveil] Учётная запись удалена",
     "deleteAccountEmailBody": "Ваша учётная запись в The Veil удалена навсегда. Это действие необратимо. Если запрос на удаление поступил не от вас, срочно свяжитесь с privacy@nothingweird.agency.",
+    "renewsOn": "Продление {date}",
+    "accessUntil": "Доступ до {date}",
+    "renewal": "Продление",
+    "cancelSubscription": "Отменить подписку",
+    "resumeSubscription": "Возобновить подписку",
+    "cancelSubscriptionConfirm": "Отключить автопродление? Доступ сохранится до конца оплаченного периода.",
     "notFound": {
       "title": "Завеса здесь закрыта",
       "description": "Эта страница ускользнула за завесу. Вернитесь в круг и попробуйте другой путь.",
