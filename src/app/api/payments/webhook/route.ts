@@ -156,19 +156,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // Store the card token for future recurring charges when mono sends one.
-    if (cardToken) {
-      data.monoCardToken = cardToken;
-    }
-
     // ATOMIC COMPARE-AND-SET: only the delivery that flips activatedInvoiceId
     // from null to this invoiceId wins. Two simultaneous "success" deliveries
     // race on this single conditional write — the loser matches 0 rows and
-    // becomes a no-op, so the credit increment / tier upgrade / cardToken save
-    // run exactly once. monoInvoiceId scopes the write to the row for *this*
-    // invoice and ignores stale deliveries for a superseded prior invoice on
-    // the same subscription. (create-invoice resets activatedInvoiceId = null
-    // when a new invoice is issued, so this guard is correct across re-buys.)
+    // becomes a no-op, so the credit increment / tier upgrade run exactly once.
+    // monoInvoiceId scopes the write to the row for *this* invoice and ignores
+    // stale deliveries for a superseded prior invoice on the same subscription.
+    // (create-invoice resets activatedInvoiceId = null when a new invoice is
+    // issued, so this guard is correct across re-buys.)
     const { count } = await prisma.subscription.updateMany({
       where: { monoInvoiceId: invoiceId, activatedInvoiceId: null },
       data,
@@ -180,6 +175,23 @@ export async function POST(req: Request) {
         `[webhook] success for invoiceId ${invoiceId} already applied — no-op`
       );
     }
+
+    // Persist the recurring-charge token UNCONDITIONALLY — decoupled from the
+    // one-time activation guard above. Mono may deliver walletData.cardToken in
+    // a LATER "success" callback than the one that first activated the tier, so
+    // folding it into the activatedInvoiceId-gated write would drop it (that
+    // later delivery matches 0 rows there). The renewal cron charges this field,
+    // so it must land regardless of which delivery carries it. Idempotent:
+    // re-writing the same token is harmless. Mirrors the unconditional ledger
+    // write below. (Without this, tokenization can be live yet monoCardToken
+    // stays null while Payment.cardToken is set — the exact bug seen 2026-06-30.)
+    if (cardToken) {
+      await prisma.subscription.updateMany({
+        where: { monoInvoiceId: invoiceId },
+        data: { monoCardToken: cardToken },
+      });
+    }
+
     // Ledger: record success unconditionally (success is never a downgrade).
     await updatePaymentLedger("success", false);
 
