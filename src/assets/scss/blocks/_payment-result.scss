@@ -48,6 +48,14 @@
     &:hover {
       background-color: rgba(250, 225, 163, 0.12);
     }
+
+    // Same pill as the anchor, but reset native <button> chrome so a
+    // "Check again" button matches the "Return" link exactly.
+    &--button {
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+    }
   }
 }
 

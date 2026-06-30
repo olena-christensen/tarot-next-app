@@ -73,7 +73,13 @@ export const Tarot = ({ onOpenLogin, onOpenSubscription }: TarotProps) => {
 
     const handleRetry = async () => {
         const dealt = await beginReading();
-        if (!dealt) return;
+        if (!dealt) {
+            // Over the limit: the gate has already opened the paywall (or login)
+            // modal. Close this reading modal so that modal shows cleanly over
+            // the main page instead of stacking on top of the cards screen.
+            handleClose();
+            return;
+        }
 
         setFlippedCards([false, false, false]);
         setModalDismissed(false);
