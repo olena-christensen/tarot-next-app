@@ -43,6 +43,7 @@
     "name": "Navn",
     "email": "E-post",
     "currentPlan": "Nåværende plan",
+    "credits": "Lesningskreditter",
     "password": "Passord",
     "save": "Lagre",
     "saving": "Lagrer...",

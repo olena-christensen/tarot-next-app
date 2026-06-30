@@ -3,7 +3,7 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-06-28 (verified against the codebase, not from memory)
+**Last updated:** 2026-06-30 (verified against the codebase, not from memory)
 
 ---
 
@@ -74,12 +74,17 @@ balance in the persistent UI, credit consumption in the reading flow, the renewa
 ### Payment frontend (next feature — own branch)
 - [x] Subscribe / buy buttons wired to `POST /api/payments/create-invoice`, then redirect to the returned `pageUrl`. *(done 2026-06-28; per-button busy state, 401 → branded login modal via `LoginContext`, visible error on failure.)*
 - [x] `/payment/result` page — top-level route (outside `[locale]`, middleware-bypassed) that reflects server state: re-checks `GET /api/user/plan` every ~1s for ~10s and shows confirming / tier-active / credit-added / still-processing. Never reads the outcome from the URL. *(done 2026-06-28.)*
-- [ ] Surface plan + credit balance in the **persistent** UI. Plan is shown in UserProfile; `GET /api/user/plan` now also returns `readingCredits` (+ `paymentStatus`/`pendingPlanId`) via `getSubscriptionStatus`, and the result page shows the credit count — but UserProfile does not yet display the balance.
+- [x] Surface plan + credit balance in the **persistent** UI. Plan and the `readingCredits` balance are both shown in UserProfile (done 2026-06-30, part of the core-monetization-loop slice below). `GET /api/user/plan` returns `readingCredits` (+ `paymentStatus`/`pendingPlanId`) via `getSubscriptionStatus`.
 
-### Credit + tier enforcement
-- [ ] Reading flow consumes `readingCredits` (a purchased SINGLE credit is stored but never spent yet).
-- [ ] Free-tier gating treats a FREE user with `readingCredits > 0` as allowed an extra reading.
-- [ ] Free-tier daily limit enforcement (count readings/day) — separate spec, still open.
+### Credit + tier enforcement — BUILT 2026-06-30 (uncommitted; whole-branch review READY-TO-MERGE)
+Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-design.md`; plan: `docs/superpowers/plans/2026-06-29-free-tier-limit-and-credit-consumption.md`.
+- [x] Reading flow consumes `readingCredits` — atomic decrement in `POST /api/readings/consume`, only after the daily free allotment is used up.
+- [x] Free-tier gating treats FREE + `readingCredits > 0` as an extra reading; MONTHLY/YEARLY bypass the limit. Server-authoritative; fail-open on transient error by design.
+- [x] Free-tier daily limit: anonymous **1/day** (soft localStorage), logged-in FREE **3/day** (server-counted via today's `Reading` rows, UTC reset). One client orchestration (`useReadingGate`) gates both the deck click and the "Unveil Another Fate" reshuffle. Migration `20260629213405_add_reading_user_createdat_index` applied to Neon.
+- [x] Credit balance now shown in UserProfile (was the open item below).
+- [ ] **Verify live before launch:** exercise the full flow against the deployed app — anon 1→auth wall, FREE 3→upsell, buy a €1 SINGLE → 4th reading consumes the credit (UserProfile balance decrements), MONTHLY/YEARLY unlimited.
+- [x] **Hardening DONE 2026-06-30:** `$transaction`-wrapped the consume path with a per-user `pg_advisory_xact_lock` — free-tier count→create TOCTOU closed and credit decrement+reading-write made atomic (write failure rolls back the credit). Focused review approved.
+- [x] **Cleanup DONE 2026-06-30:** reshuffle button now disabled during the in-flight consume (revived the `isResponseLoading` guard via `useReadingGate`); orphaned `shakeCount` state removed.
 
 ### Recurring (UNBLOCKING — tokenization enabled by Mono 2026-06-28, live ≈2026-06-30)
 - [x] **Get Mono support to enable token operations** ("робота з токенами") — Mono enabled it on the terminal 2026-06-28; active ~48h later (≈2026-06-30).

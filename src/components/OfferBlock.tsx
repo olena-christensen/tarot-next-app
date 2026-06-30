@@ -14,19 +14,18 @@ import { useTranslations, useMessages } from "next-intl";
 import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
 import Image from "next/image";
-import {pickRandomCards} from "@/utils";
 import {useAppContext} from "@/AppProvider";
 import {READERS, DEFAULT_READER} from "@/lib/readers";
 import {ReaderSelection} from "@/components/ReaderSelection";
 import {Modal} from "@/components/Modal";
 import {MysticButton} from "@/components/MysticButton";
+import { useReadingGate } from "@/hooks/useReadingGate";
 
 type OfferBlockProps = {
     onOpenLogin: () => void;
     onOpenSubscription: () => void;
 };
 
-const FREE_SHAKE_LIMIT = 3;
 let hasPlayedIntro = false;
 
 export const OfferBlock = ({
@@ -49,6 +48,10 @@ export const OfferBlock = ({
     const [isSubscriber, setIsSubscriber] = useState(false);
     const messages = useMessages() as any;
     const tReader = useTranslations("readers");
+    const { beginReading } = useReadingGate({
+        onBlockedAnon: onOpenLogin,
+        onBlockedFree: onOpenSubscription,
+    });
 
     useEffect(() => {
         setIsLoaded(true);
@@ -76,19 +79,10 @@ export const OfferBlock = ({
         }
     }, [state.isCardsModalOpen]);
 
-    const handleClick = () => {
-        const isFree = !planId || planId === "FREE";
-        if (isFree && state.shakeCount >= FREE_SHAKE_LIMIT) {
-            onOpenSubscription();
-            return;
-        }
+    const handleClick = async () => {
+        const dealt = await beginReading();
+        if (!dealt) return;
 
-        const chosenCards = pickRandomCards({ cards: state.tarots, count: 3 });
-        setState(prevState => ({
-            ...prevState,
-            chosenCards,
-            shakeCount: prevState.shakeCount + 1,
-        }));
         setIsDeckShaking(true);
         setTimeout(() => {
             setState(prevState => ({
@@ -97,7 +91,6 @@ export const OfferBlock = ({
             }));
             setIsDeckShaking(false);
         }, 2000);
-
     };
 
     const handleSummon = () => {

@@ -1,9 +1,7 @@
 import React, {createContext, ReactNode, useContext, useEffect, useMemo, useState} from 'react';
-import {useMessages} from "next-intl";
 import {useSession} from "next-auth/react";
 import {Card} from "@/types/Types";
 import {tarots} from "@/data";
-import {generateReading} from "@/lib/generateReading";
 import {getCardImagePath, DEFAULT_DECK} from "@/lib/decks";
 import {DEFAULT_READER, isReaderId, type ReaderId} from "@/lib/readers";
 
@@ -15,7 +13,6 @@ type AppState = {
     response: string;
     isResponseLoading: boolean;
     isCardsModalOpen: boolean;
-    shakeCount: number;
     /** Reader voice used for generateReading. Always set, defaults to DEFAULT_READER. */
     selectedReader: ReaderId;
 };
@@ -34,7 +31,6 @@ const AppContext = createContext<AppContextType>({
         response: '',
         isResponseLoading: false,
         isCardsModalOpen: false,
-        shakeCount: 0,
         selectedReader: DEFAULT_READER,
     },
     setState: () => {},
@@ -66,11 +62,8 @@ export function AppProvider({ children }: AppProviderProps) {
         response: '',
         isResponseLoading: false,
         isCardsModalOpen: false,
-        shakeCount: 0,
         selectedReader: reader,
     });
-
-    const messages = useMessages();
 
     // Update tarots when deck changes
     useEffect(() => {
@@ -81,30 +74,6 @@ export function AppProvider({ children }: AppProviderProps) {
     useEffect(() => {
         setState(prev => ({ ...prev, selectedReader: reader }));
     }, [reader]);
-
-    useEffect(() => {
-        if (state.chosenCards.length > 0) {
-            setState(prevState => ({
-                ...prevState,
-                resetFlipped: true,
-                isPredictionReady: false,
-                isResponseLoading: true,
-            }));
-
-            const response = generateReading(
-                state.chosenCards,
-                messages as any,
-                (messages as any).ui?.drawThreeCards ?? "Draw three cards to receive your reading.",
-                (messages as any).ui?.spiritsUnclear ?? "The spirits are unclear. Please draw again.",
-                state.selectedReader,
-            );
-            setState(prevState => ({
-                ...prevState,
-                isResponseLoading: false,
-                response: response,
-            }));
-        }
-    }, [state.chosenCards, messages, state.selectedReader]);
 
     return (
         <AppContext.Provider value={{ state, setState }}>

@@ -43,6 +43,7 @@
     "name": "Name",
     "email": "Email",
     "currentPlan": "Current plan",
+    "credits": "Reading Credits",
     "password": "Password",
     "save": "Save",
     "saving": "Saving...",

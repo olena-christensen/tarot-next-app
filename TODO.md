@@ -26,11 +26,19 @@ It is code-complete but **unverifiable live until tokenization is re-confirmed (
 a real MONTHLY/YEARLY payment storing a non-null `monoCardToken`. Full launch status lives in
 `docs/go-live.md` (source of truth); items below are the remaining dev work.
 
-### Next — core monetization loop (makes payments actually mean something)
-- [ ] Reading flow **consumes `readingCredits`** — a purchased SINGLE credit is stored but never spent today, so a €1 purchase currently grants nothing usable.
-- [ ] **Free-tier daily limit** enforcement (e.g. count 3 readings/day) — without it there is no enforced reason to pay.
-- [ ] Free-tier gating treats a FREE user with `readingCredits > 0` as allowed an extra reading; MONTHLY/YEARLY bypass the limit entirely.
-- [ ] Surface the **credit balance** in the persistent UI (UserProfile shows the plan but not credits; `GET /api/user/plan` already returns `readingCredits`).
+### Core monetization loop — BUILT (2026-06-30, uncommitted; subagent-driven, per-task + whole-branch review READY-TO-MERGE)
+Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-design.md`; plan: `docs/superpowers/plans/2026-06-29-free-tier-limit-and-credit-consumption.md`.
+- [x] Reading flow **consumes `readingCredits`** — atomic compare-and-set decrement in `POST /api/readings/consume`, only after the daily free allotment is exhausted.
+- [x] **Free-tier daily limit** — anonymous **1/day** (soft localStorage counter, `src/lib/anonReadingLimit.ts`), logged-in FREE **3/day** (server-counted via today's `Reading` rows, UTC reset). Pure decision in `src/lib/readingAccess.ts`; orchestrated by `src/hooks/useReadingGate.ts` (gates BOTH deck click and "Unveil Another Fate"). Blocked anon → login modal; blocked FREE → subscription modal (reused surfaces).
+- [x] Gating: FREE + `readingCredits > 0` gets an extra reading; MONTHLY/YEARLY bypass entirely. Server-authoritative; fail-open on transient error by design.
+- [x] **Credit balance** surfaced in UserProfile (`credits` key in all 5 locales).
+- [x] `Reading` table now written per reading (index `@@index([userId, createdAt])`, migration `20260629213405_add_reading_user_createdat_index`) — also enables future reading-history UI.
+
+#### Follow-ups (NOT blockers — from final review)
+- [x] `$transaction`-wrap the `consume` path — DONE 2026-06-30. count→decide→commit in one interactive `prisma.$transaction` opened with a per-user `pg_advisory_xact_lock` (xact-scoped, correct for Neon's pooler): closes the free-tier count→create TOCTOU AND makes credit decrement+reading-write atomic (a write failure rolls back the credit). Focused Opus review approved, 0 Critical/Important.
+- [x] Disable "Unveil Another Fate" during the in-flight consume fetch — DONE 2026-06-30. `useReadingGate` now sets `isResponseLoading: true` at the start of a draw and clears it on commit/block, so the existing `disabled={state.isResponseLoading}` guard (`Tarot.tsx:140`) is live again; a fast double-click can't fire two draws.
+- [x] Drop the now-orphaned `shakeCount` state — DONE 2026-06-30. Removed from `AppState` type, both default objects, and the hook's commit.
+- [ ] (Deferred from spec) "readings left today" indicator on the main page; in-app currency / "crystals" packs (the consume path already decrements a generic balance, so it's a pricing change, not a rebuild).
 
 ### Recurring renewal — remaining to ship (engine is built)
 - [x] **Contact Mono support to enable tokenization** ("робота з токенами") — Mono enabled it 2026-06-28, live ≈2026-06-30.
