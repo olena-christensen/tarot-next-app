@@ -43,6 +43,7 @@
     "name": "İsim",
     "email": "E-posta",
     "currentPlan": "Mevcut plan",
+    "credits": "Okuma Kredileri",
     "password": "Şifre",
     "save": "Kaydet",
     "saving": "Kaydediliyor...",

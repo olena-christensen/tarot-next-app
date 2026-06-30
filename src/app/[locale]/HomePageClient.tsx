@@ -24,7 +24,10 @@ export function HomePageClient() {
           onOpenLogin={() => setIsLoginOpen(true)}
           onOpenSubscription={() => setIsSubscriptionOpen(true)}
         />
-        <Tarot />
+        <Tarot
+          onOpenLogin={() => setIsLoginOpen(true)}
+          onOpenSubscription={() => setIsSubscriptionOpen(true)}
+        />
       </main>
       <Modal
         title={t("stepThroughTheVeil")}

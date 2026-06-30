@@ -38,6 +38,7 @@ export const UserProfile = () => {
   const [planId, setPlanId] = useState<PlanId | null>(null);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [autoRenew, setAutoRenew] = useState<boolean>(true);
+  const [credits, setCredits] = useState<number>(0);
   const [subSaving, setSubSaving] = useState(false);
   const [deckId, setDeckId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<ReaderId | null>(null);
@@ -75,6 +76,7 @@ export const UserProfile = () => {
           setPlanId(data.planId as PlanId);
           setExpiresAt(data.expiresAt ?? null);
           setAutoRenew(data.autoRenew ?? true);
+          setCredits(data.readingCredits ?? 0);
         }
       } catch {
         // silent — UI falls back to "—"
@@ -354,6 +356,10 @@ export const UserProfile = () => {
             {"→ " + t("initiation")}
           </Link>
         </span>
+      </div>
+      <div className="user-profile__field">
+        <span className="user-profile__label">{t("credits")}</span>
+        <span className="user-profile__value">{credits}</span>
       </div>
       {(planId === "MONTHLY" || planId === "YEARLY") && (
         <div className="user-profile__field">

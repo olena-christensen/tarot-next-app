@@ -10,10 +10,15 @@ import {Modal} from "@/components/Modal";
 import LoaderSvg from "@/assets/svg/ouroboros.svg";
 import {useAppContext} from "@/AppProvider";
 import {MysticButton} from "@/components/MysticButton";
-import {pickRandomCards} from "@/utils";
+import { useReadingGate } from "@/hooks/useReadingGate";
 import Footer from "@/components/Footer";
 
-export const Tarot = () => {
+type TarotProps = {
+    onOpenLogin: () => void;
+    onOpenSubscription: () => void;
+};
+
+export const Tarot = ({ onOpenLogin, onOpenSubscription }: TarotProps) => {
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const tCards = useTranslations("cards");
@@ -22,6 +27,11 @@ export const Tarot = () => {
     const [showLoader, setShowLoader] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const allFlipped = flippedCards.every(card => card);
+
+    const { beginReading } = useReadingGate({
+        onBlockedAnon: onOpenLogin,
+        onBlockedFree: onOpenSubscription,
+    });
 
     const chosenCards = state.chosenCards;
     const glowingIndex = chosenCards.length > 0 ? flippedCards.indexOf(false) : -1;
@@ -61,15 +71,10 @@ export const Tarot = () => {
         }, 500);
     };
 
-    const handleRetry = () => {
-        setState(prevState => ({
-            ...prevState,
-            isPredictionReady: false,
-            response: '',
-            resetFlipped: true,
-            chosenCards: pickRandomCards({ cards: state.tarots, count: 3 }),
-            shakeCount: prevState.shakeCount + 1,
-        }));
+    const handleRetry = async () => {
+        const dealt = await beginReading();
+        if (!dealt) return;
+
         setFlippedCards([false, false, false]);
         setModalDismissed(false);
         setShowLoader(false);
