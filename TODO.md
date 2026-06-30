@@ -44,8 +44,8 @@ Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-
 
 ### Recurring renewal — remaining to ship (engine is built)
 - [x] **Contact Mono support to enable tokenization** ("робота з токенами") — Mono enabled it 2026-06-28, live ≈2026-06-30.
-- [ ] **Re-confirm tokenization** with a real MONTHLY/YEARLY payment → `monoCardToken` non-null. HARD PREREQUISITE for the renewal e2e.
-- [ ] Set `CRON_SECRET` locally (`.env`/`.env.local`) and in Vercel (Sensitive); deploy so `vercel.json`'s daily cron is active.
+- [x] **Tokenization CONFIRMED LIVE 2026-06-30** — real MONTHLY payment returned a `cardToken`. Surfaced + FIXED a webhook bug (token saved to Payment ledger but not `Subscription.monoCardToken`, because the sub write was behind the activation guard and Mono sent the token on a later callback); fix is uncommitted and must deploy. Test sub backfilled.
+- [x] `CRON_SECRET` set locally (`.env`) and in Vercel (Sensitive) + deployed — DONE (earlier; confirmed 2026-06-30).
 - [ ] Local cron smoke test, then live e2e (charge → webhook → period extend → receipt; decline → dunning → retry → downgrade).
 - [ ] Follow-up (not blocking): reconciliation sweep for a charge stuck at `paymentStatus="created"` if Mono never sends a terminal webhook.
 

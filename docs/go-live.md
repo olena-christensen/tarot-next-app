@@ -9,12 +9,14 @@ can take real money from real users. Kept in the repo so it stays current with t
 
 ## Current state — one line
 
-Legal documents are complete and live in the app. The Plata by mono payment **backend, the
-initiate + result frontend, and the recurring-renewal engine** are built, documented, migrated,
-and reviewed. Renewal is code-complete but **unverifiable live until tokenization is re-confirmed**
-(≈2026-06-30) — that real-token e2e is the gating step. What remains is surfacing the credit
-balance in the persistent UI, credit consumption in the reading flow, the renewal live e2e +
-`CRON_SECRET`/deploy, and a lawyer review (not a launch blocker).
+Legal documents are complete and live. The Plata by mono payment **backend, initiate + result
+frontend, recurring-renewal engine, and the free-tier limit + credit-consumption loop** are built,
+reviewed, and deployed. `CRON_SECRET` is set (local + Vercel) and the credit balance + credit
+consumption + daily limit are live. **Tokenization is confirmed working as of 2026-06-30** (a real
+payment returned a card token) — which surfaced a webhook bug (token not persisted to
+`Subscription.monoCardToken`), now **fixed but uncommitted**. What remains: commit + deploy that
+webhook fix, then the renewal **live e2e** (now unblocked — token is stored), and a lawyer review
+(not a launch blocker).
 
 ---
 
@@ -88,9 +90,10 @@ Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-
 
 ### Recurring (UNBLOCKING — tokenization enabled by Mono 2026-06-28, live ≈2026-06-30)
 - [x] **Get Mono support to enable token operations** ("робота з токенами") — Mono enabled it on the terminal 2026-06-28; active ~48h later (≈2026-06-30).
-- [ ] **Re-confirm tokenization works** — after ≈2026-06-30, run a real MONTHLY/YEARLY payment and verify `walletData.cardToken` now lands (`Subscription.monoCardToken` / `Payment.cardToken` populated, not null). **HARD PREREQUISITE for verifying the renewal engine — it is built but unverifiable live until a token is stored.**
+- [x] **Tokenization CONFIRMED LIVE — 2026-06-30.** A real MONTHLY payment returned `walletData.cardToken` (`Payment.cardToken` populated). **BUT** a webhook bug surfaced: the token was written to the Payment ledger but NOT to `Subscription.monoCardToken` (the field the renewal cron charges from) — because the subscription write was gated behind the one-time `activatedInvoiceId` activation guard and Mono delivered the token on a *later* `success` callback. **FIXED** (uncommitted): webhook now persists `monoCardToken` unconditionally on any token-bearing `success` delivery, mirroring the ledger. Test sub backfilled from the ledger. ⚠️ This webhook fix must be committed + deployed before future real payments will store the token.
 - [x] **Renewal engine BUILT** (2026-06-29, branch `feature/mono-payments`, uncommitted). Plan: `docs/superpowers/plans/2026-06-29-recurring-renewal.md`; spec: `docs/superpowers/specs/2026-06-28-recurring-renewal-design.md`. Daily Vercel cron `/api/cron/renew` (bearer-guarded by `CRON_SECRET`) runs the dunning state machine (`src/lib/renewal.ts`, pure, 12 unit tests via new Vitest setup), charges the saved token (`chargeByToken` in `mono.ts`, endpoint confirmed against live Mono OpenAPI), and lets the existing signed webhook activate (renewal-aware: extend-from-prior-`expiresAt`, reset `renewalAttempts`, receipt/dunning emails via `src/lib/mailer.ts`). Cancel/resume (`PATCH /api/user/subscription` + UserProfile button + i18n ×5). Migration `add_renewal_fields` applied (autoRenew/canceledAt/renewalAttempts/lastRenewalAttemptAt). Built subagent-driven; per-task + whole-branch review clean (one cross-task dunning-reset bug found & fixed).
-- [ ] **Remaining to ship renewal:** (1) commit in WebStorm; (2) set `CRON_SECRET` locally + in Vercel (Sensitive) and deploy; (3) local cron smoke test (`curl -H "Authorization: Bearer $CRON_SECRET" …/api/cron/renew`); (4) **live e2e once tokenization is re-confirmed** — set a test sub's `nextChargeAt` to the past (tunnel for the webhook), confirm charge → webhook → period extends → receipt; then simulate a decline to exercise dunning → retry → downgrade.
+- [x] Renewal engine committed/merged + `CRON_SECRET` set locally and in Vercel (Sensitive) + deployed — DONE (done earlier; confirmed 2026-06-30, `CRON_SECRET` present in `.env`).
+- [ ] **Remaining to ship renewal:** (1) commit + deploy the 2026-06-30 webhook token-persist fix above; (2) local cron smoke test (`curl -H "Authorization: Bearer $CRON_SECRET" …/api/cron/renew` → no-op when nothing is due); (3) **live e2e** (now unblocked — token is stored): set a test sub's `nextChargeAt` to the past, run the cron, confirm charge-by-token → webhook → period extends → receipt; then simulate a decline to exercise dunning → retry → downgrade.
 - [ ] **Follow-up (tracked, NOT a launch blocker — from whole-branch review):** no reconciliation backstop for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Spec §8/§12 scoped this out; add a reconciliation/timeout sweep later.
 
 ### Fiscal / tax
