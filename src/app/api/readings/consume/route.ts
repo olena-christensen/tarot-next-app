@@ -46,7 +46,10 @@ export async function POST(request: Request) {
       // transaction-mode pooler, unlike a session-level lock) and needs no
       // table row to exist. With it held, the count → create window below is
       // race-free, so no two simultaneous draws can both pass the daily limit.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${userId}))`;
+      // Use $executeRaw (not $queryRaw): the lock function returns SQL `void`,
+      // which $queryRaw cannot deserialize — $executeRaw runs it and returns an
+      // affected-row count without touching the column.
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${userId}))`;
 
       const sub = await tx.subscription.findUnique({
         where: { userId },
