@@ -1,5 +1,15 @@
 # TODO
 
+## 🔴 Priority — pre-launch (blocks everything else)
+
+- [ ] **Mobile version is broken across the board.** Every page / screen / layout is fucked on mobile — needs a full responsive pass. FIX THIS BEFORE ANYTHING ELSE.
+
+## UX / polish — pre-launch
+
+- [ ] **Intro/smoke animation replays on every return to the main page.** After a reading, "Back to the Sanctum" (and any redirect to `/`) replays the whole intro (moon/smoke/etc.) every single time — feels wrong. Should play **once per session**, not on every client-nav back. The skip-intro pattern (module-level `hasPlayedIntro` flag + `skip-intro` class) already distinguishes refresh from client-nav; extend it so post-reading returns / redirects to `/` skip the intro too. Confirmed live 2026-07-02 during the €1 purchase flow.
+- [ ] **Price / subscription modal — UI redesign.** User doesn't like the current look. (`SubscriptionPlans` / price modal.)
+- [ ] **Anon paywall — in-character message before the auth modal.** When an anonymous user spends their 1 free reading and tries for more, don't slam the login modal in their face — show a themed, in-app-voice message first ("you want more… you'll need to sacrifice something…" vibe) that then leads into signup.
+
 ## Ideas
 
 - Login modal loader — "pulling you into hell" themed entrance animation
