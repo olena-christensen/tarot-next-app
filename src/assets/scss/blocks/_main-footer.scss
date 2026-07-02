@@ -8,8 +8,17 @@
     position: fixed;
     inset-inline: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: 50; // above the tarot reading screen (40), below cookie banner (60) + modals (100)
     pointer-events: none;
+
+    // On short mobile screens the fixed footer must not sit on top of the
+    // primary CTAs (reader "Summon", tarot post-actions). Drop the tall
+    // disclaimer block here; the legal links row stays.
+    @include respond-below(sm) {
+      .main-footer__disclaimer {
+        display: none;
+      }
+    }
   }
 
   .main-footer__link {

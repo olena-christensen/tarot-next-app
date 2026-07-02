@@ -213,7 +213,7 @@
     }
   }
 
-  @media (max-width: 860px) {
+  @include respond-below(lg) {
     padding: 40px 20px 32px;
     gap: 32px;
 
@@ -225,6 +225,15 @@
     &__card {
       aspect-ratio: auto;
       min-height: 280px;
+    }
+  }
+
+  @include respond-below(sm) {
+    padding: 32px 16px 24px;
+    gap: 24px;
+
+    &__summon-pane {
+      gap: 16px;
     }
   }
 }

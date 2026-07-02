@@ -18,6 +18,13 @@
   cursor: pointer;
   transition: all 0.5s ease-in-out;
 
+  @include respond-below(sm) {
+    padding: 1rem 1.75rem;
+    font-size: 16px;
+    background-size: auto 60%;
+    background-position: right 0.5rem center;
+  }
+
   &:hover {
     color: var(--text-soft);
     transform: scale(0.99);

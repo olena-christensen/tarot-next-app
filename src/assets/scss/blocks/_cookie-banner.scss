@@ -2,7 +2,7 @@
   position: fixed;
   inset-inline: 0;
   bottom: 0;
-  z-index: 20;
+  z-index: 60; // above the overlay footer (50), below modals (100)
   background-color: var(--bg);
   border-top: var(--border);
   border-image: repeating-linear-gradient(

@@ -13,6 +13,11 @@
     padding: 0.5rem;
     text-transform: capitalize;
     border: none;
+
+    @include respond-below(sm) {
+      max-width: 45vw;
+      @include trimEllipses; // ellipsis a long welcome name instead of wrapping the row
+    }
   }
 
   .main-menu__welcome {

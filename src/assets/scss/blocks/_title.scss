@@ -8,6 +8,16 @@
     font-size: 35px;
     border: var(--border);
     border-radius: var(--border-radius);
+
+    // Modal titles (reading result, login, reader select, etc. — all use this
+    // modifier): smaller + left-aligned on mobile, full size + centered at md+.
+    // width:100% is required — the modal content is a center-aligned flex column,
+    // so without it the title shrinks to content width and text-align has no effect.
+    @include respond-below(md) {
+      width: 100%;
+      font-size: 20px;
+      text-align: left;
+    }
   }
 
   &--third {

@@ -11,7 +11,6 @@ import LoaderSvg from "@/assets/svg/ouroboros.svg";
 import {useAppContext} from "@/AppProvider";
 import {MysticButton} from "@/components/MysticButton";
 import { useReadingGate } from "@/hooks/useReadingGate";
-import Footer from "@/components/Footer";
 
 type TarotProps = {
     onOpenLogin: () => void;
@@ -174,7 +173,6 @@ export const Tarot = ({ onOpenLogin, onOpenSubscription }: TarotProps) => {
                         {state.response && <p className="tarot__result-text">{state.response}</p>}
                     </div>
                 </Modal>
-                <Footer overlay />
             </div>
         </div>
     );

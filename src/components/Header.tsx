@@ -13,6 +13,10 @@ type HeaderProps = {
 
 export const Header = ({onOpenLogin}: HeaderProps) => {
     const [skipIntro] = useState(() => {
+        // SSR must be deterministic and match a fresh client load (intro plays).
+        // Never read/mutate the module flag on the server — it persists across
+        // requests and would desync server vs. client HTML (hydration mismatch).
+        if (typeof window === "undefined") return false;
         const skip = hasPlayedHeaderIntro;
         hasPlayedHeaderIntro = true;
         return skip;

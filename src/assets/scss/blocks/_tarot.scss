@@ -1,7 +1,7 @@
 .tarot-modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 40; // full-screen reading screen: above header, below overlay footer + modals
   background-color: var(--bg);
   opacity: 0;
   animation: tarotModalFadeIn 0.5s ease-out forwards;
@@ -171,6 +171,16 @@
     flex: 1 1 30%;
     min-width: 100px;
     text-align: left;
+  }
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+
+    .mystic-btn {
+      flex: 1 1 auto;
+    }
   }
 }
 
