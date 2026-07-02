@@ -20,12 +20,33 @@ function getTransporter(): nodemailer.Transporter | null {
   });
 }
 
+const FROM_NAME = "The Veil";
+
+// Where "unsubscribe" (manage/cancel subscription) points. Locale-agnostic:
+// the mailer has no user locale, so use the default-locale profile route.
+function profileUrl(): string {
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app";
+  return `${base.replace(/\/$/, "")}/en/profile`;
+}
+
 async function send(subject: string, to: string, text: string): Promise<void> {
-  const from = process.env.ZOHO_SMTP_USER;
+  const address = process.env.ZOHO_SMTP_USER;
   const transporter = getTransporter();
-  if (!transporter || !from) return; // already logged
+  if (!transporter || !address) return; // already logged
   try {
-    await transporter.sendMail({ from, to, subject, text });
+    // `from` display name + a real address (which MUST equal the SMTP user —
+    // Zoho rejects mismatched envelopes; the name doesn't affect the envelope).
+    // List-Unsubscribe points at the profile page where the user manages/cancels
+    // the subscription — improves inbox placement for subscription mail. No
+    // List-Unsubscribe-Post: the profile page is a GET, not a one-click POST
+    // endpoint, so we advertise the link only.
+    await transporter.sendMail({
+      from: { name: FROM_NAME, address },
+      to,
+      subject,
+      text,
+      headers: { "List-Unsubscribe": `<${profileUrl()}>` },
+    });
   } catch (err) {
     console.error("[mailer] sendMail failed", { subject, err });
   }

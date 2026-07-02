@@ -207,7 +207,11 @@ export async function POST(req: Request) {
         await sendRenewalReceiptEmail({
           to: user.email,
           planId: pendingPlanId,
-          amountMinor: payload.amount ?? PLAN_PRICES[pendingPlanId],
+          // The EUR price we bill (500/3900 minor). Do NOT use payload.amount —
+          // mono echoes the settled amount in the terminal's acquiring currency
+          // (UAH minor units), which formatEuro would render as a bogus
+          // "€253.75" for a €5.00 charge.
+          amountMinor: PLAN_PRICES[pendingPlanId],
           // Reuse the activation expiry computed above (no recomputation/drift).
           expiresAt: renewalExpiresAt,
         });
@@ -242,27 +246,28 @@ export async function POST(req: Request) {
   }
 
   if (status === "processing" || status === "created") {
-    // NO-DOWNGRADE: a late/out-of-order intermediate status must never clobber
-    // a completed payment. Only record it if we haven't already succeeded.
-    if (sub.paymentStatus !== "success") {
-      await prisma.subscription.update({
-        where: { id: sub.id },
-        data: { paymentStatus: status },
-      });
-    }
+    // NO-DOWNGRADE (atomic): a late/out-of-order intermediate delivery must never
+    // clobber a terminal status. The guard lives in the WHERE clause so it is
+    // evaluated at write time — a read-then-write against the `sub` snapshot read
+    // at the top of this invocation races, because mono delivers duplicated +
+    // out-of-order webhooks and each is a concurrent function invocation (a
+    // `processing` committing after `success` would otherwise reset paymentStatus
+    // to "processing"). Mirrors updatePaymentLedger's no-downgrade guard.
+    await prisma.subscription.updateMany({
+      where: { id: sub.id, paymentStatus: { notIn: ["success", "failure", "reversed"] } },
+      data: { paymentStatus: status },
+    });
     // Ledger: intermediate status — apply the no-downgrade guard.
     await updatePaymentLedger(status, true);
     return NextResponse.json({ ok: true });
   }
 
-  // Unknown status — same no-downgrade rule: record only if not already success.
+  // Unknown status — same atomic no-downgrade rule as the intermediate branch.
   console.warn(`[webhook] unknown status "${status}" for invoiceId ${invoiceId}`);
-  if (sub.paymentStatus !== "success") {
-    await prisma.subscription.update({
-      where: { id: sub.id },
-      data: { paymentStatus: status },
-    });
-  }
+  await prisma.subscription.updateMany({
+    where: { id: sub.id, paymentStatus: { notIn: ["success", "failure", "reversed"] } },
+    data: { paymentStatus: status },
+  });
   // Ledger: unknown status treated as intermediate — apply no-downgrade guard.
   await updatePaymentLedger(status, true);
   return NextResponse.json({ ok: true });

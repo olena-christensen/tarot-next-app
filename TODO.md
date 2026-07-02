@@ -46,8 +46,15 @@ Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-
 - [x] **Contact Mono support to enable tokenization** ("робота з токенами") — Mono enabled it 2026-06-28, live ≈2026-06-30.
 - [x] **Tokenization CONFIRMED LIVE 2026-06-30** — real MONTHLY payment returned a `cardToken`. Surfaced + FIXED a webhook bug (token saved to Payment ledger but not `Subscription.monoCardToken`, because the sub write was behind the activation guard and Mono sent the token on a later callback); fix is uncommitted and must deploy. Test sub backfilled.
 - [x] `CRON_SECRET` set locally (`.env`) and in Vercel (Sensitive) + deployed — DONE (earlier; confirmed 2026-06-30).
-- [ ] Local cron smoke test, then live e2e (charge → webhook → period extend → receipt; decline → dunning → retry → downgrade).
-- [ ] Follow-up (not blocking): reconciliation sweep for a charge stuck at `paymentStatus="created"` if Mono never sends a terminal webhook.
+- [x] **Local cron smoke test + live e2e — DONE 2026-07-02 on theveil.app.** Smoke test no-op via `npm run cron:renew` (`scripts/dev/cron-renew.sh`). Live: test sub made due → cron `charged:1` → real ~€5 token charge → webhook extended period +1mo, reset attempts, ledger `success`. Dunning: `renewalAttempts=3`+`paymentStatus=failure` → cron `downgraded:1` (no charge) → FREE. Test sub restored to MONTHLY active.
+- [x] **Both emails arrived** (2026-07-02). Ended email clean. Renewal receipt had two bugs (below).
+- [x] **Receipt amount FIXED (uncommitted):** showed "€253.75" for a €5 charge because it used mono's `payload.amount` (echoed in UAH minor units) formatted as €. Now uses `PLAN_PRICES[planId]` → €5.00/€39.00. Real charge was ~€5 (~254 UAH) — display bug only, no overcharge.
+- [ ] **Decide currency presentation:** mono settles in UAH (€5 → ~254 UAH at mono FX); EU customers see UAH on statements. Confirm with mono if EUR settlement is possible; decide receipt wording.
+- [x] **Deliverability code-side DONE (uncommitted):** `mailer.ts` now sets a `from` display name (`"The Veil" <support@…>`) + `List-Unsubscribe` → `${NEXT_PUBLIC_APP_URL}/en/profile`, on all renewal emails. Typecheck clean.
+- [ ] **Deliverability domain-side (verify in Zoho/DNS):** confirm DKIM enabled for `support@nothingweird.agency` and SPF/DKIM/DMARC all PASS ("Show original" on a received mail).
+- [ ] **Commit + deploy the 2026-07-02 webhook fixes (uncommitted):** (a) paymentStatus race — intermediate/unknown branches now use an atomic DB `WHERE` no-downgrade guard; (b) receipt amount label. Both in `webhook/route.ts`, typecheck clean.
+- [ ] Not testable live (unit-test covered): real card decline + forged `failure` webhook — so the retry loop + webhook `failure` branch rely on the 12 `decideRenewalAction` tests.
+- [ ] Follow-up (not blocking): reconciliation sweep for a charge stuck at `paymentStatus="created"` if Mono never sends a terminal webhook. When built, exclude healthy subs; note `downgradeToFree` leaves stale `expiresAt`/`monoCardToken` on the FREE row.
 
 ### Business / ops (not code)
 - [ ] Update prod env in Vercel if not already done: `GOOGLE_CLIENT_SECRET` (new value) + confirm `NEXT_PUBLIC_APP_URL=https://theveil.app`.
