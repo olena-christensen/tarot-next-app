@@ -3,7 +3,7 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-06-30 (verified against the codebase, not from memory)
+**Last updated:** 2026-07-02 (verified against the codebase + a live production e2e, not from memory)
 
 ---
 
@@ -11,12 +11,14 @@ can take real money from real users. Kept in the repo so it stays current with t
 
 Legal documents are complete and live. The Plata by mono payment **backend, initiate + result
 frontend, recurring-renewal engine, and the free-tier limit + credit-consumption loop** are built,
-reviewed, and deployed. `CRON_SECRET` is set (local + Vercel) and the credit balance + credit
-consumption + daily limit are live. **Tokenization is confirmed working as of 2026-06-30** (a real
-payment returned a card token) — which surfaced a webhook bug (token not persisted to
-`Subscription.monoCardToken`), now **fixed but uncommitted**. What remains: commit + deploy that
-webhook fix, then the renewal **live e2e** (now unblocked — token is stored), and a lawyer review
-(not a launch blocker).
+reviewed, and deployed. `CRON_SECRET` is set (local + Vercel). Tokenization is live and the
+2026-06-30 token-persist webhook fix is committed + deployed. **The recurring renewal is now
+verified live on production (2026-07-02):** the daily cron charged the saved token, the webhook
+extended the period +1 month, and the dunning terminal path downgraded to FREE — both exercised
+end-to-end against theveil.app. That e2e surfaced a second webhook concurrency bug (a late
+intermediate delivery could clobber `Subscription.paymentStatus` back to `processing` after
+success), now **fixed but uncommitted**. What remains: commit + deploy that webhook race fix, and a
+lawyer review (not a launch blocker).
 
 ---
 
@@ -93,8 +95,15 @@ Spec: `docs/superpowers/specs/2026-06-29-free-tier-limit-and-credit-consumption-
 - [x] **Tokenization CONFIRMED LIVE — 2026-06-30.** A real MONTHLY payment returned `walletData.cardToken` (`Payment.cardToken` populated). **BUT** a webhook bug surfaced: the token was written to the Payment ledger but NOT to `Subscription.monoCardToken` (the field the renewal cron charges from) — because the subscription write was gated behind the one-time `activatedInvoiceId` activation guard and Mono delivered the token on a *later* `success` callback. **FIXED** (uncommitted): webhook now persists `monoCardToken` unconditionally on any token-bearing `success` delivery, mirroring the ledger. Test sub backfilled from the ledger. ⚠️ This webhook fix must be committed + deployed before future real payments will store the token.
 - [x] **Renewal engine BUILT** (2026-06-29, branch `feature/mono-payments`, uncommitted). Plan: `docs/superpowers/plans/2026-06-29-recurring-renewal.md`; spec: `docs/superpowers/specs/2026-06-28-recurring-renewal-design.md`. Daily Vercel cron `/api/cron/renew` (bearer-guarded by `CRON_SECRET`) runs the dunning state machine (`src/lib/renewal.ts`, pure, 12 unit tests via new Vitest setup), charges the saved token (`chargeByToken` in `mono.ts`, endpoint confirmed against live Mono OpenAPI), and lets the existing signed webhook activate (renewal-aware: extend-from-prior-`expiresAt`, reset `renewalAttempts`, receipt/dunning emails via `src/lib/mailer.ts`). Cancel/resume (`PATCH /api/user/subscription` + UserProfile button + i18n ×5). Migration `add_renewal_fields` applied (autoRenew/canceledAt/renewalAttempts/lastRenewalAttemptAt). Built subagent-driven; per-task + whole-branch review clean (one cross-task dunning-reset bug found & fixed).
 - [x] Renewal engine committed/merged + `CRON_SECRET` set locally and in Vercel (Sensitive) + deployed — DONE (done earlier; confirmed 2026-06-30, `CRON_SECRET` present in `.env`).
-- [ ] **Remaining to ship renewal:** (1) commit + deploy the 2026-06-30 webhook token-persist fix above; (2) local cron smoke test (`curl -H "Authorization: Bearer $CRON_SECRET" …/api/cron/renew` → no-op when nothing is due); (3) **live e2e** (now unblocked — token is stored): set a test sub's `nextChargeAt` to the past, run the cron, confirm charge-by-token → webhook → period extends → receipt; then simulate a decline to exercise dunning → retry → downgrade.
-- [ ] **Follow-up (tracked, NOT a launch blocker — from whole-branch review):** no reconciliation backstop for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Spec §8/§12 scoped this out; add a reconciliation/timeout sweep later.
+- [x] **Renewal verified live on production — 2026-07-02.** (1) Token-persist webhook fix committed + deployed (commit `7714063`). (2) Local cron smoke test → no-op (`{scanned:2,charged:0,downgraded:0}`); driven via `npm run cron:renew` (helper `scripts/dev/cron-renew.sh`). (3) **Live e2e on theveil.app:** set the test sub's (`olenakunina+doodly@gmail.com`) `nextChargeAt` to the past → cron `charged:1` → real ~€5 token charge → signed webhook activated the renewal (period `2026-07-30 → 2026-08-30`, `nextChargeAt` bumped, `renewalAttempts` reset, Payment ledger row `success`). (4) **Dunning terminal path:** set `renewalAttempts=3` + `paymentStatus="failure"` → cron `downgraded:1` (no charge) → sub downgraded to FREE, "subscription ended" email path fired. Test sub restored to MONTHLY active afterward.
+- [x] **Both renewal emails arrived** at `olenakunina+doodly@gmail.com` (2026-07-02). Subscription-ended: clean. Renewal receipt: two problems found — (a) it showed **"€253.75"** for a €5 charge, and (b) it landed in **spam**.
+- [x] **Receipt amount bug FIXED (uncommitted):** the receipt used `payload.amount` (mono echoes the settled amount in the acquiring currency = UAH minor units), formatted as euros → "€253.75". Now uses `PLAN_PRICES[planId]` (the EUR price we bill) → €5.00 / €39.00. `webhook/route.ts`, typecheck clean. **The actual charge was ~€5 (settled ~254 UAH); the customer was NOT overcharged — display bug only.**
+- [ ] **Underlying finding to decide:** mono's terminal settles in **UAH**, so a €5 plan hits the card as ~254 UAH at mono's FX. EU customers see a UAH (or FX-converted) line on their statement. Confirm with mono whether EUR settlement is possible, and decide how the receipt should present currency (currently shows the advertised EUR price). Not a launch blocker; a billing-clarity decision.
+- [x] **Deliverability (code-side) improved — uncommitted.** `src/lib/mailer.ts` now sends with a `from` display name (`"The Veil" <support@…>`) and a `List-Unsubscribe` header pointing to `${NEXT_PUBLIC_APP_URL}/en/profile` (where users manage/cancel). Applies to all three renewal emails. Typecheck clean.
+- [ ] **Deliverability (domain-side — verify in Zoho/DNS):** confirm DKIM signing is enabled for `support@nothingweird.agency` and that SPF + DKIM + DMARC all PASS (check "Show original" on a received mail). A missing/failing DKIM is the most common reason transactional mail is filtered; the fixed "€253.75" and the header changes above should also help.
+- [ ] **Commit + deploy the 2026-07-02 webhook race fix (uncommitted):** the intermediate (`processing`/`created`) and unknown-status branches in `src/app/api/payments/webhook/route.ts` now push the no-downgrade guard into the DB `WHERE` (`paymentStatus notIn [success,failure,reversed]`) instead of a racy read-then-write, so a late/out-of-order intermediate delivery can no longer reset `paymentStatus` after success. Typecheck clean; needs commit + deploy to take effect on prod.
+- [ ] **Not testable live (documented):** a real card decline can't be forced, and a `failure` webhook can't be forged (only Mono's public key is available), so the day-by-day retry loop and the webhook `failure` branch (dunning email per failed charge) are covered by the 12 `decideRenewalAction` unit tests + the failure-branch code, not by a live run.
+- [ ] **Follow-up (tracked, NOT a launch blocker — from whole-branch review):** no reconciliation backstop for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Spec §8/§12 scoped this out; add a reconciliation/timeout sweep later. **Note:** when that sweep is built, exclude healthy subs — and be aware `downgradeToFree` leaves a stale `expiresAt` + `monoCardToken` on the now-FREE row (harmless today since `getUserPlan` keys off `planId`).
 
 ### Fiscal / tax
 - [ ] PRRO / digital fiscal receipts (Monobank built-in or Checkbox).
