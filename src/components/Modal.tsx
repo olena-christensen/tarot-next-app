@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import Skull from "../assets/svg/skull.svg";
 
 type ModalProps = {
@@ -27,9 +28,11 @@ export const Modal = ({ isOpen, onClose, title, children, wide }: ModalProps) =>
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
-  return (
+  // Portal to body so the modal escapes any parent stacking context (e.g. the
+  // fixed .tarot-modal) and layers globally above the overlay footer.
+  return createPortal(
     <div className="modal" onClick={onClose}>
       <div className={`modal__content${wide ? " modal__content--wide" : ""}`} onClick={(e) => e.stopPropagation()}>
         <button className="modal__close" onClick={onClose}>
@@ -38,6 +41,7 @@ export const Modal = ({ isOpen, onClose, title, children, wide }: ModalProps) =>
         <h2 className="title title--secondary modal__title">{title}</h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

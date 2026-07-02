@@ -8,6 +8,7 @@ import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
 import { SubscriptionPlans } from "@/components/SubscriptionPlans";
 import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { LoginContext } from "@/components/LoginContext";
 
@@ -24,11 +25,12 @@ export function HomePageClient() {
           onOpenLogin={() => setIsLoginOpen(true)}
           onOpenSubscription={() => setIsSubscriptionOpen(true)}
         />
-        <Tarot
-          onOpenLogin={() => setIsLoginOpen(true)}
-          onOpenSubscription={() => setIsSubscriptionOpen(true)}
-        />
       </main>
+      <Tarot
+        onOpenLogin={() => setIsLoginOpen(true)}
+        onOpenSubscription={() => setIsSubscriptionOpen(true)}
+      />
+      <Footer overlay />
       <Modal
         title={t("stepThroughTheVeil")}
         isOpen={isLoginOpen}

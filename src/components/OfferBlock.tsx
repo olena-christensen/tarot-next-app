@@ -8,7 +8,6 @@ import Medallion4 from "../assets/svg/medallion4.svg";
 import Medallion5 from "../assets/svg/medallion5.svg";
 import Medallion6 from "../assets/svg/medallion6.svg";
 import {SmokeAnimation} from "@/components/SmokeAnimation";
-import Footer from "@/components/Footer";
 import {useEffect, useState} from "react";
 import { useTranslations, useMessages } from "next-intl";
 import {useSession} from "next-auth/react";
@@ -19,6 +18,7 @@ import {READERS, DEFAULT_READER} from "@/lib/readers";
 import {ReaderSelection} from "@/components/ReaderSelection";
 import {Modal} from "@/components/Modal";
 import {MysticButton} from "@/components/MysticButton";
+import { Loader } from "@/components/Loader";
 import { useReadingGate } from "@/hooks/useReadingGate";
 
 type OfferBlockProps = {
@@ -36,6 +36,10 @@ export const OfferBlock = ({
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const [skipIntro] = useState(() => {
+        // SSR must be deterministic and match a fresh client load (intro plays).
+        // Never read/mutate the module flag on the server — it persists across
+        // requests and would desync server vs. client HTML (hydration mismatch).
+        if (typeof window === "undefined") return false;
         const skip = hasPlayedIntro;
         hasPlayedIntro = true;
         return skip;
@@ -114,7 +118,7 @@ export const OfferBlock = ({
     return (
         <section className={`offer-block${isLoaded ? " loaded" : ""}${skipIntro ? " skip-intro" : ""}`}>
             {!isLoaded
-                ? <div>{t("loading")}</div>
+                ? <Loader />
                 : (
                     <>
                         <SmokeAnimation/>
@@ -230,7 +234,6 @@ export const OfferBlock = ({
                                 />
                             </Modal>
                         )}
-                        <Footer overlay />
                     </>
                 )
             }

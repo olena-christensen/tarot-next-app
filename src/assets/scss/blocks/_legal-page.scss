@@ -2,12 +2,27 @@
   padding-top: 160px;
   min-height: 100dvh;
 
-  @media (max-width: 720px) {
+  @include respond-below(md) {
     padding-top: 120px;
   }
 
   &__content {
     line-height: 1.7;
+    overflow-wrap: break-word; // wrap long URLs/emails in Termly HTML instead of overflowing
+
+    :is(table, pre, img) {
+      max-width: 100%;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto; // wide Termly tables scroll in their own box, not the page
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   }
 
   &__attribution {

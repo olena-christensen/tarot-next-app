@@ -45,6 +45,10 @@
     margin-block: 0 2.5rem;
     padding: 0;
     border: none;
+
+    @include respond-above(md) {
+      margin-bottom: 5rem;
+    }
   }
 }
 

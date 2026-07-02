@@ -67,3 +67,24 @@
   border: 1px solid !important;
   border-image: repeating-linear-gradient(45deg, var(--primary), transparent, var(--primary) 10px) 10 !important;
 }
+
+// ── Responsive breakpoints ──
+// Single source of truth. Files keep their existing mobile-first (respond-above)
+// or desktop-first (respond-below) direction; only the VALUE is centralized.
+$breakpoints: (
+  sm: 37.5em,   // 600px
+  md: 48em,     // 768px
+  lg: 56.25em,  // 900px
+);
+
+@mixin respond-below($bp) {
+  @media (max-width: map-get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin respond-above($bp) {
+  @media (min-width: map-get($breakpoints, $bp)) {
+    @content;
+  }
+}

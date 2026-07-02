@@ -7,7 +7,11 @@
   align-items: center;
   gap: 2rem;
   padding-top: 1rem;
-  z-index: 100;
+  z-index: 30; // layer scale: content < header(30) < tarot-screen(40) < footer(50) < banner(60) < modal(100)
+
+  @include respond-below(sm) {
+    gap: 1rem;
+  }
   opacity: 0;
   transform: translateY(-20px);
   animation: headerSlideIn 1s ease-out 1.5s forwards;

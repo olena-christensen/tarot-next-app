@@ -8,12 +8,21 @@
   flex-direction: column;
   align-items: center;
 
+  @include respond-below(sm) {
+    padding: 100px 0 80px;
+  }
+
   &__title {
     font-size: 2.5rem;
     letter-spacing: 0.04em;
     margin: 0 0 48px;
     color: var(--primary);
     text-align: center;
+
+    @include respond-below(sm) {
+      font-size: 1.9rem;
+      margin: 0 0 32px;
+    }
   }
 }
 

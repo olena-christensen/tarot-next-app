@@ -6,6 +6,7 @@ body {
   font-weight: var(--font-weight);
   color: var(--text-color);
   background-color: var(--bg);
+  overflow-x: hidden; // safety net against stray horizontal scroll on small screens
 }
 
 button {
