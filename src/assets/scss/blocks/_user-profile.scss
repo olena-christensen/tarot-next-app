@@ -9,7 +9,10 @@
   align-items: center;
 
   @include respond-below(sm) {
-    padding: 100px 0 80px;
+    // 132px top clears the ~96px absolute header + a comfortable gap before the
+    // title; 1.5rem sides restore horizontal padding (the `0` above otherwise
+    // clobbers the `.container` padding on this same element).
+    padding: 132px 1.5rem 80px;
   }
 
   &__title {
@@ -21,7 +24,7 @@
 
     @include respond-below(sm) {
       font-size: 1.9rem;
-      margin: 0 0 32px;
+      margin: 0 0 40px;
     }
   }
 }

@@ -28,11 +28,59 @@
 - The database and Vercel setup took significant effort — do not break or replace it
 - **NEVER run git add, git commit, git stage, or any git write operation** — the user does their own commits. (Do not assume or name a specific editor/tool, and never explain how to commit/push.) Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
 - **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task
+- **Document rules, conventions, decisions, and handovers in repo files (this CLAUDE.md or `docs/`) — NEVER in agent/private memory.** Everything must be human-readable by the user and any dev, and re-read from the file each session. Do not rely on private memory for durable knowledge; if you learn something worth keeping, write it into the relevant repo file.
+- **Dev server runs on `localhost:3001`** (not 3000 — the user runs multiple projects).
+- When reducing permission prompts / fixing settings, edit `.claude/settings.json` directly — don't run steps that themselves prompt (transcript scans, out-of-project reads). In subagents, use the Read tool, not `cat`/`ls`/`for` loops (shell expansion defeats the allowlist).
+
+## Handover Convention
+
+When asked for a handover note (or when preparing to clear the session), output **one markdown code block, copy-paste ready, with no surrounding prose and no self-evaluation round** — get it right on the first pass. Sections, each terse:
+1. **Header** — branch · commit status · dev server
+2. **What shipped** — numbered, one line each
+3. **Verified vs not** — MANDATORY, three tiers, never inflate: (a) verified live (ran it / screenshots / assertions), (b) typecheck-clean only / not seen working, (c) needs manual or login check
+4. **Files touched** — SCSS / TSX / config, terse
+5. **Next up** — pulled from `TODO.md`
+6. **Working style** — only the non-obvious constraints
+
+Never present unverified or typecheck-only work as "done" — the Verified-vs-not split is the whole point.
+
+## Working Style
+
+**Do exactly what's asked; minimal interpretation.**
+- Follow the literal request; don't expand scope or refactor unasked. "Use same SVG" = the SVG file, not the component wrapping it.
+- A pasted error or observation is **information, not a work order** — diagnose and explain it, and ask before touching code (especially anything outside the stated task). Check whether the cause is even in the code (e.g. a `WebGL context` error was browser context-exhaustion from a long HMR session — fixed by restarting the browser, zero code change).
+- Never change the behavior of a feature the user didn't ask about, and don't make product/design calls (e.g. "degrade silently") — surface the option and let them decide.
+- "Add to TODO" = just add it to `TODO.md`; don't start investigating or implementing.
+
+**Consult before deciding.**
+- Present naming, structure, and architectural decisions for approval **before** implementing — don't bulldoze conventions across files.
+- When the user voices a concern about a choice already made ("I like X but worried about Y"), answer Y directly. Don't generate new alternatives unless asked.
+
+**Communication.**
+- Direct and dense. Cut filler, hedging, throat-clearing, and narration of routine steps or things an experienced dev already knows (how to commit, basic tooling).
+- **NO standing status recaps** — say a thing once; don't re-emit "what's done / uncommitted / left" every turn.
+- Copy-paste content goes in a fenced code block, **never** a `>` blockquote (the `>` chars and border get copied).
+- Never say "it doesn't exist" from a narrow search — grep broadly; if still not found, say "I can't find it — where are you seeing it?"
+
+**Don't touch — the user owns these.**
+- Vercel platform: never run `vercel` writes / deploys / env changes — guide via the **dashboard**. Editing local `.env` / `.env.local` is fine. (Git writes: never — see Rules.)
+- Solo project — Olena is the only account holder (Vercel, Google Cloud, Zoho, OpenAI). Don't prescribe team-style secret rotation; rotate only on a real leak. "Sensitive" flags are UI hygiene only. Explain console jargon (OAuth client, IAM, credentials) in plain language.
+
+**CSS / UI.**
+- Modern shorthand (`inset: 0`, `gap`). Keep component styles self-contained — never leak a parent's layout concerns into a child.
+- Reusable components carry only intrinsic styles (padding/font/color/border) — **NEVER** layout (`flex`, `width`, `min-width`, `text-align`); layout belongs to the parent that owns the context.
+- New buttons/UI match sibling styling — no "simplified/subtle" variants unless asked.
+- Don't set CSS variable defaults that React always overrides inline (dead code).
+- Never wildcard-override animations; understand every keyframe/delay/end-state before changing the hand-crafted intro animations.
+
+**Permission prompts (avoid bouncing them back).**
+- Run Bash bare — no `cd <abspath> &&` prefix (cwd is already the project root; the prefix turns an auto-allowed read into a prompt). One purpose per command, not bundled behind `echo "==="`.
+- `$(...)`, `source`, and `$VAR` expansion always prompt — wrap dynamic parts in an `npm run` alias. For a directly-requested local API call, use the alias **and** pass `dangerouslyDisableSandbox: true` (network calls prompt separately from the permission rule).
 
 ## Commands
 
 ```bash
-npm run dev    # Next dev server (localhost:3000)
+npm run dev    # Next dev server (localhost:3001)
 npm run build  # Runs `prisma generate` then `next build`
 npm run start  # Production server
 npm run lint   # next lint
@@ -127,7 +175,7 @@ In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in 
 - **Plan names and features** are no longer in `plans.ts` — they live in `messages/{locale}/plans.json`. `plans.ts` only keeps `id`, `priceLabel`, `interval`.
 - **Reading generation:** `src/lib/generateReading.ts` takes translated messages, card IDs, and an optional `readerId` to produce locale-aware readings in the chosen reader's voice. Falls back to `readingTemplates` when no reader block exists.
 - **Russian translations are gender-neutral.** Russian past-tense verbs require gender agreement, so all `ru` reading texts avoid gendered verb forms with "ты" — using present tense, impersonal constructions, infinitives, and passive/reflexive forms instead. Preserve this when editing `messages/ru/readings.json`.
-- **Russian UI uses formal "вы" (not "ты").** All UI strings in `messages/ru/ui.json` must address the user formally. Reader voice lines (inside `readers` block in `readings.json`) are in-character and may use "ты" at the reader's discretion.
+- **Russian UI uses formal "вы" (not "ты").** All UI strings in `messages/ru/ui.json` must address the user formally. Reader voice lines (inside `readers` block in `readings.json`) are in-character and may use "ты" at the reader's discretion. For the "reader" concept use **"таролог"**, never "гадалка" (crude/offensive). Russian brand equivalent of "The Veil" is **"Завеса"**. Russian translation quality across the app is rough and wants a dedicated native-level polish pass (not mixed into feature work).
 
 ## CSS Variables
 
@@ -143,6 +191,15 @@ All colors, typography, and border values are defined as CSS custom properties i
 - **Never introduce new colors** without explicit approval. Use existing palette variables.
 - When you need an opacity variant of a palette color, use `rgba(250, 225, 163, 0.XX)` with the raw values (CSS `var()` can't be decomposed inside `rgba()`).
 
+### Responsive breakpoints
+
+Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queries. Values are centralized in a `$breakpoints` map (`sm: 37.5em`/600px, `md: 48em`/768px, `lg: 56.25em`/900px):
+
+- `@include respond-below($bp)` — `max-width` (use in desktop-first files).
+- `@include respond-above($bp)` — `min-width` (use in mobile-first files).
+
+Each file keeps its existing direction (offer-block/tarot/header are mobile-first; subscription/decks/legal are desktop-first); only the raw px value is tokenized. A global `overflow-x: hidden` safety net lives on `body` in `global/_scafolding.scss`. `.mystic-btn` has a mobile override (padding/font shrink at `respond-below(sm)`) and is reused on the offer-block Summon, tarot post-actions, and reader-selection — don't re-break it.
+
 ## Gotchas
 
 - **Prisma schema lives at `src/generated/prisma/schema.prisma`**, not the conventional `prisma/` directory. This is set via the `prisma.schema` field in `package.json`. Don't move it.
@@ -156,6 +213,8 @@ All colors, typography, and border values are defined as CSS custom properties i
 - **`params` is a direct object in Next.js 14** — not a Promise. Don't add `await params` (that's Next.js 16+).
 - **Translation JSON files use namespaced top-level keys** (e.g., `{"ui": {...}}`). The namespace must match what `useTranslations("ui")` expects.
 - **Migration history was baselined on 2026-04-07.** Earlier tables (Account, Session, User, etc.) were originally created via `db push`, so a baseline migration `20240101000000_baseline` plus markers for `add_user_created_at` and `add_terms_accepted_at` were added retroactively and `migrate resolve --applied` was used to record them. From here on, use `prisma migrate dev` for all schema changes.
+- **Z-index layer scale (keep separated, do NOT collapse to equal values):** content ≤2 → `.main-header` 30 → `.tarot-modal` (full-screen reading screen) 40 → `.main-footer--overlay` 50 → `.cookie-banner` 60 → `.loader` 70 → `.modal` 100 → `.language-switcher` dropdown 200. `Modal.tsx` **portals to `document.body`** so popups escape parent stacking contexts (especially the fixed `.tarot-modal`) and layer globally.
+- **Single overlay footer.** There is ONE `<Footer overlay />`, rendered in `HomePageClient` as a sibling of `<main>` (NOT inside `<main>`, `OfferBlock`, or `Tarot`). Don't re-nest it — a `<footer>` inside `<main>` is the bug this fixed. On the home screen the offer-block reserves footer space via `.inner-wrap` (`bottom: 108px` <sm / `125px` ≥sm), NOT page padding — a `position: fixed` footer can't be pushed by padding, and offer-block children are absolutely positioned.
 
 ## Subscription / Pricing
 
@@ -213,11 +272,13 @@ All colors, typography, and border values are defined as CSS custom properties i
 - **File layout per page (3 files each):**
   - `page.tsx` — server component, exports `metadata`, delegates to the Content component.
   - `layout.tsx` — self-contained root layout. Renders its own `<html lang="en">` + `<body>`, loads Raleway, wraps children in `NextIntlClientProvider` preloaded with English JSON only, renders `<CookieBanner />`.
-  - `XxxContent.tsx` — `"use client"`, renders `<PageShell>` wrapping `<main class="legal-page container"><article class="legal-page__content">…</article></main>`. Content is a raw HTML string (Termly export) with inline `style="..."` attributes stripped at module load, then injected via the split-string workaround (see Gotchas).
+  - `XxxContent.tsx` — `"use client"`, renders `<PageShell>` wrapping `<main class="legal-page container"><article class="legal-page__content">…</article></main>`. Content is a raw HTML string (Termly export) with **both** the leading `<style>` block AND inline `style="..."` attributes stripped at module load, then injected via the split-string workaround (see Gotchas). **Gotcha:** the Termly `<style>` block hardcodes `color:#000` (black text) — on the dark theme it makes headings invisible, so it MUST be stripped, not just the inline styles. Strip line: `RAW.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "").replace(/\s*style="[^"]*"/g, "")`.
 - **Middleware bypass:** `src/middleware.ts` short-circuits these three paths with `NextResponse.next()` so the next-intl middleware doesn't try to redirect them to `/{locale}/...`. Also: if someone hits `/{locale}/privacy` etc., middleware redirects back to the unprefixed path.
 - **Styles:** `src/assets/scss/blocks/_legal-page.scss` (minimal — line-height + padding).
 - **Why this pattern:** These are large static HTML blobs (Termly exports). Translating them is high-effort, low-value; the content is legally fine in English globally. The unprefixed URL also matches what's referenced in the policies themselves (e.g., "https://theveil.app/cookie-policy").
-- **Email contacts in legal pages** route per the rules in [reference-email-routing memory]: `privacy@nothingweird.agency` for privacy/DSAR/cookies, `legal@nothingweird.agency` for ToS/IP/copyright/subscription cancellation. All at `nothingweird.agency`.
+- **Email contacts in legal pages** route by purpose (see Contact Form § for the full map): `privacy@nothingweird.agency` for privacy/DSAR/cookies, `legal@nothingweird.agency` for ToS/IP/copyright/subscription cancellation. All at `nothingweird.agency`.
+- **Updating a legal page** (fresh Termly export): replace ONLY the raw-HTML template-literal constant (`PRIVACY_HTML_RAW` etc.) in `{Page}Content.tsx`; leave `"use client"`, the `PageShell` import, the strip / `HTML_PROP` lines, and the exported component untouched. Escape backticks and `${` in the pasted HTML, then `npx tsc --noEmit`. A big export can exceed the single-Write limit — write a `@@BODY@@` placeholder first, then grow it with Edits. As of 2026-06-16, privacy + cookie-policy have fresh exports; **terms was not yet updated** (waiting on its export — don't touch it until provided).
+- **Legal entity** (referenced in policy bodies): Olena Christensen, Individual Entrepreneur (FOP), dba "Nothing Weird", Voskresenskyi Ave 24A/14, Kyiv 02125, Ukraine. Analytics: Google Analytics. Payments: monobank / Plata by mono.
 
 ## Contact Form
 
@@ -254,6 +315,7 @@ The main page has a multi-stage intro: moon rises and falls, title slides in, ca
 
 - Module-level `let hasPlayedIntro = false` in `OfferBlock.tsx` (and `hasPlayedHeaderIntro` in `Header.tsx`) — resets on page refresh (JS reloads), persists on client-side navigation.
 - `useState` initializer checks and sets the flag. When skipping, `isLoaded` starts as `true` (no loading flash).
+- **SSR guard (required):** the initializer's FIRST line is `if (typeof window === "undefined") return false;`. Server modules persist across requests, so without this the flag is read/mutated on the server, sticks at `true`, and desyncs server vs. client HTML → hydration mismatch ("switch to client rendering"). The server must always render the intro-plays state to match a fresh client load. Keep this guard on any copy of the pattern.
 - `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.offer-block__reader`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
 - **NEVER use wildcard selectors** (`*`) for skip-intro — it kills unrelated animations (deck glow, card twist). Always list specific elements.
 - Header uses the same pattern with its own `skip-intro` class in `_main-header.scss`.
@@ -268,7 +330,7 @@ After the user clicks the deck (which appears after clicking "Summon" on the mai
 4. 3 more seconds (5s total) → `isPredictionReady` = true, reading modal appears, loader fades out (`tarot__loader--hidden`)
 5. User closes reading modal → two `<MysticButton>` components appear in `tarot__post-actions` (flex row): "Unveil Another Fate" reshuffles and resets cards in-place; "Back to the Sanctum" triggers a 0.5s fade-out (`tarot-modal--closing` class + `tarotModalFadeOut` keyframe) before unmounting and returning to main page with reader
 
-**Key:** The loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component (which is full-screen `position: fixed`).
+**Key:** This reading-flow loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component. Separately, `OfferBlock`'s initial `!isLoaded` state DOES render the full-screen `<Loader />` component (`.loader`, centered `position: fixed`, z-index 70) — restored after the SEO refactor (commit `4d2e5b4`) had replaced it with a bare unstyled `<div>{t("loading")}</div>` that rendered off-screen-left.
 
 ### Deck card glow
 
