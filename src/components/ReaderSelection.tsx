@@ -86,6 +86,14 @@ export const ReaderSelection = ({
               onClick={() => setFocused(id)}
               style={{ "--card-accent": reader.aura } as CSSProperties}
             >
+              {isLocked(id) && (
+                <span
+                  className="reader-selection__lock-badge"
+                  aria-hidden="true"
+                >
+                  ★
+                </span>
+              )}
               <div className="reader-selection__card-inner">
                 <div className="reader-selection__portrait" aria-hidden="true">
                   <Image
