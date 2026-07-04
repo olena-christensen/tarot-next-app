@@ -2,15 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { Link, useRouter, usePathname } from "@/i18n/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { type PlanId } from "@/lib/plans";
 import { type ReaderId } from "@/lib/readers";
 import { ReaderSelectionModal } from "@/components/ReaderSelectionModal";
+import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
+import EditIcon from "@/assets/svg/edit.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
+
+// ISO date → dd/mm/yy
+const formatDate = (iso: string) => {
+  const [y, m, d] = iso.slice(0, 10).split("-");
+  return `${d}/${m}/${y.slice(2)}`;
+};
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -43,6 +51,9 @@ export const UserProfile = () => {
   const [deckId, setDeckId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<ReaderId | null>(null);
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
+  const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [langSelection, setLangSelection] = useState<string>(locale);
   const [localeSaving, setLocaleSaving] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -259,6 +270,20 @@ export const UserProfile = () => {
     }
   };
 
+  const handleOpenLanguage = () => {
+    setLangSelection(locale);
+    setIsLanguageOpen(true);
+  };
+
+  const handleSaveLanguage = async () => {
+    if (langSelection === locale) {
+      setIsLanguageOpen(false);
+      return;
+    }
+    await handleSelectLocale(langSelection);
+    setIsLanguageOpen(false);
+  };
+
   const handleSelectLocale = async (loc: string) => {
     if (loc === locale || localeSaving) return;
     setLocaleSaving(loc);
@@ -303,7 +328,7 @@ export const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <div className="user-profile__field">
+      <div className={`user-profile__field${isEditingName ? "" : " user-profile__field--row"}`}>
         <span className="user-profile__label">{t("name")}</span>
         {isEditingName ? (
           <div className="user-profile__edit">
@@ -339,88 +364,117 @@ export const UserProfile = () => {
             {error && <span className="user-profile__error">{error}</span>}
           </div>
         ) : (
-          <span className="user-profile__value user-profile__value--editable" onClick={handleEditName}>
-            {session?.user?.name || t("mysticOne")}
+          <span className="user-profile__value-group">
+            <span className="user-profile__value">
+              {session?.user?.name || t("mysticOne")}
+            </span>
+            <button
+              type="button"
+              className="user-profile__edit-icon"
+              onClick={handleEditName}
+              aria-label={t("name")}
+            >
+              <EditIcon />
+            </button>
           </span>
         )}
       </div>
-      <div className="user-profile__field">
+      <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("email")}</span>
-        <span className="user-profile__value">{session?.user?.email}</span>
-      </div>
-      <div className="user-profile__field">
-        <span className="user-profile__label">{t("currentPlan")}</span>
-        <span className="user-profile__value">
-          {planId ? tPlans(`${planId}.name`) : "—"}
-          <Link href="/subscription" className="user-profile__upgrade">
-            {"→ " + t("initiation")}
-          </Link>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">{session?.user?.email}</span>
         </span>
       </div>
-      <div className="user-profile__field">
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("currentPlan")}</span>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">
+            {planId ? tPlans(`${planId}.name`) : "—"}
+          </span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={() => router.push("/subscription")}
+            aria-label={t("currentPlan")}
+          >
+            <EditIcon />
+          </button>
+        </span>
+      </div>
+      <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("credits")}</span>
-        <span className="user-profile__value">{credits}</span>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">{credits}</span>
+        </span>
       </div>
       {(planId === "MONTHLY" || planId === "YEARLY") && (
-        <div className="user-profile__field">
+        <div className="user-profile__field user-profile__field--row">
           <span className="user-profile__label">{t("renewal")}</span>
-          <span className="user-profile__value">
-            {expiresAt
-              ? (autoRenew ? t("renewsOn", { date: expiresAt.slice(0, 10) })
-                           : t("accessUntil", { date: expiresAt.slice(0, 10) }))
-              : "—"}
+          <span className="user-profile__value-group">
+            <span className="user-profile__value">
+              {expiresAt ? formatDate(expiresAt) : "—"}
+            </span>
             <button
               type="button"
-              className="user-profile__upgrade"
+              className="user-profile__edit-icon"
               onClick={handleToggleAutoRenew}
               disabled={subSaving}
+              aria-label={autoRenew ? t("cancelSubscription") : t("resumeSubscription")}
             >
-              {"→ " + (autoRenew ? t("cancelSubscription") : t("resumeSubscription"))}
+              <EditIcon />
             </button>
           </span>
         </div>
       )}
-      <div className="user-profile__field">
+      <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("deck")}</span>
-        <span className="user-profile__value">
-          {deckId === "Rider-Waite" ? t("deckRiderWaite") :
-           deckId === "Klimt" ? t("deckKlimt") :
-           deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
-          <Link href="/decks" className="user-profile__upgrade">
-            {"→ " + t("chooseDeck")}
-          </Link>
-        </span>
-      </div>
-      <div className="user-profile__field">
-        <span className="user-profile__label">{t("reader")}</span>
-        <span className="user-profile__value">
-          {readerId ? tReaders(`${readerId}.displayName`) : "—"}
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">
+            {deckId === "Rider-Waite" ? t("deckRiderWaite") :
+             deckId === "Klimt" ? t("deckKlimt") :
+             deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
+          </span>
           <button
             type="button"
-            className="user-profile__upgrade"
-            onClick={() => setIsReaderSelectOpen(true)}
+            className="user-profile__edit-icon"
+            onClick={() => setIsDeckSelectOpen(true)}
+            aria-label={t("chooseDeck")}
           >
-            {"→ " + t("chooseReader")}
+            <EditIcon />
           </button>
         </span>
       </div>
-      <div className="user-profile__field">
-        <span className="user-profile__label">{t("language")}</span>
-        <div className="user-profile__language-options">
-          {routing.locales.map((loc) => (
-            <button
-              key={loc}
-              type="button"
-              className={`user-profile__language-option${loc === locale ? " user-profile__language-option--active" : ""}`}
-              onClick={() => handleSelectLocale(loc)}
-              disabled={localeSaving !== null}
-            >
-              {LOCALE_NAMES[loc]}
-            </button>
-          ))}
-        </div>
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("reader")}</span>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">
+            {readerId ? tReaders(`${readerId}.displayName`) : "—"}
+          </span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={() => setIsReaderSelectOpen(true)}
+            aria-label={t("chooseReader")}
+          >
+            <EditIcon />
+          </button>
+        </span>
       </div>
-      <div className="user-profile__field">
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("language")}</span>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">{LOCALE_NAMES[locale]}</span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={handleOpenLanguage}
+            aria-label={t("language")}
+          >
+            <EditIcon />
+          </button>
+        </span>
+      </div>
+      <div className={`user-profile__field${isEditingPassword ? "" : " user-profile__field--row"}`}>
         <span className="user-profile__label">{t("password")}</span>
         {isEditingPassword ? (
           <div className="user-profile__edit">
@@ -475,8 +529,18 @@ export const UserProfile = () => {
             {passwordSuccess && <span className="user-profile__success">{passwordSuccess}</span>}
           </div>
         ) : (
-          <span className="user-profile__value user-profile__value--editable" onClick={handleEditPassword}>
-            {hasPassword ? t("changePassword") : t("setPassword")}
+          <span className="user-profile__value-group">
+            <span className="user-profile__value">
+              {hasPassword ? t("changePassword") : t("setPassword")}
+            </span>
+            <button
+              type="button"
+              className="user-profile__edit-icon"
+              onClick={handleEditPassword}
+              aria-label={t("password")}
+            >
+              <EditIcon />
+            </button>
           </span>
         )}
       </div>
@@ -503,6 +567,48 @@ export const UserProfile = () => {
         onClose={() => setIsReaderSelectOpen(false)}
         onOpenSubscription={() => router.push("/subscription")}
       />
+      <Modal
+        isOpen={isDeckSelectOpen}
+        onClose={() => setIsDeckSelectOpen(false)}
+        title={t("chooseDeck")}
+        wide
+      >
+        <DeckSelector inModal />
+      </Modal>
+      <Modal
+        isOpen={isLanguageOpen}
+        onClose={() => setIsLanguageOpen(false)}
+        title={t("language")}
+      >
+        <div className="options-modal">
+          <ul className="options-modal__list list">
+            {routing.locales.map((loc) => (
+              <li key={loc} className="options-modal__item">
+                <label className="options-modal__option">
+                  <input
+                    type="radio"
+                    name="profile-language"
+                    className="options-modal__radio-input"
+                    checked={langSelection === loc}
+                    onChange={() => setLangSelection(loc)}
+                    disabled={localeSaving !== null}
+                  />
+                  <span className="options-modal__radio" aria-hidden="true" />
+                  <span className="options-modal__option-label">{LOCALE_NAMES[loc]}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="options-modal__save"
+            onClick={handleSaveLanguage}
+            disabled={localeSaving !== null}
+          >
+            {localeSaving ? t("saving") : t("save")}
+          </button>
+        </div>
+      </Modal>
       <Modal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}

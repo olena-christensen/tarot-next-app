@@ -125,3 +125,11 @@
     }
   }
 }
+
+// Deck grid rendered inside the profile's picker Modal — strip the page chrome
+// (the Modal supplies its own frame + padding). Compound selector so it wins
+// over `.decks` and its media query regardless of import order.
+.decks.decks--modal {
+  padding: 0;
+  background: transparent;
+}
