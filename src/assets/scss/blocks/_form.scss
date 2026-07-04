@@ -60,6 +60,12 @@
   text-align: center;
 }
 
+.form__success {
+  color: var(--success);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 .form__btn--google {
   background-color: transparent;
   border: var(--border);

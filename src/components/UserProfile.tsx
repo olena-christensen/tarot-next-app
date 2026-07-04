@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { type PlanId } from "@/lib/plans";
 import { type ReaderId } from "@/lib/readers";
 import { ReaderSelectionModal } from "@/components/ReaderSelectionModal";
+import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
@@ -51,6 +52,7 @@ export const UserProfile = () => {
   const [deckId, setDeckId] = useState<string | null>(null);
   const [readerId, setReaderId] = useState<ReaderId | null>(null);
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [langSelection, setLangSelection] = useState<string>(locale);
@@ -328,56 +330,21 @@ export const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <div className={`user-profile__field${isEditingName ? "" : " user-profile__field--row"}`}>
+      <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("name")}</span>
-        {isEditingName ? (
-          <div className="user-profile__edit">
-            <input
-              className="user-profile__input"
-              type="text"
-              value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSaveName();
-                if (e.key === "Escape") handleCancelEdit();
-              }}
-              maxLength={100}
-              autoFocus
-              disabled={isSaving}
-            />
-            <div className="user-profile__edit-actions">
-              <button
-                className="user-profile__edit-btn user-profile__edit-btn--save"
-                onClick={handleSaveName}
-                disabled={isSaving}
-              >
-                {isSaving ? t("saving") : t("save")}
-              </button>
-              <button
-                className="user-profile__edit-btn user-profile__edit-btn--cancel"
-                onClick={handleCancelEdit}
-                disabled={isSaving}
-              >
-                {t("cancel")}
-              </button>
-            </div>
-            {error && <span className="user-profile__error">{error}</span>}
-          </div>
-        ) : (
-          <span className="user-profile__value-group">
-            <span className="user-profile__value">
-              {session?.user?.name || t("mysticOne")}
-            </span>
-            <button
-              type="button"
-              className="user-profile__edit-icon"
-              onClick={handleEditName}
-              aria-label={t("name")}
-            >
-              <EditIcon />
-            </button>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">
+            {session?.user?.name || t("mysticOne")}
           </span>
-        )}
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={handleEditName}
+            aria-label={t("name")}
+          >
+            <EditIcon />
+          </button>
+        </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("email")}</span>
@@ -394,7 +361,7 @@ export const UserProfile = () => {
           <button
             type="button"
             className="user-profile__edit-icon"
-            onClick={() => router.push("/subscription")}
+            onClick={() => setIsSubscriptionOpen(true)}
             aria-label={t("currentPlan")}
           >
             <EditIcon />
@@ -474,75 +441,21 @@ export const UserProfile = () => {
           </button>
         </span>
       </div>
-      <div className={`user-profile__field${isEditingPassword ? "" : " user-profile__field--row"}`}>
+      <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("password")}</span>
-        {isEditingPassword ? (
-          <div className="user-profile__edit">
-            {hasPassword && (
-              <input
-                className="user-profile__input"
-                type="password"
-                placeholder={t("currentPasswordPlaceholder")}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                disabled={passwordSaving}
-              />
-            )}
-            <input
-              className="user-profile__input"
-              type="password"
-              placeholder={t("newPasswordPlaceholder")}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              disabled={passwordSaving}
-              autoFocus
-            />
-            <input
-              className="user-profile__input"
-              type="password"
-              placeholder={t("confirmPasswordPlaceholder")}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSavePassword();
-                if (e.key === "Escape") handleCancelPassword();
-              }}
-              disabled={passwordSaving}
-            />
-            <div className="user-profile__edit-actions">
-              <button
-                className="user-profile__edit-btn user-profile__edit-btn--save"
-                onClick={handleSavePassword}
-                disabled={passwordSaving}
-              >
-                {passwordSaving ? t("saving") : t("save")}
-              </button>
-              <button
-                className="user-profile__edit-btn user-profile__edit-btn--cancel"
-                onClick={handleCancelPassword}
-                disabled={passwordSaving}
-              >
-                {t("cancel")}
-              </button>
-            </div>
-            {passwordError && <span className="user-profile__error">{passwordError}</span>}
-            {passwordSuccess && <span className="user-profile__success">{passwordSuccess}</span>}
-          </div>
-        ) : (
-          <span className="user-profile__value-group">
-            <span className="user-profile__value">
-              {hasPassword ? t("changePassword") : t("setPassword")}
-            </span>
-            <button
-              type="button"
-              className="user-profile__edit-icon"
-              onClick={handleEditPassword}
-              aria-label={t("password")}
-            >
-              <EditIcon />
-            </button>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">
+            {hasPassword ? t("changePassword") : t("setPassword")}
           </span>
-        )}
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={handleEditPassword}
+            aria-label={t("password")}
+          >
+            <EditIcon />
+          </button>
+        </span>
       </div>
       <button
         className="btn user-profile__btn"
@@ -565,8 +478,131 @@ export const UserProfile = () => {
       <ReaderSelectionModal
         isOpen={isReaderSelectOpen}
         onClose={() => setIsReaderSelectOpen(false)}
-        onOpenSubscription={() => router.push("/subscription")}
+        onOpenSubscription={() => setIsSubscriptionOpen(true)}
       />
+      <SubscriptionModal
+        isOpen={isSubscriptionOpen}
+        onClose={() => setIsSubscriptionOpen(false)}
+      />
+      <Modal
+        isOpen={isEditingName}
+        onClose={handleCancelEdit}
+        title={t("name")}
+      >
+        <form
+          className="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSaveName();
+          }}
+        >
+          <div className="form__input-block">
+            <label htmlFor="profile-name" className="form__label">
+              {t("whatShallWeCallYou")}
+            </label>
+            <input
+              id="profile-name"
+              className="form__input"
+              type="text"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              maxLength={100}
+              autoFocus
+              disabled={isSaving}
+            />
+          </div>
+          {error && <div className="form__error">{error}</div>}
+          <div className="form__input-block">
+            <button type="submit" className="btn form__btn" disabled={isSaving}>
+              {isSaving ? t("saving") : t("save")}
+            </button>
+            <button
+              type="button"
+              className="btn form__btn form__btn--google"
+              onClick={handleCancelEdit}
+              disabled={isSaving}
+            >
+              {t("cancel")}
+            </button>
+          </div>
+        </form>
+      </Modal>
+      <Modal
+        isOpen={isEditingPassword}
+        onClose={handleCancelPassword}
+        title={hasPassword ? t("changePassword") : t("setPassword")}
+      >
+        <form
+          className="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSavePassword();
+          }}
+        >
+          {hasPassword && (
+            <div className="form__input-block">
+              <label htmlFor="current-password" className="form__label">
+                {t("currentPasswordPlaceholder")}
+              </label>
+              <input
+                id="current-password"
+                className="form__input"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                disabled={passwordSaving}
+              />
+            </div>
+          )}
+          <div className="form__input-block">
+            <label htmlFor="new-password" className="form__label">
+              {t("newPasswordPlaceholder")}
+            </label>
+            <input
+              id="new-password"
+              className="form__input"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              minLength={8}
+              autoFocus
+              disabled={passwordSaving}
+            />
+          </div>
+          <div className="form__input-block">
+            <label htmlFor="confirm-password" className="form__label">
+              {t("confirmPasswordPlaceholder")}
+            </label>
+            <input
+              id="confirm-password"
+              className="form__input"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={passwordSaving}
+            />
+          </div>
+          {passwordError && <div className="form__error">{passwordError}</div>}
+          {passwordSuccess && <div className="form__success">{passwordSuccess}</div>}
+          <div className="form__input-block">
+            <button
+              type="submit"
+              className="btn form__btn"
+              disabled={passwordSaving}
+            >
+              {passwordSaving ? t("saving") : t("save")}
+            </button>
+            <button
+              type="button"
+              className="btn form__btn form__btn--google"
+              onClick={handleCancelPassword}
+              disabled={passwordSaving}
+            >
+              {t("cancel")}
+            </button>
+          </div>
+        </form>
+      </Modal>
       <Modal
         isOpen={isDeckSelectOpen}
         onClose={() => setIsDeckSelectOpen(false)}
