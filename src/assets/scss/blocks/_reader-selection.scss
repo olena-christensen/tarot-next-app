@@ -40,17 +40,20 @@
     color: inherit;
     font: inherit;
     text-align: left;
-    overflow: hidden;
     transition:
       transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
       border-color 0.3s ease,
       box-shadow 0.3s ease;
 
-    // resting aura tint — barely visible until interaction
+    // resting aura tint — barely visible until interaction.
+    // border-radius: inherit keeps the tint clipped to the rounded corners now
+    // that the card itself no longer uses overflow: hidden (so the current bead
+    // can straddle the top border).
     &::before {
       content: "";
       position: absolute;
       inset: 0;
+      border-radius: inherit;
       background: radial-gradient(
         ellipse at 50% 30%,
         var(--card-accent),
@@ -183,34 +186,44 @@
     font-style: italic;
   }
 
+  // Current reader: a bead that reads as part of the top border — same colour
+  // and density as the border, no glow — with the border running through its
+  // centre, 20px in from the left.
   &__card--current {
-    border-color: var(--card-accent);
-
     &::after {
       content: "";
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 0;
+      left: 20px;
+      transform: translateY(-50%);
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--card-accent);
-      box-shadow: 0 0 8px var(--card-accent);
+      // Highlight top-left → muted gold edge gives it a rounded, jewel-like
+      // body; a soft glow plus a bottom inner shadow add depth without a floaty
+      // halo. Both stops use existing palette vars.
+      background: radial-gradient(circle at 35% 30%, var(--gold), var(--primary));
+      box-shadow:
+        0 0 6px rgba(250, 225, 163, 0.55),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.35);
     }
   }
 
+  // Paid-tier lock marker — a real element (not ::after) so it never collides
+  // with the current-reader bead on a card that is both current and locked.
   &__card--locked {
     opacity: 0.6;
+  }
 
-    &::after {
-      content: "★";
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: 0.75rem;
-      color: var(--card-accent);
-      opacity: 0.8;
-    }
+  &__lock-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 2;
+    font-size: 0.75rem;
+    color: var(--card-accent);
+    opacity: 0.8;
+    pointer-events: none;
   }
 
   @include respond-below(lg) {

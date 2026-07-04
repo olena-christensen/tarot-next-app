@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PLAN_ORDER, PLANS, type Plan, type PlanId } from "@/lib/plans";
 import { useTranslations } from "next-intl";
 import { useOpenLogin } from "@/components/LoginContext";
@@ -29,6 +29,27 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   // button and shows a busy label; other buttons stay clickable.
   const [busyPlan, setBusyPlan] = useState<PlanId | null>(null);
   const [error, setError] = useState(false);
+
+  // The user's active recurring tier (FREE/MONTHLY/YEARLY). SINGLE is a
+  // consumable credit, never a tier, so it never reads as "current". Until the
+  // fetch resolves — or for anonymous visitors (401) — we treat the user as
+  // FREE, matching the pre-fetch display so paid users only correct, never flash.
+  const [currentPlan, setCurrentPlan] = useState<PlanId>("FREE");
+
+  useEffect(() => {
+    async function loadCurrentPlan() {
+      try {
+        const res = await fetch("/api/user/plan");
+        if (res.ok) {
+          const data = await res.json();
+          setCurrentPlan(data.planId as PlanId);
+        }
+      } catch {
+        // silent — stays on the FREE default
+      }
+    }
+    loadCurrentPlan();
+  }, []);
 
   const handleSubscribe = async (planId: PlanId) => {
     if (busyPlan) return;
@@ -88,19 +109,24 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
             const isFree = plan.id === "FREE";
             const isPopular = plan.id === "MONTHLY";
             const isOneTime = plan.interval === "one-time";
+            const isCurrent = plan.id === currentPlan;
             const suffix = intervalSuffix(plan.interval);
             const isBusy = busyPlan === plan.id;
             const cardClass = isPopular
               ? "subscription__card subscription__card--popular"
               : "subscription__card";
 
-            const label = isFree
+            // Free is never purchasable: it reads "Current plan" when it's the
+            // active tier, otherwise "Included" (the user is on a higher tier).
+            const label = isCurrent
               ? t("currentPlanBtn")
-              : isBusy
-                ? t("processingBtn")
-                : isOneTime
-                  ? t("buyReadingBtn")
-                  : t("subscribeBtn");
+              : isFree
+                ? t("includedBtn")
+                : isBusy
+                  ? t("processingBtn")
+                  : isOneTime
+                    ? t("buyReadingBtn")
+                    : t("subscribeBtn");
 
             return (
               <article key={plan.id} className={cardClass}>
@@ -126,9 +152,11 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                 <button
                   type="button"
                   className="subscription__cta"
-                  disabled={isFree || Boolean(busyPlan)}
+                  disabled={isFree || isCurrent || Boolean(busyPlan)}
                   aria-busy={isBusy}
-                  onClick={isFree ? undefined : () => handleSubscribe(plan.id)}
+                  onClick={
+                    isFree || isCurrent ? undefined : () => handleSubscribe(plan.id)
+                  }
                 >
                   {label}
                 </button>
