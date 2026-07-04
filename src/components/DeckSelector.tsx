@@ -12,7 +12,7 @@ const DECK_NAME_KEYS: Record<DeckId, string> = {
   "Gothic-Vintage": "deckGothicVintage",
 };
 
-export const DeckSelector = () => {
+export const DeckSelector = ({ inModal = false }: { inModal?: boolean } = {}) => {
   const { data: session, update } = useSession();
   const t = useTranslations("ui");
   const [currentDeck, setCurrentDeck] = useState<string>(DEFAULT_DECK);
@@ -46,52 +46,63 @@ export const DeckSelector = () => {
     }
   };
 
+  const grid = (
+    <>
+      <div className="decks__grid">
+        {DECK_IDS.map((id) => {
+          const deck = DECKS[id];
+          const isSelected = id === currentDeck;
+          const cardClass = isSelected
+            ? "decks__card decks__card--selected"
+            : "decks__card";
+
+          return (
+            <article key={id} className={cardClass}>
+              {isSelected && (
+                <span className="decks__badge">{t("selected")}</span>
+              )}
+              <Image
+                className="decks__preview"
+                src={deck.preview}
+                alt={t(DECK_NAME_KEYS[id])}
+                width={160}
+                height={280}
+              />
+              <h2 className="decks__card-name">{t(DECK_NAME_KEYS[id])}</h2>
+              {session ? (
+                <button
+                  type="button"
+                  className="decks__cta"
+                  disabled={isSelected || isSaving}
+                  onClick={() => handleSelect(id)}
+                >
+                  {isSelected ? t("selected") : t("selectDeck")}
+                </button>
+              ) : null}
+            </article>
+          );
+        })}
+      </div>
+
+      {!session && (
+        <p className="decks__sign-in-prompt">{t("signInToSelectDeck")}</p>
+      )}
+    </>
+  );
+
+  // In a modal, skip the page chrome (section / container / page title) — the
+  // Modal supplies its own frame and title.
+  if (inModal) {
+    return <div className="decks decks--modal">{grid}</div>;
+  }
+
   return (
     <section className="decks">
       <div className="container">
         <header className="decks__header">
           <h1 className="decks__title">{t("chooseDeck")}</h1>
         </header>
-
-        <div className="decks__grid">
-          {DECK_IDS.map((id) => {
-            const deck = DECKS[id];
-            const isSelected = id === currentDeck;
-            const cardClass = isSelected
-              ? "decks__card decks__card--selected"
-              : "decks__card";
-
-            return (
-              <article key={id} className={cardClass}>
-                {isSelected && (
-                  <span className="decks__badge">{t("selected")}</span>
-                )}
-                <Image
-                  className="decks__preview"
-                  src={deck.preview}
-                  alt={t(DECK_NAME_KEYS[id])}
-                  width={160}
-                  height={280}
-                />
-                <h2 className="decks__card-name">{t(DECK_NAME_KEYS[id])}</h2>
-                {session ? (
-                  <button
-                    type="button"
-                    className="decks__cta"
-                    disabled={isSelected || isSaving}
-                    onClick={() => handleSelect(id)}
-                  >
-                    {isSelected ? t("selected") : t("selectDeck")}
-                  </button>
-                ) : null}
-              </article>
-            );
-          })}
-        </div>
-
-        {!session && (
-          <p className="decks__sign-in-prompt">{t("signInToSelectDeck")}</p>
-        )}
+        {grid}
       </div>
     </section>
   );

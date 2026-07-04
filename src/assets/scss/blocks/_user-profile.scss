@@ -33,11 +33,61 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  max-width: 420px;
 
   .user-profile__field {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+
+    // Rows that open a picker modal (deck / reader / language): label left,
+    // value + edit icon right, on a single line.
+    &--row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+  }
+
+  .user-profile__value-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+
+    .user-profile__value {
+      @include trimEllipses;
+    }
+  }
+
+  .user-profile__edit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0.25rem;
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover:not(:disabled) {
+      color: var(--text-soft);
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
   .user-profile__label {
@@ -50,34 +100,6 @@
   .user-profile__value {
     font-size: 1.1rem;
     color: var(--primary);
-
-    &--editable {
-      cursor: pointer;
-      border-bottom: 1px dashed var(--border-color);
-      padding-bottom: 0.15rem;
-      transition: border-color 0.2s;
-
-      &:hover {
-        border-bottom-color: var(--primary);
-      }
-    }
-  }
-
-  .user-profile__upgrade {
-    margin-left: 1rem;
-    color: var(--primary);
-    text-decoration: none;
-    cursor: pointer;
-    transition: text-decoration 0.2s;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-
-    &:hover {
-      text-decoration: underline;
-      text-decoration-style: dashed;
-    }
   }
 
   .user-profile__edit {
@@ -157,39 +179,6 @@
     font-size: 20px;
   }
 
-  .user-profile__language-options {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .user-profile__language-option {
-    padding: 0.35rem 0.9rem;
-    font-size: 0.95rem;
-    font-family: var(--font-family);
-    color: var(--text-faint);
-    background-color: transparent;
-    border: var(--border);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-
-    &:hover:not(:disabled):not(&--active) {
-      color: var(--text-color);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &--active {
-      color: var(--primary);
-      background-color: rgba(250, 225, 163, 0.15);
-      cursor: default;
-    }
-  }
-
   .user-profile__danger-zone {
     margin-top: 3rem;
     display: flex;
@@ -233,6 +222,93 @@
     &:hover {
       background-color: rgba(231, 76, 60, 0.12);
       border-color: var(--error);
+    }
+  }
+}
+
+// Radio-list picker modal (language). Title comes from <Modal>.
+.options-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 0.25rem;
+    cursor: pointer;
+  }
+
+  &__radio-input {
+    @include visually-hidden;
+  }
+
+  &__radio {
+    position: relative;
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    transition: border-color 0.2s;
+  }
+
+  &__radio-input:checked + &__radio {
+    border-color: var(--primary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background-color: var(--primary);
+    }
+  }
+
+  &__option-label {
+    font-size: 1.05rem;
+    color: var(--text-soft);
+  }
+
+  &__radio-input:checked ~ &__option-label {
+    color: var(--primary);
+  }
+
+  &__save {
+    align-self: center;
+    margin-top: 0.5rem;
+    padding: 0.85rem 3rem;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    color: var(--primary);
+    background-color: transparent;
+    border: var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(250, 225, 163, 0.12);
+      border-color: var(--primary);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 }
