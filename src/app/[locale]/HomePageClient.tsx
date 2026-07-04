@@ -6,11 +6,10 @@ import { OfferBlock } from "@/components/OfferBlock";
 import { Tarot } from "@/components/Tarot";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
-import { SubscriptionPlans } from "@/components/SubscriptionPlans";
+import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
-import { LoginContext } from "@/components/LoginContext";
 
 export function HomePageClient() {
   const t = useTranslations("ui");
@@ -38,21 +37,11 @@ export function HomePageClient() {
       >
         <LoginForm onSuccess={() => setIsLoginOpen(false)} />
       </Modal>
-      <Modal
-        title={t("chooseYourPath")}
+      <SubscriptionModal
         isOpen={isSubscriptionOpen}
         onClose={() => setIsSubscriptionOpen(false)}
-        wide
-      >
-        <LoginContext.Provider
-          value={() => {
-            setIsSubscriptionOpen(false);
-            setIsLoginOpen(true);
-          }}
-        >
-          <SubscriptionPlans showHeader={false} />
-        </LoginContext.Provider>
-      </Modal>
+        onRequestLogin={() => setIsLoginOpen(true)}
+      />
     </Providers>
   );
 }

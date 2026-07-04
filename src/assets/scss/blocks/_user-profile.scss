@@ -102,77 +102,9 @@
     color: var(--primary);
   }
 
-  .user-profile__edit {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .user-profile__input {
-    padding: 0.3rem 0.75rem;
-    height: 40px;
-    font-size: 1.1rem;
-    font-weight: 200;
-    font-family: var(--font-family);
-    color: var(--text-color);
-    background-color: var(--input-bg);
-    border: var(--border);
-    border-radius: var(--border-radius);
-    width: 100%;
-
-    &:focus {
-      border: var(--border);
-      outline: none;
-    }
-  }
-
-  .user-profile__edit-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .user-profile__edit-btn {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.85rem;
-    font-family: var(--font-family);
-    border-radius: var(--border-radius);
-    border: var(--border);
-    cursor: pointer;
-    transition: opacity 0.2s;
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &--save {
-      background-color: rgba(250, 225, 163, 0.15);
-      color: var(--primary);
-
-      &:hover:not(:disabled) {
-        background-color: rgba(250, 225, 163, 0.25);
-      }
-    }
-
-    &--cancel {
-      background-color: transparent;
-      color: var(--text-faint);
-
-      &:hover:not(:disabled) {
-        color: var(--text-color);
-      }
-    }
-  }
-
-  .user-profile__error {
-    color: var(--error);
-    font-size: 0.85rem;
-  }
-
-  .user-profile__success {
-    color: var(--success);
-    font-size: 0.85rem;
-  }
+  // Name / Password editors now reuse the shared .form controls (matching the
+  // auth modal) inside a portaled Modal — the bespoke .user-profile__edit /
+  // __input / __edit-btn / __error / __success rules that lived here are gone.
 
   .user-profile__btn {
     margin-top: 1rem;
