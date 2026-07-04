@@ -372,6 +372,14 @@ export const UserProfile = () => {
         <span className="user-profile__label">{t("credits")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">{credits}</span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={() => setIsSubscriptionOpen(true)}
+            aria-label={t("credits")}
+          >
+            <EditIcon />
+          </button>
         </span>
       </div>
       {(planId === "MONTHLY" || planId === "YEARLY") && (

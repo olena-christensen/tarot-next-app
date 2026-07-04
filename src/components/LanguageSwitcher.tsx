@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useLocale } from "next-intl";
+import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { Modal } from "@/components/Modal";
 import GlobeIcon from "@/assets/svg/globe.svg";
-import ChevronDown from "@/assets/svg/chevron-down.svg";
 
 const localeNames: Record<string, string> = {
   en: "English",
@@ -18,66 +18,88 @@ const localeNames: Record<string, string> = {
 
 export const LanguageSwitcher = () => {
   const locale = useLocale();
+  const t = useTranslations("ui");
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, update: updateSession } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState(locale);
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const handleOpen = () => {
+    setSelected(locale);
+    setIsOpen(true);
+  };
 
-  const handleSelect = async (loc: string) => {
-    setIsOpen(false);
-    router.replace(pathname, { locale: loc });
+  const handleSave = async () => {
+    if (saving) return;
+    if (selected === locale) {
+      setIsOpen(false);
+      return;
+    }
+    setSaving(true);
 
+    // Persist the preference for signed-in users (best-effort); the URL change
+    // below takes effect regardless.
     if (session?.user?.id) {
       try {
         const res = await fetch("/api/user/locale", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ locale: loc }),
+          body: JSON.stringify({ locale: selected }),
         });
         if (res.ok) {
-          await updateSession({ preferredLocale: loc });
+          await updateSession({ preferredLocale: selected });
         }
       } catch {
         // Non-critical — URL change still takes effect for this session.
       }
     }
+
+    router.replace(pathname, { locale: selected });
+    setSaving(false);
+    setIsOpen(false);
   };
 
   return (
-    <div className="language-switcher" ref={ref}>
+    <div className="language-switcher">
       <button
         className="language-switcher__trigger"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Language"
+        onClick={handleOpen}
+        aria-label={t("language")}
       >
         <GlobeIcon />
-        <ChevronDown />
       </button>
-      {isOpen && (
-        <ul className="language-switcher__dropdown">
-          {routing.locales.map((loc) => (
-            <li key={loc}>
-              <button
-                className={`language-switcher__option${loc === locale ? " language-switcher__option--active" : ""}`}
-                onClick={() => handleSelect(loc)}
-              >
-                {localeNames[loc]}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("language")}>
+        <div className="options-modal">
+          <ul className="options-modal__list list">
+            {routing.locales.map((loc) => (
+              <li key={loc} className="options-modal__item">
+                <label className="options-modal__option">
+                  <input
+                    type="radio"
+                    name="header-language"
+                    className="options-modal__radio-input"
+                    checked={selected === loc}
+                    onChange={() => setSelected(loc)}
+                    disabled={saving}
+                  />
+                  <span className="options-modal__radio" aria-hidden="true" />
+                  <span className="options-modal__option-label">{localeNames[loc]}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className="options-modal__save"
+            onClick={handleSave}
+            disabled={saving}
+          >
+            {saving ? t("saving") : t("save")}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
