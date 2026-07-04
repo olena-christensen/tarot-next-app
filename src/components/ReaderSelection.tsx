@@ -7,8 +7,10 @@ import { READERS, READER_IDS, DEFAULT_READER, type ReaderId } from "@/lib/reader
 import { MysticButton } from "@/components/MysticButton";
 
 interface ReaderSelectionProps {
-  /** Called when the user commits to a reader. */
+  /** Commit a reader AND close the modal (the Summon button). */
   onSelect: (readerId: ReaderId) => void;
+  /** Choose a reader WITHOUT closing the modal (clicking a card). */
+  onChoose: (readerId: ReaderId) => void;
   /** Currently active reader — shown with a visual indicator. */
   currentReader: ReaderId;
   /** Whether the user has a paid subscription (unlocks non-default readers). */
@@ -28,6 +30,7 @@ interface ReaderSelectionProps {
  */
 export const ReaderSelection = ({
   onSelect,
+  onChoose,
   currentReader,
   isSubscriber,
   onOpenSubscription,
@@ -42,6 +45,7 @@ export const ReaderSelection = ({
   const isLocked = (id: ReaderId) =>
     id !== DEFAULT_READER && !isSubscriber;
 
+  // Summon button: locked → subscription; else choose AND close the modal.
   const handleSummon = () => {
     if (!focused) return;
     if (isLocked(focused)) {
@@ -49,6 +53,18 @@ export const ReaderSelection = ({
     } else {
       onSelect(focused);
     }
+  };
+
+  // Clicking a card moves the focus glow to it and chooses that reader, but
+  // keeps the modal open — the Summon button is the one that closes. Locked
+  // readers route to the subscription flow instead.
+  const handleCardClick = (id: ReaderId) => {
+    if (isLocked(id)) {
+      onOpenSubscription();
+      return;
+    }
+    setFocused(id);
+    onChoose(id);
   };
 
   return (
@@ -83,7 +99,7 @@ export const ReaderSelection = ({
               ].filter(Boolean).join(" ")}
               onMouseEnter={() => setFocused(id)}
               onFocus={() => setFocused(id)}
-              onClick={() => setFocused(id)}
+              onClick={() => handleCardClick(id)}
               style={{ "--card-accent": reader.aura } as CSSProperties}
             >
               {isLocked(id) && (

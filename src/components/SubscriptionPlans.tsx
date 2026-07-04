@@ -30,11 +30,12 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   const [busyPlan, setBusyPlan] = useState<PlanId | null>(null);
   const [error, setError] = useState(false);
 
-  // The user's active recurring tier (FREE/MONTHLY/YEARLY). SINGLE is a
-  // consumable credit, never a tier, so it never reads as "current". Until the
-  // fetch resolves — or for anonymous visitors (401) — we treat the user as
-  // FREE, matching the pre-fetch display so paid users only correct, never flash.
-  const [currentPlan, setCurrentPlan] = useState<PlanId>("FREE");
+  // The user's active recurring tier (FREE/MONTHLY/YEARLY), or null until the
+  // `/api/user/plan` fetch resolves. SINGLE is a consumable credit, never a tier,
+  // so it never reads as "current". Starting null (not "FREE") means no card is
+  // marked "Current plan" during the pre-fetch window — avoiding the flash where
+  // Free briefly claims to be the active plan before the real tier loads.
+  const [currentPlan, setCurrentPlan] = useState<PlanId | null>(null);
 
   useEffect(() => {
     async function loadCurrentPlan() {
