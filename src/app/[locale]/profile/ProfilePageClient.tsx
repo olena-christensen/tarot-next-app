@@ -21,7 +21,12 @@ function ProfileContent() {
   return (
     <main className="profile-page container">
       <h1 className="profile-page__title title">{t("yourMysticProfile")}</h1>
-      {status === "authenticated" && session?.user ? <UserProfile /> : null}
+      {/* Gate on session?.user (not status) so a transient `status === "loading"`
+          during a NextAuth `update()` — fired when e.g. choosing a reader — does
+          NOT unmount UserProfile and tear down its open modals. The session data
+          persists across an update(), so this stays mounted; unauthenticated is
+          handled by the redirect effect above. */}
+      {session?.user ? <UserProfile /> : null}
     </main>
   );
 }

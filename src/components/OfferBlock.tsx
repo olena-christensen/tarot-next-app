@@ -101,10 +101,9 @@ export const OfferBlock = ({
         setIsDeckRevealed(true);
     };
 
-    const handleReaderSelect = (readerId: typeof state.selectedReader) => {
+    // Persist the chosen reader (session + DB) without changing the view.
+    const persistReader = (readerId: typeof state.selectedReader) => {
         setState(prev => ({ ...prev, selectedReader: readerId }));
-        setIsReaderModalOpen(false);
-        setIsDeckRevealed(true);
 
         if (session?.user) {
             fetch("/api/user/reader", {
@@ -113,6 +112,18 @@ export const OfferBlock = ({
                 body: JSON.stringify({ reader: readerId }),
             }).then(() => update({ preferredReader: readerId }));
         }
+    };
+
+    // Clicking a card: choose without leaving the modal.
+    const handleReaderChoose = (readerId: typeof state.selectedReader) => {
+        persistReader(readerId);
+    };
+
+    // Summon button: choose, close the modal, and reveal the deck.
+    const handleReaderSelect = (readerId: typeof state.selectedReader) => {
+        persistReader(readerId);
+        setIsReaderModalOpen(false);
+        setIsDeckRevealed(true);
     };
 
     return (
@@ -225,6 +236,7 @@ export const OfferBlock = ({
                             >
                                 <ReaderSelection
                                     onSelect={handleReaderSelect}
+                                    onChoose={handleReaderChoose}
                                     currentReader={state.selectedReader}
                                     isSubscriber={isSubscriber}
                                     onOpenSubscription={() => {
