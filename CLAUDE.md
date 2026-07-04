@@ -116,7 +116,7 @@ src/
   components/          # AnimatedCard, Tarot, Login, LoginForm, Modal, MysticButton, UserProfile,
                        # MainMenu, Header, Footer, PageShell, Providers (SessionProvider+AppProvider),
                        # LanguageSwitcher, DeckSelector, ReaderSelection, ReaderSelectionModal,
-                       # CookieBanner, etc.
+                       # SubscriptionPlans, SubscriptionModal, CookieBanner, etc.
   lib/
     auth.ts            # NextAuth config (Credentials + Google)
     prisma.ts          # Prisma client singleton
@@ -157,7 +157,7 @@ In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in 
 
 - **Library:** `next-intl` v3 (pinned for Next.js 14 compatibility)
 - **Supported locales:** `en` (default), `no` (Norwegian), `ru` (Russian), `uk` (Ukrainian), `tr` (Turkish). EN is the source of truth; other locales may have partial / placeholder fallback content (especially `tr`, `uk`).
-- **Routing:** URL prefix-based (`/en/`, `/no/`, `/ru/`, `/uk/`, `/tr/`). Middleware auto-detects from browser `Accept-Language`, user can override via header dropdown.
+- **Routing:** URL prefix-based (`/en/`, `/no/`, `/ru/`, `/uk/`, `/tr/`). Middleware auto-detects from browser `Accept-Language`, user can override via the header language picker. `LanguageSwitcher` (the header globe) opens a **modal** (the shared `.options-modal` radio list + Save, same UI as the profile's language field) — the choice applies only on **Save**, not instantly on click. It persists via `PATCH /api/user/locale` for signed-in users (best-effort) and switches the route.
 - **Translation files:** `messages/{locale}/` with 7 JSON files per locale:
   - `ui.json` — UI strings (buttons, labels, headings, errors)
   - `cards.json` — 78 card names
@@ -223,6 +223,8 @@ Each file keeps its existing direction (offer-block/tarot/header are mobile-firs
 - Read current plan with `getUserPlan(userId)` from `src/lib/subscription.ts` — never query `prisma.subscription` directly from UI code.
 - Client-side: fetch `GET /api/user/plan` (mirrors the `password-status` pattern).
 - Pricing page lives at `/subscription`, rendered by `src/components/SubscriptionPlans.tsx` (4-column classic layout). Styles: `src/assets/scss/blocks/_subscription.scss`.
+- **In-app pricing modal:** `src/components/SubscriptionModal.tsx` wraps `<SubscriptionPlans showHeader={false} />` in a `wide` `Modal` and overrides `LoginContext` so a 401 from create-invoice closes the plans and hands off to login. It is the **in-app** pricing surface; the `/subscription` page is kept as the canonical SEO URL (linked from Terms/Refund). Entry points: home reading-gate (`onBlockedFree` in `HomePageClient`), and the profile's **Current plan**, **Reading Credits**, and reader **"upgrade to unlock"** edit actions (all `setIsSubscriptionOpen(true)` in `UserProfile`). It needs an ambient `LoginContext` (PageShell provides one; the home page passes `onRequestLogin` explicitly since its tree has none).
+- **KNOWN BUG (open):** `SubscriptionPlans` hardcodes the FREE card as "Current plan" for everyone — it does not read the user's real plan, so a MONTHLY/YEARLY subscriber still sees Free marked active. Fix: fetch `GET /api/user/plan` and mark the matching tier. (See `TODO.md`.)
 - **Payment BACKEND is wired** (Plata by mono). `POST /api/payments/create-invoice` + signature-verified `POST /api/payments/webhook` create invoices and activate the `Subscription` server-side on confirmed payment. See `docs/features/mono-payments.md` for the full design. Schema extended with payment fields + a `Payment` ledger model (migrations 2026-06-25).
 - **Payment FRONTEND is wired** (initiate + result page). `SubscriptionPlans.tsx` CTAs POST `/api/payments/create-invoice { planId }` and redirect the browser to Mono's `pageUrl` (per-button busy state; 401 → opens the branded login modal via `LoginContext`; other errors → visible `subscription__error` message). Mono redirects back to the top-level `/payment/result` page (`src/app/payment/`, outside `[locale]`, English-only, `middleware` bypasses it like the legal pages). That page re-checks `GET /api/user/plan` every ~1s for ~10s — confirming from server state (`paymentStatus`/`pendingPlanId`), never from the URL — and shows tier-active / credit-added / still-processing. `GET /api/user/plan` was extended to return `{ planId, readingCredits, paymentStatus, pendingPlanId }` (superset — the `{ planId }` shape still holds) via `getSubscriptionStatus` in `subscription.ts`. Still NOT built (separate slices): consuming `readingCredits` in the reading flow, free-tier gating, recurring renewal.
 - **Pricing:** SINGLE €1 is a consumable reading credit (`readingCredits`), NOT a tier. MONTHLY €5 / YEARLY €39 set `planId`. Recurring renewal is not built and is blocked on monobank enabling tokenization.
@@ -265,6 +267,17 @@ Each file keeps its existing direction (offer-block/tarot/header are mobile-firs
 - UserProfile shows current reader name with a "→ Choose Your Reader" button that closes the profile modal and opens the reader selection modal. Both `page.tsx` and `PageShell.tsx` wire up the `ReaderSelectionModal`.
 - **All three locales have reader translations.** English, Norwegian, and Russian `readings.json` files all have a `readers` block and corresponding UI keys in `ui.json`. Russian reader and UI translations need polish — quality is rough.
 - **Adding a new reader:** Add an entry to `READERS` in `src/lib/readers.ts`, add the matching block to `messages/{locale}/readings.json` under `"readers.{newId}"` (same structure as existing readers: displayName, title, tagline, bio, intros, bridges, futureBridges, closings, pastPrefix, presentPrefix, futurePrefix). The selection UI and reading generator pick it up automatically.
+
+## User Profile
+
+- Standalone page at `/[locale]/profile` (`ProfilePageClient` → `PageShell` → `UserProfile`). `PageShell` provides the ambient `LoginContext` and the login modal; unauthenticated visitors are redirected to `/`.
+- **Field-row + edit-icon pattern:** every field is a `.user-profile__field--row` (label left, value + pencil `__edit-icon` right). The pencil opens the relevant editor. Rows: Name, Email (no editor), Current plan, Reading Credits, Renewal (only for MONTHLY/YEARLY), Deck, Reader, Language, Password.
+- **Editors are modals** (all portal to `document.body` via `Modal`):
+  - **Name** and **Password** → small modals built with the shared **auth-form styles** (`.form` / `.form__input-block` / `.form__label` / `.form__input`, full-width `.btn form__btn` Save + bordered `form__btn--google` Cancel). They deliberately reuse the login modal's look; there is no bespoke `.user-profile__edit*` styling anymore. `.form__success` (green, mirrors `.form__error`) was added for the password-updated message.
+  - **Language** → the `.options-modal` radio list + Save (same component the header `LanguageSwitcher` uses).
+  - **Deck** → `<DeckSelector inModal />`; **Reader** → `<ReaderSelectionModal>`; **Current plan / Reading Credits / reader upgrade** → `<SubscriptionModal>` (see Subscription §).
+- Data load on mount: `GET /api/user/{plan,reader,deck,password-status}`. Plan/credits/renewal come from `GET /api/user/plan` (`getSubscriptionStatus`). Auto-renew toggle → `PATCH /api/user/subscription`.
+- **Gotcha:** because these modals portal outside `.user-profile`, any style they use must be a top-level selector, not nested under `.user-profile` — that's why the shared form controls live in `_form.scss` and `.options-modal` is a top-level block in `_user-profile.scss`.
 
 ## Legal Pages (Privacy / Terms / Cookie Policy / Refund)
 
