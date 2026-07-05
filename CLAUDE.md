@@ -62,6 +62,10 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 - Copy-paste content goes in a fenced code block, **never** a `>` blockquote (the `>` chars and border get copied).
 - Never say "it doesn't exist" from a narrow search — grep broadly; if still not found, say "I can't find it — where are you seeing it?"
 
+**Commit messages.**
+- "Give me a commit message" means for the **currently uncommitted changes only** — run `git status` first. The user commits after each ask, so NEVER bundle in prior/already-committed work.
+- Keep it short and match the size of the change. A routine CSS/UI tweak gets a **one-line subject, no body** (`fix(layout): pin footer to bottom on short pages`). Don't write a multi-paragraph rationale/"engineering novel" for a small job. Add a body only for genuinely complex or non-obvious changes.
+
 **Don't touch — the user owns these.**
 - Vercel platform: never run `vercel` writes / deploys / env changes — guide via the **dashboard**. Editing local `.env` / `.env.local` is fine. (Git writes: never — see Rules.)
 - Solo project — Olena is the only account holder (Vercel, Google Cloud, Zoho, OpenAI). Don't prescribe team-style secret rotation; rotate only on a real leak. "Sensitive" flags are UI hygiene only. Explain console jargon (OAuth client, IAM, credentials) in plain language.

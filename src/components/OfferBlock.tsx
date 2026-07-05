@@ -28,6 +28,19 @@ type OfferBlockProps = {
 
 let hasPlayedIntro = false;
 
+// Shared with CookieBanner: signals the intro animation is playing so the banner
+// doesn't pop over it. `theveil:intro-done` fires when the interactive cards/CTA
+// screen begins animating in (or immediately on skip).
+type WindowWithIntro = Window & { __theveilIntroPlaying?: boolean };
+const INTRO_DONE_EVENT = "theveil:intro-done";
+
+const finishIntro = () => {
+    const w = window as WindowWithIntro;
+    if (!w.__theveilIntroPlaying) return;
+    w.__theveilIntroPlaying = false;
+    window.dispatchEvent(new Event(INTRO_DONE_EVENT));
+};
+
 export const OfferBlock = ({
    onOpenLogin,
    onOpenSubscription,
@@ -42,6 +55,9 @@ export const OfferBlock = ({
         if (typeof window === "undefined") return false;
         const skip = hasPlayedIntro;
         hasPlayedIntro = true;
+        // Tell the cookie banner an intro is animating so it waits until it ends
+        // (see CookieBanner). Runs in render, before the banner's mount effect.
+        if (!skip) (window as WindowWithIntro).__theveilIntroPlaying = true;
         return skip;
     });
     const [isLoaded, setIsLoaded] = useState(skipIntro);
@@ -141,7 +157,15 @@ export const OfferBlock = ({
                         <div className="offer-block__screen offer-block__screen--moon">
                             <div className="moon"></div>
                         </div>
-                        <div className="offer-block__screen offer-block__screen--cards">
+                        <div
+                            className="offer-block__screen offer-block__screen--cards"
+                            onAnimationStart={(e) => {
+                                // Fires when the cards/CTA screen begins animating in (after its
+                                // 8s delay). Reveal the banner now so consent is up as soon as the
+                                // interactive content appears, not only after the full intro ends.
+                                if (e.animationName === "offerBlockCardBlockAnimation") finishIntro();
+                            }}
+                        >
                             <div className="offer-block__screen-bg">
                                 <div className="offer-block__screen-bg-inner-wrap">
                                     <Medallion1/>
