@@ -86,6 +86,10 @@
   height: 100%;
   padding: 20px;
   z-index: 1;
+
+  @include respond-below(sm) {
+    padding: 8px;
+  }
 }
 
 .tarot__title {
@@ -141,6 +145,18 @@
     &:nth-child(3) {
       animation-delay: 2.6s;
       transform: translate(-10px, 20px) rotate(10deg);
+    }
+  }
+
+  @include respond-below(sm) {
+    gap: 6px;
+
+    // Cards grow to fill the width reclaimed by the smaller padding + gap,
+    // keeping the 100:160 card ratio.
+    .animated-card {
+      width: calc((100% - 12px) / 3) !important;
+      height: auto !important;
+      aspect-ratio: 100 / 160;
     }
   }
 }

@@ -1,16 +1,17 @@
+// Small horizontally-centered consent card (not a full-width bar). Its top edge
+// starts at the vertical middle of the screen and grows downward (auto height).
 .cookie-banner {
   position: fixed;
-  inset-inline: 0;
-  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-inline: auto;
+  width: calc(100% - 32px);
+  max-width: 400px;
   z-index: 60; // above the overlay footer (50), below modals (100)
   background-color: var(--bg);
-  border-top: var(--border);
-  border-image: repeating-linear-gradient(
-    90deg,
-    rgba(250, 225, 163, 0.55),
-    transparent,
-    rgba(250, 225, 163, 0.55) 14px
-  ) 1;
+  border: var(--border);
+  border-radius: var(--border-radius);
   backdrop-filter: blur(6px);
   animation: cookieBannerSlideIn 0.45s ease-out both;
 
@@ -24,7 +25,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 1rem;
-  padding-block: 1.25rem;
+  padding: 1.25rem;
 }
 
 .cookie-banner__message {
@@ -77,24 +78,6 @@
 
   &--accept:hover {
     background-color: rgba(250, 225, 163, 0.2);
-  }
-}
-
-@media (min-width: 700px) {
-  .cookie-banner__inner {
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    padding-block: 1rem;
-  }
-
-  .cookie-banner__message {
-    flex: 1;
-    font-size: 15px;
-  }
-
-  .cookie-banner__actions {
-    flex-shrink: 0;
   }
 }
 

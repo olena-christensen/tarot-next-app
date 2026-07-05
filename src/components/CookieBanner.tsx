@@ -6,6 +6,10 @@ import Link from "next/link";
 
 const STORAGE_KEY = "theveil_cookie_consent";
 const RESET_EVENT = "theveil:cookie-consent-reset";
+// Set by OfferBlock while the intro animation plays; `theveil:intro-done` fires
+// when it ends. The banner waits for that so it doesn't pop over the intro.
+const INTRO_DONE_EVENT = "theveil:intro-done";
+const INTRO_FALLBACK_MS = 15000;
 
 type Consent = "accepted" | "rejected";
 
@@ -18,14 +22,34 @@ export const CookieBanner = () => {
   useEffect(() => {
     setIsMounted(true);
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    setIsVisible(!stored);
+
+    let fallback: number | undefined;
+    const reveal = () => {
+      window.clearTimeout(fallback);
+      setIsVisible(true);
+    };
+
+    if (!stored) {
+      if ((window as Window & { __theveilIntroPlaying?: boolean }).__theveilIntroPlaying) {
+        // Intro is animating — wait for it to finish. Fallback so a missed
+        // event can never leave the banner permanently hidden.
+        window.addEventListener(INTRO_DONE_EVENT, reveal, { once: true });
+        fallback = window.setTimeout(reveal, INTRO_FALLBACK_MS);
+      } else {
+        setIsVisible(true);
+      }
+    }
 
     const handleReset = () => {
       setIsClosing(false);
       setIsVisible(true);
     };
     window.addEventListener(RESET_EVENT, handleReset);
-    return () => window.removeEventListener(RESET_EVENT, handleReset);
+    return () => {
+      window.removeEventListener(RESET_EVENT, handleReset);
+      window.removeEventListener(INTRO_DONE_EVENT, reveal);
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   const dismiss = (choice: Consent) => {
@@ -42,7 +66,7 @@ export const CookieBanner = () => {
       role="region"
       aria-label={t("cookieBannerAriaLabel")}
     >
-      <div className="cookie-banner__inner container">
+      <div className="cookie-banner__inner">
         <p className="cookie-banner__message">
           {t("cookieBannerMessage")}{" "}
           <Link href="/cookie-policy" className="cookie-banner__link">

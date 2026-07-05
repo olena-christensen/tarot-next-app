@@ -1,5 +1,5 @@
 .profile-page {
-  padding: 160px 0 100px;
+  padding: 160px 0 0;
   background-color: var(--bg);
   color: var(--primary);
   font-family: var(--font-family);
@@ -12,7 +12,7 @@
     // 132px top clears the ~96px absolute header + a comfortable gap before the
     // title; 1.5rem sides restore horizontal padding (the `0` above otherwise
     // clobbers the `.container` padding on this same element).
-    padding: 132px 1.5rem 80px;
+    padding: 132px 1.5rem 0;
   }
 
   &__title {
@@ -112,11 +112,15 @@
   }
 
   .user-profile__danger-zone {
-    margin-top: 3rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+
+    @include respond-above(md) {
+      margin-top: 2rem;
+    }
   }
 
   .user-profile__danger-zone-title {
@@ -229,7 +233,7 @@
     color: var(--primary);
     background-color: transparent;
     border: var(--border);
-    border-radius: 999px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
 
