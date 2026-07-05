@@ -1,6 +1,6 @@
 .legal-page {
   padding-top: 160px;
-  min-height: 100dvh;
+  padding-bottom: 3rem;
 
   @include respond-below(md) {
     padding-top: 120px;
