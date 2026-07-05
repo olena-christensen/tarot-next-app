@@ -160,6 +160,14 @@
     font-size: clamp(1.75rem, 9vw, 42px); // shrink only where 42px would overflow (long localized words)
     z-index: 1;
     transform: translate(-50%, -100%);
+
+    // Long locales (e.g. Ukrainian "Дізнайтеся свою Долю") wrap to two lines and
+    // the taller title overlaps the reader portrait below. Tighten it on mobile.
+    @include respond-below(sm) {
+      gap: 0.35rem;      // row-gap between wrapped title lines
+      line-height: 1.05;
+      font-size: clamp(1.5rem, 7.5vw, 34px);
+    }
   }
 
   .animated-card {

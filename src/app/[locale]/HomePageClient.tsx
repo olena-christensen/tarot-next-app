@@ -10,6 +10,16 @@ import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
+import { useAppContext } from "@/AppProvider";
+
+// The cards/reading screen (.tarot-modal) is a full screen, not a page — no
+// footer belongs over it. Hidden while the cards modal is open (incl. its
+// closing fade, which keeps isCardsModalOpen true).
+function HomeFooter() {
+  const { state } = useAppContext();
+  if (state.isCardsModalOpen) return null;
+  return <Footer overlay />;
+}
 
 export function HomePageClient() {
   const t = useTranslations("ui");
@@ -29,7 +39,7 @@ export function HomePageClient() {
         onOpenLogin={() => setIsLoginOpen(true)}
         onOpenSubscription={() => setIsSubscriptionOpen(true)}
       />
-      <Footer overlay />
+      <HomeFooter />
       <Modal
         title={t("stepThroughTheVeil")}
         isOpen={isLoginOpen}
