@@ -229,7 +229,7 @@
     color: var(--primary);
     background-color: transparent;
     border: var(--border);
-    border-radius: 999px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
 
