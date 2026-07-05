@@ -77,6 +77,15 @@ export const OfferBlock = ({
         setIsLoaded(true);
     }, []);
 
+    // Arriving from the reader modal's Summon (on another page): reveal the deck,
+    // same as clicking Summon here. Cross-fades reader → deck via the CSS transition.
+    useEffect(() => {
+        if (sessionStorage.getItem("theveil_reveal_deck") === "1") {
+            sessionStorage.removeItem("theveil_reveal_deck");
+            setIsDeckRevealed(true);
+        }
+    }, []);
+
     useEffect(() => {
         if (session) {
             fetch("/api/user/plan")

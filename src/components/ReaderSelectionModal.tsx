@@ -3,10 +3,15 @@
 import { useState, useEffect } from "react";
 import { useTranslations, useMessages } from "next-intl";
 import { useSession } from "next-auth/react";
+import { useRouter } from "@/i18n/navigation";
 import { useAppContext } from "@/AppProvider";
 import { Modal } from "@/components/Modal";
 import { ReaderSelection } from "@/components/ReaderSelection";
 import { type ReaderId } from "@/lib/readers";
+
+// Read + cleared by OfferBlock on the home page to reveal the deck on arrival —
+// makes the modal's Summon behave like the main-page Summon (go home, show deck).
+const REVEAL_DECK_KEY = "theveil_reveal_deck";
 
 type ReaderSelectionModalProps = {
   isOpen: boolean;
@@ -23,6 +28,7 @@ export const ReaderSelectionModal = ({
   const messages = useMessages();
   const { data: session, update } = useSession();
   const { state, setState } = useAppContext();
+  const router = useRouter();
 
   // Premium readers are unlocked for paid tiers (MONTHLY/YEARLY). Read the real
   // plan from the server; refresh whenever the modal opens so a just-purchased
@@ -69,10 +75,13 @@ export const ReaderSelectionModal = ({
     persistReader(readerId);
   };
 
-  // Summon button: choose and close.
+  // Summon button: choose, then go to the home page and reveal the deck —
+  // same outcome as clicking Summon on the main page.
   const handleSelect = (readerId: ReaderId) => {
     persistReader(readerId);
     onClose();
+    sessionStorage.setItem(REVEAL_DECK_KEY, "1");
+    router.push("/");
   };
 
   if (!messages?.readers) return null;

@@ -11,6 +11,7 @@
 
   @include respond-below(sm) {
     gap: 1rem;
+    padding-top: 0.5rem;
   }
   opacity: 0;
   transform: translateY(-20px);

@@ -1,5 +1,18 @@
 # Project: Tarot Next App
 
+## ⚠️ THIS APP IS MOBILE-FIRST — MOBILE-FIRST — MOBILE-FIRST
+
+**Every responsive style in this project is MOBILE-FIRST.** Base styles target
+mobile; you scale **UP** with `respond-above` / `min-width`. This is not a
+preference and it is not up for debate:
+
+- **DO** write the mobile layout as the base, then add `@include respond-above(...)` for larger screens.
+- **DO NOT** write desktop-first styles. **DO NOT** use `respond-below` as the default. **DO NOT** flip an existing `respond-above` to `respond-below`.
+- **DO NOT** label the app "desktop-first," argue mobile-first vs desktop-first, or lecture about either. Mobile-first. Full stop.
+
+Mobile-first, mobile-first, mobile-first. If you are about to write a
+`max-width` media query as the default, stop — you are doing it wrong.
+
 ## Infrastructure
 
 - **Hosting:** Vercel (paid plan)
@@ -218,7 +231,7 @@ Each file keeps its existing direction (offer-block/tarot/header are mobile-firs
 - **Translation JSON files use namespaced top-level keys** (e.g., `{"ui": {...}}`). The namespace must match what `useTranslations("ui")` expects.
 - **Migration history was baselined on 2026-04-07.** Earlier tables (Account, Session, User, etc.) were originally created via `db push`, so a baseline migration `20240101000000_baseline` plus markers for `add_user_created_at` and `add_terms_accepted_at` were added retroactively and `migrate resolve --applied` was used to record them. From here on, use `prisma migrate dev` for all schema changes.
 - **Z-index layer scale (keep separated, do NOT collapse to equal values):** content ≤2 → `.main-header` 30 → `.tarot-modal` (full-screen reading screen) 40 → `.main-footer--overlay` 50 → `.cookie-banner` 60 → `.loader` 70 → `.modal` 100 → `.language-switcher` dropdown 200. `Modal.tsx` **portals to `document.body`** so popups escape parent stacking contexts (especially the fixed `.tarot-modal`) and layer globally.
-- **Single overlay footer.** There is ONE `<Footer overlay />`, rendered in `HomePageClient` as a sibling of `<main>` (NOT inside `<main>`, `OfferBlock`, or `Tarot`). Don't re-nest it — a `<footer>` inside `<main>` is the bug this fixed. On the home screen the offer-block reserves footer space via `.inner-wrap` (`bottom: 108px` <sm / `125px` ≥sm), NOT page padding — a `position: fixed` footer can't be pushed by padding, and offer-block children are absolutely positioned.
+- **Single overlay footer.** There is ONE `<Footer overlay />`, rendered in `HomePageClient` as a sibling of `<main>` (NOT inside `<main>`, `OfferBlock`, or `Tarot`). Don't re-nest it — a `<footer>` inside `<main>` is the bug this fixed. The offer-block's reader/deck band (`.inner-wrap`) is top-anchored (`top: 25%` <900px, `top: 32%` ≥900px), NOT bottom-anchored — offer-block children are absolutely positioned.
 - **Never gate a component that owns open modals on `status === "authenticated"`.** NextAuth's `update()` (called when persisting a preference — reader, deck, locale, etc.) flips `useSession().status` to `"loading"` mid-flight. A gate like `{status === "authenticated" && <UserProfile/>}` then unmounts the whole subtree — including any open `Modal` and its local `useState` (e.g. `isReaderSelectOpen`) — and remounts it a beat later with the modal closed. This looked like "the modal closes itself" with no `onClose` in the path. Gate on `session?.user` instead (session data persists across an `update()`); handle the unauthenticated case with a redirect effect. `ProfilePageClient.tsx` uses this pattern — don't reintroduce the `status`-based gate.
 
 ## Subscription / Pricing

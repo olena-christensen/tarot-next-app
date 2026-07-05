@@ -66,7 +66,7 @@ export const CookieBanner = () => {
       role="region"
       aria-label={t("cookieBannerAriaLabel")}
     >
-      <div className="cookie-banner__inner container">
+      <div className="cookie-banner__inner">
         <p className="cookie-banner__message">
           {t("cookieBannerMessage")}{" "}
           <Link href="/cookie-policy" className="cookie-banner__link">

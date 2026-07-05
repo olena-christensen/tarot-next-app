@@ -63,22 +63,13 @@
     .inner-wrap {
       position: absolute;
       left: 50%;
-      // Reserve space for the fixed overlay footer (measured: 108px < sm, 125px ≥ sm).
-      // Raising `bottom` while shrinking `height` keeps the band's TOP edge fixed,
-      // so only the reader/deck lift up — the moon + title animation is untouched.
-      bottom: 108px;
+      top: 25%;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: calc(70% - 108px);
       transform: translate(-50%, 0);
       transition: opacity 0.8s ease, transform 0.8s ease;
-
-      @include respond-above(sm) {
-        bottom: 125px;
-        height: calc(70% - 125px);
-      }
     }
 
     .inner-wrap--reader {
@@ -373,8 +364,6 @@
 
       .inner-wrap {
         top: 32%;
-        bottom: unset;
-        height: unset;
       }
 
       .hand {
