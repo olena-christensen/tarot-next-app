@@ -50,7 +50,9 @@ export const UserProfile = () => {
   const [credits, setCredits] = useState<number>(0);
   const [subSaving, setSubSaving] = useState(false);
   const [deckId, setDeckId] = useState<string | null>(null);
-  const [readerId, setReaderId] = useState<ReaderId | null>(null);
+  // Reader is read straight from the session (reactive) so the modal's
+  // update({ preferredReader }) reflects here immediately — same as language via useLocale().
+  const readerId = (session?.user?.preferredReader ?? null) as ReaderId | null;
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
@@ -96,21 +98,6 @@ export const UserProfile = () => {
       }
     }
     loadPlan();
-  }, []);
-
-  useEffect(() => {
-    async function loadReader() {
-      try {
-        const res = await fetch("/api/user/reader");
-        if (res.ok) {
-          const data = await res.json();
-          setReaderId(data.reader as ReaderId);
-        }
-      } catch {
-        // silent — UI falls back to "—"
-      }
-    }
-    loadReader();
   }, []);
 
   useEffect(() => {
