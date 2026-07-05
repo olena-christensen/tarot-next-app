@@ -279,6 +279,7 @@ Each file keeps its existing direction (offer-block/tarot/header are mobile-firs
   - **Deck** → `<DeckSelector inModal />`; **Reader** → `<ReaderSelectionModal>`; **Current plan / Reading Credits / reader upgrade** → `<SubscriptionModal>` (see Subscription §).
 - Data load on mount: `GET /api/user/{plan,reader,deck,password-status}`. Plan/credits/renewal come from `GET /api/user/plan` (`getSubscriptionStatus`). Auto-renew toggle → `PATCH /api/user/subscription`.
 - **Gotcha:** because these modals portal outside `.user-profile`, any style they use must be a top-level selector, not nested under `.user-profile` — that's why the shared form controls live in `_form.scss` and `.options-modal` is a top-level block in `_user-profile.scss`.
+- **Gotcha — display NextAuth-backed preferences from the session, not a mount-only fetch.** When an editor modal persists a preference via `update({ preferredX })`, the profile field must read that value from `session.user.preferredX` (reactive — re-renders on `update()`) so the change shows immediately, the same way Language reads `useLocale()`. Both Reader and Deck were previously loaded once into local state via `GET /api/user/{reader,deck}` on mount, so changing them from their modals left the profile showing the stale value until a reload (fixed 2026-07-05 — they now read `session.user.preferredReader` / `session.user.preferredDeck`). Keep any future preference field on this session-reactive pattern.
 
 ## Legal Pages (Privacy / Terms / Cookie Policy / Refund)
 

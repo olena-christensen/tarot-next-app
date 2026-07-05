@@ -19,11 +19,13 @@ export const PageShell = ({ children }: PageShellProps) => {
 
   return (
     <Providers>
-      <Header onOpenLogin={() => setIsLoginOpen(true)} />
-      <LoginContext.Provider value={() => setIsLoginOpen(true)}>
-        {children}
-      </LoginContext.Provider>
-      <Footer />
+      <div className="page-shell">
+        <Header onOpenLogin={() => setIsLoginOpen(true)} />
+        <LoginContext.Provider value={() => setIsLoginOpen(true)}>
+          {children}
+        </LoginContext.Provider>
+        <Footer />
+      </div>
       <Modal
         title={t("stepThroughTheVeil")}
         isOpen={isLoginOpen}

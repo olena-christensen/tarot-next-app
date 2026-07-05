@@ -23,6 +23,19 @@ div#root {
   min-height: 100dvh;
 }
 
+// Sticky-footer shell for standard pages (Header + content + Footer).
+// A short page (e.g. Contact) pins the footer to the viewport bottom;
+// a tall page (legal docs) lets it flow after the content.
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+
+  .main-footer {
+    margin-top: auto;
+  }
+}
+
 .list {
   @include list-style;
 }

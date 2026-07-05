@@ -49,8 +49,10 @@ export const UserProfile = () => {
   const [autoRenew, setAutoRenew] = useState<boolean>(true);
   const [credits, setCredits] = useState<number>(0);
   const [subSaving, setSubSaving] = useState(false);
-  const [deckId, setDeckId] = useState<string | null>(null);
-  const [readerId, setReaderId] = useState<ReaderId | null>(null);
+  // Deck and reader are read straight from the session (reactive) so their editor
+  // modals' update({ preferredX }) reflects here immediately — same as language via useLocale().
+  const deckId = session?.user?.preferredDeck ?? null;
+  const readerId = (session?.user?.preferredReader ?? null) as ReaderId | null;
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
@@ -96,36 +98,6 @@ export const UserProfile = () => {
       }
     }
     loadPlan();
-  }, []);
-
-  useEffect(() => {
-    async function loadReader() {
-      try {
-        const res = await fetch("/api/user/reader");
-        if (res.ok) {
-          const data = await res.json();
-          setReaderId(data.reader as ReaderId);
-        }
-      } catch {
-        // silent — UI falls back to "—"
-      }
-    }
-    loadReader();
-  }, []);
-
-  useEffect(() => {
-    async function loadDeck() {
-      try {
-        const res = await fetch("/api/user/deck");
-        if (res.ok) {
-          const data = await res.json();
-          setDeckId(data.deck);
-        }
-      } catch {
-        // silent — UI falls back to "—"
-      }
-    }
-    loadDeck();
   }, []);
 
   const handleEditName = () => {
