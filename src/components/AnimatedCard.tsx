@@ -14,6 +14,13 @@ type PropsType = {
     isGlowing?: boolean;
     disabled?: boolean;
     onClickAction?: () => void;
+    /**
+     * When false, a click does NOT trigger this card's own flip/spin — the
+     * parent drives the animation instead (e.g. the main-page deck, whose spin
+     * is gated on the reading actually proceeding via `isDeckShaking`). Without
+     * this the deck would spin on every click even when the reading is blocked.
+     */
+    interactive?: boolean;
 };
 
 export default function AnimatedCard({
@@ -28,6 +35,7 @@ export default function AnimatedCard({
  isGlowing,
  disabled,
  onClickAction,
+ interactive = true,
 }: PropsType) {
     const { state, setState } = useAppContext();
     const [isAnimating, setIsAnimating] = useState(false);
@@ -72,7 +80,7 @@ export default function AnimatedCard({
             className={`animated-card${isFlipped ? " flipped" : ""}${isGlowing && !isFlipped ? " glowing" : ""}`}
             style={style}
             onClick={() => {
-                if (!isFlipped && !disabled) handleClick();
+                if (interactive && !isFlipped && !disabled) handleClick();
             }}
         >
             <div className="animated-card__wrap" style={animationStyle}>

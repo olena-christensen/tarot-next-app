@@ -22,8 +22,12 @@ import { Loader } from "@/components/Loader";
 import { useReadingGate } from "@/hooks/useReadingGate";
 
 type OfferBlockProps = {
+    // Direct openers — used by the "change your reader" / reader-upgrade actions.
     onOpenLogin: () => void;
     onOpenSubscription: () => void;
+    // Reading-gate blocks — routed through the in-character ReadingGateModal first.
+    onBlockedAnon: () => void;
+    onBlockedFree: () => void;
 };
 
 let hasPlayedIntro = false;
@@ -44,6 +48,8 @@ const finishIntro = () => {
 export const OfferBlock = ({
    onOpenLogin,
    onOpenSubscription,
+   onBlockedAnon,
+   onBlockedFree,
 }: OfferBlockProps) => {
     const { data: session, update } = useSession();
     const { state, setState } = useAppContext();
@@ -69,8 +75,8 @@ export const OfferBlock = ({
     const messages = useMessages() as any;
     const tReader = useTranslations("readers");
     const { beginReading } = useReadingGate({
-        onBlockedAnon: onOpenLogin,
-        onBlockedFree: onOpenSubscription,
+        onBlockedAnon,
+        onBlockedFree,
     });
 
     useEffect(() => {
@@ -255,6 +261,7 @@ export const OfferBlock = ({
                                         isDeckShaking={isDeckShaking}
                                         isGlowing={!isDeckShaking && !state.isCardsModalOpen}
                                         animation="cardTwistAnimation 3s infinite"
+                                        interactive={false}
                                     />
                                     <div className="hand"><Hand/></div>
                                 </div>
