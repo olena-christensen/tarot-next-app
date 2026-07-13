@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
 import { LoginContext } from "@/components/LoginContext";
+import { MysticBackground } from "@/components/MysticBackground";
 import Footer from "@/components/Footer";
 
 type PageShellProps = {
@@ -19,6 +20,7 @@ export const PageShell = ({ children }: PageShellProps) => {
 
   return (
     <Providers>
+      <MysticBackground />
       <div className="page-shell">
         <Header onOpenLogin={() => setIsLoginOpen(true)} />
         <LoginContext.Provider value={() => setIsLoginOpen(true)}>

@@ -60,6 +60,7 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 ## Working Style
 
 **Do exactly what's asked; minimal interpretation.**
+- 🚫 **NEVER start work you were not explicitly asked to do. This is the hardest rule in this file.** Do the one thing requested, then **STOP and wait**. No extras, no "while I'm here," no previews, no screenshots, no demos, no mocking states, no verifying-adjacent things, no follow-on cleanup beyond the task, no "let me also…". Answering a question = answer it and stop; giving a URL = give it and stop. Unrequested work **wastes the user's time** and is treated as a failure regardless of how useful it seems. If you believe something else is worth doing, **ask in one sentence and wait for a yes** — do not begin it. If the user says "stop," stop **immediately and completely** — do not drift back into the same thing under the guise of cleanup or "just finishing."
 - Follow the literal request; don't expand scope or refactor unasked. "Use same SVG" = the SVG file, not the component wrapping it.
 - A pasted error or observation is **information, not a work order** — diagnose and explain it, and ask before touching code (especially anything outside the stated task). Check whether the cause is even in the code (e.g. a `WebGL context` error was browser context-exhaustion from a long HMR session — fixed by restarting the browser, zero code change).
 - Never change the behavior of a feature the user didn't ask about, and don't make product/design calls (e.g. "degrade silently") — surface the option and let them decide.
@@ -172,6 +173,7 @@ In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in 
 
 ## Internationalization (i18n)
 
+- **⚠️ Finalization gate — every task that touches code must end with a translation check.** Before calling any code-touching task done, ask: did this add or change a user-facing string, a new key, or a new namespace? If yes, it is NOT finished until that string exists in **all** locales (`en`/`no`/`ru`/`uk`/`tr`) — never leave EN-only keys or English placeholders in the other files. A new namespace also needs the `request.ts` import line. This is part of "done," not a follow-up. (Coverage can be verified with a key-by-key audit against EN — 0 missing, 0 empty, 0 leftover-English except intentional brand/proper-noun keys.)
 - **Library:** `next-intl` v3 (pinned for Next.js 14 compatibility)
 - **Supported locales:** `en` (default), `no` (Norwegian), `ru` (Russian), `uk` (Ukrainian), `tr` (Turkish). EN is the source of truth; other locales may have partial / placeholder fallback content (especially `tr`, `uk`).
 - **Routing:** URL prefix-based (`/en/`, `/no/`, `/ru/`, `/uk/`, `/tr/`). Middleware auto-detects from browser `Accept-Language`, user can override via the header language picker. `LanguageSwitcher` (the header globe) opens a **modal** (the shared `.options-modal` radio list + Save, same UI as the profile's language field) — the choice applies only on **Save**, not instantly on click. It persists via `PATCH /api/user/locale` for signed-in users (best-effort) and switches the route.

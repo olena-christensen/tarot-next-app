@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { MysticBackground } from "@/components/MysticBackground";
 
 type PlanStatus = {
   planId: "FREE" | "SINGLE" | "MONTHLY" | "YEARLY";
@@ -129,6 +130,7 @@ export const PaymentResult = () => {
 
   return (
     <main className="payment-result">
+      <MysticBackground />
       <div className="payment-result__inner">
         {phase === "checking" && (
           <div className="payment-result__spinner" aria-hidden="true" />

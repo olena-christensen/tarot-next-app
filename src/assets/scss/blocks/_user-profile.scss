@@ -1,6 +1,7 @@
 .profile-page {
   padding: 160px 0 0;
-  background-color: var(--bg);
+  // No background: body already paints var(--bg); staying transparent lets the
+  // shared <MysticBackground /> (fixed, behind content) show through.
   color: var(--primary);
   font-family: var(--font-family);
   font-weight: var(--font-weight);

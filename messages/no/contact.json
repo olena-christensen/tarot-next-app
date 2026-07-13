@@ -1,41 +1,41 @@
 {
   "contact": {
-    "metaTitle": "Contact The Veil",
-    "metaDescription": "Reach out to The Veil — questions, data requests, legal notices.",
-    "heading": "Contact",
-    "intro": "Send a message and we'll get back to you. For data-protection requests (export, deletion, correction), pick the matching category so it routes to the right inbox.",
+    "metaTitle": "Kontakt The Veil",
+    "metaDescription": "Ta kontakt med The Veil — spørsmål, dataforespørsler, juridiske henvendelser.",
+    "heading": "Kontakt",
+    "intro": "Send oss en melding, så svarer vi deg. For personvernforespørsler (eksport, sletting, retting) velger du riktig kategori slik at den havner i rett innboks.",
     "fields": {
-      "name": "Name",
-      "email": "Email",
-      "category": "Reason",
-      "message": "Message"
+      "name": "Navn",
+      "email": "E-post",
+      "category": "Årsak",
+      "message": "Melding"
     },
     "placeholders": {
-      "name": "Your name",
-      "email": "you@example.com",
-      "message": "Tell us what's on your mind."
+      "name": "Navnet ditt",
+      "email": "deg@eksempel.no",
+      "message": "Fortell oss hva du tenker på."
     },
     "categories": {
-      "general": "General question",
-      "dsar_access": "Export my data",
-      "dsar_delete": "Delete my data",
-      "dsar_correct": "Correct my data",
-      "legal_ip": "Legal, copyright, or subscription cancellation",
-      "other": "Other"
+      "general": "Generelt spørsmål",
+      "dsar_access": "Eksporter dataene mine",
+      "dsar_delete": "Slett dataene mine",
+      "dsar_correct": "Rett dataene mine",
+      "legal_ip": "Juridisk, opphavsrett eller oppsigelse av abonnement",
+      "other": "Annet"
     },
-    "submit": "Send message",
-    "submitting": "Sending…",
-    "success": "Thanks — your message is on its way. We'll reply to the email you provided.",
-    "errorGeneric": "Something went wrong sending your message. Please try again in a moment.",
+    "submit": "Send melding",
+    "submitting": "Sender…",
+    "success": "Takk — meldingen din er på vei. Vi svarer til e-postadressen du oppga.",
+    "errorGeneric": "Noe gikk galt under sending av meldingen. Prøv igjen om et øyeblikk.",
     "errors": {
-      "nameRequired": "Please enter your name.",
-      "nameTooLong": "Name must be 100 characters or fewer.",
-      "emailRequired": "Please enter your email.",
-      "emailInvalid": "Please enter a valid email address.",
-      "categoryRequired": "Please pick a reason.",
-      "messageRequired": "Please write a message.",
-      "messageTooShort": "Message must be at least 10 characters.",
-      "messageTooLong": "Message must be 5000 characters or fewer."
+      "nameRequired": "Skriv inn navnet ditt.",
+      "nameTooLong": "Navnet kan ikke være lengre enn 100 tegn.",
+      "emailRequired": "Skriv inn e-posten din.",
+      "emailInvalid": "Skriv inn en gyldig e-postadresse.",
+      "categoryRequired": "Velg en årsak.",
+      "messageRequired": "Skriv en melding.",
+      "messageTooShort": "Meldingen må være minst 10 tegn.",
+      "messageTooLong": "Meldingen kan ikke være lengre enn 5000 tegn."
     }
   }
 }

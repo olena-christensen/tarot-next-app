@@ -1,41 +1,41 @@
 {
   "contact": {
-    "metaTitle": "Contact The Veil",
-    "metaDescription": "Reach out to The Veil — questions, data requests, legal notices.",
-    "heading": "Contact",
-    "intro": "Send a message and we'll get back to you. For data-protection requests (export, deletion, correction), pick the matching category so it routes to the right inbox.",
+    "metaTitle": "Зв'язатися із Завісою",
+    "metaDescription": "Зв'яжіться із Завісою — запитання, запити щодо даних, юридичні повідомлення.",
+    "heading": "Контакти",
+    "intro": "Напишіть нам, і ми вам відповімо. Для запитів щодо захисту даних (експорт, видалення, виправлення) оберіть відповідну категорію, щоб звернення потрапило до потрібної скриньки.",
     "fields": {
-      "name": "Name",
-      "email": "Email",
-      "category": "Reason",
-      "message": "Message"
+      "name": "Ім'я",
+      "email": "Ел. пошта",
+      "category": "Причина",
+      "message": "Повідомлення"
     },
     "placeholders": {
-      "name": "Your name",
+      "name": "Ваше ім'я",
       "email": "you@example.com",
-      "message": "Tell us what's on your mind."
+      "message": "Розкажіть, що вас турбує."
     },
     "categories": {
-      "general": "General question",
-      "dsar_access": "Export my data",
-      "dsar_delete": "Delete my data",
-      "dsar_correct": "Correct my data",
-      "legal_ip": "Legal, copyright, or subscription cancellation",
-      "other": "Other"
+      "general": "Загальне запитання",
+      "dsar_access": "Експортувати мої дані",
+      "dsar_delete": "Видалити мої дані",
+      "dsar_correct": "Виправити мої дані",
+      "legal_ip": "Юридичні питання, авторське право або скасування підписки",
+      "other": "Інше"
     },
-    "submit": "Send message",
-    "submitting": "Sending…",
-    "success": "Thanks — your message is on its way. We'll reply to the email you provided.",
-    "errorGeneric": "Something went wrong sending your message. Please try again in a moment.",
+    "submit": "Надіслати повідомлення",
+    "submitting": "Надсилання…",
+    "success": "Дякуємо — ваше повідомлення надіслано. Ми відповімо на вказану вами адресу ел. пошти.",
+    "errorGeneric": "Під час надсилання повідомлення сталася помилка. Будь ласка, спробуйте ще раз за мить.",
     "errors": {
-      "nameRequired": "Please enter your name.",
-      "nameTooLong": "Name must be 100 characters or fewer.",
-      "emailRequired": "Please enter your email.",
-      "emailInvalid": "Please enter a valid email address.",
-      "categoryRequired": "Please pick a reason.",
-      "messageRequired": "Please write a message.",
-      "messageTooShort": "Message must be at least 10 characters.",
-      "messageTooLong": "Message must be 5000 characters or fewer."
+      "nameRequired": "Будь ласка, введіть ваше ім'я.",
+      "nameTooLong": "Ім'я не повинно перевищувати 100 символів.",
+      "emailRequired": "Будь ласка, введіть вашу ел. пошту.",
+      "emailInvalid": "Будь ласка, введіть коректну адресу ел. пошти.",
+      "categoryRequired": "Будь ласка, оберіть причину.",
+      "messageRequired": "Будь ласка, напишіть повідомлення.",
+      "messageTooShort": "Повідомлення має містити щонайменше 10 символів.",
+      "messageTooLong": "Повідомлення не повинно перевищувати 5000 символів."
     }
   }
 }

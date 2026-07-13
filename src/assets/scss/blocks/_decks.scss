@@ -1,7 +1,7 @@
 .decks {
   position: relative;
   padding: 120px 0 80px;
-  background-color: var(--bg);
+  // Transparent so the shared <MysticBackground /> shows through (body paints --bg).
   color: var(--primary);
   font-family: var(--font-family);
   font-weight: var(--font-weight);

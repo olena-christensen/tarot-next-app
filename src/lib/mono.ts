@@ -157,3 +157,31 @@ export async function chargeByToken(
     }),
   });
 }
+
+// ---------------------------------------------------------------------------
+// Invoice status lookup (GET /api/merchant/invoice/status?invoiceId=...)
+//
+// Poll the current status of an invoice. Used by the reconciliation cron to
+// recover a payment whose webhook never arrived — it reads the true status here
+// and applies it through the same path the webhook uses. The response carries
+// the same fields the webhook payload does (status + walletData/paymentInfo).
+// Endpoint per the acquiring OpenAPI: https://api.monobank.ua/docs/acquiring.html
+// ---------------------------------------------------------------------------
+
+export type MonoInvoiceStatus = {
+  invoiceId: string;
+  status: string;
+  amount?: number;
+  ccy?: number;
+  failureReason?: string;
+  walletData?: { cardToken?: string };
+  paymentInfo?: { maskedPan?: string; paymentSystem?: string };
+};
+
+export async function getInvoiceStatus(
+  invoiceId: string
+): Promise<MonoInvoiceStatus> {
+  return monoFetch<MonoInvoiceStatus>(
+    `/api/merchant/invoice/status?invoiceId=${encodeURIComponent(invoiceId)}`
+  );
+}
