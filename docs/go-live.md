@@ -3,7 +3,7 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-07-04 (verified against the codebase, not from memory)
+**Last updated:** 2026-07-05 (UI-polish session — launch-readiness items below unchanged)
 
 ---
 

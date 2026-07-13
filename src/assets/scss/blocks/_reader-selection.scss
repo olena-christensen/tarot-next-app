@@ -168,22 +168,55 @@
     }
   }
 
+  // All bios + the placeholder overlap in a single grid cell, so the stack is
+  // always as tall as the tallest bio (locale-proof, no magic number) and the
+  // modal never reflows when switching readers. Only the active one is opaque.
+  &__bio-stack {
+    display: grid;
+    width: 100%;
+
+    > * {
+      grid-area: 1 / 1;
+      margin: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      &[data-active="true"] {
+        opacity: 1;
+      }
+    }
+  }
+
   &__bio {
-    flex: 1;
     display: flex;
     align-items: center;
     font-size: 1rem;
     line-height: 1.65;
     color: var(--text-soft);
-    margin: 0;
     font-style: italic;
   }
 
   &__placeholder {
     font-size: 0.95rem;
     color: var(--text-faint);
-    margin: 0;
     font-style: italic;
+  }
+
+  // Same overlap trick for the Summon label: all candidate labels share one
+  // grid cell, so the button reserves the widest and never changes width when
+  // switching readers. Only the active label is opaque.
+  &__summon-label-stack {
+    display: grid;
+
+    > span {
+      grid-area: 1 / 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      &[data-active="true"] {
+        opacity: 1;
+      }
+    }
   }
 
   // Current reader: a bead that reads as part of the top border — same colour
@@ -226,8 +259,12 @@
     pointer-events: none;
   }
 
-  @include respond-below(lg) {
-    padding: 40px 20px 32px;
+  // Below md the deck stacks into one column and the summon pane detaches into
+  // a bottom sheet (see below). From md+ the cards sit inline in a row and the
+  // pane goes back inline in the modal flow.
+  @include respond-below(md) {
+    // extra bottom padding so the last card can scroll clear of the fixed sheet
+    padding: 40px 20px 220px;
     gap: 32px;
 
     &__deck {
@@ -239,14 +276,42 @@
       aspect-ratio: auto;
       min-height: 280px;
     }
+
+    // Bio + Summon become a bottom sheet pinned over the card list, so the
+    // chosen reader's info and the action stay in view while scrolling/choosing.
+    // Slid off-screen until a reader is picked; slides up on selection.
+    &__summon-pane {
+      position: fixed;
+      inset: auto 0 0;
+      // portaled to <body>, so it sits above .modal (z-index 100), below the
+      // language-switcher dropdown (200) — consistent with the layer scale.
+      z-index: 110;
+      max-width: none;
+      min-height: 0;
+      gap: 16px;
+      padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+      background: var(--bg);
+      border-top: var(--border);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+      transform: translateY(100%);
+      transition: transform 0.35s ease, opacity 0.35s ease;
+
+      &[data-visible="true"] {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      // No hover on touch — keep the sheet hidden until a reader is chosen.
+      &[data-visible="false"] {
+        opacity: 0;
+        transform: translateY(100%);
+        pointer-events: none;
+      }
+    }
   }
 
   @include respond-below(sm) {
-    padding: 32px 16px 24px;
+    padding: 32px 16px 220px;
     gap: 24px;
-
-    &__summon-pane {
-      gap: 16px;
-    }
   }
 }
