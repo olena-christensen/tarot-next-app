@@ -13,11 +13,11 @@ import {MysticButton} from "@/components/MysticButton";
 import { useReadingGate } from "@/hooks/useReadingGate";
 
 type TarotProps = {
-    onOpenLogin: () => void;
-    onOpenSubscription: () => void;
+    onBlockedAnon: () => void;
+    onBlockedFree: () => void;
 };
 
-export const Tarot = ({ onOpenLogin, onOpenSubscription }: TarotProps) => {
+export const Tarot = ({ onBlockedAnon, onBlockedFree }: TarotProps) => {
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
     const tCards = useTranslations("cards");
@@ -28,8 +28,8 @@ export const Tarot = ({ onOpenLogin, onOpenSubscription }: TarotProps) => {
     const allFlipped = flippedCards.every(card => card);
 
     const { beginReading } = useReadingGate({
-        onBlockedAnon: onOpenLogin,
-        onBlockedFree: onOpenSubscription,
+        onBlockedAnon,
+        onBlockedFree,
     });
 
     const chosenCards = state.chosenCards;

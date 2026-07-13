@@ -7,6 +7,7 @@ import { Tarot } from "@/components/Tarot";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
+import { ReadingGateModal, type GateReason } from "@/components/ReadingGateModal";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
@@ -25,6 +26,14 @@ export function HomePageClient() {
   const t = useTranslations("ui");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
+  const [gateReason, setGateReason] = useState<GateReason | null>(null);
+
+  // The gate speaks in-character first, then hands off to the real wall.
+  const handleGateProceed = (reason: GateReason) => {
+    setGateReason(null);
+    if (reason === "anon") setIsLoginOpen(true);
+    else setIsSubscriptionOpen(true);
+  };
 
   return (
     <Providers>
@@ -33,11 +42,13 @@ export function HomePageClient() {
         <OfferBlock
           onOpenLogin={() => setIsLoginOpen(true)}
           onOpenSubscription={() => setIsSubscriptionOpen(true)}
+          onBlockedAnon={() => setGateReason("anon")}
+          onBlockedFree={() => setGateReason("free")}
         />
       </main>
       <Tarot
-        onOpenLogin={() => setIsLoginOpen(true)}
-        onOpenSubscription={() => setIsSubscriptionOpen(true)}
+        onBlockedAnon={() => setGateReason("anon")}
+        onBlockedFree={() => setGateReason("free")}
       />
       <HomeFooter />
       <Modal
@@ -51,6 +62,11 @@ export function HomePageClient() {
         isOpen={isSubscriptionOpen}
         onClose={() => setIsSubscriptionOpen(false)}
         onRequestLogin={() => setIsLoginOpen(true)}
+      />
+      <ReadingGateModal
+        reason={gateReason}
+        onClose={() => setGateReason(null)}
+        onProceed={handleGateProceed}
       />
     </Providers>
   );
