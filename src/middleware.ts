@@ -18,8 +18,11 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // NB: /payment/result is intentionally NOT here — it now has a real localized
+  // page at /{locale}/payment/result, so a locale prefix must be served, not
+  // stripped back to the unprefixed English page (those legal pages ARE English-only).
   const globalLocaleMatch = routing.locales
-    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy", "/refund", "/payment/result"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
+    .flatMap((loc) => ["/privacy", "/terms", "/cookie-policy", "/refund"].map((p) => ({ loc, target: p, full: `/${loc}${p}` })))
     .find(({ full }) => pathname === full);
   if (globalLocaleMatch) {
     const url = req.nextUrl.clone();

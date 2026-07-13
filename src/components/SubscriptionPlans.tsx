@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { PLAN_ORDER, PLANS, type Plan, type PlanId } from "@/lib/plans";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useOpenLogin } from "@/components/LoginContext";
 
 const intervalSuffix = (interval: Plan["interval"]): string => {
@@ -23,6 +23,7 @@ type SubscriptionPlansProps = {
 export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps) => {
   const t = useTranslations("ui");
   const tPlans = useTranslations("plans");
+  const locale = useLocale();
   const openLogin = useOpenLogin();
 
   // Which plan's invoice request is in flight (null = none). Disables that one
@@ -60,7 +61,9 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
       const res = await fetch("/api/payments/create-invoice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planId }),
+        // Send the current locale so the invoice's redirectUrl points at the
+        // localized /{locale}/payment/result page (Mono's redirect carries none).
+        body: JSON.stringify({ planId, locale }),
       });
 
       if (res.status === 401) {

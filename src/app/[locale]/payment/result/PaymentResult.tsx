@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type PlanStatus = {
   planId: "FREE" | "SINGLE" | "MONTHLY" | "YEARLY";
@@ -20,10 +21,8 @@ type Phase = "checking" | "success" | "failed" | "processing" | "signedOut";
 const MAX_ATTEMPTS = 30;
 const POLL_INTERVAL_MS = 2000;
 
-const creditLabel = (n: number): string =>
-  `${n} reading credit${n === 1 ? "" : "s"}`;
-
 export const PaymentResult = () => {
+  const t = useTranslations("payment");
   const [phase, setPhase] = useState<Phase>("checking");
   const [status, setStatus] = useState<PlanStatus | null>(null);
   // Bumped by "Check again" to restart the polling window from scratch.
@@ -93,45 +92,39 @@ export const PaymentResult = () => {
   let message: string;
 
   if (phase === "checking") {
-    title = "Confirming your payment";
-    message =
-      "Hang tight — we're confirming your payment with the bank. This can take a moment; please don't close this page.";
+    title = t("confirmingTitle");
+    message = t("confirmingMessage");
   } else if (phase === "success") {
     const product = productRef.current;
     if (product === "SINGLE") {
-      title = "Reading credit added";
-      message = `Your payment is confirmed. You now have ${creditLabel(
-        status?.readingCredits ?? 0
-      )}.`;
+      title = t("creditAddedTitle");
+      message = t("creditAddedMessage", { count: status?.readingCredits ?? 0 });
     } else if (product === "MONTHLY" || product === "YEARLY") {
-      title = "Subscription active";
-      message = `Your ${product === "YEARLY" ? "yearly" : "monthly"} subscription is now active. Enjoy The Veil.`;
+      title = t("subActiveTitle");
+      message = product === "YEARLY" ? t("subActiveYearly") : t("subActiveMonthly");
     } else if (status && status.planId !== "FREE") {
       // The webhook beat our first poll, so we lost the pending product — fall
       // back to describing the current entitlement.
-      title = "Payment confirmed";
-      message = `Your ${status.planId === "YEARLY" ? "yearly" : "monthly"} subscription is active.`;
+      title = t("confirmedTitle");
+      message = status.planId === "YEARLY" ? t("confirmedYearly") : t("confirmedMonthly");
     } else {
-      title = "Payment confirmed";
+      title = t("confirmedTitle");
       message = status
-        ? `Your payment is confirmed. You have ${creditLabel(status.readingCredits)}.`
-        : "Your payment is confirmed.";
+        ? t("confirmedWithCredits", { count: status.readingCredits })
+        : t("confirmedGeneric");
     }
   } else if (phase === "failed") {
-    title = "Payment not completed";
-    message =
-      "Your payment didn't go through, so nothing was charged. You can try again whenever you're ready.";
+    title = t("failedTitle");
+    message = t("failedMessage");
   } else if (phase === "signedOut") {
-    title = "Sign in to view your payment";
-    message =
-      "We couldn't read your account. Sign in to The Veil to see your latest status.";
+    title = t("signedOutTitle");
+    message = t("signedOutMessage");
   } else {
     // processing — confirmation is taking longer than usual. Be explicit that
     // the purchase is still going through and the entitlement appears on its
     // own, so the user neither pays again nor expects a reading to be ready yet.
-    title = "Still confirming";
-    message =
-      "Your payment is still being confirmed by the bank — this can take a little while. Your purchase will be applied automatically once it clears, and you won't be charged again. Check again below, or come back shortly; if you start a reading before it clears you may briefly be asked to subscribe — just try again in a moment.";
+    title = t("processingTitle");
+    message = t("processingMessage");
   }
 
   return (
@@ -148,12 +141,12 @@ export const PaymentResult = () => {
             className="payment-result__link payment-result__link--button"
             onClick={() => setRecheckNonce((n) => n + 1)}
           >
-            Check again
+            {t("checkAgain")}
           </button>
         )}
         {phase !== "checking" && (
           <a className="payment-result__link" href="/">
-            Return to The Veil
+            {t("returnLink")}
           </a>
         )}
       </div>

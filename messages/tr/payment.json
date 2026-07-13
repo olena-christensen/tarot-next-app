@@ -1,0 +1,24 @@
+{
+  "payment": {
+    "confirmingTitle": "Ödemeniz onaylanıyor",
+    "confirmingMessage": "Lütfen bekleyin — ödemenizi bankayla onaylıyoruz. Bu biraz zaman alabilir; lütfen bu sayfayı kapatmayın.",
+    "creditAddedTitle": "Okuma kredisi eklendi",
+    "creditAddedMessage": "Ödemeniz onaylandı. Artık {count, plural, one {# okuma krediniz} other {# okuma krediniz}} var.",
+    "subActiveTitle": "Abonelik etkin",
+    "subActiveMonthly": "Aylık aboneliğiniz artık etkin. Perde'nin tadını çıkarın.",
+    "subActiveYearly": "Yıllık aboneliğiniz artık etkin. Perde'nin tadını çıkarın.",
+    "confirmedTitle": "Ödeme onaylandı",
+    "confirmedMonthly": "Aylık aboneliğiniz etkin.",
+    "confirmedYearly": "Yıllık aboneliğiniz etkin.",
+    "confirmedWithCredits": "Ödemeniz onaylandı. {count, plural, one {# okuma krediniz} other {# okuma krediniz}} var.",
+    "confirmedGeneric": "Ödemeniz onaylandı.",
+    "failedTitle": "Ödeme tamamlanmadı",
+    "failedMessage": "Ödemeniz gerçekleşmedi, bu yüzden hesabınızdan bir şey çekilmedi. Hazır olduğunuzda tekrar deneyebilirsiniz.",
+    "signedOutTitle": "Ödemenizi görmek için giriş yapın",
+    "signedOutMessage": "Hesabınızı okuyamadık. En son durumunuzu görmek için Perde'ye giriş yapın.",
+    "processingTitle": "Hâlâ onaylanıyor",
+    "processingMessage": "Ödemeniz banka tarafından hâlâ onaylanıyor — bu biraz zaman alabilir. Satın alımınız onaylandığında otomatik olarak uygulanacak ve tekrar ücretlendirilmeyeceksiniz. Aşağıdan tekrar kontrol edin veya kısa süre sonra geri dönün; onaylanmadan önce bir okumaya başlarsanız kısa bir süre için abone olmanız istenebilir — birazdan tekrar deneyin.",
+    "checkAgain": "Tekrar kontrol et",
+    "returnLink": "Perde'ye dön"
+  }
+}
