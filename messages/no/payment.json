@@ -1,0 +1,24 @@
+{
+  "payment": {
+    "confirmingTitle": "Bekrefter betalingen din",
+    "confirmingMessage": "Hold ut — vi bekrefter betalingen din med banken. Dette kan ta et øyeblikk; ikke lukk denne siden.",
+    "creditAddedTitle": "Lesekreditt lagt til",
+    "creditAddedMessage": "Betalingen din er bekreftet. Du har nå {count, plural, one {# lesekreditt} other {# lesekreditter}}.",
+    "subActiveTitle": "Abonnement aktivt",
+    "subActiveMonthly": "Månedsabonnementet ditt er nå aktivt. Nyt Sløret.",
+    "subActiveYearly": "Årsabonnementet ditt er nå aktivt. Nyt Sløret.",
+    "confirmedTitle": "Betaling bekreftet",
+    "confirmedMonthly": "Månedsabonnementet ditt er aktivt.",
+    "confirmedYearly": "Årsabonnementet ditt er aktivt.",
+    "confirmedWithCredits": "Betalingen din er bekreftet. Du har {count, plural, one {# lesekreditt} other {# lesekreditter}}.",
+    "confirmedGeneric": "Betalingen din er bekreftet.",
+    "failedTitle": "Betaling ikke fullført",
+    "failedMessage": "Betalingen din gikk ikke gjennom, så du ble ikke belastet. Du kan prøve igjen når du er klar.",
+    "signedOutTitle": "Logg inn for å se betalingen din",
+    "signedOutMessage": "Vi kunne ikke lese kontoen din. Logg inn på Sløret for å se din nyeste status.",
+    "processingTitle": "Bekrefter fortsatt",
+    "processingMessage": "Betalingen din bekreftes fortsatt av banken — dette kan ta litt tid. Kjøpet ditt blir lagt til automatisk når det er klarert, og du blir ikke belastet igjen. Sjekk igjen nedenfor, eller kom tilbake snart; hvis du starter en lesning før den er klarert, kan du kortvarig bli bedt om å abonnere — bare prøv igjen om et øyeblikk.",
+    "checkAgain": "Sjekk igjen",
+    "returnLink": "Tilbake til Sløret"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "payment": {
+    "confirmingTitle": "Confirming your payment",
+    "confirmingMessage": "Hang tight — we're confirming your payment with the bank. This can take a moment; please don't close this page.",
+    "creditAddedTitle": "Reading credit added",
+    "creditAddedMessage": "Your payment is confirmed. You now have {count, plural, one {# reading credit} other {# reading credits}}.",
+    "subActiveTitle": "Subscription active",
+    "subActiveMonthly": "Your monthly subscription is now active. Enjoy The Veil.",
+    "subActiveYearly": "Your yearly subscription is now active. Enjoy The Veil.",
+    "confirmedTitle": "Payment confirmed",
+    "confirmedMonthly": "Your monthly subscription is active.",
+    "confirmedYearly": "Your yearly subscription is active.",
+    "confirmedWithCredits": "Your payment is confirmed. You have {count, plural, one {# reading credit} other {# reading credits}}.",
+    "confirmedGeneric": "Your payment is confirmed.",
+    "failedTitle": "Payment not completed",
+    "failedMessage": "Your payment didn't go through, so nothing was charged. You can try again whenever you're ready.",
+    "signedOutTitle": "Sign in to view your payment",
+    "signedOutMessage": "We couldn't read your account. Sign in to The Veil to see your latest status.",
+    "processingTitle": "Still confirming",
+    "processingMessage": "Your payment is still being confirmed by the bank — this can take a little while. Your purchase will be applied automatically once it clears, and you won't be charged again. Check again below, or come back shortly; if you start a reading before it clears you may briefly be asked to subscribe — just try again in a moment.",
+    "checkAgain": "Check again",
+    "returnLink": "Return to The Veil"
+  }
+}

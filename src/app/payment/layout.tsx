@@ -2,10 +2,11 @@ import { Raleway } from "next/font/google";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
-// Self-contained root layout for the top-level /payment/* routes. These live
-// outside the [locale] tree (Mono's redirectUrl has no locale segment), so they
-// render their own <html>/<body> like the legal pages. Intentionally no
-// next-intl provider — the result page is English-only for now (see spec).
+// Self-contained root layout for the unprefixed /payment/* fallback route.
+// The real result page is localized at /{locale}/payment/result; this top-level
+// route only exists as a safety fallback and immediately redirects to the
+// default-locale page, so it needs its own minimal <html>/<body> (no next-intl
+// provider — nothing here renders translated content).
 export default function PaymentLayout({
   children,
 }: {

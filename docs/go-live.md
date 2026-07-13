@@ -3,7 +3,7 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-07-05 (UI-polish session — launch-readiness items below unchanged)
+**Last updated:** 2026-07-13 (credit + tier loop verified live on prod — last blocking item cleared)
 
 ---
 
@@ -16,9 +16,10 @@ and reviewed. Tokenization is live; the recurring renewal is **verified live on 
 and the dunning terminal path downgraded to FREE — both exercised end-to-end against theveil.app.
 That e2e surfaced a webhook concurrency bug (a late intermediate delivery could clobber
 `Subscription.paymentStatus` back to `processing` after success), now **fixed** (along with a
-receipt EUR-amount fix and mailer deliverability headers). What remains: **live-verify the credit +
-tier enforcement flow on prod** (the last unchecked core-loop path), decide currency presentation
-(UAH settlement), and a lawyer review (not a launch blocker).
+receipt EUR-amount fix and mailer deliverability headers). The **credit + tier enforcement flow is
+now verified live on prod (2026-07-13)** — the last unchecked core-loop path. **No blocking items
+remain.** What's left is non-blocking polish: `/payment/result` redesign (localization done), currency
+presentation (UAH settlement), reconciliation sweep, fiscal receipts, and a lawyer review.
 
 ---
 
@@ -66,11 +67,13 @@ tier enforcement flow on prod** (the last unchecked core-loop path), decide curr
 ## 🔜 Remaining before launch
 
 ### Blocking
-- [ ] **Live-verify the credit + tier loop on prod:** anon 1 → auth wall; FREE 3 → upsell; €1 SINGLE → 4th reading consumes the credit (UserProfile balance decrements); MONTHLY/YEARLY unlimited. Last unexercised core-loop path.
+- [x] **Live-verify the credit + tier loop on prod** — verified live 2026-07-13: anon 1 → auth wall; FREE 3 → upsell; €1 SINGLE → credit lands and is consumed after the free allotment (UserProfile balance decrements); MONTHLY/YEARLY unlimited. Last unexercised core-loop path — **now cleared**.
+
+_No blocking items remain._
 
 ### Non-blocking
 - [ ] **Currency presentation.** Mono settles in UAH (€5 → ~254 UAH at Mono FX); EU cards show UAH on statements. Confirm with Mono whether EUR settlement is possible; decide receipt wording (currently shows advertised EUR price).
-- [ ] **`/payment/result` redesign + localize.** Bare spinner + text → branded design across all states; English-only today (top-level route outside `[locale]`, Mono redirect carries no locale — cookie-hop plan in `TODO.md`). Styles: `_payment-result.scss`.
+- [ ] **`/payment/result` redesign.** Bare spinner + text → branded design across all states (confirming / tier-active / credit-added / failed / still-processing). Styles: `_payment-result.scss`. (**Localization done 2026-07-13** — `create-invoice` builds `redirectUrl = /{locale}/payment/result`; localized page + `payment` namespace in all 5 locales.)
 - [ ] **Reconciliation sweep** for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Exclude healthy subs; note `downgradeToFree` leaves a stale `expiresAt`/`monoCardToken` on the FREE row (harmless today — `getUserPlan` keys off `planId`).
 
 ### Fiscal / tax

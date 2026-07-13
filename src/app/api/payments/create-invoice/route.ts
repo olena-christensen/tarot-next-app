@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CCY_EUR, PLAN_PRICES, monoFetch } from "@/lib/mono";
+import { routing } from "@/i18n/routing";
 
 type PaidPlanId = keyof typeof PLAN_PRICES;
 
@@ -25,8 +26,9 @@ export async function POST(request: Request) {
   const userId = session.user.id;
 
   let planId: unknown;
+  let locale: unknown;
   try {
-    ({ planId } = await request.json());
+    ({ planId, locale } = await request.json());
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
@@ -35,6 +37,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid planId" }, { status: 400 });
   }
   const plan = planId as PaidPlanId;
+
+  // Route Mono's post-payment redirect to the localized result page. Fall back
+  // to the default locale if the client sent nothing / something unrecognized.
+  const resultLocale =
+    typeof locale === "string" && routing.locales.includes(locale as any)
+      ? locale
+      : routing.defaultLocale;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   if (!appUrl) {
@@ -53,7 +62,7 @@ export async function POST(request: Request) {
       reference,
       destination: `The Veil — ${plan} subscription`,
     },
-    redirectUrl: `${appUrl}/payment/result`,
+    redirectUrl: `${appUrl}/${resultLocale}/payment/result`,
     webHookUrl: `${appUrl}/api/payments/webhook`,
     validity: 3600,
   };
