@@ -1,41 +1,41 @@
 {
   "contact": {
-    "metaTitle": "Contact The Veil",
-    "metaDescription": "Reach out to The Veil — questions, data requests, legal notices.",
-    "heading": "Contact",
-    "intro": "Send a message and we'll get back to you. For data-protection requests (export, deletion, correction), pick the matching category so it routes to the right inbox.",
+    "metaTitle": "Связаться с Завесой",
+    "metaDescription": "Свяжитесь с Завесой — вопросы, запросы по данным, юридические уведомления.",
+    "heading": "Контакты",
+    "intro": "Напишите нам, и мы вам ответим. Для запросов по защите данных (экспорт, удаление, исправление) выберите подходящую категорию, чтобы обращение попало в нужный ящик.",
     "fields": {
-      "name": "Name",
-      "email": "Email",
-      "category": "Reason",
-      "message": "Message"
+      "name": "Имя",
+      "email": "Эл. почта",
+      "category": "Причина",
+      "message": "Сообщение"
     },
     "placeholders": {
-      "name": "Your name",
+      "name": "Ваше имя",
       "email": "you@example.com",
-      "message": "Tell us what's on your mind."
+      "message": "Расскажите, что вас беспокоит."
     },
     "categories": {
-      "general": "General question",
-      "dsar_access": "Export my data",
-      "dsar_delete": "Delete my data",
-      "dsar_correct": "Correct my data",
-      "legal_ip": "Legal, copyright, or subscription cancellation",
-      "other": "Other"
+      "general": "Общий вопрос",
+      "dsar_access": "Экспортировать мои данные",
+      "dsar_delete": "Удалить мои данные",
+      "dsar_correct": "Исправить мои данные",
+      "legal_ip": "Юридические вопросы, авторское право или отмена подписки",
+      "other": "Другое"
     },
-    "submit": "Send message",
-    "submitting": "Sending…",
-    "success": "Thanks — your message is on its way. We'll reply to the email you provided.",
-    "errorGeneric": "Something went wrong sending your message. Please try again in a moment.",
+    "submit": "Отправить сообщение",
+    "submitting": "Отправка…",
+    "success": "Спасибо — ваше сообщение отправлено. Мы ответим на указанный вами адрес эл. почты.",
+    "errorGeneric": "При отправке сообщения произошла ошибка. Пожалуйста, попробуйте ещё раз через мгновение.",
     "errors": {
-      "nameRequired": "Please enter your name.",
-      "nameTooLong": "Name must be 100 characters or fewer.",
-      "emailRequired": "Please enter your email.",
-      "emailInvalid": "Please enter a valid email address.",
-      "categoryRequired": "Please pick a reason.",
-      "messageRequired": "Please write a message.",
-      "messageTooShort": "Message must be at least 10 characters.",
-      "messageTooLong": "Message must be 5000 characters or fewer."
+      "nameRequired": "Пожалуйста, введите ваше имя.",
+      "nameTooLong": "Имя не должно превышать 100 символов.",
+      "emailRequired": "Пожалуйста, введите вашу эл. почту.",
+      "emailInvalid": "Пожалуйста, введите корректный адрес эл. почты.",
+      "categoryRequired": "Пожалуйста, выберите причину.",
+      "messageRequired": "Пожалуйста, напишите сообщение.",
+      "messageTooShort": "Сообщение должно содержать не менее 10 символов.",
+      "messageTooLong": "Сообщение не должно превышать 5000 символов."
     }
   }
 }

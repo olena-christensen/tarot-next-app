@@ -173,6 +173,7 @@ In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in 
 
 ## Internationalization (i18n)
 
+- **⚠️ Finalization gate — every task that touches code must end with a translation check.** Before calling any code-touching task done, ask: did this add or change a user-facing string, a new key, or a new namespace? If yes, it is NOT finished until that string exists in **all** locales (`en`/`no`/`ru`/`uk`/`tr`) — never leave EN-only keys or English placeholders in the other files. A new namespace also needs the `request.ts` import line. This is part of "done," not a follow-up. (Coverage can be verified with a key-by-key audit against EN — 0 missing, 0 empty, 0 leftover-English except intentional brand/proper-noun keys.)
 - **Library:** `next-intl` v3 (pinned for Next.js 14 compatibility)
 - **Supported locales:** `en` (default), `no` (Norwegian), `ru` (Russian), `uk` (Ukrainian), `tr` (Turkish). EN is the source of truth; other locales may have partial / placeholder fallback content (especially `tr`, `uk`).
 - **Routing:** URL prefix-based (`/en/`, `/no/`, `/ru/`, `/uk/`, `/tr/`). Middleware auto-detects from browser `Accept-Language`, user can override via the header language picker. `LanguageSwitcher` (the header globe) opens a **modal** (the shared `.options-modal` radio list + Save, same UI as the profile's language field) — the choice applies only on **Save**, not instantly on click. It persists via `PATCH /api/user/locale` for signed-in users (best-effort) and switches the route.

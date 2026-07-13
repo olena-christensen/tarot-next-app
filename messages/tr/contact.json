@@ -1,41 +1,41 @@
 {
   "contact": {
-    "metaTitle": "Contact The Veil",
-    "metaDescription": "Reach out to The Veil — questions, data requests, legal notices.",
-    "heading": "Contact",
-    "intro": "Send a message and we'll get back to you. For data-protection requests (export, deletion, correction), pick the matching category so it routes to the right inbox.",
+    "metaTitle": "The Veil ile İletişim",
+    "metaDescription": "The Veil ile iletişime geçin — sorular, veri talepleri, hukuki bildirimler.",
+    "heading": "İletişim",
+    "intro": "Bize bir mesaj gönderin, size geri dönelim. Veri koruma talepleri (dışa aktarma, silme, düzeltme) için doğru gelen kutusuna yönlendirilmesi amacıyla ilgili kategoriyi seçin.",
     "fields": {
-      "name": "Name",
-      "email": "Email",
-      "category": "Reason",
-      "message": "Message"
+      "name": "Ad",
+      "email": "E-posta",
+      "category": "Neden",
+      "message": "Mesaj"
     },
     "placeholders": {
-      "name": "Your name",
-      "email": "you@example.com",
-      "message": "Tell us what's on your mind."
+      "name": "Adınız",
+      "email": "siz@ornek.com",
+      "message": "Aklınızdan geçenleri bize anlatın."
     },
     "categories": {
-      "general": "General question",
-      "dsar_access": "Export my data",
-      "dsar_delete": "Delete my data",
-      "dsar_correct": "Correct my data",
-      "legal_ip": "Legal, copyright, or subscription cancellation",
-      "other": "Other"
+      "general": "Genel soru",
+      "dsar_access": "Verilerimi dışa aktar",
+      "dsar_delete": "Verilerimi sil",
+      "dsar_correct": "Verilerimi düzelt",
+      "legal_ip": "Hukuki konular, telif hakkı veya abonelik iptali",
+      "other": "Diğer"
     },
-    "submit": "Send message",
-    "submitting": "Sending…",
-    "success": "Thanks — your message is on its way. We'll reply to the email you provided.",
-    "errorGeneric": "Something went wrong sending your message. Please try again in a moment.",
+    "submit": "Mesaj gönder",
+    "submitting": "Gönderiliyor…",
+    "success": "Teşekkürler — mesajınız yola çıktı. Belirttiğiniz e-posta adresine yanıt vereceğiz.",
+    "errorGeneric": "Mesajınız gönderilirken bir sorun oluştu. Lütfen birazdan tekrar deneyin.",
     "errors": {
-      "nameRequired": "Please enter your name.",
-      "nameTooLong": "Name must be 100 characters or fewer.",
-      "emailRequired": "Please enter your email.",
-      "emailInvalid": "Please enter a valid email address.",
-      "categoryRequired": "Please pick a reason.",
-      "messageRequired": "Please write a message.",
-      "messageTooShort": "Message must be at least 10 characters.",
-      "messageTooLong": "Message must be 5000 characters or fewer."
+      "nameRequired": "Lütfen adınızı girin.",
+      "nameTooLong": "Ad en fazla 100 karakter olabilir.",
+      "emailRequired": "Lütfen e-postanızı girin.",
+      "emailInvalid": "Lütfen geçerli bir e-posta adresi girin.",
+      "categoryRequired": "Lütfen bir neden seçin.",
+      "messageRequired": "Lütfen bir mesaj yazın.",
+      "messageTooShort": "Mesaj en az 10 karakter olmalıdır.",
+      "messageTooLong": "Mesaj en fazla 5000 karakter olabilir."
     }
   }
 }
