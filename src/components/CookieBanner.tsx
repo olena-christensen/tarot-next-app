@@ -61,6 +61,11 @@ export const CookieBanner = () => {
   if (!isMounted || !isVisible) return null;
 
   return (
+    <>
+    <div
+      className={`cookie-banner__backdrop${isClosing ? " cookie-banner__backdrop--closing" : ""}`}
+      aria-hidden="true"
+    />
     <div
       className={`cookie-banner${isClosing ? " cookie-banner--closing" : ""}`}
       role="region"
@@ -91,6 +96,7 @@ export const CookieBanner = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

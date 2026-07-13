@@ -1,0 +1,38 @@
+// Shared decorative medallion backdrop (see MysticBackground.tsx). Mirrors the
+// home offer-block's screen-bg look, but self-positions as a fixed, full-bleed
+// layer so any page can drop it in. Three rows of medallion pairs distributed
+// evenly down the viewport. Sizes are driven by viewport height (max-height:
+// 26vh) so all three rows always fit and spread top-to-bottom even on short
+// pages (e.g. the profile) — never clustering low — while max-width keeps them
+// from getting huge on wide screens.
+.mystic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6vw;
+    width: 100%;
+  }
+
+  svg {
+    width: 42vw;
+    max-width: 340px;
+    max-height: 26vh;
+    opacity: 0.3;
+
+    path {
+      fill: var(--medallion-fill);
+    }
+  }
+}

@@ -20,12 +20,30 @@
   }
 }
 
+// Dimmed backdrop behind the consent card — the same overlay treatment as any
+// modal, so the page reads as blocked until the user makes a choice.
+.cookie-banner__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 59; // directly beneath the card (60), above the overlay footer (50)
+  background: var(--overlay);
+  animation: cookieBannerBackdropFadeIn 0.45s ease-out both;
+
+  &--closing {
+    animation: cookieBannerBackdropFadeOut 0.3s ease-in forwards;
+  }
+}
+
 .cookie-banner__inner {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 1rem;
   padding: 1.25rem;
+
+  @include respond-above(md) {
+    padding: 40px;
+  }
 }
 
 .cookie-banner__message {
@@ -103,9 +121,21 @@
   }
 }
 
+@keyframes cookieBannerBackdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cookieBannerBackdropFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cookie-banner,
-  .cookie-banner--closing {
+  .cookie-banner--closing,
+  .cookie-banner__backdrop,
+  .cookie-banner__backdrop--closing {
     animation-duration: 0.01ms;
     animation-iteration-count: 1;
   }

@@ -18,7 +18,7 @@ That e2e surfaced a webhook concurrency bug (a late intermediate delivery could 
 `Subscription.paymentStatus` back to `processing` after success), now **fixed** (along with a
 receipt EUR-amount fix and mailer deliverability headers). The **credit + tier enforcement flow is
 now verified live on prod (2026-07-13)** — the last unchecked core-loop path. **No blocking items
-remain.** What's left is non-blocking polish: `/payment/result` redesign (localization done), currency
+remain.** What's left is non-blocking polish: currency
 presentation (UAH settlement), reconciliation sweep, fiscal receipts, and a lawyer review.
 
 ---
@@ -73,7 +73,7 @@ _No blocking items remain._
 
 ### Non-blocking
 - [ ] **Currency presentation.** Mono settles in UAH (€5 → ~254 UAH at Mono FX); EU cards show UAH on statements. Confirm with Mono whether EUR settlement is possible; decide receipt wording (currently shows advertised EUR price).
-- [ ] **`/payment/result` redesign.** Bare spinner + text → branded design across all states (confirming / tier-active / credit-added / failed / still-processing). Styles: `_payment-result.scss`. (**Localization done 2026-07-13** — `create-invoice` builds `redirectUrl = /{locale}/payment/result`; localized page + `payment` namespace in all 5 locales.)
+- [x] **`/payment/result`** — done enough 2026-07-13. Localized (`create-invoice` builds `redirectUrl = /{locale}/payment/result`; `payment` namespace in all 5 locales) + `<MysticBackground />` added. Fuller branded redesign deferred — revisit only if wanted. Styles: `_payment-result.scss`.
 - [ ] **Reconciliation sweep** for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Exclude healthy subs; note `downgradeToFree` leaves a stale `expiresAt`/`monoCardToken` on the FREE row (harmless today — `getUserPlan` keys off `planId`).
 
 ### Fiscal / tax
