@@ -44,10 +44,14 @@
     flex: none;
     margin-block: 0 2.5rem;
     padding: 0;
+    // Left-aligned full-width on mobile → clear the top-right close button
+    // (36px button + 16px gap) so a long title doesn't run under it.
+    padding-right: 52px;
     border: none;
 
     @include respond-above(md) {
       margin-bottom: 5rem;
+      padding-right: 0; // centered + auto-width at md+, a right pad would offset it
     }
   }
 }

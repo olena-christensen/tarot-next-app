@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState, useEffect, useRef, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { READERS, READER_IDS, DEFAULT_READER, type ReaderId } from "@/lib/readers";
@@ -39,8 +40,39 @@ export const ReaderSelection = ({
   // Reader copy lives in messages/{lang}/readings.json under "readers.{id}".
   const tReader = useTranslations("readers");
   const [focused, setFocused] = useState<ReaderId | null>(null);
+  // Mobile only: the summon pane is a fixed bottom sheet. Scrolling the card
+  // list dismisses it; tapping a reader brings it back. Desktop (inline pane)
+  // is unaffected — the listener is gated to the sheet breakpoint.
+  const [sheetDismissed, setSheetDismissed] = useState(false);
+  // Below md the pane is a fixed bottom sheet. It must be portaled to <body>:
+  // its ancestor .modal__content has backdrop-filter, which traps position:fixed
+  // in a local containing block so the sheet scrolls with the cards instead of
+  // nailing to the viewport. Portaling escapes that (same reason Modal portals).
+  const [isSheet, setIsSheet] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 48em)");
+    const sync = () => setIsSheet(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const scroller = sectionRef.current?.closest(".modal__content");
+    if (!scroller) return;
+    const onScroll = () => {
+      if (isSheet) setSheetDismissed(true);
+    };
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => scroller.removeEventListener("scroll", onScroll);
+  }, [isSheet]);
 
   const focusedReader = focused ? READERS[focused] : null;
+  const paneAccent = focusedReader
+    ? ({ "--reader-accent": focusedReader.aura } as CSSProperties)
+    : undefined;
 
   const isLocked = (id: ReaderId) =>
     id !== DEFAULT_READER && !isSubscriber;
@@ -64,11 +96,76 @@ export const ReaderSelection = ({
       return;
     }
     setFocused(id);
+    setSheetDismissed(false); // re-show the sheet on a fresh pick
     onChoose(id);
   };
 
-  return (
+  // Bio + Summon. Rendered inline in the modal on desktop; on mobile it's the
+  // fixed bottom sheet, portaled to <body> so it clears .modal__content's
+  // backdrop-filter containing block and nails to the real viewport bottom.
+  const summonPane = (
+    <div
+      className="reader-selection__summon-pane"
+      aria-live="polite"
+      data-visible={focusedReader && !sheetDismissed ? "true" : "false"}
+      style={paneAccent}
+    >
+      {/* Every reader's bio + the resting placeholder share one grid cell, so
+          the box is always as tall as the tallest of them — the pane (and the
+          modal around it) never reflows when switching readers. Only the active
+          one is shown. */}
+      <div className="reader-selection__bio-stack">
+        {READER_IDS.map((id) => (
+          <p
+            key={id}
+            className="reader-selection__bio"
+            data-active={focused === id ? "true" : "false"}
+            aria-hidden={focused === id ? undefined : "true"}
+          >
+            {tReader(`${id}.bio`)}
+          </p>
+        ))}
+        <p
+          className="reader-selection__placeholder"
+          data-active={focused ? "false" : "true"}
+          aria-hidden={focused ? "true" : undefined}
+        >
+          {t("hoverToLearn")}
+        </p>
+      </div>
+      {focusedReader && (
+        <MysticButton type="button" onClick={handleSummon}>
+          {/* Every possible summon label overlaps in one cell so the button
+              reserves the widest — its width stays constant across readers,
+              only the active label is shown. */}
+          <span className="reader-selection__summon-label-stack">
+            {READER_IDS.map((id) => {
+              const active = !isLocked(focused!) && focused === id;
+              return (
+                <span
+                  key={id}
+                  data-active={active ? "true" : "false"}
+                  aria-hidden={active ? undefined : "true"}
+                >
+                  {t("summonReader", { name: tReader(`${id}.displayName`) })}
+                </span>
+              );
+            })}
+            <span
+              data-active={isLocked(focused!) ? "true" : "false"}
+              aria-hidden={isLocked(focused!) ? undefined : "true"}
+            >
+              {t("beginInitiation")}
+            </span>
+          </span>
+        </MysticButton>
+      )}
+    </div>
+  );
+
+  const section = (
     <section
+      ref={sectionRef}
       className="reader-selection"
       style={
         focusedReader
@@ -139,29 +236,16 @@ export const ReaderSelection = ({
         })}
       </div>
 
-      <div
-        className="reader-selection__summon-pane"
-        aria-live="polite"
-        data-visible={focusedReader ? "true" : "false"}
-      >
-        {focusedReader ? (
-          <>
-            <p className="reader-selection__bio">
-              {tReader(`${focused}.bio`)}
-            </p>
-            <MysticButton
-              type="button"
-              onClick={handleSummon}
-            >
-              {isLocked(focused!)
-                ? t("beginInitiation")
-                : t("summonReader", { name: tReader(`${focused}.displayName`) })}
-            </MysticButton>
-          </>
-        ) : (
-          <p className="reader-selection__placeholder">{t("hoverToLearn")}</p>
-        )}
-      </div>
+      {!isSheet && summonPane}
     </section>
+  );
+
+  return (
+    <>
+      {section}
+      {isSheet && typeof document !== "undefined"
+        ? createPortal(summonPane, document.body)
+        : null}
+    </>
   );
 };
