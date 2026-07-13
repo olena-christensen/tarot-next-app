@@ -19,7 +19,7 @@ That e2e surfaced a webhook concurrency bug (a late intermediate delivery could 
 receipt EUR-amount fix and mailer deliverability headers). The **credit + tier enforcement flow is
 now verified live on prod (2026-07-13)** — the last unchecked core-loop path. **No blocking items
 remain.** What's left is non-blocking polish: currency
-presentation (UAH settlement), reconciliation sweep, fiscal receipts, and a lawyer review.
+presentation (UAH settlement), fiscal receipts, and a lawyer review.
 
 ---
 
@@ -74,7 +74,7 @@ _No blocking items remain._
 ### Non-blocking
 - [ ] **Currency presentation.** Mono settles in UAH (€5 → ~254 UAH at Mono FX); EU cards show UAH on statements. Confirm with Mono whether EUR settlement is possible; decide receipt wording (currently shows advertised EUR price).
 - [x] **`/payment/result`** — done enough 2026-07-13. Localized (`create-invoice` builds `redirectUrl = /{locale}/payment/result`; `payment` namespace in all 5 locales) + `<MysticBackground />` added. Fuller branded redesign deferred — revisit only if wanted. Styles: `_payment-result.scss`.
-- [ ] **Reconciliation sweep** for a charge stuck at `paymentStatus="created"` if Mono never delivers a terminal webhook (the in-flight guard then freezes the sub — neither re-charged nor downgraded). Exclude healthy subs; note `downgradeToFree` leaves a stale `expiresAt`/`monoCardToken` on the FREE row (harmless today — `getUserPlan` keys off `planId`).
+- [x] **Reconciliation sweep** — built 2026-07-14. Hourly cron `/api/cron/reconcile` polls Mono (`getInvoiceStatus`) for any `Payment` row stuck at `created`/`processing` for 30 min–7 days and applies the true status via `applyMonoInvoiceStatus` — the webhook's state machine, extracted so push (webhook) and poll (cron) share one idempotent path (the `activatedInvoiceId` compare-and-set dedupes a cron/webhook race). Bearer-auth via `CRON_SECRET`; `vercel.json` `0 * * * *`. Not yet exercised live end-to-end (needs a genuinely-lost webhook on prod).
 
 ### Fiscal / tax
 - [ ] PRRO / digital fiscal receipts (Monobank built-in or Checkbox).
