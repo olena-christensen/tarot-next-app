@@ -38,11 +38,17 @@ export async function POST(request: Request) {
   }
   const plan = planId as PaidPlanId;
 
-  // Route Mono's post-payment redirect to the localized result page. Fall back
-  // to the default locale if the client sent nothing / something unrecognized.
-  const resultLocale =
-    typeof locale === "string" && routing.locales.includes(locale as any)
-      ? locale
+  // Route Mono's post-payment redirect to the localized result page. Prefer the
+  // locale the client is currently viewing; if it's missing/unrecognized (e.g. a
+  // stale bundle), fall back to the user's saved account language — payments are
+  // always logged-in, so a Russian account never lands on an English page — and
+  // only then to the default locale.
+  const isLocale = (v: unknown): v is string =>
+    typeof v === "string" && routing.locales.includes(v as any);
+  const resultLocale = isLocale(locale)
+    ? locale
+    : isLocale(session.user.preferredLocale)
+      ? session.user.preferredLocale
       : routing.defaultLocale;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
