@@ -1,0 +1,27 @@
+{
+  "greetings": {
+    "returned": "Geri döndünüz, {name}.",
+    "circleComplete": "Çember tamamlandı, {name}.",
+    "fold": "Aramıza tekrar hoş geldiniz, {name}.",
+    "beginsAgain": "Ah. {name}. Demek yeniden başlıyor.",
+    "theyAlwaysDo": "Geri geldiniz, {name}. Hep gelirler.",
+    "feltYouComing": "Geldiğinizi hissettik, {name}.",
+    "enterFreely": "Kendi özgür iradenizle girin, {name}. Ve kendi arzunuzla.",
+    "othersWereWrong": "Diğerleri dönmeyeceğinizi söyledi, {name}. Yanıldılar.",
+    "asForetold": "{name}. Yine. Kehanette olduğu gibi.",
+    "seatKeptWarm": "Yeriniz sıcak tutuldu, {name}.",
+    "rightOnTime": "Tam zamanında, {name}. Sanki bir seçeneğiniz varmış gibi.",
+    "signsCorrect": "İşaretler doğruydu. Hoş geldiniz, {name}.",
+    "somethingStirred": "Siz geldiğinizde bir şeyler kıpırdandı, {name}.",
+    "nobodyLeaves": "Hoş geldiniz, {name}. Aslında kimse gerçekten ayrılmaz.",
+    "findsYouAnyway": "Işığa adım atın, {name}. Ya da atmayın. O sizi zaten bulur.",
+    "ritualResumes": "Ayin devam ediyor, {name}.",
+    "weAlwaysKnow": "{name}. Geleceğinizi her zaman biliriz.",
+
+    "anonReturned": "Geri döndünüz.",
+    "anonCircleComplete": "Çember tamamlandı.",
+    "anonBeginsAgain": "Ah. Demek yeniden başlıyor.",
+    "anonFeltYouComing": "Geldiğinizi hissettik.",
+    "anonNobodyLeaves": "Tekrar hoş geldiniz. Aslında kimse gerçekten ayrılmaz."
+  }
+}

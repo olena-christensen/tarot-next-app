@@ -1,0 +1,27 @@
+{
+  "greetings": {
+    "returned": "You have returned, {name}.",
+    "circleComplete": "The circle is complete, {name}.",
+    "fold": "Welcome back to the fold, {name}.",
+    "beginsAgain": "Ah. {name}. So it begins again.",
+    "theyAlwaysDo": "You came back, {name}. They always do.",
+    "feltYouComing": "We felt you coming, {name}.",
+    "enterFreely": "Enter freely, {name}. And of your own will.",
+    "othersWereWrong": "The others said you wouldn't return, {name}. They were wrong.",
+    "asForetold": "{name}. Again. As foretold.",
+    "seatKeptWarm": "Your seat was kept warm, {name}.",
+    "rightOnTime": "Right on time, {name}. As if you had a choice.",
+    "signsCorrect": "The signs were correct. Welcome, {name}.",
+    "somethingStirred": "Something stirred when you arrived, {name}.",
+    "nobodyLeaves": "Welcome, {name}. Nobody really leaves.",
+    "findsYouAnyway": "Step into the light, {name}. Or don't. It finds you anyway.",
+    "ritualResumes": "The ritual resumes, {name}.",
+    "weAlwaysKnow": "{name}. We always know when you're coming.",
+
+    "anonReturned": "You have returned.",
+    "anonCircleComplete": "The circle is complete.",
+    "anonBeginsAgain": "Ah. So it begins again.",
+    "anonFeltYouComing": "We felt you coming.",
+    "anonNobodyLeaves": "Welcome back. Nobody really leaves."
+  }
+}

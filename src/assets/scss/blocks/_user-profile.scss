@@ -49,6 +49,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      // Themed labels are 2–3× longer than the originals; let the value-group
+      // drop below the label instead of crushing/ellipsis-truncating it on
+      // narrow viewports (e.g. the long "Break the Seal…" password action).
+      flex-wrap: wrap;
     }
   }
 
