@@ -3,7 +3,7 @@
 **Purpose:** the single source of truth for what is done and what remains before The Veil
 can take real money from real users. Kept in the repo so it stays current with the code.
 
-**Last updated:** 2026-07-13 (credit + tier loop verified live on prod — last blocking item cleared)
+**Last updated:** 2026-07-14 (two product blockers reopened: reading-history UI + user avatars — see Blocking)
 
 ---
 
@@ -17,9 +17,10 @@ and the dunning terminal path downgraded to FREE — both exercised end-to-end a
 That e2e surfaced a webhook concurrency bug (a late intermediate delivery could clobber
 `Subscription.paymentStatus` back to `processing` after success), now **fixed** (along with a
 receipt EUR-amount fix and mailer deliverability headers). The **credit + tier enforcement flow is
-now verified live on prod (2026-07-13)** — the last unchecked core-loop path. **No blocking items
-remain.** What's left is non-blocking polish: currency
-presentation (UAH settlement), fiscal receipts, and a lawyer review.
+now verified live on prod (2026-07-13)** — the last unchecked core-loop path. The **payment/monetization
+loop has no blockers left**, but two **product blockers** were reopened 2026-07-14: the advertised
+**reading-history** feature has no view UI, and **user avatars** are wanted before launch (see Blocking).
+Remaining non-blocking polish: currency presentation (UAH settlement), fiscal receipts, and a lawyer review.
 
 ---
 
@@ -68,8 +69,8 @@ presentation (UAH settlement), fiscal receipts, and a lawyer review.
 
 ### Blocking
 - [x] **Live-verify the credit + tier loop on prod** — verified live 2026-07-13: anon 1 → auth wall; FREE 3 → upsell; €1 SINGLE → credit lands and is consumed after the free allotment (UserProfile balance decrements); MONTHLY/YEARLY unlimited. Last unexercised core-loop path — **now cleared**.
-
-_No blocking items remain._
+- [ ] **Reading-history UI (advertised but not surfaced).** The MONTHLY plan lists **"Reading history"** as a feature (`messages/en/plans.json`), and the Privacy Policy + delete-account warning both promise it — but there is **no way to view it**. Backend already persists it: the `Reading` model (`schema.prisma`, `cards`/`response`/`createdAt`, indexed by user+date) gets a row on every reading via `/api/readings/consume`. Missing: a `GET /api/readings` endpoint + a subscriber-gated history view (route or profile section). **Decision (2026-07-14): build it before launch** — the feature ships, the claim stays. (Pulling "Reading history" from the plan copy is only a last-resort fallback if the UI can't make the launch window.) Rows are accumulating now, so history is retroactively available once the UI ships.
+- [ ] **User avatars.** Wanted before launch. Net-new — **not currently advertised anywhere** (the only prior mention is the old auth spec's Out-of-Scope list). Needs a short spec first: preset set vs upload, where images live (e.g. Vercel Blob), a `User` avatar field, and where it surfaces (header + profile). No backend or UI exists yet.
 
 ### Non-blocking
 - [ ] **Currency presentation.** Mono settles in UAH (€5 → ~254 UAH at Mono FX); EU cards show UAH on statements. Confirm with Mono whether EUR settlement is possible; decide receipt wording (currently shows advertised EUR price).

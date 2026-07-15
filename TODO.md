@@ -13,10 +13,16 @@
   - **TR** — full read-through (machine-assisted translations need a native check).
   - **NO** — light sanity pass.
   - The new `contact` + `ui` strings above were added in this pass and want a native eye like the rest.
+  - **Profile page themed labels (added 2026-07-14).** 11 new `profile*` keys in `ui.json` (`profileTitle`, `profileName`, `profileEmail`, `profilePlan`, `profileCredits`, `profileDeck`, `profileReader`, `profileLanguage`, `profilePassword`, `profileBreakSeal`, `profileForgeSeal`) are **English placeholders in no/ru/uk/tr** — need real translation. Voice: mystic/ironic/cult-like, never self-describing. Keep RU formal "вы", UK formal "ви".
+
+## Features — pre-launch (BLOCKING)
+
+- [ ] **Reading-history UI — advertised but not surfaced.** MONTHLY plan lists "Reading history" (`messages/en/plans.json`); Privacy Policy + delete-account warning promise it — but there's no view. Backend already persists every reading (`Reading` model in `schema.prisma`; row created in `/api/readings/consume`). Need a `GET /api/readings` endpoint + a subscriber-gated history view (route or profile section). **Decision (2026-07-14): build it before launch.** (Pulling the plan-copy claim is only a last-resort fallback if it can't ship in time.) See `docs/go-live.md` → Blocking.
+- [ ] **User avatars.** Wanted before launch. NOT currently advertised anywhere (only the old auth spec's Out-of-Scope list mentions it). Net-new — needs a short spec first: preset set vs upload, image storage (e.g. Vercel Blob), a `User` avatar field, and surfaces (header + profile). No backend or UI exists yet. See `docs/go-live.md` → Blocking.
 
 ## UX / polish — pre-launch
 
-_(none open)_
+- [ ] **Header greeting — mobile version.** The rotating signed-in greetings (`messages/*/greetings.json`, resolved in `MainMenu.tsx`) can be long (e.g. "The others said you wouldn't return, {name}. They were wrong."). Check the header nav link on mobile and handle overflow — truncate/ellipsis, wrap, or drop the longest lines from the pool.
 
 ## Reader feature — follow-ups
 

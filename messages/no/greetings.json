@@ -1,0 +1,27 @@
+{
+  "greetings": {
+    "returned": "Du har vendt tilbake, {name}.",
+    "circleComplete": "Sirkelen er fullendt, {name}.",
+    "fold": "Velkommen tilbake til flokken, {name}.",
+    "beginsAgain": "Å. {name}. Så begynner det igjen.",
+    "theyAlwaysDo": "Du kom tilbake, {name}. Det gjør de alltid.",
+    "feltYouComing": "Vi kjente at du kom, {name}.",
+    "enterFreely": "Tre inn av fri vilje, {name}. Og av eget ønske.",
+    "othersWereWrong": "De andre sa at du ikke ville komme tilbake, {name}. De tok feil.",
+    "asForetold": "{name}. Igjen. Som spådd.",
+    "seatKeptWarm": "Plassen din ble holdt varm, {name}.",
+    "rightOnTime": "Presis, {name}. Som om du hadde et valg.",
+    "signsCorrect": "Tegnene stemte. Velkommen, {name}.",
+    "somethingStirred": "Noe rørte seg da du kom, {name}.",
+    "nobodyLeaves": "Velkommen, {name}. Ingen slipper egentlig unna.",
+    "findsYouAnyway": "Tre inn i lyset, {name}. Eller la være. Det finner deg uansett.",
+    "ritualResumes": "Ritualet gjenopptas, {name}.",
+    "weAlwaysKnow": "{name}. Vi vet alltid når du kommer.",
+
+    "anonReturned": "Du har vendt tilbake.",
+    "anonCircleComplete": "Sirkelen er fullendt.",
+    "anonBeginsAgain": "Å. Så begynner det igjen.",
+    "anonFeltYouComing": "Vi kjente at du kom.",
+    "anonNobodyLeaves": "Velkommen tilbake. Ingen slipper egentlig unna."
+  }
+}

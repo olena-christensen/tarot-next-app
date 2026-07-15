@@ -303,7 +303,7 @@ export const UserProfile = () => {
   return (
     <div className="user-profile">
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("name")}</span>
+        <span className="user-profile__label">{t("profileName")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">
             {session?.user?.name || t("mysticOne")}
@@ -319,13 +319,13 @@ export const UserProfile = () => {
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("email")}</span>
+        <span className="user-profile__label">{t("profileEmail")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">{session?.user?.email}</span>
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("currentPlan")}</span>
+        <span className="user-profile__label">{t("profilePlan")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">
             {planId ? tPlans(`${planId}.name`) : "—"}
@@ -341,7 +341,7 @@ export const UserProfile = () => {
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("credits")}</span>
+        <span className="user-profile__label">{t("profileCredits")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">{credits}</span>
           <button
@@ -374,7 +374,7 @@ export const UserProfile = () => {
         </div>
       )}
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("deck")}</span>
+        <span className="user-profile__label">{t("profileDeck")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">
             {deckId === "Rider-Waite" ? t("deckRiderWaite") :
@@ -392,7 +392,7 @@ export const UserProfile = () => {
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("reader")}</span>
+        <span className="user-profile__label">{t("profileReader")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">
             {readerId ? tReaders(`${readerId}.displayName`) : "—"}
@@ -408,7 +408,7 @@ export const UserProfile = () => {
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("language")}</span>
+        <span className="user-profile__label">{t("profileLanguage")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">{LOCALE_NAMES[locale]}</span>
           <button
@@ -422,10 +422,10 @@ export const UserProfile = () => {
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("password")}</span>
+        <span className="user-profile__label">{t("profilePassword")}</span>
         <span className="user-profile__value-group">
           <span className="user-profile__value">
-            {hasPassword ? t("changePassword") : t("setPassword")}
+            {hasPassword ? t("profileBreakSeal") : t("profileForgeSeal")}
           </span>
           <button
             type="button"
@@ -467,7 +467,7 @@ export const UserProfile = () => {
       <Modal
         isOpen={isEditingName}
         onClose={handleCancelEdit}
-        title={t("name")}
+        title={t("profileName")}
       >
         <form
           className="form"
@@ -510,7 +510,7 @@ export const UserProfile = () => {
       <Modal
         isOpen={isEditingPassword}
         onClose={handleCancelPassword}
-        title={hasPassword ? t("changePassword") : t("setPassword")}
+        title={hasPassword ? t("profileBreakSeal") : t("profileForgeSeal")}
       >
         <form
           className="form"
@@ -586,7 +586,7 @@ export const UserProfile = () => {
       <Modal
         isOpen={isDeckSelectOpen}
         onClose={() => setIsDeckSelectOpen(false)}
-        title={t("chooseDeck")}
+        title={t("profileDeck")}
         wide
       >
         <DeckSelector inModal />
@@ -594,7 +594,7 @@ export const UserProfile = () => {
       <Modal
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
-        title={t("language")}
+        title={t("profileLanguage")}
       >
         <div className="options-modal">
           <ul className="options-modal__list list">
