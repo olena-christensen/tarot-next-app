@@ -81,6 +81,9 @@ export const authOptions: NextAuthOptions = {
         if (updateData?.preferredLocale) {
           token.preferredLocale = updateData.preferredLocale;
         }
+        if (updateData?.image !== undefined) {
+          token.picture = updateData.image;
+        }
       }
       return token;
     },
@@ -94,6 +97,9 @@ export const authOptions: NextAuthOptions = {
         session.user.preferredDeck = token.preferredDeck as string | undefined;
         session.user.preferredReader = token.preferredReader as string | undefined;
         session.user.preferredLocale = token.preferredLocale as string | undefined;
+        // Keep the avatar reactive to update({ image }) — token.picture is the
+        // NextAuth-standard slot the jwt callback writes on an avatar change.
+        session.user.image = (token.picture as string | null | undefined) ?? null;
       }
       return session;
     },

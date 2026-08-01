@@ -41,9 +41,9 @@ Mobile-first, mobile-first, mobile-first. If you are about to write a
 - The database and Vercel setup took significant effort — do not break or replace it
 - **NEVER run git add, git commit, git stage, or any git write operation** — the user does their own commits. (Do not assume or name a specific editor/tool, and never explain how to commit/push.) Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
 - **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task
-- **Document rules, conventions, decisions, and handovers in repo files (this CLAUDE.md or `docs/`) — NEVER in agent/private memory.** Everything must be human-readable by the user and any dev, and re-read from the file each session. Do not rely on private memory for durable knowledge; if you learn something worth keeping, write it into the relevant repo file.
+- **Document rules, conventions, decisions, and handovers in repo files (this AGENTS.md or `docs/`) — NEVER in agent/private memory.** Everything must be human-readable by the user and any dev, and re-read from the file each session. Do not rely on private memory for durable knowledge; if you learn something worth keeping, write it into the relevant repo file.
 - **Dev server runs on `localhost:3001`** (not 3000 — the user runs multiple projects).
-- When reducing permission prompts / fixing settings, edit `.claude/settings.json` directly — don't run steps that themselves prompt (transcript scans, out-of-project reads). In subagents, use the Read tool, not `cat`/`ls`/`for` loops (shell expansion defeats the allowlist).
+- When reducing permission prompts / fixing settings, edit `.Codex/settings.json` directly — don't run steps that themselves prompt (transcript scans, out-of-project reads). In subagents, use the Read tool, not `cat`/`ls`/`for` loops (shell expansion defeats the allowlist).
 
 ## Handover Convention
 
