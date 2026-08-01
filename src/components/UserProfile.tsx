@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -70,6 +70,11 @@ export const UserProfile = () => {
   const [deleteConfirmInput, setDeleteConfirmInput] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+  const avatarUrl = session?.user?.image ?? null;
 
   useEffect(() => {
     async function checkPassword() {
@@ -244,6 +249,47 @@ export const UserProfile = () => {
     }
   };
 
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file after an error
+    if (!file) return;
+
+    setAvatarError("");
+    const allowed = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowed.includes(file.type)) {
+      setAvatarError(t("avatarBadType"));
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setAvatarError(t("avatarTooLarge"));
+      return;
+    }
+
+    setAvatarUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/user/avatar", { method: "POST", body });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const key =
+          data.error === "too_large"
+            ? "avatarTooLarge"
+            : data.error === "bad_type"
+              ? "avatarBadType"
+              : "avatarUploadFailed";
+        setAvatarError(t(key));
+        return;
+      }
+      const { url } = await res.json();
+      await update({ image: url });
+    } catch {
+      setAvatarError(t("avatarUploadFailed"));
+    } finally {
+      setAvatarUploading(false);
+    }
+  };
+
   const handleOpenLanguage = () => {
     setLangSelection(locale);
     setIsLanguageOpen(true);
@@ -302,6 +348,42 @@ export const UserProfile = () => {
 
   return (
     <div className="user-profile">
+      <div className="user-profile__avatar-block">
+        <div className="user-profile__avatar">
+          <div className="user-profile__avatar-frame">
+            {avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={avatarUrl}
+                alt=""
+                className="user-profile__avatar-img"
+              />
+            ) : (
+              <span className="user-profile__avatar-fallback" aria-hidden="true">
+                {(session?.user?.name || "?").charAt(0).toUpperCase()}
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            className="user-profile__avatar-edit"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={avatarUploading}
+            aria-label={t("profilePictureAria")}
+          >
+            <EditIcon />
+          </button>
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={handleAvatarChange}
+            hidden
+          />
+        </div>
+        <span className="user-profile__label">{t("profileAvatar")}</span>
+        {avatarError && <span className="form__error">{avatarError}</span>}
+      </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileName")}</span>
         <span className="user-profile__value-group">

@@ -777,3 +777,8 @@
 "ui","ui.profilePassword","The Seal","[TRANSLATE] The Seal"
 "ui","ui.profileBreakSeal","Break the Seal, Set a New One","[TRANSLATE] Break the Seal, Set a New One"
 "ui","ui.profileForgeSeal","Forge the Seal, Set a New One","[TRANSLATE] Forge the Seal, Set a New One"
+"ui","ui.profileAvatar","The Face You Wear","[TRANSLATE] The Face You Wear"
+"ui","ui.profilePictureAria","Profile picture","[TRANSLATE] Profile picture"
+"ui","ui.avatarTooLarge","Too heavy a likeness — keep it under 2 MB.","[TRANSLATE] Too heavy a likeness — keep it under 2 MB."
+"ui","ui.avatarBadType","That form won't hold — use PNG, JPG, or WebP.","[TRANSLATE] That form won't hold — use PNG, JPG, or WebP."
+"ui","ui.avatarUploadFailed","The Veil refused it. Try again.","[TRANSLATE] The Veil refused it. Try again."

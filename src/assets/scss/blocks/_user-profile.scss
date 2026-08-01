@@ -37,6 +37,77 @@
   width: 100%;
   max-width: 420px;
 
+  .user-profile__avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .user-profile__avatar {
+    position: relative;
+    width: 96px;
+    height: 96px;
+  }
+
+  .user-profile__avatar-frame {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-profile__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-profile__avatar-fallback {
+    font-size: 2.5rem;
+    color: var(--text-faint);
+  }
+
+  // Small circular pencil pinned to the frame's edge; sits outside the frame's
+  // overflow:hidden so it isn't clipped.
+  .user-profile__avatar-edit {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg);
+    color: var(--primary);
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover:not(:disabled) {
+      color: var(--text-soft);
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
   .user-profile__field {
     display: flex;
     flex-direction: column;
