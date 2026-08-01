@@ -1,0 +1,12 @@
+{
+  "history": {
+    "title": "The Ledger of Fates",
+    "loading": "Turning the pages…",
+    "error": "The ledger refuses to open. Try again.",
+    "empty": "Nothing is written here yet. Draw your first cards and the ledger will remember.",
+    "loadMore": "Older Fates",
+    "lockedTitle": "The Ledger Is Sealed",
+    "lockedBody": "Only the initiated may read what the Veil has recorded. Take a subscription and every reading you have ever drawn returns to you.",
+    "lockedCta": "Join the Initiated"
+  }
+}

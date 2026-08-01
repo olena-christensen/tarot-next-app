@@ -19,6 +19,10 @@
     "profile": {
       "metaTitle": "Din mystiske profil",
       "metaDescription": "Administrer kontoen, lesningene og preferansene dine."
+    },
+    "history": {
+      "metaTitle": "Din lesningshistorikk",
+      "metaDescription": "Se igjen hver tarotlesning du har trukket — kort, datoer og ordene Sløret ga deg."
     }
   }
 }

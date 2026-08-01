@@ -1,0 +1,12 @@
+{
+  "history": {
+    "title": "Kaderler Defteri",
+    "loading": "Sayfalar çevriliyor…",
+    "error": "Defter açılmıyor. Tekrar deneyin.",
+    "empty": "Buraya henüz bir şey yazılmadı. İlk kartlarınızı çekin, defter hatırlayacak.",
+    "loadMore": "Daha eski kaderler",
+    "lockedTitle": "Defter mühürlü",
+    "lockedBody": "Peçe'nin kaydettiklerini yalnızca erginler okuyabilir. Bir abonelik edinin, çektiğiniz tüm açılımlar size geri dönsün.",
+    "lockedCta": "Erginlere katıl"
+  }
+}
