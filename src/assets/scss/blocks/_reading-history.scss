@@ -1,0 +1,125 @@
+.history-page {
+  padding: 120px 0 80px;
+
+  &__title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  @include respond-above(md) {
+    padding: 160px 0 100px;
+  }
+}
+
+.reading-history {
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  &__status {
+    text-align: center;
+    color: var(--text-faint);
+    padding: 32px 0;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__entry {
+    background: rgba(9, 9, 9, 0.6);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    padding: 20px;
+  }
+
+  &__date {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+
+  &__cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    width: 72px;
+  }
+
+  &__card-img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  &__card-name {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    text-align: center;
+    color: var(--text-faint);
+  }
+
+  &__text {
+    margin: 0;
+    line-height: 1.7;
+    color: var(--text-soft);
+    white-space: pre-line;
+  }
+
+  &__more {
+    display: block;
+    margin: 32px auto 0;
+  }
+
+  &__locked {
+    text-align: center;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    background: rgba(9, 9, 9, 0.6);
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+
+  &__locked-title {
+    font-size: 1.3rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    color: var(--primary);
+  }
+
+  &__locked-body {
+    margin: 0 0 24px;
+    line-height: 1.7;
+    color: var(--text-faint);
+  }
+
+  @include respond-above(md) {
+    &__entry {
+      padding: 28px;
+    }
+
+    &__card {
+      width: 88px;
+    }
+
+    &__card-name {
+      font-size: 0.75rem;
+    }
+  }
+}

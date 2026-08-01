@@ -19,6 +19,10 @@
     "profile": {
       "metaTitle": "Mistik Profiliniz",
       "metaDescription": "Hesabınızı, okumalarınızı ve tercihlerinizi yönetin."
+    },
+    "history": {
+      "metaTitle": "Okuma Geçmişiniz",
+      "metaDescription": "Çektiğiniz her tarot açılımına geri dönün — kartlar, tarihler ve Peçe'nin size verdiği sözler."
     }
   }
 }

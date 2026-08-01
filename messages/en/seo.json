@@ -19,6 +19,10 @@
     "profile": {
       "metaTitle": "Your Mystic Profile",
       "metaDescription": "Manage your account, readings, and preferences."
+    },
+    "history": {
+      "metaTitle": "Your Reading History",
+      "metaDescription": "Revisit every tarot reading you have drawn — cards, dates, and the words the Veil gave you."
     }
   }
 }

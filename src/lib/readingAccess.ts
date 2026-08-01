@@ -20,6 +20,24 @@ export type ReadingAccessInput = {
   readingCredits: number;
 };
 
+/**
+ * Whether the user holds a paid tier that is still inside its period.
+ * SINGLE is never a tier (it only adds credits), so only MONTHLY/YEARLY count.
+ * Shared by the reading gate and the reading-history endpoint so "subscriber"
+ * means exactly one thing app-wide.
+ */
+export function isActiveTier(
+  planId: PlanId,
+  expiresAt: Date | null,
+  now: Date
+): boolean {
+  return (
+    (planId === "MONTHLY" || planId === "YEARLY") &&
+    expiresAt !== null &&
+    expiresAt.getTime() > now.getTime()
+  );
+}
+
 export type ReadingAccess =
   | { mode: "subscription" }
   | { mode: "free"; remaining: number }
@@ -36,12 +54,9 @@ export function decideReadingAccess(
   input: ReadingAccessInput,
   now: Date
 ): ReadingAccess {
-  const activeTier =
-    (input.planId === "MONTHLY" || input.planId === "YEARLY") &&
-    input.expiresAt !== null &&
-    input.expiresAt.getTime() > now.getTime();
-
-  if (activeTier) return { mode: "subscription" };
+  if (isActiveTier(input.planId, input.expiresAt, now)) {
+    return { mode: "subscription" };
+  }
 
   if (input.readingsToday < FREE_DAILY_LIMIT) {
     return { mode: "free", remaining: FREE_DAILY_LIMIT - (input.readingsToday + 1) };

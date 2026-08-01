@@ -12,6 +12,7 @@ import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
 
@@ -75,6 +76,13 @@ export const UserProfile = () => {
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState("");
   const avatarUrl = session?.user?.image ?? null;
+
+  // Reading history is a paid feature — same "active tier" rule the API enforces.
+  // Non-subscribers get the pricing modal instead of the page.
+  const isSubscriber =
+    (planId === "MONTHLY" || planId === "YEARLY") &&
+    expiresAt !== null &&
+    new Date(expiresAt).getTime() > Date.now();
 
   useEffect(() => {
     async function checkPassword() {
@@ -486,6 +494,22 @@ export const UserProfile = () => {
             aria-label={t("chooseReader")}
           >
             <EditIcon />
+          </button>
+        </span>
+      </div>
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("profileHistory")}</span>
+        <span className="user-profile__value-group">
+          <span className="user-profile__value">{t("profileHistoryOpen")}</span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={() =>
+              isSubscriber ? router.push("/history") : setIsSubscriptionOpen(true)
+            }
+            aria-label={t("profileHistory")}
+          >
+            <EyeIcon />
           </button>
         </span>
       </div>
