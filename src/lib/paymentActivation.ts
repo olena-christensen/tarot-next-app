@@ -26,6 +26,7 @@ export type ApplyResult =
   | "no_subscription"
   | "success"
   | "failure"
+  | "expired"
   | "intermediate";
 
 function addMonths(date: Date, months: number): Date {
@@ -216,6 +217,20 @@ export async function applyMonoInvoiceStatus(
       }
     }
     return "failure";
+  }
+
+  if (status === "expired") {
+    // Abandoned checkout: mono expires an invoice the user never completed.
+    // Terminal, so the row must stop looking "in flight" — otherwise
+    // pendingPlanId sticks forever and the reconcile sweep re-polls it every
+    // day. Deliberately NO dunning email: nothing failed, they simply walked
+    // away, and "we couldn't charge your card" would be a lie.
+    await prisma.subscription.update({
+      where: { id: sub.id },
+      data: { paymentStatus: status, pendingPlanId: null },
+    });
+    await updatePaymentLedger(status, false);
+    return "expired";
   }
 
   if (status === "processing" || status === "created") {
