@@ -5,15 +5,6 @@
 <details open>
 <summary><b>🔴 Blocking — before taking real money</b></summary>
 
-### Platform
-
-- [ ] **Upgrade Vercel to Pro ($20/mo).** The project runs on the free Hobby plan, whose
-  fair-use terms restrict it to non-commercial personal use — selling subscriptions is
-  commercial. A terms problem, not technical: renewals work fine on Hobby (its only limit
-  is one scheduled job per day, which the 24-hour renewal lead window covers). Pro also
-  raises runtime-log retention from 1 hour to 1 day, which softens the "no alerting" gap.
-  Do it at launch, not after.
-
 ### Pricing copy vs code — the honesty audit (2026-08-02)
 
 `messages/*/plans.json` is the contract shown on the pricing page and in the in-app
@@ -21,9 +12,11 @@ modal. Taking €5/month against unbuilt features is refund and consumer-protect
 exposure, not just a product gap. Decision: **build the cheap ones, then re-cut the
 list**. Cutting a line = editing five JSON files.
 
-Both cheap ones are done (PDF export, favourites & notes). What remains needs either
-large content work, new infrastructure, or artwork — so the next step is a
-**build-vs-cut judgement on the five ❌ rows below**, not more building.
+Both cheap ones are done (PDF export, favourites & notes). Since then the daily card email
+was built (everything but its cron slot) and long-form interpretations were marked
+"coming soon" rather than cut. The **yearly "save 58%" claim was wrong** — €5×12 vs €39 is
+35%, corrected in all five locales 2026-08-02. What remains needs artwork or a release
+pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows below**.
 
 | Advertised claim | Status |
 |---|---|
@@ -33,8 +26,8 @@ large content work, new infrastructure, or artwork — so the next step is a
 | Ad-free (MONTHLY) | ⚠️ NOT built — no tier gating exists; only true today because the app has no ads. The day ads are added, subscribers see them too unless free-tier-only gating ships in the same change. |
 | Export readings as PDF (MONTHLY) | ✅ built 2026-08-02 — print view per entry, browser "Save as PDF" does the conversion |
 | Favorites & personal notes (MONTHLY) | ✅ built 2026-08-02 — star toggle + "favourites only" filter, free-text note per reading (see Reading History in CLAUDE.md) |
-| Long-form interpretations (MONTHLY) | ❌ not built (`generateReading.ts` has no plan awareness) — judge build-vs-cut |
-| Daily card email (MONTHLY) | ❌ not built (no scheduled job for it) — judge build-vs-cut |
+| Long-form interpretations (MONTHLY) | ⏳ not built — the pricing copy now says **"(coming soon)"** in all five locales (2026-08-02), so the claim is honest while it waits |
+| Daily card email (MONTHLY) | ✅ built 2026-08-02 — opt-in profile toggle, deterministic per-user card, PNG art for Outlook, 78 lines × 5 locales, `/api/cron/daily-card` scheduled `0 2 * * *` (04:00 Kyiv). See `docs/features/daily-card-email.md` |
 | Reminder notifications (MONTHLY) | ❌ not built — judge build-vs-cut |
 | Exclusive seasonal decks (YEARLY) | ❌ not built (all three decks available to every subscriber) — judge build-vs-cut |
 | Early access to new diviners & decks (YEARLY) | ❌ not built (no mechanism) — judge build-vs-cut |
@@ -141,9 +134,6 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
   "charged in UAH at today's rate" disclosure at checkout / on the receipt.
 - **"Readings left today" indicator** on the main page; in-app currency / "crystals"
   packs (consume path already decrements a generic balance — a pricing change, not a rebuild).
-- **Reconciliation sweep back to hourly.** Currently daily (`0 3 * * *`) because Hobby
-  forbids sub-daily jobs — a stuck payment recovers within ~24 h. After the Pro upgrade,
-  bump `vercel.json` to hourly (`0 * * * *`) so a lost-webhook payment lands within ~1 h.
 - **Social sign-in** (Facebook / Twitter) — the NextAuth `Account` table already exists
   via the Prisma adapter; only the providers need wiring. **Share buttons**
   (Instagram / Pinterest / TikTok / Facebook — priority order for the tarot audience).
@@ -212,7 +202,7 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   consumed after the free allotment; MONTHLY/YEARLY unlimited).
 - `/payment/result` localized (locale built into Mono's redirect URL) + MysticBackground;
   fuller redesign deferred by choice (2026-07-13).
-- **Reconciliation sweep** (2026-07-14): daily job `/api/cron/reconcile` polls Mono for
+- **Reconciliation sweep** (2026-07-14; hourly since 2026-08-02): `/api/cron/reconcile` polls Mono for
   `Payment` rows stuck at `created`/`processing` and applies the true status through
   `applyMonoInvoiceStatus` — the same extracted path the webhook uses, so push and poll
   can't drift. `CRON_SECRET`-guarded, like `/api/cron/renew`.
@@ -265,9 +255,21 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   browser supports it. The public page ends with a CTA to draw your own.
 - **OG image** (`opengraph-image.tsx`): 1200×630 generated per shared reading via `next/og`
   — title, reader, the three cards in the deck they were drawn with, wordmark, on the
-  app's dark/gold gradient. Node runtime (Prisma + `node:fs`); card art inlined as base64
-  so no public URL is needed. Font committed at `assets/fonts/Raleway-Light.ttf` because
-  `next/font/google` output isn't readable at runtime.
+  app's dark/gold gradient. Node runtime, since it uses Prisma and `node:fs`. Three
+  traps, all found the hard way — full detail in CLAUDE.md → Reading History:
+  - **Satori can't decode WebP.** All deck art is `.webp`; handing satori one throws
+    `a is not iterable` and kills the whole response. Cards are transcoded to PNG with
+    `sharp` (already a direct dependency).
+  - **`public/` is not on the serverless filesystem** — it's CDN-served, so card art is
+    fetched over HTTP from `NEXT_PUBLIC_APP_URL`, never `readFile`d. Bundling isn't an
+    option either: `public/Cards` is 76MB.
+  - **A runtime `readFile` is invisible to Next's tracer**, so the font needs an explicit
+    `experimental.outputFileTracingIncludes` entry in `next.config.mjs`. Font is committed
+    at `assets/fonts/Raleway-Light.ttf` because `next/font/google` only emits hashed woff2
+    inside `.next`. The load is guarded — a missing font degrades to the default typeface
+    rather than 500ing the preview.
+  - Both filesystem traps passed locally and failed only in production. Anything that
+    touches disk in a route needs checking against a real deployment, not just dev.
 - `history` translation namespace in all 5 locales, `seo.history`, fully translated.
 
 ### Account features
@@ -337,7 +339,7 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
 | Payment processor | Plata by mono (JSC Universal Bank), acquiring API v2410 |
 | Plans | FREE / SINGLE €1 (credit) / MONTHLY €5 / YEARLY €39 — base currency EUR, settles UAH |
 | Contact routing | `/contact` form → privacy@ / legal@ / billing@ / support@ `nothingweird.agency` |
-| Hosting | Vercel (Hobby → **Pro required at launch**); DB Neon Postgres; uploads Vercel Blob |
+| Hosting | Vercel **Pro**; DB Neon Postgres; uploads Vercel Blob |
 
 Entity, banking, domain and email-hosting references are umbrella-level — project notes, not this repo.
 

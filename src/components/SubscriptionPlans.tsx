@@ -38,6 +38,11 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   // Free briefly claims to be the active plan before the real tier loads.
   const [currentPlan, setCurrentPlan] = useState<PlanId | null>(null);
 
+  // Cancelling lives on the active tier's own card (see the CTA below), so the
+  // renewal state has to be known here.
+  const [autoRenew, setAutoRenew] = useState(true);
+  const [renewSaving, setRenewSaving] = useState(false);
+
   useEffect(() => {
     async function loadCurrentPlan() {
       try {
@@ -49,6 +54,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
           // "Current plan" also DISABLES it, so the Renew button led straight
           // to a dead end where the only plan they wanted was unbuyable.
           setCurrentPlan(data.isSubscriber ? (data.planId as PlanId) : "FREE");
+          setAutoRenew(data.autoRenew ?? true);
         }
       } catch {
         // silent — stays on the FREE default
@@ -56,6 +62,28 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     }
     loadCurrentPlan();
   }, []);
+
+  const handleToggleAutoRenew = async () => {
+    if (renewSaving) return;
+    // Turning auto-renew OFF asks for confirmation; turning it back ON does not.
+    if (autoRenew && !window.confirm(t("cancelSubscriptionConfirm"))) return;
+    setRenewSaving(true);
+    try {
+      const res = await fetch("/api/user/subscription", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ autoRenew: !autoRenew }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAutoRenew(data.autoRenew);
+      }
+    } catch {
+      // silent — user can retry
+    } finally {
+      setRenewSaving(false);
+    }
+  };
 
   const handleSubscribe = async (planId: PlanId) => {
     if (busyPlan) return;
@@ -128,17 +156,30 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
               .filter(Boolean)
               .join(" ");
 
+            // On the tier the user actually pays for, the CTA is the cancel /
+            // resume control instead of a dead "Current plan" label — the card
+            // is already marked current by its gold bead. The row on the profile
+            // only routes here, so this must stay reachable.
+            const isCancellable =
+              isCurrent && (plan.id === "MONTHLY" || plan.id === "YEARLY");
+
             // Free is never purchasable: it reads "Current plan" when it's the
             // active tier, otherwise "Included" (the user is on a higher tier).
-            const label = isCurrent
-              ? t("currentPlanBtn")
-              : isFree
-                ? t("includedBtn")
-                : isBusy
-                  ? t("processingBtn")
-                  : isOneTime
-                    ? t("buyReadingBtn")
-                    : t("subscribeBtn");
+            const label = isCancellable
+              ? renewSaving
+                ? t("processingBtn")
+                : autoRenew
+                  ? t("cancelSubscription")
+                  : t("resumeSubscription")
+              : isCurrent
+                ? t("currentPlanBtn")
+                : isFree
+                  ? t("includedBtn")
+                  : isBusy
+                    ? t("processingBtn")
+                    : isOneTime
+                      ? t("buyReadingBtn")
+                      : t("subscribeBtn");
 
             return (
               <article key={plan.id} className={cardClass}>
@@ -164,10 +205,18 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                 <button
                   type="button"
                   className="subscription__cta"
-                  disabled={isFree || isCurrent || Boolean(busyPlan)}
-                  aria-busy={isBusy}
+                  disabled={
+                    isCancellable
+                      ? renewSaving
+                      : isFree || isCurrent || Boolean(busyPlan)
+                  }
+                  aria-busy={isCancellable ? renewSaving : isBusy}
                   onClick={
-                    isFree || isCurrent ? undefined : () => handleSubscribe(plan.id)
+                    isCancellable
+                      ? handleToggleAutoRenew
+                      : isFree || isCurrent
+                        ? undefined
+                        : () => handleSubscribe(plan.id)
                   }
                 >
                   {label}

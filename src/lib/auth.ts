@@ -59,6 +59,7 @@ export const authOptions: NextAuthOptions = {
           preferredDeck: user.preferredDeck,
           preferredReader: user.preferredReader,
           preferredLocale: user.preferredLocale,
+          dailyCardEmail: user.dailyCardEmail,
         };
       },
     }),
@@ -76,6 +77,7 @@ export const authOptions: NextAuthOptions = {
         token.preferredDeck = user.preferredDeck ?? "Rider-Waite";
         token.preferredReader = user.preferredReader ?? "vespera";
         token.preferredLocale = user.preferredLocale ?? "en";
+        token.dailyCardEmail = user.dailyCardEmail ?? false;
       }
       if (trigger === "update") {
         if (updateData?.name) {
@@ -92,6 +94,11 @@ export const authOptions: NextAuthOptions = {
         }
         if (updateData?.image !== undefined) {
           token.picture = updateData.image;
+        }
+        // Boolean: must test for presence, not truthiness — a truthy check would
+        // silently drop every "switch it off".
+        if (updateData?.dailyCardEmail !== undefined) {
+          token.dailyCardEmail = updateData.dailyCardEmail;
         }
       }
 
@@ -110,6 +117,7 @@ export const authOptions: NextAuthOptions = {
           preferredDeck: string;
           preferredReader: string;
           preferredLocale: string;
+          dailyCardEmail: boolean;
         } | null;
         try {
           // Same query that answers "do you still exist", widened to re-read the
@@ -126,6 +134,7 @@ export const authOptions: NextAuthOptions = {
               preferredDeck: true,
               preferredReader: true,
               preferredLocale: true,
+              dailyCardEmail: true,
             },
           });
         } catch (err) {
@@ -147,6 +156,7 @@ export const authOptions: NextAuthOptions = {
         token.preferredDeck = fresh.preferredDeck;
         token.preferredReader = fresh.preferredReader;
         token.preferredLocale = fresh.preferredLocale;
+        token.dailyCardEmail = fresh.dailyCardEmail;
         token.verifiedAt = now;
       }
 
@@ -162,6 +172,7 @@ export const authOptions: NextAuthOptions = {
         session.user.preferredDeck = token.preferredDeck as string | undefined;
         session.user.preferredReader = token.preferredReader as string | undefined;
         session.user.preferredLocale = token.preferredLocale as string | undefined;
+        session.user.dailyCardEmail = token.dailyCardEmail as boolean | undefined;
         // Keep the avatar reactive to update({ image }) — token.picture is the
         // NextAuth-standard slot the jwt callback writes on an avatar change.
         session.user.image = (token.picture as string | null | undefined) ?? null;

@@ -6,9 +6,8 @@ import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
 // stays stuck at created/processing and the customer's credit/tier never lands.
-// Runs daily (Vercel Hobby forbids sub-daily crons), polling mono for the true
-// status of any ledger row stuck past STUCK_MS and applying it through the SAME
-// path as the webhook
+// Runs hourly, polling mono for the true status of any ledger row stuck past
+// STUCK_MS and applying it through the SAME path as the webhook
 // (applyMonoInvoiceStatus) — idempotent, so it's safe even if a real webhook
 // lands at the same moment (the activatedInvoiceId compare-and-set dedupes).
 //

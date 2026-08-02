@@ -15,7 +15,7 @@ Mobile-first, mobile-first, mobile-first. If you are about to write a
 
 ## Infrastructure
 
-- **Hosting:** Vercel — **Hobby (free) plan**. Two consequences: crons may run **once per day only**, with ±59 min scheduling imprecision (so never depend on a cron firing at a precise hour); and Vercel's fair-use guidelines restrict Hobby to **non-commercial use**, which selling subscriptions is not — **Pro ($20/mo) is required before taking real money**. See `docs/go-live.md` → Blocking.
+- **Hosting:** Vercel — **Pro plan** (confirmed 2026-08-02). Cron jobs are not limited to two-per-project-once-per-day the way Hobby is, and commercial use (selling subscriptions) is permitted. Earlier docs described this project as Hobby and used that to defer work — that was wrong; do not reintroduce a "wait for Pro" blocker. Current crons live in `vercel.json`.
 - **Database:** PostgreSQL via Prisma (Vercel Postgres / Prisma Data Platform)
 - **Prisma version:** v6 — DO NOT UPGRADE
 - **Auth:** NextAuth v4 with Prisma adapter
@@ -76,6 +76,8 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 - **NO standing status recaps** — say a thing once; don't re-emit "what's done / uncommitted / left" every turn.
 - Copy-paste content goes in a fenced code block, **never** a `>` blockquote (the `>` chars and border get copied).
 - Never say "it doesn't exist" from a narrow search — grep broadly; if still not found, say "I can't find it — where are you seeing it?"
+- **Don't prescribe cleanup for throwaway test artifacts.** If a fix is deployed, the answer is "use a new one", not a procedure for repairing the disposable thing used while testing (a stale share link, a cached preview, a scratch record). Mention such a step ONLY if it affects real users or real data — and if it does, say plainly that it's one-off and why. Volunteering optional busywork reads as the user having a problem they don't have.
+- **Screenshots live in `~/Desktop`** (macOS default: `~/Desktop/Screenshot YYYY-MM-DD at HH.MM.SS.png`). When the user names one — even if the message arrives as bare filename text, which happens when the terminal pastes the name instead of attaching the file — **just Read it from there**. Approve-once and go; do not ask where it is or how to attach it.
 
 **Commit messages.**
 - "Give me a commit message" means for the **currently uncommitted changes only** — run `git status` first. The user commits after each ask, so NEVER bundle in prior/already-committed work.
