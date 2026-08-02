@@ -34,13 +34,53 @@
     padding: 20px;
   }
 
+  &__entry-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__name {
+    font-size: 1.05rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.04em;
+    margin: 0 0 4px;
+    color: var(--primary);
+  }
+
   &__date {
     display: block;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-faint);
-    margin-bottom: 16px;
+  }
+
+  &__entry-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  &__action {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--text-faint);
+    transition: color 0.2s ease;
+
+    svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      color: var(--primary);
+    }
   }
 
   &__cards {
@@ -82,6 +122,41 @@
   &__more {
     display: block;
     margin: 32px auto 0;
+  }
+
+  &__purge {
+    display: block;
+    margin: 40px auto 0;
+    background: none;
+    border: none;
+    padding: 8px;
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--error);
+    }
+  }
+
+  &__confirm-body {
+    margin: 0 0 24px;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+
+  &__confirm-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__confirm-danger {
+    border-color: var(--error);
+    color: var(--error);
   }
 
   &__locked {

@@ -7,6 +7,17 @@
     "loadMore": "Older Fates",
     "lockedTitle": "The Ledger Is Sealed",
     "lockedBody": "Only the initiated may read what the Veil has recorded. Take a subscription and every reading you have ever drawn returns to you.",
-    "lockedCta": "Join the Initiated"
+    "lockedCta": "Join the Initiated",
+    "rename": "Name This Reading",
+    "renameLabel": "Name",
+    "saveError": "The name did not take. Try again.",
+    "deleteEntry": "Forget This Reading",
+    "deleteEntryConfirm": "This reading will be erased from the ledger for good. There is no recovering it.",
+    "confirmDelete": "Erase it",
+    "deleteAll": "Forget everything",
+    "deleteAllConfirm": "Every reading in your ledger will be erased for good. There is no recovering them.",
+    "confirmDeleteAll": "Erase everything",
+    "deleting": "Erasing…",
+    "deleteError": "The ledger would not let go. Try again."
   }
 }

@@ -253,6 +253,16 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), credit consumption in the reading flow, reading history UI.
 - **Status tracking:** `docs/go-live.md` is the single source of truth for what remains before launch.
 
+## Reading History
+
+- **Route:** `/[locale]/history` — own page (`page.tsx` + `HistoryPageClient.tsx` + `src/components/ReadingHistory.tsx`), `robots: noindex` like `/profile`. Styles: `_reading-history.scss`.
+- **Subscriber-only to read.** `GET /api/readings` returns 403 `subscription_required` unless `isActiveTier(planId, expiresAt, now)` passes. That helper lives in `readingAccess.ts` and is shared with `decideReadingAccess` — do NOT re-implement the "is this a subscriber" rule anywhere else.
+- **Write/delete endpoints are auth-only, deliberately NOT subscriber-gated** — someone who lapses to FREE must still be able to rename or erase their own data. `PATCH /api/readings/[id]` (rename, ≤80 chars, empty string clears back to null), `DELETE /api/readings/[id]` (one), `DELETE /api/readings` (purge all). All scope by `userId` as well as `id` via `updateMany`/`deleteMany`, so one user can never touch another's row and a miss returns 404 without a separate ownership query.
+- **Pagination** is cursor-based on the row id (`?cursor=&take=`, default 20, max 50). The query fetches `take + 1` rows to derive `nextCursor` without a count query.
+- `Reading.title` is a nullable column (migration `add_reading_title`, 2026-08-02). Entries render title (if named) + localized date **and time** — two readings on one day must be tellable apart.
+- Both destructive actions confirm in a `Modal` before firing; the purge wording spells out that it cannot be undone.
+- Profile links here via the **Ledger of Fates** row (eye icon, `src/assets/svg/eye.svg`): subscribers navigate, everyone else gets `SubscriptionModal`.
+
 ## Deck Selection
 
 - **Available decks:** Rider-Waite (default), Klimt, Gothic-Vintage. Card images live under `public/Cards/{deckName}/` with identical folder structures and filenames across all decks.

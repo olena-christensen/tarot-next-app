@@ -68,6 +68,8 @@ model Reading {
   userId    String
   cards     String[]
   response  String   @db.Text
+  /// User-assigned label for the reading; null until they name it.
+  title     String?
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

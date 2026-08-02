@@ -47,7 +47,13 @@ export async function GET(request: Request) {
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: take + 1,
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
-      select: { id: true, cards: true, response: true, createdAt: true },
+      select: {
+        id: true,
+        cards: true,
+        response: true,
+        title: true,
+        createdAt: true,
+      },
     });
 
     const hasMore = rows.length > take;
@@ -58,12 +64,34 @@ export async function GET(request: Request) {
         id: r.id,
         cards: r.cards,
         response: r.response,
+        title: r.title,
         createdAt: r.createdAt.toISOString(),
       })),
       nextCursor: hasMore ? page[page.length - 1].id : null,
     });
   } catch (err) {
     console.error("[readings] list failed", err);
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+  }
+}
+
+/**
+ * Purge the caller's entire history. Deliberately NOT subscriber-gated:
+ * someone who lapses to FREE must still be able to erase what was recorded.
+ */
+export async function DELETE() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const { count } = await prisma.reading.deleteMany({
+      where: { userId: session.user.id },
+    });
+    return NextResponse.json({ deleted: count });
+  } catch (err) {
+    console.error("[readings] purge failed", err);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }

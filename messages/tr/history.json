@@ -7,6 +7,17 @@
     "loadMore": "Daha eski kaderler",
     "lockedTitle": "Defter mühürlü",
     "lockedBody": "Peçe'nin kaydettiklerini yalnızca erginler okuyabilir. Bir abonelik edinin, çektiğiniz tüm açılımlar size geri dönsün.",
-    "lockedCta": "Erginlere katıl"
+    "lockedCta": "Erginlere katıl",
+    "rename": "Bu açılıma bir ad verin",
+    "renameLabel": "Ad",
+    "saveError": "Ad kaydedilmedi. Tekrar deneyin.",
+    "deleteEntry": "Bu açılımı unut",
+    "deleteEntryConfirm": "Bu açılım defterden kalıcı olarak silinecek. Geri getirilemez.",
+    "confirmDelete": "Sil",
+    "deleteAll": "Her şeyi unut",
+    "deleteAllConfirm": "Defterdeki tüm açılımlar kalıcı olarak silinecek. Geri getirilemezler.",
+    "confirmDeleteAll": "Hepsini sil",
+    "deleting": "Siliniyor…",
+    "deleteError": "Defter bırakmadı. Tekrar deneyin."
   }
 }
