@@ -22,6 +22,16 @@ const nextConfig = {
     env: {
         OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     },
+    experimental: {
+        // The OG image reads the Raleway file off disk at request time. Next's
+        // tracer can't see a runtime `readFile(join(process.cwd(), ...))`, so on
+        // Vercel the file is absent from the function bundle and the route 500s.
+        // Card art is NOT listed here on purpose — public/Cards is 76MB; the
+        // route fetches those from the CDN instead.
+        outputFileTracingIncludes: {
+            '/[locale]/r/[shareId]/opengraph-image': ['./assets/fonts/**'],
+        },
+    },
 };
 
 export default withNextIntl(nextConfig);
