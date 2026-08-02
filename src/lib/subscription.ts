@@ -1,5 +1,6 @@
 import type { PlanId } from "./plans";
 import { prisma } from "./prisma";
+import { isActiveTier } from "./readingAccess";
 
 export async function getUserPlan(userId: string): Promise<PlanId> {
   try {
@@ -25,6 +26,13 @@ export type SubscriptionStatus = {
   expiresAt: string | null;
   /** Whether the subscription auto-renews (false = canceled at period end). */
   autoRenew: boolean;
+  /**
+   * THE entitlement flag: an active paid tier (MONTHLY/YEARLY still inside its
+   * period). Clients must read this rather than deriving their own answer from
+   * `planId` — three components previously did, two of them ignoring expiry, so
+   * an expired subscriber kept premium readers while the profile said otherwise.
+   */
+  isSubscriber: boolean;
 };
 
 /**
@@ -48,13 +56,15 @@ export async function getSubscriptionStatus(
         autoRenew: true,
       },
     });
+    const planId = (sub?.planId as PlanId | undefined) ?? "FREE";
     return {
-      planId: (sub?.planId as PlanId | undefined) ?? "FREE",
+      planId,
       readingCredits: sub?.readingCredits ?? 0,
       paymentStatus: sub?.paymentStatus ?? null,
       pendingPlanId: sub?.pendingPlanId ?? null,
       expiresAt: sub?.expiresAt ? sub.expiresAt.toISOString() : null,
       autoRenew: sub?.autoRenew ?? true,
+      isSubscriber: isActiveTier(planId, sub?.expiresAt ?? null, new Date()),
     };
   } catch (err) {
     console.error("[getSubscriptionStatus] failed, defaulting to FREE", err);
@@ -65,6 +75,7 @@ export async function getSubscriptionStatus(
       pendingPlanId: null,
       expiresAt: null,
       autoRenew: true,
+      isSubscriber: false,
     };
   }
 }

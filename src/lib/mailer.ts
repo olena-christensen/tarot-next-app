@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { getResetEmailStrings } from "./passwordReset";
 
 // Transactional emails for recurring renewal. BEST-EFFORT by contract: every
 // send is wrapped so a mail failure can never throw into (and roll back) a
@@ -29,7 +30,21 @@ function profileUrl(): string {
   return `${base.replace(/\/$/, "")}/en/profile`;
 }
 
-async function send(subject: string, to: string, text: string): Promise<void> {
+async function send(
+  subject: string,
+  to: string,
+  text: string,
+  opts: {
+    html?: string;
+    /**
+     * Subscription mail advertises List-Unsubscribe; security mail must not —
+     * there is nothing to unsubscribe from and offering it invites a user to
+     * "opt out" of password resets.
+     */
+    unsubscribe?: boolean;
+  } = {}
+): Promise<void> {
+  const { html, unsubscribe = true } = opts;
   const address = process.env.ZOHO_SMTP_USER;
   const transporter = getTransporter();
   if (!transporter || !address) return; // already logged
@@ -45,20 +60,55 @@ async function send(subject: string, to: string, text: string): Promise<void> {
       to,
       subject,
       text,
-      headers: { "List-Unsubscribe": `<${profileUrl()}>` },
+      ...(html ? { html } : {}),
+      ...(unsubscribe
+        ? { headers: { "List-Unsubscribe": `<${profileUrl()}>` } }
+        : {}),
     });
   } catch (err) {
     console.error("[mailer] sendMail failed", { subject, err });
   }
 }
 
+// Tier names must match what the pricing page sold them (plans.json, Set A).
+// The billing period is kept in brackets: a receipt has to be unambiguous about
+// what is being charged and how often, which a bare title isn't.
 const PLAN_LABEL: Record<"MONTHLY" | "YEARLY", string> = {
-  MONTHLY: "Monthly",
-  YEARLY: "Yearly",
+  MONTHLY: "Initiate (monthly)",
+  YEARLY: "Adept (yearly)",
 };
 
 function formatEuro(amountMinor: number): string {
   return `€${(amountMinor / 100).toFixed(2)}`;
+}
+
+/**
+ * Password-reset link. Localized to the recipient; no List-Unsubscribe (this is
+ * security mail, not subscription mail). Best-effort like every send here — the
+ * route answers `ok` regardless so a mail failure can't leak account existence.
+ */
+export async function sendPasswordResetEmail(args: {
+  to: string;
+  locale: string;
+  link: string;
+}): Promise<void> {
+  const t = await getResetEmailStrings(args.locale);
+  const text = [
+    t.resetEmailIntro,
+    "",
+    args.link,
+    "",
+    t.resetEmailExpiry,
+    t.resetEmailIgnore,
+    "",
+    `— ${FROM_NAME}`,
+  ].join("\n");
+  const html =
+    `<p>${t.resetEmailIntro}</p>` +
+    `<p><a href="${args.link}">${t.resetEmailCta}</a></p>` +
+    `<p>${t.resetEmailExpiry}</p>` +
+    `<p>${t.resetEmailIgnore}</p>`;
+  await send(t.resetEmailSubject, args.to, text, { html, unsubscribe: false });
 }
 
 export async function sendRenewalReceiptEmail(args: {

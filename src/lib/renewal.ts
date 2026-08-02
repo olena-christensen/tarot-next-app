@@ -6,6 +6,18 @@
 export const GRACE_MAX_RETRIES = 3;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * How far BEFORE `nextChargeAt` a renewal becomes chargeable — i.e. bill in
+ * advance rather than at the deadline.
+ *
+ * Without this, a subscription whose renewal moment falls after the cron's
+ * daily run is expired and locked out until the next run — up to ~24h of paid
+ * downtime (observed live 2026-08-02). The cron can only run once a day on
+ * Vercel Hobby, with ±59 min imprecision, so the lead time — not a faster
+ * schedule — is what guarantees the charge lands before access ends.
+ */
+export const RENEWAL_LEAD_MS = 24 * 60 * 60 * 1000;
+
 export type RenewalInput = {
   autoRenew: boolean;
   planId: string;
@@ -45,7 +57,12 @@ export function decideRenewalAction(sub: RenewalInput, now: Date): RenewalAction
     return { type: "downgrade", reason: "payment_failed" };
   }
 
-  const renewalDue = sub.nextChargeAt != null && now >= sub.nextChargeAt;
+  // Charge up to RENEWAL_LEAD_MS early so the daily cron always gets an attempt
+  // in before the period ends. Downgrade branches above still key off the real
+  // expiry — nobody is demoted early, only billed early.
+  const renewalDue =
+    sub.nextChargeAt != null &&
+    now.getTime() >= sub.nextChargeAt.getTime() - RENEWAL_LEAD_MS;
   if (!renewalDue) return { type: "none" };
 
   // A charge is already in flight for the current invoice — never double-charge.

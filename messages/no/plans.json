@@ -1,15 +1,21 @@
 {
   "plans": {
     "FREE": {
-      "name": "Gratis",
-      "features": ["3 tolkninger per dag", "Nullstilles ved midnatt"]
+      "name": "Søker",
+      "features": [
+        "3 tolkninger per dag",
+        "Nullstilles ved midnatt"
+      ]
     },
     "SINGLE": {
-      "name": "Enkelttolkning",
-      "features": ["Én ekstra tolkning", "Ingen abonnement"]
+      "name": "Offergave",
+      "features": [
+        "Én ekstra tolkning",
+        "Ingen abonnement"
+      ]
     },
     "MONTHLY": {
-      "name": "Månedlig",
+      "name": "Innviet",
       "features": [
         "Ubegrensede tolkninger",
         "Tolkningshistorikk",
@@ -24,7 +30,7 @@
       ]
     },
     "YEARLY": {
-      "name": "Årlig",
+      "name": "Adept",
       "features": [
         "Alt i Månedlig",
         "Spar 58% mot månedlig",

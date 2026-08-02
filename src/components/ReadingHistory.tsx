@@ -11,6 +11,7 @@ import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
 import TrashIcon from "@/assets/svg/trash.svg";
+import PrintIcon from "@/assets/svg/print.svg";
 
 const MAX_TITLE_LENGTH = 80;
 
@@ -44,6 +45,9 @@ export const ReadingHistory = () => {
   const [renaming, setRenaming] = useState<Reading | null>(null);
   const [titleInput, setTitleInput] = useState("");
   const [isSavingTitle, setIsSavingTitle] = useState(false);
+
+  // Which entry the print stylesheet should isolate; cleared once the dialog closes.
+  const [printingId, setPrintingId] = useState<string | null>(null);
 
   const [deleting, setDeleting] = useState<Reading | null>(null);
   const [isPurgeOpen, setIsPurgeOpen] = useState(false);
@@ -103,6 +107,18 @@ export const ReadingHistory = () => {
       setIsLoadingMore(false);
     }
   };
+
+  // Mark the entry first, then print on the next tick so the data attribute is in
+  // the DOM before the browser snapshots the page. window.print() blocks until the
+  // dialog closes, so clearing straight after is safe.
+  useEffect(() => {
+    if (!printingId) return;
+    const id = window.setTimeout(() => {
+      window.print();
+      setPrintingId(null);
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [printingId]);
 
   const handleOpenRename = (reading: Reading) => {
     setTitleInput(reading.title ?? "");
@@ -208,10 +224,17 @@ export const ReadingHistory = () => {
   }
 
   return (
-    <div className="reading-history">
+    <div
+      className="reading-history"
+      data-printing={printingId ? "true" : undefined}
+    >
       <ol className="reading-history__list list">
         {readings.map((reading) => (
-          <li key={reading.id} className="reading-history__entry">
+          <li
+            key={reading.id}
+            className="reading-history__entry"
+            data-printing={reading.id === printingId ? "true" : undefined}
+          >
             <div className="reading-history__entry-head">
               <div className="reading-history__heading">
                 {reading.title && (
@@ -225,6 +248,14 @@ export const ReadingHistory = () => {
                 </time>
               </div>
               <div className="reading-history__entry-actions">
+                <button
+                  type="button"
+                  className="reading-history__action"
+                  onClick={() => setPrintingId(reading.id)}
+                  aria-label={t("print")}
+                >
+                  <PrintIcon />
+                </button>
                 <button
                   type="button"
                   className="reading-history__action"

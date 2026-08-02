@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { prisma } from "@/lib/prisma";
+import { sendPasswordResetEmail } from "@/lib/mailer";
 import {
   RESET_TOKEN_TTL_MS,
   RESET_THROTTLE_MS,
   generateResetToken,
   hashResetToken,
-  getResetEmailStrings,
 } from "@/lib/passwordReset";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,11 +64,13 @@ export async function POST(request: Request) {
           },
         });
 
-        await sendResetEmail({
+        // Their saved preference wins over the locale of the browser they're on.
+        const emailLocale = user.preferredLocale || userLocale;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app";
+        await sendPasswordResetEmail({
           to: address,
-          // Their saved preference wins over the locale of the browser they're on.
-          locale: user.preferredLocale || userLocale,
-          token: raw,
+          locale: emailLocale,
+          link: `${appUrl.replace(/\/$/, "")}/${emailLocale}/reset-password?token=${encodeURIComponent(raw)}`,
         });
       }
     }
@@ -79,45 +80,4 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ ok: true });
-}
-
-async function sendResetEmail({
-  to,
-  locale,
-  token,
-}: {
-  to: string;
-  locale: string;
-  token: string;
-}) {
-  const smtpUser = process.env.ZOHO_SMTP_USER;
-  const smtpPass = process.env.ZOHO_SMTP_PASS;
-  if (!smtpUser || !smtpPass) {
-    console.error("[forgot-password] missing ZOHO_SMTP_USER or ZOHO_SMTP_PASS");
-    return;
-  }
-
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app";
-  const link = `${appUrl}/${locale}/reset-password?token=${encodeURIComponent(token)}`;
-  const t = await getResetEmailStrings(locale);
-
-  const transporter = nodemailer.createTransport({
-    host: "smtppro.zoho.eu",
-    port: 465,
-    secure: true,
-    auth: { user: smtpUser, pass: smtpPass },
-  });
-
-  await transporter.sendMail({
-    // Zoho rejects a from: that isn't the authenticated mailbox.
-    from: smtpUser,
-    to,
-    subject: t.resetEmailSubject,
-    text: `${t.resetEmailIntro}\n\n${link}\n\n${t.resetEmailExpiry}\n${t.resetEmailIgnore}`,
-    html:
-      `<p>${t.resetEmailIntro}</p>` +
-      `<p><a href="${link}">${t.resetEmailCta}</a></p>` +
-      `<p>${t.resetEmailExpiry}</p>` +
-      `<p>${t.resetEmailIgnore}</p>`,
-  });
 }

@@ -1,0 +1,59 @@
+// Print / "Save as PDF" rules. Screen styles are untouched — everything here is
+// inside @media print.
+//
+// The app's theme is gold-on-near-black, which prints badly: browsers drop
+// background colours by default, leaving pale gold text on white paper. So the
+// semantic colour variables are flipped to ink-on-paper for print only; every
+// component keeps using var(--text-color) etc. and follows automatically.
+@media print {
+  :root {
+    --bg: var(--white);
+    --text-color: var(--black);
+    --text-soft: var(--black);
+    --text-faint: var(--grey);
+    --primary: var(--black);
+    --border-color: var(--grey);
+    --overlay: transparent;
+  }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  // Site chrome and decoration carry no meaning on paper.
+  .main-header,
+  .main-footer,
+  .cookie-banner,
+  .mystic-bg,
+  .smoke-animation,
+  .loader,
+  .modal {
+    display: none !important;
+  }
+
+  .reading-history {
+    // Controls are interactive-only.
+    &__entry-actions,
+    &__more,
+    &__purge,
+    &__status {
+      display: none !important;
+    }
+
+    &__entry {
+      background: none;
+      border: none;
+      padding: 0;
+      // Never split a reading across two sheets.
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    // Printing one entry: every sibling is hidden so the sheet holds exactly the
+    // reading whose print button was pressed.
+    &[data-printing="true"] &__entry:not([data-printing="true"]) {
+      display: none;
+    }
+  }
+}

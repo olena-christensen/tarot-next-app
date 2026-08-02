@@ -54,6 +54,28 @@
     &--popular {
       border: 1px solid var(--primary);
     }
+
+    // Current-plan bead — same jewel as the current-reader marker in
+    // _reader-selection.scss. Sits on the left so it never collides with the
+    // "most popular" badge, which is pinned top-right.
+    &--current {
+      border: 1px solid var(--primary);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 20px;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, var(--gold), var(--primary));
+        box-shadow:
+          0 0 6px rgba(250, 225, 163, 0.55),
+          inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+      }
+    }
   }
 
   &__badge {

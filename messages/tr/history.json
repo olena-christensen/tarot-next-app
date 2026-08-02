@@ -9,6 +9,7 @@
     "lockedTitle": "Defter mühürlü",
     "lockedBody": "Peçe'nin kaydettiklerini yalnızca erginler okuyabilir. Bir abonelik edinin, çektiğiniz tüm açılımlar size geri dönsün.",
     "lockedCta": "Erginlere katıl",
+    "print": "PDF olarak kaydet",
     "rename": "Bu açılıma bir ad verin",
     "renameLabel": "Ad",
     "saveError": "Ad kaydedilmedi. Tekrar deneyin.",

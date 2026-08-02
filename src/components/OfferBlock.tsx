@@ -99,7 +99,9 @@ export const OfferBlock = ({
                 .then((data) => {
                     const id = data.planId ?? "FREE";
                     setPlanId(id);
-                    setIsSubscriber(id !== "FREE");
+                    // Server-computed entitlement (active tier, expiry included)
+                    // — never re-derive it from planId here.
+                    setIsSubscriber(Boolean(data.isSubscriber));
                 })
                 .catch(() => {
                     setPlanId("FREE");

@@ -44,7 +44,11 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
         const res = await fetch("/api/user/plan");
         if (res.ok) {
           const data = await res.json();
-          setCurrentPlan(data.planId as PlanId);
+          // Entitlement, not the raw enum. A lapsed subscriber still has
+          // planId MONTHLY until the cron downgrades them — marking that card
+          // "Current plan" also DISABLES it, so the Renew button led straight
+          // to a dead end where the only plan they wanted was unbuyable.
+          setCurrentPlan(data.isSubscriber ? (data.planId as PlanId) : "FREE");
         }
       } catch {
         // silent — stays on the FREE default
@@ -116,9 +120,13 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
             const isCurrent = plan.id === currentPlan;
             const suffix = intervalSuffix(plan.interval);
             const isBusy = busyPlan === plan.id;
-            const cardClass = isPopular
-              ? "subscription__card subscription__card--popular"
-              : "subscription__card";
+            const cardClass = [
+              "subscription__card",
+              isPopular ? "subscription__card--popular" : "",
+              isCurrent ? "subscription__card--current" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
 
             // Free is never purchasable: it reads "Current plan" when it's the
             // active tier, otherwise "Included" (the user is on a higher tier).

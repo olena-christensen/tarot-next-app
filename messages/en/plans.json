@@ -1,15 +1,21 @@
 {
   "plans": {
     "FREE": {
-      "name": "Free",
-      "features": ["3 readings per day", "Resets at midnight"]
+      "name": "Seeker",
+      "features": [
+        "3 readings per day",
+        "Resets at midnight"
+      ]
     },
     "SINGLE": {
-      "name": "Single reading",
-      "features": ["One extra reading", "No subscription"]
+      "name": "Offering",
+      "features": [
+        "One extra reading",
+        "No subscription"
+      ]
     },
     "MONTHLY": {
-      "name": "Monthly",
+      "name": "Initiate",
       "features": [
         "Unlimited readings",
         "Reading history",
@@ -24,7 +30,7 @@
       ]
     },
     "YEARLY": {
-      "name": "Yearly",
+      "name": "Adept",
       "features": [
         "Everything in Monthly",
         "Save 58% vs monthly",

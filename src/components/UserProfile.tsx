@@ -13,6 +13,7 @@ import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
 import EyeIcon from "@/assets/svg/eye.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
 
@@ -49,6 +50,7 @@ export const UserProfile = () => {
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [autoRenew, setAutoRenew] = useState<boolean>(true);
   const [credits, setCredits] = useState<number>(0);
+  const [isSubscriber, setIsSubscriber] = useState(false);
   const [subSaving, setSubSaving] = useState(false);
   // Deck and reader are read straight from the session (reactive) so their editor
   // modals' update({ preferredX }) reflects here immediately — same as language via useLocale().
@@ -77,12 +79,14 @@ export const UserProfile = () => {
   const [avatarError, setAvatarError] = useState("");
   const avatarUrl = session?.user?.image ?? null;
 
-  // Reading history is a paid feature — same "active tier" rule the API enforces.
-  // Non-subscribers get the pricing modal instead of the page.
-  const isSubscriber =
-    (planId === "MONTHLY" || planId === "YEARLY") &&
-    expiresAt !== null &&
-    new Date(expiresAt).getTime() > Date.now();
+  // `isSubscriber` comes from GET /api/user/plan (server-computed via
+  // isActiveTier) — one definition of entitlement for the whole app.
+
+  // A paid tier whose period has ended but which the renewal cron hasn't
+  // downgraded yet. Without this the page contradicts itself — "Current plan:
+  // Monthly" beside the free-user paywalls — so say plainly that it lapsed.
+  const isLapsed =
+    (planId === "MONTHLY" || planId === "YEARLY") && !isSubscriber;
 
   useEffect(() => {
     async function checkPassword() {
@@ -105,6 +109,7 @@ export const UserProfile = () => {
           setExpiresAt(data.expiresAt ?? null);
           setAutoRenew(data.autoRenew ?? true);
           setCredits(data.readingCredits ?? 0);
+          setIsSubscriber(Boolean(data.isSubscriber));
         }
       } catch {
         // silent — UI falls back to "—"
@@ -417,17 +422,50 @@ export const UserProfile = () => {
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profilePlan")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">
-            {planId ? tPlans(`${planId}.name`) : "—"}
-          </span>
-          <button
-            type="button"
-            className="user-profile__edit-icon"
-            onClick={() => setIsSubscriptionOpen(true)}
-            aria-label={t("currentPlan")}
-          >
-            <EditIcon />
-          </button>
+          {isLapsed ? (
+            // Once it has lapsed the tier name is noise — the only useful thing
+            // left on this row is the way back.
+            <button
+              type="button"
+              className="user-profile__row-cta"
+              onClick={() => setIsSubscriptionOpen(true)}
+            >
+              {t("beginInitiation")}
+            </button>
+          ) : (
+            <>
+              <span className="user-profile__value">
+                {planId ? tPlans(`${planId}.name`) : "—"}
+                {isSubscriber && expiresAt ? ` · ${formatDate(expiresAt)}` : ""}
+              </span>
+              {/* The Renewal row was folded into this one, so its auto-renew
+                  toggle lives here — cancelling must stay reachable. */}
+              {isSubscriber && (
+                <button
+                  type="button"
+                  className="user-profile__edit-icon"
+                  onClick={handleToggleAutoRenew}
+                  disabled={subSaving}
+                  aria-label={
+                    autoRenew ? t("cancelSubscription") : t("resumeSubscription")
+                  }
+                  title={
+                    autoRenew ? t("cancelSubscription") : t("resumeSubscription")
+                  }
+                >
+                  {autoRenew ? <TrashIcon /> : <EditIcon />}
+                </button>
+              )}
+              <button
+                type="button"
+                className="user-profile__edit-icon"
+                onClick={() => setIsSubscriptionOpen(true)}
+                aria-label={t("currentPlan")}
+              >
+                <EditIcon />
+              </button>
+            </>
+          )}
         </span>
       </div>
       {/* Credits are meaningless on a paid tier — subscription readings are
@@ -442,25 +480,6 @@ export const UserProfile = () => {
               className="user-profile__edit-icon"
               onClick={() => setIsSubscriptionOpen(true)}
               aria-label={t("credits")}
-            >
-              <EditIcon />
-            </button>
-          </span>
-        </div>
-      )}
-      {(planId === "MONTHLY" || planId === "YEARLY") && (
-        <div className="user-profile__field user-profile__field--row">
-          <span className="user-profile__label">{t("renewal")}</span>
-          <span className="user-profile__value-group">
-            <span className="user-profile__value">
-              {expiresAt ? formatDate(expiresAt) : "—"}
-            </span>
-            <button
-              type="button"
-              className="user-profile__edit-icon"
-              onClick={handleToggleAutoRenew}
-              disabled={subSaving}
-              aria-label={autoRenew ? t("cancelSubscription") : t("resumeSubscription")}
             >
               <EditIcon />
             </button>
