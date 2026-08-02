@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
+import sharp from "sharp";
 import { join } from "node:path";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
@@ -25,15 +26,31 @@ const GOLD_SOFT = "rgba(250, 225, 163, 0.75)";
 const GOLD_FAINT = "rgba(250, 225, 163, 0.55)";
 const DARK = "#090909";
 
-/** Card art as a data URI — read from disk so this works without a public URL. */
+// Drawn size of each card; the source is transcoded at 2x for crisp edges.
+const CARD_WIDTH = 190;
+const CARD_HEIGHT = 332;
+
+/**
+ * Card art as a data URI — read from disk so this works without a public URL.
+ *
+ * The deck art is WebP, which the image renderer (satori) CANNOT decode: handing
+ * it one throws "a is not iterable" and kills the whole response. So each card is
+ * transcoded to PNG with sharp (already a direct dependency) and resized to the
+ * size it's drawn at, which keeps the payload small too.
+ */
 async function cardDataUri(deck: string, cardId: string): Promise<string | null> {
   const relative = CARD_IMAGES[cardId];
   if (!relative) return null;
   try {
     const file = join(process.cwd(), "public", getCardImagePath(deck, relative));
-    const data = await readFile(file, "base64");
-    return `data:image/webp;base64,${data}`;
-  } catch {
+    const png = await sharp(await readFile(file))
+      .resize(CARD_WIDTH * 2, CARD_HEIGHT * 2, { fit: "fill" })
+      .png()
+      .toBuffer();
+    return `data:image/png;base64,${png.toString("base64")}`;
+  } catch (err) {
+    // A missing or unreadable card must not take the whole image down.
+    console.error("[og] card render failed", cardId, err);
     return null;
   }
 }
@@ -119,8 +136,8 @@ export default async function Image({
               <img
                 key={index}
                 src={src}
-                width={190}
-                height={332}
+                width={CARD_WIDTH}
+                height={CARD_HEIGHT}
                 style={{ borderRadius: 8 }}
                 alt=""
               />
