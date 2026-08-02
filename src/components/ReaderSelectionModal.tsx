@@ -44,9 +44,9 @@ export const ReaderSelectionModal = ({
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!cancelled && data) {
-          setIsSubscriber(
-            data.planId === "MONTHLY" || data.planId === "YEARLY"
-          );
+          // Server-computed entitlement (active tier, expiry included) — never
+          // re-derive it from planId here.
+          setIsSubscriber(Boolean(data.isSubscriber));
         }
       })
       .catch(() => {

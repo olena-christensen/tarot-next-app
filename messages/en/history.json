@@ -9,6 +9,7 @@
     "lockedTitle": "The Ledger Is Sealed",
     "lockedBody": "Only the initiated may read what the Veil has recorded. Take a subscription and every reading you have ever drawn returns to you.",
     "lockedCta": "Join the Initiated",
+    "print": "Save as PDF",
     "rename": "Name This Reading",
     "renameLabel": "Name",
     "saveError": "The name did not take. Try again.",

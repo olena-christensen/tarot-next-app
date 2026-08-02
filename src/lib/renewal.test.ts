@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { decideRenewalAction, GRACE_MAX_RETRIES, type RenewalInput } from "./renewal";
+import {
+  decideRenewalAction,
+  GRACE_MAX_RETRIES,
+  RENEWAL_LEAD_MS,
+  type RenewalInput,
+} from "./renewal";
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = new Date("2026-07-01T06:00:00.000Z");
@@ -97,5 +102,54 @@ describe("decideRenewalAction", () => {
         NOW
       )
     ).toEqual({ type: "none" });
+  });
+
+  // Billing in advance. Without the lead time a subscriber whose renewal moment
+  // falls after the cron's single daily run is locked out until the next run
+  // (observed live 2026-08-02) — so "due" starts RENEWAL_LEAD_MS early, while
+  // the downgrade branches must still wait for the real expiry.
+  describe("lead time", () => {
+    const inHours = (h: number) => new Date(NOW.getTime() + h * 60 * 60 * 1000);
+
+    it("charges inside the lead window, before the period ends", () => {
+      const soon = inHours(12);
+      expect(
+        decideRenewalAction(sub({ nextChargeAt: soon, expiresAt: soon }), NOW)
+      ).toEqual({ type: "charge" });
+    });
+
+    it("charges exactly at the lead boundary", () => {
+      const edge = new Date(NOW.getTime() + RENEWAL_LEAD_MS);
+      expect(
+        decideRenewalAction(sub({ nextChargeAt: edge, expiresAt: edge }), NOW)
+      ).toEqual({ type: "charge" });
+    });
+
+    it("does nothing one minute outside the lead window", () => {
+      const outside = new Date(NOW.getTime() + RENEWAL_LEAD_MS + 60_000);
+      expect(
+        decideRenewalAction(sub({ nextChargeAt: outside, expiresAt: outside }), NOW)
+      ).toEqual({ type: "none" });
+    });
+
+    it("does NOT downgrade a canceled sub early just because it is inside the lead window", () => {
+      const soon = inHours(12);
+      expect(
+        decideRenewalAction(
+          sub({ autoRenew: false, nextChargeAt: soon, expiresAt: soon }),
+          NOW
+        )
+      ).toEqual({ type: "none" });
+    });
+
+    it("does NOT downgrade a token-less sub early just because it is inside the lead window", () => {
+      const soon = inHours(12);
+      expect(
+        decideRenewalAction(
+          sub({ monoCardToken: null, nextChargeAt: soon, expiresAt: soon }),
+          NOW
+        )
+      ).toEqual({ type: "none" });
+    });
   });
 });

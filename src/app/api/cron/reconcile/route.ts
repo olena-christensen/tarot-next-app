@@ -17,12 +17,16 @@ import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
 
 export const dynamic = "force-dynamic";
 
-// Only reconcile after 30 min unconfirmed (a real payment confirms in seconds;
-// this avoids poking an invoice the user is still actively paying), and give up
-// after 7 days — beyond that a still-pending invoice is an abandoned checkout,
-// not a lost webhook, so we stop re-querying it (bounds the scan + mono calls).
+// Only reconcile after 30 min unconfirmed — a real payment confirms in seconds,
+// so this avoids poking an invoice the user is still actively paying.
+//
+// The upper bound was 7 days, which orphaned anything older: mono knew the
+// invoice had expired, we still said "created", and nothing would ever correct
+// it (found 2026-08-02 on a 28-June checkout). It is now 90 days, and the sweep
+// can't grow unbounded because `expired` is handled as terminal — a row is
+// resolved once and then drops out of the created/processing filter for good.
 const STUCK_MS = 30 * 60 * 1000;
-const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+const WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
@@ -70,7 +74,8 @@ export async function GET(req: Request) {
       if (
         res.status === "success" ||
         res.status === "failure" ||
-        res.status === "reversed"
+        res.status === "reversed" ||
+        res.status === "expired"
       ) {
         // Settled — this row won't be picked up again next sweep.
         reconciled++;

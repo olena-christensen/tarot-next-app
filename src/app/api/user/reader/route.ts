@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { READER_IDS } from "@/lib/readers";
+import { READER_IDS, DEFAULT_READER } from "@/lib/readers";
+import { getSubscriptionStatus } from "@/lib/subscription";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -33,6 +34,19 @@ export async function PATCH(request: Request) {
       { error: "Invalid reader" },
       { status: 400 }
     );
+  }
+
+  // "Choose your diviner" is a paid feature (see plans.json). The modal hides
+  // locked readers, but that is cosmetic — enforce it here too, or anyone can
+  // PATCH their way to a premium reader. The default reader stays free.
+  if (reader !== DEFAULT_READER) {
+    const { isSubscriber } = await getSubscriptionStatus(session.user.id);
+    if (!isSubscriber) {
+      return NextResponse.json(
+        { error: "subscription_required" },
+        { status: 403 }
+      );
+    }
   }
 
   await prisma.user.update({

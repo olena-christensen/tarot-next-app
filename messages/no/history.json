@@ -9,6 +9,7 @@
     "lockedTitle": "Boken er forseglet",
     "lockedBody": "Bare de innvidde kan lese det Sløret har nedtegnet. Tegn et abonnement, og hver eneste lesning du har trukket vender tilbake til deg.",
     "lockedCta": "Bli en av de innvidde",
+    "print": "Lagre som PDF",
     "rename": "Gi lesningen et navn",
     "renameLabel": "Navn",
     "saveError": "Navnet festet seg ikke. Prøv igjen.",

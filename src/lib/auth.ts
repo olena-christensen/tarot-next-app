@@ -103,25 +103,50 @@ export const authOptions: NextAuthOptions = {
         token.id &&
         now - (token.verifiedAt ?? 0) > USER_VERIFY_INTERVAL_MS
       ) {
-        let stillExists: boolean;
+        let fresh: {
+          id: string;
+          name: string | null;
+          image: string | null;
+          preferredDeck: string;
+          preferredReader: string;
+          preferredLocale: string;
+        } | null;
         try {
-          stillExists = Boolean(
-            await prisma.user.findUnique({
-              where: { id: token.id },
-              select: { id: true },
-            })
-          );
+          // Same query that answers "do you still exist", widened to re-read the
+          // mutable profile fields. A JWT session is otherwise frozen at login,
+          // so a change made in one browser (e.g. an avatar uploaded on prod)
+          // never reaches another — this syncs them within the interval at no
+          // extra query cost.
+          fresh = await prisma.user.findUnique({
+            where: { id: token.id },
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              preferredDeck: true,
+              preferredReader: true,
+              preferredLocale: true,
+            },
+          });
         } catch (err) {
           // A DB blip must not sign everyone out — keep the session and retry
           // on the next session read.
-          console.error("[auth] user existence check failed", err);
+          console.error("[auth] user refresh failed", err);
           return token;
         }
-        if (!stillExists) {
+        if (!fresh) {
           // Throwing is how NextAuth v4 invalidates a JWT session: the session
           // route catches it, logs JWT_SESSION_ERROR and clears the cookie.
           throw new Error("user_no_longer_exists");
         }
+        // The DB is authoritative: every writer (avatar upload, rename, each
+        // preference PATCH) persists before calling update(), so a value here is
+        // never staler than the token's.
+        token.name = fresh.name ?? token.name;
+        token.picture = fresh.image;
+        token.preferredDeck = fresh.preferredDeck;
+        token.preferredReader = fresh.preferredReader;
+        token.preferredLocale = fresh.preferredLocale;
         token.verifiedAt = now;
       }
 
