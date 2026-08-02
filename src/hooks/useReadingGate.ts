@@ -11,6 +11,7 @@ import {
   ANON_STORAGE_KEY,
   type AnonReadingState,
 } from "@/lib/anonReadingLimit";
+import { DEFAULT_DECK } from "@/lib/decks";
 
 type ReadingGateCallbacks = {
   /** Anonymous visitor hit their daily limit → open the login modal. */
@@ -99,6 +100,10 @@ export function useReadingGate({
         body: JSON.stringify({
           cards: chosenCards.map((c) => c.id),
           response,
+          // Recorded so the ledger can say who spoke this reading, and render
+          // the deck it was actually drawn from.
+          readerId: state.selectedReader,
+          deckId: session?.user?.preferredDeck ?? DEFAULT_DECK,
         }),
       });
       if (res.status === 200) {

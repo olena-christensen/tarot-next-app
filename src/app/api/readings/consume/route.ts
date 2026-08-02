@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { PlanId } from "@/lib/plans";
 import { decideReadingAccess, utcMidnight } from "@/lib/readingAccess";
+import { READER_IDS, type ReaderId } from "@/lib/readers";
+import { DECK_IDS, type DeckId } from "@/lib/decks";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -19,9 +21,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { cards, response } = (body ?? {}) as {
+  const { cards, response, readerId, deckId } = (body ?? {}) as {
     cards?: unknown;
     response?: unknown;
+    readerId?: unknown;
+    deckId?: unknown;
   };
   if (
     !Array.isArray(cards) ||
@@ -32,6 +36,22 @@ export async function POST(request: Request) {
   ) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
+
+  // Who spoke this reading. Validated against the catalogue rather than trusted,
+  // and optional — an unknown value stores null instead of rejecting a reading
+  // the user has already seen.
+  const reader =
+    typeof readerId === "string" && READER_IDS.includes(readerId as ReaderId)
+      ? readerId
+      : null;
+
+  // Same treatment as the reader: validated against the catalogue, null if
+  // unknown. Stored so a shared or printed reading always shows the art the
+  // user actually drew, even after they switch decks.
+  const deck =
+    typeof deckId === "string" && DECK_IDS.includes(deckId as DeckId)
+      ? deckId
+      : null;
 
   const now = new Date();
 
@@ -83,7 +103,13 @@ export async function POST(request: Request) {
       }
 
       await tx.reading.create({
-        data: { userId, cards: cards as string[], response: response as string },
+        data: {
+          userId,
+          cards: cards as string[],
+          response: response as string,
+          readerId: reader,
+          deckId: deck,
+        },
       });
 
       if (decision.mode === "subscription") {

@@ -37,8 +37,14 @@
     &__entry-actions,
     &__more,
     &__purge,
+    &__toolbar,
     &__status {
       display: none !important;
+    }
+
+    // The note is the user's own writing — it belongs on the printed sheet.
+    &__note {
+      border-left: 2px solid var(--grey);
     }
 
     &__entry {
