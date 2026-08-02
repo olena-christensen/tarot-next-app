@@ -265,9 +265,21 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   browser supports it. The public page ends with a CTA to draw your own.
 - **OG image** (`opengraph-image.tsx`): 1200×630 generated per shared reading via `next/og`
   — title, reader, the three cards in the deck they were drawn with, wordmark, on the
-  app's dark/gold gradient. Node runtime (Prisma + `node:fs`); card art inlined as base64
-  so no public URL is needed. Font committed at `assets/fonts/Raleway-Light.ttf` because
-  `next/font/google` output isn't readable at runtime.
+  app's dark/gold gradient. Node runtime, since it uses Prisma and `node:fs`. Three
+  traps, all found the hard way — full detail in CLAUDE.md → Reading History:
+  - **Satori can't decode WebP.** All deck art is `.webp`; handing satori one throws
+    `a is not iterable` and kills the whole response. Cards are transcoded to PNG with
+    `sharp` (already a direct dependency).
+  - **`public/` is not on the serverless filesystem** — it's CDN-served, so card art is
+    fetched over HTTP from `NEXT_PUBLIC_APP_URL`, never `readFile`d. Bundling isn't an
+    option either: `public/Cards` is 76MB.
+  - **A runtime `readFile` is invisible to Next's tracer**, so the font needs an explicit
+    `experimental.outputFileTracingIncludes` entry in `next.config.mjs`. Font is committed
+    at `assets/fonts/Raleway-Light.ttf` because `next/font/google` only emits hashed woff2
+    inside `.next`. The load is guarded — a missing font degrades to the default typeface
+    rather than 500ing the preview.
+  - Both filesystem traps passed locally and failed only in production. Anything that
+    touches disk in a route needs checking against a real deployment, not just dev.
 - `history` translation namespace in all 5 locales, `seo.history`, fully translated.
 
 ### Account features

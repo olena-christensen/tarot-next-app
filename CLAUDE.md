@@ -76,6 +76,8 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 - **NO standing status recaps** — say a thing once; don't re-emit "what's done / uncommitted / left" every turn.
 - Copy-paste content goes in a fenced code block, **never** a `>` blockquote (the `>` chars and border get copied).
 - Never say "it doesn't exist" from a narrow search — grep broadly; if still not found, say "I can't find it — where are you seeing it?"
+- **Don't prescribe cleanup for throwaway test artifacts.** If a fix is deployed, the answer is "use a new one", not a procedure for repairing the disposable thing used while testing (a stale share link, a cached preview, a scratch record). Mention such a step ONLY if it affects real users or real data — and if it does, say plainly that it's one-off and why. Volunteering optional busywork reads as the user having a problem they don't have.
+- **Screenshots live in `~/Desktop`** (macOS default: `~/Desktop/Screenshot YYYY-MM-DD at HH.MM.SS.png`). When the user names one — even if the message arrives as bare filename text, which happens when the terminal pastes the name instead of attaching the file — **just Read it from there**. Approve-once and go; do not ask where it is or how to attach it.
 
 **Commit messages.**
 - "Give me a commit message" means for the **currently uncommitted changes only** — run `git status` first. The user commits after each ask, so NEVER bundle in prior/already-committed work.
