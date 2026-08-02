@@ -1,9 +1,9 @@
-# Daily Card Email — plan
+# Daily Card Email
 
-**Status:** planned, not built. **Written:** 2026-08-02.
+**Status:** built and scheduled, 2026-08-02.
 
-One of the MONTHLY claims in `messages/*/plans.json` ("Daily card email") that the code
-does not back. This is the design to make it true.
+Makes good on one of the MONTHLY claims in `messages/*/plans.json` ("Daily card email"),
+which the code did not back.
 
 **Shape chosen:** one card per day, a short piece of new copy written for that card, and a
 link into the app. Not the full three-card reading — the email is a hook, the app is where
@@ -85,28 +85,38 @@ a retry or a run straddling midnight makes double-firing realistic.
   transporter in the route — the shared sender carries the `from` display name that
   deliverability depends on.
 - **Function timeout.** A serialized SMTP loop at ~1s per message fits roughly 250–300
-  recipients in the 300s default. Beyond that the job must chunk: process a page of users
-  per invocation with a cursor, or move to a queue. Build the cursor in from day one — it
-  costs little and is the difference between "works" and "silently truncates" the day the
-  list grows.
-- **Zoho SMTP daily send caps are the real ceiling**, not Vercel. Confirm the limit on the
-  current Zoho plan before promising a daily blast; past it, this needs a bulk sender
-  (Resend / SES), which is a different integration and a different cost line.
-- **Failures must not be silent.** Count sent/failed, log a single summary line, and email
-  `founder@` when the failure count is non-zero — `STATUS.md` already lists exactly this
-  as the cheapest fix for the missing-alerting gap, and this job is the first thing that
-  will need it.
+  recipients in the 300s `maxDuration`. The route therefore pages 200 users per invocation
+  and returns `nextCursor` when more remain — a cap that isn't reported reads as "everyone
+  got mail" when they didn't. Nothing calls it with a cursor yet: past 200 opted-in
+  subscribers, the follow-up pages need driving (a second scheduled hit, or a self-recall).
+- **Zoho SMTP daily send caps are the real ceiling**, not Vercel. This is the first feature
+  that scales with subscriber count rather than with events, so it hits that cap first, and
+  silently — as bounces. Tracked in `STATUS.md`.
+- **Failures are counted, not alerted.** The run logs `{day, sent, skipped, failed}` and
+  returns it, but nothing pages anyone: a run that mails nobody looks identical to a quiet
+  day unless someone reads the logs. The `STATUS.md` alerting gap (email `founder@` on job
+  failure) covers this job too.
 - `CRON_SECRET`-guarded like the other two cron routes.
 
-## 6. Build order
+## 6. What shipped
 
-1. Migration + `PATCH /api/user/daily-card` + the `auth.ts` select line.
-2. Profile row and its translations.
-3. `messages/{locale}/daily.json` — English first, then the other four locales.
-4. `src/lib/dailyCard.ts` — deterministic pick, pure and unit-testable.
-5. `sendDailyCardEmail()` in `mailer.ts`.
-6. `/api/cron/daily-card` — cursor-paged, entitlement-checked, summary-logged.
-7. `vercel.json` entry at the Pro upgrade (or the piggyback, if shipping before).
+| Piece | Where |
+|---|---|
+| `User.dailyCardEmail`, default false | migration `20260802195021_add_daily_card_email` |
+| Preference through NextAuth | `src/lib/auth.ts`, `src/types/next-auth.d.ts` |
+| Opt-in endpoint | `src/app/api/user/daily-card/route.ts` |
+| Deterministic pick (+7 tests) | `src/lib/dailyCard.ts`, `dailyCard.test.ts` |
+| Locale copy loaders | `src/lib/dailyCardStrings.ts` |
+| WebP→PNG card art | `src/app/api/card-image/route.ts` |
+| The email itself | `sendDailyCardEmail()` in `src/lib/mailer.ts` |
+| The job | `src/app/api/cron/daily-card/route.ts` |
+| Profile row "The Daily Whisper" | `src/components/UserProfile.tsx` + 5 `ui` keys × 5 locales |
+| Copy | `messages/{locale}/daily.json` — 78 cards × 5 locales |
+| Schedule | `vercel.json` |
+
+**`dailyCardEmail` is in the `jwt` callback's refresh select.** Per the standing gotcha,
+a user-editable field left out of that select goes stale across sessions; the profile row
+reads it from the session, so it would have shown the wrong state on a second device.
 
 ## 7. Decisions (2026-08-02)
 
@@ -121,6 +131,7 @@ a retry or a run straddling midnight makes double-firing realistic.
 
 ### Still open
 
-- **Zoho's daily send cap** — needs checking against the current plan before this can be
-  promised daily at any real list size. Past it, this needs a bulk sender (Resend / SES):
-  a different integration and a new cost line.
+- **Zoho's daily send cap** — the number for the current plan is unknown; tracked in
+  `STATUS.md` → Account & platform gaps.
+- **Paging past 200 recipients** — the cursor exists, nothing drives it yet.
+- **Alerting on a failed run** — counted and logged only.
