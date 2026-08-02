@@ -3,7 +3,7 @@
 import { useState } from "react";
 import NextLink from "next/link";
 import { signIn } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -12,7 +12,10 @@ type LoginFormProps = {
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const t = useTranslations("ui");
   const tDisc = useTranslations("disclaimers");
+  const locale = useLocale();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgot, setIsForgot] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,6 +78,36 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     }
   };
 
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, locale }),
+      });
+      if (!res.ok) {
+        setError(t("somethingWentWrong"));
+        return;
+      }
+      // The endpoint answers ok for unknown addresses too, so this message must
+      // stay neutral — it never confirms that an account exists.
+      setResetSent(true);
+    } catch {
+      setError(t("somethingWentWrong"));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const backToSignIn = () => {
+    setIsForgot(false);
+    setResetSent(false);
+    setError("");
+  };
+
   const handleGoogleSignIn = () => {
     if (isSignUp && !acceptAge) {
       setError(tDisc("ageRequiredError"));
@@ -92,6 +125,43 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     }
     signIn("google", { callbackUrl: "/" });
   };
+
+  if (isForgot) {
+    return (
+      <form className="form form--login" onSubmit={handleForgotSubmit}>
+        <p className="form__intro">{t("forgotPasswordIntro")}</p>
+        {resetSent ? (
+          <div className="form__success">{t("resetLinkSent")}</div>
+        ) : (
+          <div className="form__input-block">
+            <label htmlFor="forgot-email" className="form__label">
+              {t("pledgeYourSoul")}
+            </label>
+            <input
+              type="email"
+              id="forgot-email"
+              className="form__input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+            />
+          </div>
+        )}
+        {error && <div className="form__error">{error}</div>}
+        <div className="form__input-block">
+          {!resetSent && (
+            <button type="submit" className="btn form__btn" disabled={isLoading}>
+              {isLoading ? t("channeling") : t("sendResetLink")}
+            </button>
+          )}
+          <a className="form__toggle" onClick={backToSignIn}>
+            {t("backToSignIn")}
+          </a>
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form className="form form--login" onSubmit={handleCredentialsSubmit}>
@@ -135,6 +205,17 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             minLength={8}
           />
         </div>
+        {!isSignUp && (
+          <a
+            className="form__forgot"
+            onClick={() => {
+              setIsForgot(true);
+              setError("");
+            }}
+          >
+            {t("forgotPassword")}
+          </a>
+        )}
       </div>
 
       {isSignUp && (
