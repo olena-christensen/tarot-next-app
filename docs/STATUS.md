@@ -263,6 +263,11 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   X / Facebook / Telegram / WhatsApp intent URLs (**plain links — no third-party SDKs, so
   no trackers and no cookie-consent implications**) and the native share sheet where the
   browser supports it. The public page ends with a CTA to draw your own.
+- **OG image** (`opengraph-image.tsx`): 1200×630 generated per shared reading via `next/og`
+  — title, reader, the three cards in the deck they were drawn with, wordmark, on the
+  app's dark/gold gradient. Node runtime (Prisma + `node:fs`); card art inlined as base64
+  so no public URL is needed. Font committed at `assets/fonts/Raleway-Light.ttf` because
+  `next/font/google` output isn't readable at runtime.
 - `history` translation namespace in all 5 locales, `seo.history`, fully translated.
 
 ### Account features
