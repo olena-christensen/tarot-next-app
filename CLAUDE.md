@@ -253,6 +253,18 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - Out of scope until separate specs land: free-tier enforcement (counting 3 readings/day), credit consumption in the reading flow, reading history UI.
 - **Status tracking:** `docs/go-live.md` is the single source of truth for what remains before launch.
 
+## Password Reset ("forgot your password")
+
+- **Entry point:** a `form__forgot` link under the password field in `LoginForm.tsx` (sign-in mode only). It swaps the login modal's body to an email form — no extra route.
+- **`POST /api/auth/forgot-password`** — **always** returns `{ok:true}` for a well-formed email. Unknown address, Google-only account (no `password`), throttled request and mail failure all produce the identical response; anything else would make this an account-enumeration oracle. Same reason the client's "link sent" copy never confirms an account exists.
+- **`POST /api/auth/reset-password`** — unknown / already-used / expired tokens all return the same `invalid_token` 400. On success it sets the bcrypt hash (cost 12, matching `register` and `user/password`), marks the token used, and deletes the user's other tokens, all in one `$transaction`.
+- **`PasswordResetToken` model** (migration `add_password_reset_token`, 2026-08-02): only the **SHA-256** of the token is stored — the raw value exists solely in the emailed link, so a DB leak can't reset anyone. Single-use, 1-hour TTL, and requesting a new link deletes any earlier one. Constants live in `src/lib/passwordReset.ts`.
+- **Throttle:** one link per account per 60s (`RESET_THROTTLE_MS`), enforced by the newest token's `createdAt`. This is the app's only rate limiting — the contact route still has a TODO for it.
+- **Email is localized** to the recipient's saved `preferredLocale` (falling back to the locale the request came from). `getResetEmailStrings()` imports `messages/{locale}/ui.json` directly, since next-intl's hooks aren't available in a route handler. Sent over the same Zoho SMTP the contact form uses; `from:` must equal the SMTP user.
+- **Auto sign-in after reset:** on success the endpoint returns the account's email (safe — only a valid-token holder reaches that branch, and they just set the password), and the client calls `signIn("credentials")` with the new phrase, so "back to the gate" lands them already logged in. A failed sign-in is non-fatal: the password still changed, they just arrive signed out.
+- **Reset page:** `/[locale]/reset-password?token=…`, noindex. `useSearchParams()` forces client rendering, so `ResetPasswordClient` wraps the form in `<Suspense>` — without it the page fails to prerender at build time.
+- **Route naming gotcha:** `forgot-password` / `reset-password` sit next to NextAuth's `[...nextauth]` catch-all under `src/app/api/auth/`. Static segments win over the catch-all in the App Router, so they resolve correctly — the build output lists all three.
+
 ## Reading History
 
 - **Route:** `/[locale]/history` — own page (`page.tsx` + `HistoryPageClient.tsx` + `src/components/ReadingHistory.tsx`), `robots: noindex` like `/profile`. Styles: `_reading-history.scss`.

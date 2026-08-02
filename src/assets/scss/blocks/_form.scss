@@ -85,6 +85,27 @@
   }
 }
 
+.form__forgot {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--text-faint);
+  cursor: pointer;
+  text-align: right;
+  font-size: 0.8rem;
+
+  &:hover {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+}
+
+.form__intro {
+  margin-bottom: 1rem;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .form__disclaimer {
   margin-top: 0.25rem;
   color: var(--text-faint);

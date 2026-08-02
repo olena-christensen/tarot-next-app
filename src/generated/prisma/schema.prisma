@@ -37,22 +37,38 @@ model Session {
 }
 
 model User {
-  id              String        @id @default(cuid())
+  id              String               @id @default(cuid())
   name            String?
-  email           String?       @unique
+  email           String?              @unique
   emailVerified   DateTime?
   password        String?
   image           String?
-  createdAt       DateTime      @default(now())
+  createdAt       DateTime             @default(now())
   termsAcceptedAt DateTime?
-  preferredDeck   String        @default("Rider-Waite")
-  preferredReader String        @default("vespera")
-  preferredLocale String        @default("en")
+  preferredDeck   String               @default("Rider-Waite")
+  preferredReader String               @default("vespera")
+  preferredLocale String               @default("en")
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]
   subscription    Subscription?
   payments        Payment[]
+  passwordResets  PasswordResetToken[]
+}
+
+/// Single-use password-reset grant. Only the SHA-256 of the token is stored —
+/// the raw value exists solely in the emailed link, so a DB leak can't reset anyone.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
 
 model VerificationToken {
