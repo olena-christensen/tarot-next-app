@@ -93,6 +93,12 @@ model Reading {
   /// Which reader's voice produced this reading. Null on rows written before
   /// 2026-08-02, and for anything whose reader can't be resolved.
   readerId   String?
+  /// Which deck the cards were drawn from, so a shared/printed reading always
+  /// renders the art the user actually saw — not their current preference.
+  deckId     String?
+  /// Public share token. Null = not shared; setting it publishes the reading at
+  /// /{locale}/r/{shareId}, clearing it revokes that link immediately.
+  shareId    String?  @unique
   createdAt  DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -27,6 +27,18 @@
     "deleteAllConfirm": "Every reading in your ledger will be erased for good. There is no recovering them.",
     "confirmDeleteAll": "Erase everything",
     "deleting": "Erasing…",
-    "deleteError": "The ledger would not let go. Try again."
+    "deleteError": "The ledger would not let go. Try again.",
+    "share": "Share",
+    "shareBody": "Anyone with this link can read this reading. Your name is never shown. Revoke it any time.",
+    "shareCopy": "Copy link",
+    "shareCopied": "Copied",
+    "shareMore": "More…",
+    "shareRevoke": "Revoke this link",
+    "shareError": "The link could not be forged. Try again.",
+    "sharedTitle": "A reading from The Veil",
+    "sharedMissingTitle": "This reading has been withdrawn",
+    "sharedCtaText": "The cards are waiting for you too.",
+    "sharedCta": "Draw Your Own Fate",
+    "shareOn": "Share on {network}"
   }
 }

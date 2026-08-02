@@ -14,6 +14,12 @@ import EditIcon from "@/assets/svg/edit.svg";
 import TrashIcon from "@/assets/svg/trash.svg";
 import PrintIcon from "@/assets/svg/print.svg";
 import StarIcon from "@/assets/svg/star.svg";
+import ShareIcon from "@/assets/svg/share.svg";
+import CopyIcon from "@/assets/svg/copy.svg";
+import XIcon from "@/assets/svg/x.svg";
+import FacebookIcon from "@/assets/svg/facebook.svg";
+import TelegramIcon from "@/assets/svg/telegram.svg";
+import WhatsAppIcon from "@/assets/svg/whatsapp.svg";
 
 const MAX_TITLE_LENGTH = 80;
 const MAX_NOTE_LENGTH = 2000;
@@ -26,12 +32,44 @@ type Reading = {
   note: string | null;
   readerId: string | null;
   isFavorite: boolean;
+  shareId: string | null;
   createdAt: string;
 };
 
 const CARD_IMAGES: Record<string, string> = Object.fromEntries(
   tarots.map((card) => [card.id, card.image])
 );
+
+// Plain intent URLs — no third-party SDKs, so no trackers load and nothing
+// needs cookie consent. Each pre-fills the link in the network's own composer;
+// brand names are the accessible label (they aren't translated).
+const SHARE_NETWORKS = [
+  {
+    id: "x",
+    label: "X",
+    Icon: XIcon,
+    href: (url: string) => `https://x.com/intent/tweet?url=${encodeURIComponent(url)}`,
+  },
+  {
+    id: "facebook",
+    label: "Facebook",
+    Icon: FacebookIcon,
+    href: (url: string) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+  },
+  {
+    id: "telegram",
+    label: "Telegram",
+    Icon: TelegramIcon,
+    href: (url: string) => `https://t.me/share/url?url=${encodeURIComponent(url)}`,
+  },
+  {
+    id: "whatsapp",
+    label: "WhatsApp",
+    Icon: WhatsAppIcon,
+    href: (url: string) => `https://wa.me/?text=${encodeURIComponent(url)}`,
+  },
+] as const;
 
 export const ReadingHistory = () => {
   const { data: session } = useSession();
@@ -56,9 +94,21 @@ export const ReadingHistory = () => {
   const [noteInput, setNoteInput] = useState("");
   const [isSavingTitle, setIsSavingTitle] = useState(false);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
+  // Resolved after mount — navigator is undefined during SSR, and reading it in
+  // render would desync server and client HTML.
+  const [canNativeShare, setCanNativeShare] = useState(false);
+
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== "undefined" && Boolean(navigator.share));
+  }, []);
 
   // Which entry the print stylesheet should isolate; cleared once the dialog closes.
   const [printingId, setPrintingId] = useState<string | null>(null);
+
+  const [sharing, setSharing] = useState<Reading | null>(null);
+  const [shareUrl, setShareUrl] = useState("");
+  const [shareBusy, setShareBusy] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
 
   const [deleting, setDeleting] = useState<Reading | null>(null);
   const [isPurgeOpen, setIsPurgeOpen] = useState(false);
@@ -163,6 +213,82 @@ export const ReadingHistory = () => {
     }, 0);
     return () => window.clearTimeout(id);
   }, [printingId]);
+
+  const buildShareUrl = (shareId: string) =>
+    `${window.location.origin}/${locale}/r/${shareId}`;
+
+  const handleOpenShare = async (reading: Reading) => {
+    setError("");
+    setShareCopied(false);
+    setSharing(reading);
+    // Already published: reuse the link rather than minting another.
+    if (reading.shareId) {
+      setShareUrl(buildShareUrl(reading.shareId));
+      return;
+    }
+    setShareUrl("");
+    setShareBusy(true);
+    try {
+      const res = await fetch(`/api/readings/${reading.id}/share`, {
+        method: "POST",
+      });
+      if (!res.ok) throw new Error("failed");
+      const { shareId } = await res.json();
+      setShareUrl(buildShareUrl(shareId));
+      setReadings((prev) =>
+        prev.map((r) => (r.id === reading.id ? { ...r, shareId } : r))
+      );
+    } catch {
+      setError(t("shareError"));
+      setSharing(null);
+    } finally {
+      setShareBusy(false);
+    }
+  };
+
+  const handleCopyShare = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShareCopied(true);
+      // Icon-only button, so "copied" is a transient highlight rather than a
+      // label change — drop it back so the control doesn't look stuck.
+      window.setTimeout(() => setShareCopied(false), 2000);
+    } catch {
+      // Clipboard can be blocked (insecure context, permissions) — the input is
+      // selectable, so the link is still obtainable by hand.
+      setShareCopied(false);
+    }
+  };
+
+  // Native share sheet where it exists (mobile, Safari, Edge); elsewhere the
+  // copy button and the per-network links carry it.
+  const handleNativeShare = async () => {
+    if (!navigator.share) return;
+    try {
+      await navigator.share({ url: shareUrl, title: t("sharedTitle") });
+    } catch {
+      // User dismissed the sheet — not an error.
+    }
+  };
+
+  const handleUnshare = async () => {
+    if (!sharing || shareBusy) return;
+    setShareBusy(true);
+    try {
+      const res = await fetch(`/api/readings/${sharing.id}/share`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("failed");
+      setReadings((prev) =>
+        prev.map((r) => (r.id === sharing.id ? { ...r, shareId: null } : r))
+      );
+      setSharing(null);
+    } catch {
+      setError(t("shareError"));
+    } finally {
+      setShareBusy(false);
+    }
+  };
 
   const handleOpenRename = (reading: Reading) => {
     setTitleInput(reading.title ?? "");
@@ -345,8 +471,19 @@ export const ReadingHistory = () => {
                 <button
                   type="button"
                   className="reading-history__action"
+                  data-active={reading.shareId ? "true" : undefined}
+                  onClick={() => handleOpenShare(reading)}
+                  aria-label={t("share")}
+                  title={t("share")}
+                >
+                  <ShareIcon />
+                </button>
+                <button
+                  type="button"
+                  className="reading-history__action"
                   onClick={() => setPrintingId(reading.id)}
                   aria-label={t("print")}
+                  title={t("print")}
                 >
                   <PrintIcon />
                 </button>
@@ -355,6 +492,7 @@ export const ReadingHistory = () => {
                   className="reading-history__action"
                   onClick={() => handleOpenRename(reading)}
                   aria-label={t("rename")}
+                  title={t("rename")}
                 >
                   <EditIcon />
                 </button>
@@ -363,6 +501,7 @@ export const ReadingHistory = () => {
                   className="reading-history__action"
                   onClick={() => setDeleting(reading)}
                   aria-label={t("deleteEntry")}
+                  title={t("deleteEntry")}
                 >
                   <TrashIcon />
                 </button>
@@ -417,6 +556,72 @@ export const ReadingHistory = () => {
       >
         {t("deleteAll")}
       </button>
+
+      <Modal
+        isOpen={sharing !== null}
+        onClose={() => setSharing(null)}
+        title={t("share")}
+      >
+        <div className="reading-share">
+          <p className="reading-share__body">{t("shareBody")}</p>
+          {shareBusy && !shareUrl ? (
+            <p className="reading-history__status">{t("loading")}</p>
+          ) : (
+            <>
+              <div className="reading-share__row">
+                {/* A span, not an <input>: browsers ignore text-decoration on
+                    form controls, so an underlined link has to be real text.
+                    user-select:all makes one click grab the whole URL. */}
+                <span className="reading-share__url">{shareUrl}</span>
+                <button
+                  type="button"
+                  className="reading-share__network"
+                  data-active={shareCopied ? "true" : undefined}
+                  onClick={handleCopyShare}
+                  aria-label={shareCopied ? t("shareCopied") : t("shareCopy")}
+                  title={shareCopied ? t("shareCopied") : t("shareCopy")}
+                >
+                  <CopyIcon />
+                </button>
+              </div>
+              <div className="reading-share__networks">
+                {SHARE_NETWORKS.map(({ id, label, Icon, href }) => (
+                  <a
+                    key={id}
+                    className="reading-share__network"
+                    href={href(shareUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t("shareOn", { network: label })}
+                    title={t("shareOn", { network: label })}
+                  >
+                    <Icon />
+                  </a>
+                ))}
+                {canNativeShare && (
+                  <button
+                    type="button"
+                    className="reading-share__network"
+                    onClick={handleNativeShare}
+                    aria-label={t("shareMore")}
+                    title={t("shareMore")}
+                  >
+                    <ShareIcon />
+                  </button>
+                )}
+              </div>
+              <button
+                type="button"
+                className="reading-share__revoke"
+                onClick={handleUnshare}
+                disabled={shareBusy}
+              >
+                {t("shareRevoke")}
+              </button>
+            </>
+          )}
+        </div>
+      </Modal>
 
       <Modal
         isOpen={renaming !== null}

@@ -28,6 +28,9 @@
   }
 
   &__empty-cta {
+    // It's an <a>, so it defaults to inline — whose padding does NOT push the
+    // text above it away, leaving the copy sitting on top of the button.
+    display: inline-block;
     // Renders as a .btn — kill the browser's default anchor underline.
     text-decoration: none;
   }
@@ -279,4 +282,100 @@
       font-size: 0.75rem;
     }
   }
+}
+
+// Share dialog — link + per-network intent links + revoke.
+.reading-share {
+  &__body {
+    margin: 0 0 20px;
+    line-height: 1.6;
+    color: var(--text-faint);
+    font-size: 0.9rem;
+  }
+
+  // Link + copy button on one line.
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  // Reads as a link in the app's own voice, not a form control: the TEXT is
+  // underlined, with no box or divider rule. NOT `.form__input` — that class
+  // only exists nested under `.form`, so using it here yielded an unstyled
+  // browser-default white box.
+  &__url {
+    // `0 1 auto`, not `1 1 auto` — it must NOT grow, or it stretches and shoves
+    // the copy button to the far edge instead of sitting 8px after the text.
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // One click selects the whole URL for anyone who'd rather not use the button.
+    user-select: all;
+  }
+
+  &__networks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  // Icon-only, square, equal — brand marks read faster than words here.
+  &__network {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-soft);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    // Transient "copied" confirmation on the icon-only copy button.
+    &[data-active="true"] {
+      color: var(--success);
+      border-color: var(--success);
+    }
+  }
+
+  &__revoke {
+    display: block;
+    margin: 24px auto 0;
+    background: none;
+    border: none;
+    padding: 8px;
+    font-family: var(--font-family);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--error);
+    }
+  }
+
 }

@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import type { PlanId } from "@/lib/plans";
 import { decideReadingAccess, utcMidnight } from "@/lib/readingAccess";
 import { READER_IDS, type ReaderId } from "@/lib/readers";
+import { DECK_IDS, type DeckId } from "@/lib/decks";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -20,10 +21,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { cards, response, readerId } = (body ?? {}) as {
+  const { cards, response, readerId, deckId } = (body ?? {}) as {
     cards?: unknown;
     response?: unknown;
     readerId?: unknown;
+    deckId?: unknown;
   };
   if (
     !Array.isArray(cards) ||
@@ -41,6 +43,14 @@ export async function POST(request: Request) {
   const reader =
     typeof readerId === "string" && READER_IDS.includes(readerId as ReaderId)
       ? readerId
+      : null;
+
+  // Same treatment as the reader: validated against the catalogue, null if
+  // unknown. Stored so a shared or printed reading always shows the art the
+  // user actually drew, even after they switch decks.
+  const deck =
+    typeof deckId === "string" && DECK_IDS.includes(deckId as DeckId)
+      ? deckId
       : null;
 
   const now = new Date();
@@ -98,6 +108,7 @@ export async function POST(request: Request) {
           cards: cards as string[],
           response: response as string,
           readerId: reader,
+          deckId: deck,
         },
       });
 

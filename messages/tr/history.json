@@ -27,6 +27,18 @@
     "deleteAllConfirm": "Defterdeki tüm açılımlar kalıcı olarak silinecek. Geri getirilemezler.",
     "confirmDeleteAll": "Hepsini sil",
     "deleting": "Siliniyor…",
-    "deleteError": "Defter bırakmadı. Tekrar deneyin."
+    "deleteError": "Defter bırakmadı. Tekrar deneyin.",
+    "share": "Paylaş",
+    "shareBody": "Bu bağlantıya sahip herkes bu açılımı okuyabilir. Adınız hiçbir zaman gösterilmez. Bağlantıyı istediğiniz an iptal edebilirsiniz.",
+    "shareCopy": "Bağlantıyı kopyala",
+    "shareCopied": "Kopyalandı",
+    "shareMore": "Daha fazla…",
+    "shareRevoke": "Bağlantıyı iptal et",
+    "shareError": "Bağlantı oluşturulamadı. Tekrar deneyin.",
+    "sharedTitle": "Peçe’den bir açılım",
+    "sharedMissingTitle": "Bu açılım geri çekildi",
+    "sharedCtaText": "Kartlar sizi de bekliyor.",
+    "sharedCta": "Kendi kaderinizi çekin",
+    "shareOn": "{network} üzerinde paylaş"
   }
 }

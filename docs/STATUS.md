@@ -244,6 +244,25 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   subscriber-gated (a lapsed user must be able to erase their data).
 - Print-to-PDF per entry (printer button + `_print.scss`; the browser's "Save as PDF"
   does the conversion — no PDF library).
+- Favourites & notes (`add_reading_note_and_favorite`): star toggle (optimistic, rolls
+  back on failure) + server-side `?favorites=1` filter so cursor paging stays correct;
+  free-text note (≤2000 chars) shown as a quoted aside and kept on the printed sheet.
+  `PATCH /api/readings/[id]` is **partial** — only keys present are written, so the star
+  can toggle without clearing a note.
+- Provenance (`add_reading_reader`, `add_reading_deck_and_share`): `readerId` + `deckId`
+  captured at draw time and validated server-side against the catalogues. Entries show
+  `date · reader`, and cards render in the deck actually drawn — not the user's current
+  preference. Null on rows written before these migrations; the UI shows nothing rather
+  than guessing.
+- **Sharing** (`shareId`, nullable + unique): the share button mints an unguessable token
+  (9 random bytes, base64url) and publishes the reading at `/{locale}/r/{shareId}` —
+  public, no account, **anonymous** (cards, words, reader; never the owner's name),
+  `robots: noindex`, with OG/Twitter tags so links unfurl. Minting is idempotent (re-share
+  returns the same link, so nobody accumulates forgotten live URLs) and revocable
+  (`DELETE` clears `shareId` and the page 404s at once). Share dialog offers copy-link,
+  X / Facebook / Telegram / WhatsApp intent URLs (**plain links — no third-party SDKs, so
+  no trackers and no cookie-consent implications**) and the native share sheet where the
+  browser supports it. The public page ends with a CTA to draw your own.
 - `history` translation namespace in all 5 locales, `seo.history`, fully translated.
 
 ### Account features

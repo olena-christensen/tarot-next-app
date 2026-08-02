@@ -27,6 +27,18 @@
     "deleteAllConfirm": "Alle lesninger i boken slettes for alltid. De kan ikke hentes tilbake.",
     "confirmDeleteAll": "Slett alt",
     "deleting": "Sletter …",
-    "deleteError": "Boken slapp ikke taket. Prøv igjen."
+    "deleteError": "Boken slapp ikke taket. Prøv igjen.",
+    "share": "Del",
+    "shareBody": "Alle med denne lenken kan lese denne lesningen. Navnet ditt vises aldri. Du kan trekke den tilbake når som helst.",
+    "shareCopy": "Kopier lenke",
+    "shareCopied": "Kopiert",
+    "shareMore": "Mer …",
+    "shareRevoke": "Trekk tilbake lenken",
+    "shareError": "Lenken kunne ikke smis. Prøv igjen.",
+    "sharedTitle": "En lesning fra Sløret",
+    "sharedMissingTitle": "Denne lesningen er trukket tilbake",
+    "sharedCtaText": "Kortene venter på deg også.",
+    "sharedCta": "Trekk din egen skjebne",
+    "shareOn": "Del på {network}"
   }
 }
