@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { tarots } from "@/data";
 import { getCardImagePath, DEFAULT_DECK } from "@/lib/decks";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
@@ -196,7 +197,14 @@ export const ReadingHistory = () => {
   }
 
   if (readings.length === 0) {
-    return <p className="reading-history__status">{t("empty")}</p>;
+    return (
+      <div className="reading-history__empty">
+        <p className="reading-history__status">{t("empty")}</p>
+        <Link href="/" className="btn reading-history__empty-cta">
+          {t("emptyCta")}
+        </Link>
+      </div>
+    );
   }
 
   return (
