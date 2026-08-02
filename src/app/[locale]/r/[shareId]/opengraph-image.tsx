@@ -30,20 +30,29 @@ const DARK = "#090909";
 const CARD_WIDTH = 190;
 const CARD_HEIGHT = 332;
 
+function appOrigin(): string {
+  return (process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app").replace(/\/$/, "");
+}
+
 /**
- * Card art as a data URI — read from disk so this works without a public URL.
+ * Card art as a data URI.
  *
- * The deck art is WebP, which the image renderer (satori) CANNOT decode: handing
- * it one throws "a is not iterable" and kills the whole response. So each card is
- * transcoded to PNG with sharp (already a direct dependency) and resized to the
- * size it's drawn at, which keeps the payload small too.
+ * FETCHED over HTTP, not read off disk: `public/` is served by the CDN and is
+ * NOT part of the serverless function's filesystem on Vercel, and at 76MB the
+ * deck art is far too large to bundle in.
+ *
+ * The art is WebP, which the image renderer (satori) CANNOT decode — handing it
+ * one throws "a is not iterable" and kills the entire response (an empty reply,
+ * not a 500). So each card is transcoded to PNG with sharp (already a direct
+ * dependency) at the size it's drawn, which keeps the payload small too.
  */
 async function cardDataUri(deck: string, cardId: string): Promise<string | null> {
   const relative = CARD_IMAGES[cardId];
   if (!relative) return null;
   try {
-    const file = join(process.cwd(), "public", getCardImagePath(deck, relative));
-    const png = await sharp(await readFile(file))
+    const res = await fetch(`${appOrigin()}${getCardImagePath(deck, relative)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const png = await sharp(Buffer.from(await res.arrayBuffer()))
       .resize(CARD_WIDTH * 2, CARD_HEIGHT * 2, { fit: "fill" })
       .png()
       .toBuffer();
@@ -51,6 +60,19 @@ async function cardDataUri(deck: string, cardId: string): Promise<string | null>
   } catch (err) {
     // A missing or unreadable card must not take the whole image down.
     console.error("[og] card render failed", cardId, err);
+    return null;
+  }
+}
+
+/**
+ * Custom font is a nicety, not a requirement — if the file is missing from the
+ * bundle the image must still render rather than 500 the whole preview.
+ */
+async function loadFont(): Promise<Buffer | null> {
+  try {
+    return await readFile(join(process.cwd(), "assets/fonts/Raleway-Light.ttf"));
+  } catch (err) {
+    console.error("[og] font unavailable, falling back to default", err);
     return null;
   }
 }
@@ -75,9 +97,7 @@ export default async function Image({
     namespace: "readers",
   });
 
-  const font = await readFile(
-    join(process.cwd(), "assets/fonts/Raleway-Light.ttf")
-  );
+  const font = await loadFont();
 
   const deck = reading?.deckId ?? DEFAULT_DECK;
   const cards = (reading?.cards ?? []).slice(0, 3);
@@ -159,7 +179,13 @@ export default async function Image({
     ),
     {
       ...size,
-      fonts: [{ name: "Raleway", data: font, style: "normal", weight: 300 }],
+      ...(font
+        ? {
+            fonts: [
+              { name: "Raleway", data: font, style: "normal" as const, weight: 300 as const },
+            ],
+          }
+        : {}),
     }
   );
 }
