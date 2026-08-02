@@ -7,6 +7,7 @@ declare module "next-auth" {
     preferredDeck?: string;
     preferredReader?: string;
     preferredLocale?: string;
+    dailyCardEmail?: boolean;
   }
   interface Session {
     user: {
@@ -18,6 +19,7 @@ declare module "next-auth" {
       preferredDeck?: string;
       preferredReader?: string;
       preferredLocale?: string;
+      dailyCardEmail?: boolean;
     };
   }
 }
@@ -29,6 +31,7 @@ declare module "next-auth/jwt" {
     preferredDeck?: string;
     preferredReader?: string;
     preferredLocale?: string;
+    dailyCardEmail?: boolean;
     /** Epoch ms of the last successful "does this user still exist" check. */
     verifiedAt?: number;
   }

@@ -13,15 +13,8 @@ import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
 import EyeIcon from "@/assets/svg/eye.svg";
-import TrashIcon from "@/assets/svg/trash.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
-
-// ISO date → dd/mm/yy
-const formatDate = (iso: string) => {
-  const [y, m, d] = iso.slice(0, 10).split("-");
-  return `${d}/${m}/${y.slice(2)}`;
-};
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -47,15 +40,14 @@ export const UserProfile = () => {
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
   const [planId, setPlanId] = useState<PlanId | null>(null);
-  const [expiresAt, setExpiresAt] = useState<string | null>(null);
-  const [autoRenew, setAutoRenew] = useState<boolean>(true);
   const [credits, setCredits] = useState<number>(0);
   const [isSubscriber, setIsSubscriber] = useState(false);
-  const [subSaving, setSubSaving] = useState(false);
+  const [dailySaving, setDailySaving] = useState(false);
   // Deck and reader are read straight from the session (reactive) so their editor
   // modals' update({ preferredX }) reflects here immediately — same as language via useLocale().
   const deckId = session?.user?.preferredDeck ?? null;
   const readerId = (session?.user?.preferredReader ?? null) as ReaderId | null;
+  const dailyCardEmail = session?.user?.dailyCardEmail ?? false;
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
@@ -106,8 +98,6 @@ export const UserProfile = () => {
         if (res.ok) {
           const data = await res.json();
           setPlanId(data.planId as PlanId);
-          setExpiresAt(data.expiresAt ?? null);
-          setAutoRenew(data.autoRenew ?? true);
           setCredits(data.readingCredits ?? 0);
           setIsSubscriber(Boolean(data.isSubscriber));
         }
@@ -337,25 +327,25 @@ export const UserProfile = () => {
     }
   };
 
-  const handleToggleAutoRenew = async () => {
-    if (subSaving) return;
-    // Turning auto-renew OFF asks for confirmation; turning it back ON does not.
-    if (autoRenew && !window.confirm(t("cancelSubscriptionConfirm"))) return;
-    setSubSaving(true);
+  const handleToggleDailyCard = async () => {
+    if (dailySaving) return;
+    setDailySaving(true);
+    const next = !dailyCardEmail;
     try {
-      const res = await fetch("/api/user/subscription", {
+      const res = await fetch("/api/user/daily-card", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ autoRenew: !autoRenew }),
+        body: JSON.stringify({ dailyCardEmail: next }),
       });
       if (res.ok) {
-        const data = await res.json();
-        setAutoRenew(data.autoRenew);
+        // Persist first, then update the session — the row reads the value from
+        // the session so it re-renders without a reload.
+        await update({ dailyCardEmail: next });
       }
     } catch {
       // silent — user can retry
     } finally {
-      setSubSaving(false);
+      setDailySaving(false);
     }
   };
 
@@ -433,38 +423,16 @@ export const UserProfile = () => {
               {t("beginInitiation")}
             </button>
           ) : (
-            <>
-              <span className="user-profile__value">
-                {planId ? tPlans(`${planId}.name`) : "—"}
-                {isSubscriber && expiresAt ? ` · ${formatDate(expiresAt)}` : ""}
-              </span>
-              {/* The Renewal row was folded into this one, so its auto-renew
-                  toggle lives here — cancelling must stay reachable. */}
-              {isSubscriber && (
-                <button
-                  type="button"
-                  className="user-profile__edit-icon"
-                  onClick={handleToggleAutoRenew}
-                  disabled={subSaving}
-                  aria-label={
-                    autoRenew ? t("cancelSubscription") : t("resumeSubscription")
-                  }
-                  title={
-                    autoRenew ? t("cancelSubscription") : t("resumeSubscription")
-                  }
-                >
-                  {autoRenew ? <TrashIcon /> : <EditIcon />}
-                </button>
-              )}
-              <button
-                type="button"
-                className="user-profile__edit-icon"
-                onClick={() => setIsSubscriptionOpen(true)}
-                aria-label={t("currentPlan")}
-              >
-                <EditIcon />
-              </button>
-            </>
+            // The tier name itself is the way to the pricing modal — no separate
+            // pencil, no expiry date, and cancelling lives on that modal's card.
+            <button
+              type="button"
+              className="user-profile__value-btn"
+              onClick={() => setIsSubscriptionOpen(true)}
+              aria-label={t("currentPlan")}
+            >
+              {planId ? tPlans(`${planId}.name`) : "—"}
+            </button>
           )}
         </span>
       </div>
@@ -538,6 +506,38 @@ export const UserProfile = () => {
           ) : (
             // Free users can't open the ledger, so offer the upgrade instead of
             // an affordance that only ever leads to a paywall.
+            <button
+              type="button"
+              className="user-profile__row-cta"
+              onClick={() => setIsSubscriptionOpen(true)}
+            >
+              {t("beginInitiation")}
+            </button>
+          )}
+        </span>
+      </div>
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("profileDailyCard")}</span>
+        <span className="user-profile__value-group">
+          {isSubscriber ? (
+            <>
+              <span className="user-profile__value">
+                {dailyCardEmail
+                  ? t("profileDailyCardOn")
+                  : t("profileDailyCardOff")}
+              </span>
+              <button
+                type="button"
+                className="user-profile__row-cta"
+                onClick={handleToggleDailyCard}
+                disabled={dailySaving}
+              >
+                {dailyCardEmail
+                  ? t("profileDailyCardSilence")
+                  : t("profileDailyCardSummon")}
+              </button>
+            </>
+          ) : (
             <button
               type="button"
               className="user-profile__row-cta"

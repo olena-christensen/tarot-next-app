@@ -201,6 +201,27 @@
     color: var(--primary);
   }
 
+  // The plan name doubles as the way into the pricing modal, so it reads as a
+  // value but behaves as a button.
+  .user-profile__value-btn {
+    @include trimEllipses;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-family: var(--font-family);
+    font-size: 1.1rem;
+    font-weight: var(--font-weight);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--text-soft);
+    }
+  }
+
   // Name / Password editors now reuse the shared .form controls (matching the
   // auth modal) inside a portaled Modal — the bespoke .user-profile__edit /
   // __input / __edit-btn / __error / __success rules that lived here are gone.

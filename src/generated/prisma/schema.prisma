@@ -48,6 +48,10 @@ model User {
   preferredDeck   String               @default("Rider-Waite")
   preferredReader String               @default("vespera")
   preferredLocale String               @default("en")
+  /// Opt-in for the daily card email. Off by default — nobody is enrolled without asking.
+  /// Entitlement is re-checked at send time, so a lapsed subscriber stops receiving it
+  /// without this flag changing.
+  dailyCardEmail  Boolean              @default(false)
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

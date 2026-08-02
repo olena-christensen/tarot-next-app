@@ -15,7 +15,7 @@ Mobile-first, mobile-first, mobile-first. If you are about to write a
 
 ## Infrastructure
 
-- **Hosting:** Vercel — **Hobby (free) plan**. Two consequences: crons may run **once per day only**, with ±59 min scheduling imprecision (so never depend on a cron firing at a precise hour); and Vercel's fair-use guidelines restrict Hobby to **non-commercial use**, which selling subscriptions is not — **Pro ($20/mo) is required before taking real money**. See `docs/go-live.md` → Blocking.
+- **Hosting:** Vercel — **Pro plan** (confirmed 2026-08-02). Cron jobs are not limited to two-per-project-once-per-day the way Hobby is, and commercial use (selling subscriptions) is permitted. Earlier docs described this project as Hobby and used that to defer work — that was wrong; do not reintroduce a "wait for Pro" blocker. Current crons live in `vercel.json`.
 - **Database:** PostgreSQL via Prisma (Vercel Postgres / Prisma Data Platform)
 - **Prisma version:** v6 — DO NOT UPGRADE
 - **Auth:** NextAuth v4 with Prisma adapter
