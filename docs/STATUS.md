@@ -84,6 +84,13 @@ Found by auditing for the class of hole that let "forgot your password" ship un-
 things a user reasonably expects from an account, and claims made in copy that the code
 doesn't back. Ordered by severity.
 
+- [ ] **Zoho's daily send cap is the ceiling on the daily card email.** Every message the
+  app sends goes through one Zoho mailbox over SMTP, and Zoho caps messages per day per
+  account. The daily card is the first feature that scales with the subscriber count
+  rather than with events, so it is the one that will hit that cap first — and silently,
+  as bounces. Find the number for the current Zoho plan and write it here. Past it this
+  needs a bulk sender (Resend / SES): a different integration and a new cost line, so it
+  wants deciding before the list grows, not after.
 - [ ] **No email verification.** `emailVerified` column exists and is never written or
   read. Anyone can register with an address they don't control. Decide: verify on
   sign-up, or accept and document why.
