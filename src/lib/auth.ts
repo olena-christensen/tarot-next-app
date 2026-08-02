@@ -9,6 +9,15 @@ import { prisma } from "./prisma";
 export const TERMS_CONSENT_COOKIE = "tarot_terms_consent";
 export const AGE_CONSENT_COOKIE = "tarot_age_consent";
 
+/**
+ * How often a live session re-confirms its user row still exists.
+ * With `strategy: "jwt"` nothing reads the DB per request, so a row deleted
+ * out-of-band (admin action, GDPR erasure, ban) would otherwise keep working
+ * until the token expired. This bounds that window without adding a query to
+ * every session read.
+ */
+const USER_VERIFY_INTERVAL_MS = 5 * 60 * 1000;
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma as any) as NextAuthOptions["adapter"],
   providers: [
@@ -85,6 +94,37 @@ export const authOptions: NextAuthOptions = {
           token.picture = updateData.image;
         }
       }
+
+      const now = Date.now();
+      if (user) {
+        // Just signed in — the row was read moments ago by the provider.
+        token.verifiedAt = now;
+      } else if (
+        token.id &&
+        now - (token.verifiedAt ?? 0) > USER_VERIFY_INTERVAL_MS
+      ) {
+        let stillExists: boolean;
+        try {
+          stillExists = Boolean(
+            await prisma.user.findUnique({
+              where: { id: token.id },
+              select: { id: true },
+            })
+          );
+        } catch (err) {
+          // A DB blip must not sign everyone out — keep the session and retry
+          // on the next session read.
+          console.error("[auth] user existence check failed", err);
+          return token;
+        }
+        if (!stillExists) {
+          // Throwing is how NextAuth v4 invalidates a JWT session: the session
+          // route catches it, logs JWT_SESSION_ERROR and clears the cookie.
+          throw new Error("user_no_longer_exists");
+        }
+        token.verifiedAt = now;
+      }
+
       return token;
     },
     async session({ session, token }) {

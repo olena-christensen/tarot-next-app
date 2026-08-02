@@ -29,5 +29,7 @@ declare module "next-auth/jwt" {
     preferredDeck?: string;
     preferredReader?: string;
     preferredLocale?: string;
+    /** Epoch ms of the last successful "does this user still exist" check. */
+    verifiedAt?: number;
   }
 }
