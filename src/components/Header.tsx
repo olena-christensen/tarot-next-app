@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import Logo from "@/components/Logo";
 import MainMenu from "@/components/MainMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { HeaderAvatar } from "@/components/HeaderAvatar";
 
 let hasPlayedHeaderIntro = false;
 
@@ -12,6 +14,10 @@ type HeaderProps = {
 };
 
 export const Header = ({onOpenLogin}: HeaderProps) => {
+    // Gate on session?.user, never on status: a NextAuth update() flips status
+    // to "loading" mid-flight and would unmount LanguageSwitcher along with its
+    // open modal. Session data survives an update(), so this doesn't.
+    const { data: session } = useSession();
     const [skipIntro] = useState(() => {
         // SSR must be deterministic and match a fresh client load (intro plays).
         // Never read/mutate the module flag on the server — it persists across
@@ -26,7 +32,7 @@ export const Header = ({onOpenLogin}: HeaderProps) => {
         <header className={`main-header container${skipIntro ? " skip-intro" : ""}`}>
             <Logo />
             <MainMenu onOpenLogin={onOpenLogin} />
-            <LanguageSwitcher />
+            {session?.user ? <HeaderAvatar /> : <LanguageSwitcher />}
         </header>
     );
 };

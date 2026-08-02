@@ -430,20 +430,24 @@ export const UserProfile = () => {
           </button>
         </span>
       </div>
-      <div className="user-profile__field user-profile__field--row">
-        <span className="user-profile__label">{t("profileCredits")}</span>
-        <span className="user-profile__value-group">
-          <span className="user-profile__value">{credits}</span>
-          <button
-            type="button"
-            className="user-profile__edit-icon"
-            onClick={() => setIsSubscriptionOpen(true)}
-            aria-label={t("credits")}
-          >
-            <EditIcon />
-          </button>
-        </span>
-      </div>
+      {/* Credits are meaningless on a paid tier — subscription readings are
+          unlimited and never touch the balance, so don't show a count. */}
+      {!isSubscriber && (
+        <div className="user-profile__field user-profile__field--row">
+          <span className="user-profile__label">{t("profileCredits")}</span>
+          <span className="user-profile__value-group">
+            <span className="user-profile__value">{credits}</span>
+            <button
+              type="button"
+              className="user-profile__edit-icon"
+              onClick={() => setIsSubscriptionOpen(true)}
+              aria-label={t("credits")}
+            >
+              <EditIcon />
+            </button>
+          </span>
+        </div>
+      )}
       {(planId === "MONTHLY" || planId === "YEARLY") && (
         <div className="user-profile__field user-profile__field--row">
           <span className="user-profile__label">{t("renewal")}</span>
@@ -500,17 +504,29 @@ export const UserProfile = () => {
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileHistory")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">{t("profileHistoryOpen")}</span>
-          <button
-            type="button"
-            className="user-profile__edit-icon"
-            onClick={() =>
-              isSubscriber ? router.push("/history") : setIsSubscriptionOpen(true)
-            }
-            aria-label={t("profileHistory")}
-          >
-            <EyeIcon />
-          </button>
+          {isSubscriber ? (
+            <>
+              <span className="user-profile__value">{t("profileHistoryOpen")}</span>
+              <button
+                type="button"
+                className="user-profile__edit-icon"
+                onClick={() => router.push("/history")}
+                aria-label={t("profileHistory")}
+              >
+                <EyeIcon />
+              </button>
+            </>
+          ) : (
+            // Free users can't open the ledger, so offer the upgrade instead of
+            // an affordance that only ever leads to a paywall.
+            <button
+              type="button"
+              className="user-profile__row-cta"
+              onClick={() => setIsSubscriptionOpen(true)}
+            >
+              {t("beginInitiation")}
+            </button>
+          )}
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">

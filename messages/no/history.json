@@ -4,6 +4,7 @@
     "loading": "Blar i sidene …",
     "error": "Boken nekter å åpne seg. Prøv igjen.",
     "empty": "Ingenting er skrevet her ennå. Trekk dine første kort, så husker boken det.",
+    "emptyCta": "Trekk din første skjebne",
     "loadMore": "Eldre skjebner",
     "lockedTitle": "Boken er forseglet",
     "lockedBody": "Bare de innvidde kan lese det Sløret har nedtegnet. Tegn et abonnement, og hver eneste lesning du har trukket vender tilbake til deg.",

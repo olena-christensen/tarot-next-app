@@ -166,6 +166,29 @@
     }
   }
 
+  // Inline upgrade CTA that replaces a row's value + icon when the feature is
+  // paywalled. Sized to sit on a field row, not as a full-width button.
+  .user-profile__row-cta {
+    flex: 0 0 auto;
+    padding: 0.35rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+    color: var(--primary);
+    font-family: var(--font-family);
+    font-size: 0.7rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+
+    &:hover {
+      color: var(--text-soft);
+      border-color: var(--text-soft);
+    }
+  }
+
   .user-profile__label {
     font-size: 0.75rem;
     text-transform: uppercase;

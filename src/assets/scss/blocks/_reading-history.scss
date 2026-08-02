@@ -21,6 +21,17 @@
     padding: 32px 0;
   }
 
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__empty-cta {
+    // Renders as a .btn — kill the browser's default anchor underline.
+    text-decoration: none;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;
