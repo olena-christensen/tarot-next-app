@@ -61,12 +61,17 @@
     color: var(--primary);
   }
 
-  &__date {
-    display: block;
+  // Date · reader — the provenance line under an entry's name.
+  &__meta {
+    margin: 0;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-faint);
+  }
+
+  &__reader {
+    color: var(--primary);
   }
 
   &__entry-actions {
@@ -92,6 +97,72 @@
     &:hover {
       color: var(--primary);
     }
+
+    // Starred: fill the outline so the state reads at a glance, not just by hue.
+    &[data-active="true"] {
+      color: var(--gold);
+
+      svg {
+        fill: var(--gold);
+      }
+    }
+  }
+
+  &__toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  &__filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 6px 12px;
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    &[data-active="true"] {
+      color: var(--gold);
+      border-color: var(--gold);
+
+      svg {
+        fill: var(--gold);
+      }
+    }
+  }
+
+  &__note {
+    margin: 16px 0 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--border-color);
+    line-height: 1.6;
+    color: var(--text-faint);
+    font-style: italic;
+    white-space: pre-line;
+  }
+
+  &__note-input {
+    resize: vertical;
+    min-height: 96px;
   }
 
   &__cards {

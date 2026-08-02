@@ -1,33 +1,6 @@
-# The Veil — Status & Roadmap (single consolidated doc)
+# The Veil — Status & Roadmap
 
-**This file supersedes** the former root `TODO.md`, `TODO-ui.md`, `NICE-TO-HAVE.md`
-and `docs/go-live.md` — everything from all four lives here, in one place, plus the
-business/operational items that previously existed only in the Claude project notes.
-Deep implementation detail stays where it was: payments → `docs/features/mono-payments.md`,
-architecture/conventions → `CLAUDE.md`.
-
-**Last updated:** 2026-08-02
-
-**How to read:** sections are collapsible. Open the ones you're working on.
-Ordered roughly by "blocks taking real money" first; the Done archive is at the bottom.
-
----
-
-## Current state — one paragraph
-
-Legal documents are complete and live. The Plata by mono payment backend, initiate +
-result frontend, free-tier limit + credit-consumption loop, and recurring-renewal engine
-are built and **verified live on production**: tokenization 2026-06-30, renewal charge +
-dunning downgrade end-to-end 2026-07-02, credit + tier enforcement 2026-07-13. User
-avatars verified on production 2026-08-01. Built on 2026-08-02 and **code-complete but
-not yet exercised live**: reading-history UI (with rename / delete / purge-all and
-print-to-PDF), password reset, deleted-user session eviction, the 24-hour renewal lead
-window, and the premium-reader server-side gate. What actually remains before launch:
-those live-verification passes, the pricing-copy honesty audit (build-vs-cut per
-advertised feature), the Vercel Pro upgrade, translation quality proofread, and the
-fiscal / legal / operational items below.
-
----
+**Last updated:** 2026-08-02 · App scope only — umbrella/entity matters stay in the project notes.
 
 <details open>
 <summary><b>🔴 Blocking — before taking real money</b></summary>
@@ -41,29 +14,6 @@ fiscal / legal / operational items below.
   raises runtime-log retention from 1 hour to 1 day, which softens the "no alerting" gap.
   Do it at launch, not after.
 
-### Live-verification passes (code done, needs a real round-trip on production)
-
-- [ ] **Reading history** — verify as a subscriber: list renders, cursor pagination
-  ("Older Fates"), rename / single-delete / purge-all round-trip, and a non-subscriber
-  hitting `/history` gets the locked panel → pricing modal. (API: `GET /api/readings`,
-  subscriber-gated via `isActiveTier()`; entry management endpoints are auth-only, NOT
-  subscriber-gated, so a lapsed user can still erase their data. Full design notes in
-  the Done archive below.)
-- [ ] **Password reset** — send a real email, redeem a real token, confirm auto sign-in.
-  (Hashed single-use tokens, 1-hour lifetime, 60-second per-account throttle,
-  enumeration-safe responses. Design in `CLAUDE.md` → Password Reset.)
-- [ ] **Deleted-user eviction** — delete a test user out-of-band, wait 5 minutes, hit any
-  page, confirm the session dies (the JSON Web Token callback re-checks the user row at
-  most every 5 minutes and throws when it's gone).
-- [ ] **Renewal lead window** — `RENEWAL_LEAD_MS` (24 h) makes a renewal chargeable up to
-  24 h before expiry so the once-daily 06:00 UTC job never strands a subscriber for a day.
-  5 boundary tests pass; needs a real renewal to come due. Watch:
-  `conniearnesenkoch@gmail.com` renews 23 Aug ~17:54 UTC — the 06:00 run that morning
-  should charge it early.
-- [ ] **Premium-reader gate** — `PATCH /api/user/reader` now returns 403
-  `subscription_required` for any non-default reader without an active tier (was
-  UI-only paywall). Verify live, including the expired-subscriber case.
-
 ### Pricing copy vs code — the honesty audit (2026-08-02)
 
 `messages/*/plans.json` is the contract shown on the pricing page and in the in-app
@@ -71,14 +21,18 @@ modal. Taking €5/month against unbuilt features is refund and consumer-protect
 exposure, not just a product gap. Decision: **build the cheap ones, then re-cut the
 list**. Cutting a line = editing five JSON files.
 
+Both cheap ones are done (PDF export, favourites & notes). What remains needs either
+large content work, new infrastructure, or artwork — so the next step is a
+**build-vs-cut judgement on the five ❌ rows below**, not more building.
+
 | Advertised claim | Status |
 |---|---|
 | Unlimited readings (MONTHLY) | ✅ built |
-| Reading history (MONTHLY) | ✅ built (awaiting live verify, above) |
+| Reading history (MONTHLY) | ✅ built — each entry shows date · reader (`Reading.readerId`, recorded 2026-08-02; null on older rows) |
 | Choose your deck / your diviner (MONTHLY) | ✅ built |
-| Ad-free (MONTHLY) | ✅ trivially true — the app has no ads at all |
+| Ad-free (MONTHLY) | ⚠️ NOT built — no tier gating exists; only true today because the app has no ads. The day ads are added, subscribers see them too unless free-tier-only gating ships in the same change. |
 | Export readings as PDF (MONTHLY) | ✅ built 2026-08-02 — print view per entry, browser "Save as PDF" does the conversion |
-| Favorites & personal notes (MONTHLY) | ❌ not built — **next up** (no schema, no UI; `Reading.title` is a name, not notes) |
+| Favorites & personal notes (MONTHLY) | ✅ built 2026-08-02 — star toggle + "favourites only" filter, free-text note per reading (see Reading History in CLAUDE.md) |
 | Long-form interpretations (MONTHLY) | ❌ not built (`generateReading.ts` has no plan awareness) — judge build-vs-cut |
 | Daily card email (MONTHLY) | ❌ not built (no scheduled job for it) — judge build-vs-cut |
 | Reminder notifications (MONTHLY) | ❌ not built — judge build-vs-cut |
@@ -112,7 +66,7 @@ intentional brand/proper names). What's left is how it *reads*:
 ---
 
 <details open>
-<summary><b>🟠 Fiscal, legal & Termly</b></summary>
+<summary><b>🟠 Fiscal & legal</b></summary>
 
 - [ ] **PRRO — Ukrainian program-based fiscal cash register** (програмний реєстратор
   розрахункових операцій), for legally required digital receipts: Monobank's built-in or
@@ -126,11 +80,6 @@ intentional brand/proper names). What's left is how it *reads*:
   - Terms §18 (exclusive Ukrainian court jurisdiction) vs §19 (binding arbitration,
     Kyiv) — the two clauses conflict.
   - Financial-record retention law vs the GDPR cascade-delete of `Payment` rows.
-- [ ] **Termly: do NOT cancel yet.** Shared Pro+ account across all Nothing Weird
-  projects; Tattooista still needs the generator. The Veil is done generating — its docs
-  are self-hosted and grep-clean (`termly`, `termly.io`, `/dsar/`, markup classes: zero
-  hits), so the live site has no Termly dependency either way.
-
 </details>
 
 ---
@@ -182,27 +131,6 @@ for account-level expectations or "does the marketing copy match the code". Trea
 ---
 
 <details>
-<summary><b>🏢 Business & operations (FOP — Individual Entrepreneur)</b></summary>
-
-*(Carried in from the project notes 2026-08-02 — these never lived in the repo.)*
-
-- [ ] Tax-filing reminders — quarterly єдиний податок (single tax) reports.
-- [ ] Monthly ЄСВ (unified social contribution) payments.
-- [ ] Confirm the Ukrainian data-registry requirement (consult an accountant).
-- [ ] Accountant vs self-managed bookkeeping — was flagged for end of Q2; now overdue, decide.
-
-### Security / operational
-
-- [ ] Enable two-factor authentication on: Zoho, Namecheap, Monobank, Termly, Vercel, GitHub.
-- [ ] Password manager (1Password / Bitwarden / Apple Keychain).
-- [ ] Backups of: eSIM QR/PDF, КЕП (qualified electronic signature), FOP registration
-  certificate, Monobank documents.
-
-</details>
-
----
-
-<details>
 <summary><b>🌱 Nice to have — post-launch</b></summary>
 
 Not real work. Consider only after launch, when there's genuinely nothing else on the plate.
@@ -226,16 +154,8 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
   (the `Sec-GPC: 1` request header) by disabling tracking/ads for users who send it
   (California privacy-law compliance); gate ads to free-tier users only; keep the static
   JSON fallback readings as an opt-out from AI-generated text.
-- **Later legal:**
-  - EU + UK GDPR Article 27 representatives (required on paper for a non-EU company
-    serving EU/UK users; Prighter ~€100/yr, EU-Rep.eu, GDPR-Rep.com; widely ignored by
-    small indie founders). Revisit when revenue is meaningful.
-  - DMCA designated copyright agent — register with the US Copyright Office (~$6) for
-    safe-harbor protection on user uploads. Avatars are live, so user content now exists.
-  - Virtual business address in Ukraine (~$30–80/mo) — replaces the home address on the
-    public privacy policy.
-- **Apple Mail via IMAP** — only if business-email volume picks up; Zoho webmail + the
-  phone app are enough for now. Connection details in Key references below.
+- **DMCA designated copyright agent** — register with the US Copyright Office (~$6) for
+  safe-harbor protection on user uploads. Avatars are live, so user content now exists.
 
 ### Ideas
 
@@ -297,7 +217,7 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   `applyMonoInvoiceStatus` — the same extracted path the webhook uses, so push and poll
   can't drift. `CRON_SECRET`-guarded, like `/api/cron/renew`.
 - **Fixes 2026-08-02:**
-  - `RENEWAL_LEAD_MS` 24-hour lead window (see Blocking for the live-verify).
+  - `RENEWAL_LEAD_MS` 24-hour lead window.
   - Lapsed-state display: profile shows "{plan} — expired" + Renew button instead of
     contradicting itself.
   - Reconcile window widened 7 → 90 days AND Mono's `expired` status made terminal
@@ -310,7 +230,7 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   retry loop + `failure` branch rest on the 12 `decideRenewalAction` tests (36 tests
   pass overall).
 
-### Reading history (built 2026-08-02 — live-verify pending, see Blocking)
+### Reading history (built 2026-08-02)
 
 - `Reading` model (+ `[userId, createdAt]` index, nullable `title` via
   `add_reading_title`). `POST /api/readings/consume` persists each draw atomically:
@@ -328,11 +248,11 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
 
 ### Account features
 
-- **Password reset** (2026-08-02, live-verify pending — see Blocking). Routed through the
+- **Password reset** (2026-08-02). Routed through the
   shared mailer (`sendPasswordResetEmail`) after a fix: the first version built its own
   transporter and lost the deliverability headers on exactly the message most likely to
   be spam-filtered.
-- **Deleted-user eviction** (2026-08-02, live-verify pending — see Blocking).
+- **Deleted-user eviction** (2026-08-02).
 - **Avatars** — verified on production 2026-08-01. `POST /api/user/avatar`, png/jpg/webp
   ≤2 MB, Vercel Blob, old blob deleted on replace, session propagates without re-login.
   **Gotchas:** a Blob store's public/private access is fixed at creation — the first
@@ -371,44 +291,31 @@ A separate workstream, not near-term. Prerequisites to research and meet first:
   card. Footer off the reading screen. Cards-screen mobile spacing. Ukrainian title
   overlap fixed. Save button radius.
 
-### Business setup (pre-June)
+### App infrastructure (pre-June)
 
-- Domain `nothingweird.agency` (Namecheap); Zoho Mail Lite with aliases
-  hello@ / support@ / billing@ / privacy@ / legal@ → all forward to `founder@`;
-  MX, SPF, DKIM, DMARC configured.
-- Ukrainian Kyivstar eSIM: **+380 77 659 12 44**.
-- FOP registered via Diia, confirmed in the state register; KVEDs (economic activity
-  codes) 62.01 primary, 62.02, 62.09, 63.11; single tax 3rd group (5%); Monobank FOP
-  account. Mono acquiring token in `.env` + Vercel (`MONO_ACQUIRING_TOKEN`);
+- Mono acquiring token in `.env` + Vercel (`MONO_ACQUIRING_TOKEN`);
   `NEXT_PUBLIC_APP_URL` set for dev/prod.
+- Contact routing wired to the business aliases (privacy@ / legal@ / billing@ /
+  support@) via the `/contact` form. Entity, domain and email setup itself is
+  umbrella-level — project notes, not this repo.
 
 </details>
 
 ---
 
 <details>
-<summary><b>📇 Key references</b></summary>
+<summary><b>📇 Key references (app scope only)</b></summary>
 
 | Item | Value |
 |---|---|
 | Product / live site | The Veil — theveil.app |
-| Legal entity | Olena Christensen, FOP (Individual Entrepreneur), єдиний податок 3rd group (5%) |
-| Trade name | Nothing Weird — `nothingweird.agency` |
-| KVEDs | 62.01 (primary), 62.02, 62.09, 63.11 |
-| Primary email | `founder@nothingweird.agency` (aliases: hello@, support@, billing@, privacy@, legal@) |
-| Ukrainian phone | +380 77 659 12 44 (Kyivstar) |
-| Bank / acquiring | Monobank FOP account; Plata by mono (JSC Universal Bank) |
+| Names in legal pages | legal entity **Olena Christensen, FOP**; trade name **Nothing Weird**; product **The Veil** ("the Service") |
+| Payment processor | Plata by mono (JSC Universal Bank), acquiring API v2410 |
 | Plans | FREE / SINGLE €1 (credit) / MONTHLY €5 / YEARLY €39 — base currency EUR, settles UAH |
-| Email host | Zoho Mail Lite (€11/yr) |
-| Domain renewal | `.agency` ~$19/yr at Namecheap |
-| Legal docs | Generated on shared Termly Pro+, self-hosted in-repo, Termly-free |
-| Hosting | Vercel (Hobby → **Pro required at launch**); DB Neon Postgres |
+| Contact routing | `/contact` form → privacy@ / legal@ / billing@ / support@ `nothingweird.agency` |
+| Hosting | Vercel (Hobby → **Pro required at launch**); DB Neon Postgres; uploads Vercel Blob |
 
-### Zoho IMAP/SMTP (for Apple Mail or other clients)
-
-- IMAP: `imappro.zoho.eu`, port 993, SSL required
-- SMTP: `smtppro.zoho.eu`, port 465 (SSL) or 587 (TLS)
-- Username: full address (`founder@nothingweird.agency`); SMTP auth required
+Entity, banking, domain and email-hosting references are umbrella-level — project notes, not this repo.
 
 </details>
 

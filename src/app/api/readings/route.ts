@@ -35,6 +35,9 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const cursor = searchParams.get("cursor");
+    // ?favorites=1 narrows the ledger to starred readings — the point of the
+    // star is retrieval, so filtering has to exist for it to mean anything.
+    const favoritesOnly = searchParams.get("favorites") === "1";
     const requested = Number(searchParams.get("take"));
     const take =
       Number.isFinite(requested) && requested > 0
@@ -43,7 +46,7 @@ export async function GET(request: Request) {
 
     // Fetch one extra row to learn whether another page exists without a count query.
     const rows = await prisma.reading.findMany({
-      where: { userId },
+      where: { userId, ...(favoritesOnly ? { isFavorite: true } : {}) },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       take: take + 1,
       ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
@@ -52,6 +55,9 @@ export async function GET(request: Request) {
         cards: true,
         response: true,
         title: true,
+        note: true,
+        readerId: true,
+        isFavorite: true,
         createdAt: true,
       },
     });
@@ -65,6 +71,9 @@ export async function GET(request: Request) {
         cards: r.cards,
         response: r.response,
         title: r.title,
+        note: r.note,
+        readerId: r.readerId,
+        isFavorite: r.isFavorite,
         createdAt: r.createdAt.toISOString(),
       })),
       nextCursor: hasMore ? page[page.length - 1].id : null,

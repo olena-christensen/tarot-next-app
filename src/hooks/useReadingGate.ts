@@ -99,6 +99,8 @@ export function useReadingGate({
         body: JSON.stringify({
           cards: chosenCards.map((c) => c.id),
           response,
+          // Recorded so the ledger can say who spoke this reading.
+          readerId: state.selectedReader,
         }),
       });
       if (res.status === 200) {

@@ -7,19 +7,25 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { tarots } from "@/data";
 import { getCardImagePath, DEFAULT_DECK } from "@/lib/decks";
+import { READER_IDS, type ReaderId } from "@/lib/readers";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { Modal } from "@/components/Modal";
 import EditIcon from "@/assets/svg/edit.svg";
 import TrashIcon from "@/assets/svg/trash.svg";
 import PrintIcon from "@/assets/svg/print.svg";
+import StarIcon from "@/assets/svg/star.svg";
 
 const MAX_TITLE_LENGTH = 80;
+const MAX_NOTE_LENGTH = 2000;
 
 type Reading = {
   id: string;
   cards: string[];
   response: string;
   title: string | null;
+  note: string | null;
+  readerId: string | null;
+  isFavorite: boolean;
   createdAt: string;
 };
 
@@ -32,6 +38,7 @@ export const ReadingHistory = () => {
   const t = useTranslations("history");
   const tUi = useTranslations("ui");
   const tCards = useTranslations("cards");
+  const tReaders = useTranslations("readers");
   const locale = useLocale();
 
   const [readings, setReadings] = useState<Reading[]>([]);
@@ -42,9 +49,13 @@ export const ReadingHistory = () => {
   const [error, setError] = useState("");
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
 
+  // One editor for both user-owned text fields — you name a reading to find it
+  // and annotate it to remember why, so they belong in the same modal.
   const [renaming, setRenaming] = useState<Reading | null>(null);
   const [titleInput, setTitleInput] = useState("");
+  const [noteInput, setNoteInput] = useState("");
   const [isSavingTitle, setIsSavingTitle] = useState(false);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
 
   // Which entry the print stylesheet should isolate; cleared once the dialog closes.
   const [printingId, setPrintingId] = useState<string | null>(null);
@@ -64,8 +75,11 @@ export const ReadingHistory = () => {
     minute: "2-digit",
   });
 
-  const load = useCallback(async (cursor: string | null) => {
-    const query = cursor ? `?cursor=${encodeURIComponent(cursor)}` : "";
+  const load = useCallback(async (cursor: string | null, favorites: boolean) => {
+    const params = new URLSearchParams();
+    if (cursor) params.set("cursor", cursor);
+    if (favorites) params.set("favorites", "1");
+    const query = params.toString() ? `?${params}` : "";
     const res = await fetch(`/api/readings${query}`);
     if (res.status === 403) {
       setIsLocked(true);
@@ -79,11 +93,14 @@ export const ReadingHistory = () => {
     setNextCursor(data.nextCursor ?? null);
   }, []);
 
+  // Re-runs when the favorites filter flips — the server does the filtering so
+  // paging stays correct instead of hiding rows from an already-paged list.
   useEffect(() => {
     let cancelled = false;
+    setIsLoading(true);
     (async () => {
       try {
-        await load(null);
+        await load(null, favoritesOnly);
       } catch {
         if (!cancelled) setError(t("error"));
       } finally {
@@ -93,18 +110,45 @@ export const ReadingHistory = () => {
     return () => {
       cancelled = true;
     };
-  }, [load, t]);
+  }, [load, t, favoritesOnly]);
 
   const handleLoadMore = async () => {
     if (!nextCursor || isLoadingMore) return;
     setIsLoadingMore(true);
     setError("");
     try {
-      await load(nextCursor);
+      await load(nextCursor, favoritesOnly);
     } catch {
       setError(t("error"));
     } finally {
       setIsLoadingMore(false);
+    }
+  };
+
+  const handleToggleFavorite = async (reading: Reading) => {
+    const next = !reading.isFavorite;
+    // Optimistic: a star must feel instant. Rolled back if the write fails.
+    setReadings((prev) =>
+      prev.map((r) => (r.id === reading.id ? { ...r, isFavorite: next } : r))
+    );
+    try {
+      const res = await fetch(`/api/readings/${reading.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isFavorite: next }),
+      });
+      if (!res.ok) throw new Error("failed");
+      // Un-starring while the filter is on: drop it from the visible list.
+      if (favoritesOnly && !next) {
+        setReadings((prev) => prev.filter((r) => r.id !== reading.id));
+      }
+    } catch {
+      setReadings((prev) =>
+        prev.map((r) =>
+          r.id === reading.id ? { ...r, isFavorite: reading.isFavorite } : r
+        )
+      );
+      setError(t("saveError"));
     }
   };
 
@@ -122,6 +166,7 @@ export const ReadingHistory = () => {
 
   const handleOpenRename = (reading: Reading) => {
     setTitleInput(reading.title ?? "");
+    setNoteInput(reading.note ?? "");
     setError("");
     setRenaming(reading);
   };
@@ -134,12 +179,12 @@ export const ReadingHistory = () => {
       const res = await fetch(`/api/readings/${renaming.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: titleInput }),
+        body: JSON.stringify({ title: titleInput, note: noteInput }),
       });
       if (!res.ok) throw new Error("failed");
-      const { title } = await res.json();
+      const { title, note } = await res.json();
       setReadings((prev) =>
-        prev.map((r) => (r.id === renaming.id ? { ...r, title } : r))
+        prev.map((r) => (r.id === renaming.id ? { ...r, title, note } : r))
       );
       setRenaming(null);
     } catch {
@@ -213,6 +258,23 @@ export const ReadingHistory = () => {
   }
 
   if (readings.length === 0) {
+    // An empty *filter* result is a different situation from an empty ledger:
+    // offering "draw your first fate" to someone who has readings but no
+    // favorites would be nonsense.
+    if (favoritesOnly) {
+      return (
+        <div className="reading-history__empty">
+          <p className="reading-history__status">{t("emptyFavorites")}</p>
+          <button
+            type="button"
+            className="btn reading-history__empty-cta"
+            onClick={() => setFavoritesOnly(false)}
+          >
+            {t("showAll")}
+          </button>
+        </div>
+      );
+    }
     return (
       <div className="reading-history__empty">
         <p className="reading-history__status">{t("empty")}</p>
@@ -228,6 +290,18 @@ export const ReadingHistory = () => {
       className="reading-history"
       data-printing={printingId ? "true" : undefined}
     >
+      <div className="reading-history__toolbar">
+        <button
+          type="button"
+          className="reading-history__filter"
+          data-active={favoritesOnly ? "true" : undefined}
+          aria-pressed={favoritesOnly}
+          onClick={() => setFavoritesOnly((v) => !v)}
+        >
+          <StarIcon />
+          {t("favoritesOnly")}
+        </button>
+      </div>
       <ol className="reading-history__list list">
         {readings.map((reading) => (
           <li
@@ -240,14 +314,34 @@ export const ReadingHistory = () => {
                 {reading.title && (
                   <h2 className="reading-history__name">{reading.title}</h2>
                 )}
-                <time
-                  className="reading-history__date"
-                  dateTime={reading.createdAt}
-                >
-                  {dateTimeFormatter.format(new Date(reading.createdAt))}
-                </time>
+                <p className="reading-history__meta">
+                  <time dateTime={reading.createdAt}>
+                    {dateTimeFormatter.format(new Date(reading.createdAt))}
+                  </time>
+                  {/* Null on readings drawn before the reader was recorded — show
+                      nothing rather than guessing a name that may be wrong. */}
+                  {reading.readerId && READER_IDS.includes(reading.readerId as ReaderId) && (
+                    <>
+                      <span aria-hidden="true"> · </span>
+                      <span className="reading-history__reader">
+                        {tReaders(`${reading.readerId}.displayName`)}
+                      </span>
+                    </>
+                  )}
+                </p>
               </div>
               <div className="reading-history__entry-actions">
+                <button
+                  type="button"
+                  className="reading-history__action"
+                  data-active={reading.isFavorite ? "true" : undefined}
+                  onClick={() => handleToggleFavorite(reading)}
+                  aria-pressed={reading.isFavorite}
+                  aria-label={t("favorite")}
+                  title={t("favorite")}
+                >
+                  <StarIcon />
+                </button>
                 <button
                   type="button"
                   className="reading-history__action"
@@ -299,6 +393,9 @@ export const ReadingHistory = () => {
               })}
             </div>
             <p className="reading-history__text">{reading.response}</p>
+            {reading.note && (
+              <p className="reading-history__note">{reading.note}</p>
+            )}
           </li>
         ))}
       </ol>
@@ -324,7 +421,7 @@ export const ReadingHistory = () => {
       <Modal
         isOpen={renaming !== null}
         onClose={() => setRenaming(null)}
-        title={t("rename")}
+        title={t("editEntry")}
       >
         <form
           className="form"
@@ -345,6 +442,21 @@ export const ReadingHistory = () => {
               onChange={(e) => setTitleInput(e.target.value)}
               maxLength={MAX_TITLE_LENGTH}
               autoFocus
+              disabled={isSavingTitle}
+            />
+          </div>
+          <div className="form__input-block">
+            <label htmlFor="reading-note" className="form__label">
+              {t("noteLabel")}
+            </label>
+            <textarea
+              id="reading-note"
+              className="form__input reading-history__note-input"
+              value={noteInput}
+              onChange={(e) => setNoteInput(e.target.value)}
+              maxLength={MAX_NOTE_LENGTH}
+              rows={4}
+              placeholder={t("notePlaceholder")}
               disabled={isSavingTitle}
             />
           </div>

@@ -80,13 +80,20 @@ model VerificationToken {
 }
 
 model Reading {
-  id        String   @id @default(cuid())
-  userId    String
-  cards     String[]
-  response  String   @db.Text
+  id         String   @id @default(cuid())
+  userId     String
+  cards      String[]
+  response   String   @db.Text
   /// User-assigned label for the reading; null until they name it.
-  title     String?
-  createdAt DateTime @default(now())
+  title      String?
+  /// User's own annotation — what actually happened. Null until they write one.
+  note       String?  @db.Text
+  /// Starred for retrieval; the ledger can filter to these.
+  isFavorite Boolean  @default(false)
+  /// Which reader's voice produced this reading. Null on rows written before
+  /// 2026-08-02, and for anything whose reader can't be resolved.
+  readerId   String?
+  createdAt  DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

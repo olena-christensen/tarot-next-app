@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import type { PlanId } from "@/lib/plans";
 import { decideReadingAccess, utcMidnight } from "@/lib/readingAccess";
+import { READER_IDS, type ReaderId } from "@/lib/readers";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -19,9 +20,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { cards, response } = (body ?? {}) as {
+  const { cards, response, readerId } = (body ?? {}) as {
     cards?: unknown;
     response?: unknown;
+    readerId?: unknown;
   };
   if (
     !Array.isArray(cards) ||
@@ -32,6 +34,14 @@ export async function POST(request: Request) {
   ) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
+
+  // Who spoke this reading. Validated against the catalogue rather than trusted,
+  // and optional — an unknown value stores null instead of rejecting a reading
+  // the user has already seen.
+  const reader =
+    typeof readerId === "string" && READER_IDS.includes(readerId as ReaderId)
+      ? readerId
+      : null;
 
   const now = new Date();
 
@@ -83,7 +93,12 @@ export async function POST(request: Request) {
       }
 
       await tx.reading.create({
-        data: { userId, cards: cards as string[], response: response as string },
+        data: {
+          userId,
+          cards: cards as string[],
+          response: response as string,
+          readerId: reader,
+        },
       });
 
       if (decision.mode === "subscription") {
