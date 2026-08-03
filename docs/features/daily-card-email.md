@@ -45,25 +45,50 @@ work; everything else is a few hundred lines of code.
   project. The email speaks in the app's own voice and names the user's reader only in
   the CTA ("see what {reader} makes of it").
 
-## 2a. Deliverability — it must not read as marketing
+## 2a. The Promotions tab — a theory that was tested and failed
 
 The first send landed in Gmail's **Promotions** tab, which is worse than spam: nobody goes
-looking there. It arrived fine, it was simply classified.
+looking there. It arrived fine; it was classified.
 
-Gmail's promotional signals were all in the markup, and are now gone:
+The response was to strip every promotional signal from the markup — the CTA button, the
+hero image, the layout tables, the dark shell — leaving plain dark text on white. **It
+landed in Promotions again.** So the markup theory cost the design and bought nothing, and
+the email was rebuilt on the brand palette (§2b).
 
-| Was | Now |
-|---|---|
-| Bordered uppercase CTA button | The call to action as an ordinary sentence with an inline link |
-| 260px centred hero image | 150px, left-aligned, below the card name |
-| Nested layout tables, dark themed shell | One `<div>`, plain paragraphs, dark text on white |
+What actually drives categorization, in rough order: **sender reputation, and the
+recipient's own engagement history with that sender** (opens, clicks, replies, whether the
+address is in their contacts), then authentication and volume patterns. Markup is a minor
+input. This is why a heavily-branded, button-laden SaaS newsletter reaches Primary for
+someone who uses that product, while a plain note from an unknown sender does not.
 
-`List-Unsubscribe` **stays** even though it is itself a bulk-mail signal — removing it
-would improve the tab at the cost of the spam score, which is the worse trade.
+Consequences worth holding on to:
 
-None of this can promise the Primary tab: placement is per-recipient and partly learned
-from what the recipient does with earlier mail. It removes the signals we control, and
-that is the whole of what a sender can do. **Do not reintroduce a button here.**
+- **A recipient who has already received these in Promotions is no longer a clean test.**
+  Gmail learns per recipient, so the developer's own inbox is biased. Moving one to
+  Primary and choosing "always do this" is what changes it for that account.
+- **The lever worth pulling is authentication, not layout** — confirm SPF, DKIM and DMARC
+  are set for `nothingweird.agency` in Zoho. Unsigned mail hurts placement everywhere and
+  no markup change compensates.
+- `List-Unsubscribe` **stays.** It is a bulk-mail signal, but removing it trades a better
+  tab for a worse spam score, which is the wrong way round.
+- **Do not redesign this template for the tab again.** It has been tried.
+
+## 2b. The email's shape
+
+Lives in `src/lib/dailyCardEmail.ts` — deliberately split from `mailer.ts` so it can be
+rendered and looked at without sending anything. A template that can only be seen by
+mailing it to yourself gets designed blind, which is how the plain version shipped
+looking like a system notification.
+
+Single centred column on the app's palette: wordmark, greeting, the card at 200px with a
+hairline border, its name, the line, the call to action as a link, a rule, then the
+footer. Nested tables and `spacer()` rows because Outlook ignores margins; flat hex
+colours because Outlook drops `rgba()`, which would leave text at its default colour on a
+near-black background.
+
+**No CTA button** — not for deliverability (see §2a) but because this is a daily note.
+`dailyCardEmail.test.ts` asserts that, plus filled placeholders, escaping, the plain-text
+alternative, and that every URL is absolute.
 
 ## 3. Opt-in
 
@@ -148,7 +173,8 @@ user; otherwise the next 04:00 run is the first chance to see it.
 | Deterministic pick (+7 tests) | `src/lib/dailyCard.ts`, `dailyCard.test.ts` |
 | Locale copy loaders | `src/lib/dailyCardStrings.ts` |
 | WebP→PNG card art | `src/app/api/card-image/route.ts` |
-| The email itself | `sendDailyCardEmail()` in `src/lib/mailer.ts` |
+| The email's body (+8 tests) | `src/lib/dailyCardEmail.ts`, `dailyCardEmail.test.ts` |
+| Sending it | `sendDailyCardEmail()` in `src/lib/mailer.ts` |
 | The job | `src/app/api/cron/daily-card/route.ts` |
 | Profile row "The Daily Whisper" | `src/components/UserProfile.tsx` + 5 `ui` keys × 5 locales |
 | Copy | `messages/{locale}/daily.json` — 78 cards × 5 locales |
@@ -183,3 +209,5 @@ rather than SMTP acceptances (§5).
 - **Alerting on a failed run** — counted and logged only.
 - **Bounces are invisible.** SMTP acceptance is not delivery; nothing reads the bounce
   mailbox, so a permanently dead address is re-mailed daily forever.
+- **SPF / DKIM / DMARC on `nothingweird.agency` are unconfirmed** — the one deliverability
+  lever that actually matters (§2a). Check the Zoho domain settings.
