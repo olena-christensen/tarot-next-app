@@ -52,6 +52,10 @@ model User {
   /// Entitlement is re-checked at send time, so a lapsed subscriber stops receiving it
   /// without this flag changing.
   dailyCardEmail  Boolean              @default(false)
+  /// UTC day (YYYY-MM-DD) of the last daily card sent, or null. Guards against a
+  /// second send: the deterministic pick keeps a rerun on the same card, but only
+  /// this stops it going out twice.
+  dailyCardSentOn String?
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

@@ -45,6 +45,26 @@ work; everything else is a few hundred lines of code.
   project. The email speaks in the app's own voice and names the user's reader only in
   the CTA ("see what {reader} makes of it").
 
+## 2a. Deliverability — it must not read as marketing
+
+The first send landed in Gmail's **Promotions** tab, which is worse than spam: nobody goes
+looking there. It arrived fine, it was simply classified.
+
+Gmail's promotional signals were all in the markup, and are now gone:
+
+| Was | Now |
+|---|---|
+| Bordered uppercase CTA button | The call to action as an ordinary sentence with an inline link |
+| 260px centred hero image | 150px, left-aligned, below the card name |
+| Nested layout tables, dark themed shell | One `<div>`, plain paragraphs, dark text on white |
+
+`List-Unsubscribe` **stays** even though it is itself a bulk-mail signal — removing it
+would improve the tab at the cost of the spam score, which is the worse trade.
+
+None of this can promise the Primary tab: placement is per-recipient and partly learned
+from what the recipient does with earlier mail. It removes the signals we control, and
+that is the whole of what a sender can do. **Do not reintroduce a button here.**
+
 ## 3. Opt-in
 
 - Migration `add_daily_card_email`: `User.dailyCardEmail Boolean @default(false)`.
@@ -92,10 +112,29 @@ a retry or a run straddling midnight makes double-firing realistic.
 - **Zoho SMTP daily send caps are the real ceiling**, not Vercel. This is the first feature
   that scales with subscriber count rather than with events, so it hits that cap first, and
   silently — as bounces. Tracked in `STATUS.md`.
-- **Failures are counted, not alerted.** The run logs `{day, sent, skipped, failed}` and
-  returns it, but nothing pages anyone: a run that mails nobody looks identical to a quiet
-  day unless someone reads the logs. The `STATUS.md` alerting gap (email `founder@` on job
-  failure) covers this job too.
+- **`sent` means SMTP accepted it.** `send()` returns a boolean rather than swallowing the
+  outcome, so a mail outage reports `failed:N`. Until 2026-08-03 the loop counted attempts,
+  which meant a total SMTP failure logged a clean `sent:N` — the counter would have lied at
+  exactly the moment it mattered. Acceptance is still not delivery; nothing tracks bounces.
+- **Failures are counted, not alerted.** The run logs `{day, sent, skipped, duplicate,
+  failed}` and returns it, but nothing pages anyone: a run that mails nobody looks identical
+  to a quiet day unless someone reads the logs. The `STATUS.md` alerting gap (email
+  `founder@` on job failure) covers this job too.
+
+## 5a. One email per day — `User.dailyCardSentOn`
+
+The deterministic pick guarantees a rerun lands on the **same card**; it does nothing to
+stop that card being **mailed twice**. It happened on day one (2026-08-03): the 04:00 job
+sent, a manual `curl` sent again, and the recipient got two identical emails.
+
+`dailyCardSentOn` holds the UTC day of the last successful send. The loop skips anyone
+already stamped with today and counts them as `duplicate`. The stamp is written **only
+after SMTP accepts** — a refused message leaves it untouched so a later run retries, rather
+than recording an email that never left.
+
+Consequence worth knowing: once a day's mail has gone out, re-running the job that day is
+a no-op. Testing a change to the email on the same day means clearing the column for that
+user; otherwise the next 04:00 run is the first chance to see it.
 - `CRON_SECRET`-guarded like the other two cron routes.
 
 ## 6. What shipped
@@ -103,6 +142,7 @@ a retry or a run straddling midnight makes double-firing realistic.
 | Piece | Where |
 |---|---|
 | `User.dailyCardEmail`, default false | migration `20260802195021_add_daily_card_email` |
+| `User.dailyCardSentOn` — one send per day | migration `20260803115416_add_daily_card_sent_on` |
 | Preference through NextAuth | `src/lib/auth.ts`, `src/types/next-auth.d.ts` |
 | Opt-in endpoint | `src/app/api/user/daily-card/route.ts` |
 | Deterministic pick (+7 tests) | `src/lib/dailyCard.ts`, `dailyCard.test.ts` |
@@ -129,9 +169,17 @@ reads it from the session, so it would have shown the wrong state on a second de
   never appears in the Ledger of Fates — which also keeps it out of the print, share and
   favourite surfaces, none of which mean anything for it.
 
+### Fixed on day one (2026-08-03)
+
+The first live send surfaced three things at once, all now closed: it went to Gmail's
+Promotions tab (§2a), the recipient got two copies (§5a), and `sent` was counting attempts
+rather than SMTP acceptances (§5).
+
 ### Still open
 
 - **Zoho's daily send cap** — the number for the current plan is unknown; tracked in
   `STATUS.md` → Account & platform gaps.
 - **Paging past 200 recipients** — the cursor exists, nothing drives it yet.
 - **Alerting on a failed run** — counted and logged only.
+- **Bounces are invisible.** SMTP acceptance is not delivery; nothing reads the bounce
+  mailbox, so a permanently dead address is re-mailed daily forever.

@@ -30,6 +30,13 @@ function profileUrl(): string {
   return `${base.replace(/\/$/, "")}/en/profile`;
 }
 
+/**
+ * Returns whether SMTP ACCEPTED the message — not whether it was delivered, which
+ * no sender can know synchronously. Errors are still swallowed (every caller here
+ * is best-effort by contract and must not throw into a charge or a route), but a
+ * caller that reports counts can now distinguish "sent" from "attempted". Callers
+ * that don't care may ignore the value.
+ */
 async function send(
   subject: string,
   to: string,
@@ -43,11 +50,11 @@ async function send(
      */
     unsubscribe?: boolean;
   } = {}
-): Promise<void> {
+): Promise<boolean> {
   const { html, unsubscribe = true } = opts;
   const address = process.env.ZOHO_SMTP_USER;
   const transporter = getTransporter();
-  if (!transporter || !address) return; // already logged
+  if (!transporter || !address) return false; // already logged
   try {
     // `from` display name + a real address (which MUST equal the SMTP user —
     // Zoho rejects mismatched envelopes; the name doesn't affect the envelope).
@@ -65,8 +72,10 @@ async function send(
         ? { headers: { "List-Unsubscribe": `<${profileUrl()}>` } }
         : {}),
     });
+    return true;
   } catch (err) {
     console.error("[mailer] sendMail failed", { subject, err });
+    return false;
   }
 }
 
@@ -183,10 +192,22 @@ function fill(template: string, values: Record<string, string>): string {
  *
  * Card art is served as PNG by `/api/card-image`: the deck is WebP and Outlook
  * desktop can't render it. Every mail client also needs absolute URLs and inline
- * styles — no stylesheet is loaded, so the markup here stays deliberately plain.
+ * styles — no stylesheet is loaded, so the markup stays deliberately plain.
  *
- * Best-effort like every send in this file: `send()` swallows SMTP errors, and
- * the caller counts outcomes rather than trusting a throw.
+ * **The markup is deliberately un-promotional.** The first version landed in
+ * Gmail's Promotions tab, which is worse than spam — nobody reads it. Gmail reads
+ * a bordered call-to-action button, a large hero image, nested layout tables and
+ * uppercase link text as marketing, so all of them are gone: a left-aligned
+ * single column, a small image, and the call to action as an ordinary sentence
+ * with an inline link. Do NOT reintroduce a button here.
+ *
+ * `List-Unsubscribe` stays even though it is itself a bulk-mail signal — dropping
+ * it would help the tab and hurt the spam score, which is the worse trade.
+ *
+ * Tab placement is per-recipient and partly learned from behaviour, so none of
+ * this can guarantee Primary; it only removes the signals we control.
+ *
+ * Returns whether SMTP accepted the message, so the cron can count real sends.
  */
 export async function sendDailyCardEmail(args: {
   to: string;
@@ -206,7 +227,7 @@ export async function sendDailyCardEmail(args: {
     footerNote: string;
     unsubscribe: string;
   };
-}): Promise<void> {
+}): Promise<boolean> {
   const s = args.strings;
   const subject = fill(s.subject, { card: args.cardName });
   const greeting = args.name
@@ -229,37 +250,25 @@ export async function sendDailyCardEmail(args: {
     `— ${FROM_NAME}`,
   ].join("\n");
 
+  // Light background and ordinary body text: a dark themed shell is another
+  // marketing tell, and the on-site palette doesn't survive most mail clients
+  // anyway (the same reason _print.scss flips the variables for paper).
+  const body =
+    "font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;font-size:16px;line-height:1.7;";
+
   const html = `
-<div style="margin:0;padding:0;background:#090909;">
-  <span style="display:none;font-size:0;line-height:0;color:#090909;">${esc(s.preheader)}</span>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#090909;padding:32px 12px;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;">
-        <tr><td align="center" style="font-family:Georgia,'Times New Roman',serif;color:rgba(250,225,163,0.9);font-size:16px;line-height:1.6;padding-bottom:24px;">
-          ${esc(greeting)}
-        </td></tr>
-        <tr><td align="center" style="padding-bottom:20px;">
-          <img src="${esc(args.cardImageUrl)}" width="260" alt="${esc(args.cardName)}" style="display:block;width:260px;max-width:100%;height:auto;border:0;" />
-        </td></tr>
-        <tr><td align="center" style="font-family:Georgia,'Times New Roman',serif;color:#fae1a3;font-size:22px;letter-spacing:0.06em;padding-bottom:12px;">
-          ${esc(args.cardName)}
-        </td></tr>
-        <tr><td align="center" style="font-family:Georgia,'Times New Roman',serif;color:rgba(250,225,163,0.9);font-size:16px;line-height:1.7;padding-bottom:28px;">
-          ${esc(args.line)}
-        </td></tr>
-        <tr><td align="center" style="padding-bottom:28px;">
-          <a href="${esc(args.appUrl)}" style="display:inline-block;font-family:Georgia,'Times New Roman',serif;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;color:#fae1a3;text-decoration:none;border:1px solid #fae1a3;border-radius:4px;padding:12px 24px;">
-            ${esc(cta)}
-          </a>
-        </td></tr>
-        <tr><td align="center" style="font-family:Georgia,'Times New Roman',serif;color:rgba(250,225,163,0.55);font-size:12px;line-height:1.6;">
-          ${esc(s.footerNote)}<br />
-          <a href="${esc(profileUrl())}" style="color:rgba(250,225,163,0.55);">${esc(s.unsubscribe)}</a>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
+<div style="${body}max-width:460px;">
+  <span style="display:none;font-size:0;line-height:0;color:#ffffff;">${esc(s.preheader)}</span>
+  <p style="margin:0 0 18px;">${esc(greeting)}</p>
+  <p style="margin:0 0 6px;"><strong>${esc(args.cardName)}</strong></p>
+  <img src="${esc(args.cardImageUrl)}" width="150" alt="${esc(args.cardName)}" style="display:block;width:150px;max-width:100%;height:auto;border:0;margin:0 0 16px;" />
+  <p style="margin:0 0 18px;">${esc(args.line)}</p>
+  <p style="margin:0 0 24px;"><a href="${esc(args.appUrl)}" style="color:#1a1a1a;">${esc(cta)}</a></p>
+  <p style="margin:0;font-size:12px;color:#777777;">
+    ${esc(s.footerNote)}
+    <a href="${esc(profileUrl())}" style="color:#777777;">${esc(s.unsubscribe)}</a>
+  </p>
 </div>`.trim();
 
-  await send(subject, args.to, text, { html });
+  return send(subject, args.to, text, { html });
 }

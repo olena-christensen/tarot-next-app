@@ -68,6 +68,7 @@ export async function GET(req: Request) {
       preferredLocale: true,
       preferredDeck: true,
       preferredReader: true,
+      dailyCardSentOn: true,
       subscription: { select: { planId: true, expiresAt: true } },
     },
     orderBy: { id: "asc" },
@@ -81,9 +82,19 @@ export async function GET(req: Request) {
 
   let sent = 0;
   let skipped = 0;
+  let duplicate = 0;
   let failed = 0;
 
   for (const user of page) {
+    // The deterministic pick keeps a rerun on the SAME card; only this stops a
+    // second copy of it landing. A double-fire is realistic — a platform retry,
+    // or someone hitting the route by hand (which is exactly how the first
+    // duplicate happened, 2026-08-03).
+    if (user.dailyCardSentOn === day) {
+      duplicate++;
+      continue;
+    }
+
     // Re-checked at send time, not just at opt-in: a subscription that lapsed
     // since the toggle was flipped must stop producing mail without anyone
     // having to clear the flag.
@@ -119,7 +130,7 @@ export async function GET(req: Request) {
       }
 
       const deck = user.preferredDeck || DEFAULT_DECK;
-      await sendDailyCardEmail({
+      const accepted = await sendDailyCardEmail({
         to: user.email,
         name: user.name,
         cardName,
@@ -131,6 +142,18 @@ export async function GET(req: Request) {
         appUrl: `${appOrigin()}/${locale}`,
         strings,
       });
+
+      if (!accepted) {
+        // SMTP refused it. Leave dailyCardSentOn alone so a later run retries
+        // rather than marking an email that never left as delivered.
+        failed++;
+        continue;
+      }
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { dailyCardSentOn: day },
+      });
       sent++;
     } catch (err) {
       // One bad recipient must not end the run for everyone behind them.
@@ -139,7 +162,10 @@ export async function GET(req: Request) {
     }
   }
 
-  console.log("[cron/daily-card] done", { day, sent, skipped, failed, nextCursor });
+  // `sent` is SMTP-accepted, not merely attempted — a total mail outage now
+  // reports failed:N, where it used to report a clean sent:N.
+  const result = { day, sent, skipped, duplicate, failed, nextCursor };
+  console.log("[cron/daily-card] done", result);
 
-  return NextResponse.json({ day, sent, skipped, failed, nextCursor });
+  return NextResponse.json(result);
 }
