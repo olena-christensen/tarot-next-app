@@ -1,6 +1,6 @@
 {
   "daily": {
-    "subject": "{card} — your card for today",
+    "subject": "{card} came up for you today",
     "preheader": "The Veil turned one card while you slept.",
     "greeting": "The Veil turned one card while you slept, {name}.",
     "greetingAnon": "The Veil turned one card while you slept.",

@@ -1,6 +1,6 @@
 {
   "daily": {
-    "subject": "{card} — ditt kort for i dag",
+    "subject": "{card} kom opp for deg i dag",
     "preheader": "Sløret snudde ett kort mens du sov.",
     "greeting": "Sløret snudde ett kort mens du sov, {name}.",
     "greetingAnon": "Sløret snudde ett kort mens du sov.",
