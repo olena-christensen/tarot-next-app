@@ -1,0 +1,12 @@
+{
+  "reminder": {
+    "subject": "The cards have been waiting",
+    "preheader": "It has been a while since you last drew.",
+    "greeting": "It has been a while, {name}.",
+    "greetingAnon": "It has been a while.",
+    "body": "The deck has sat untouched since your last reading. Whatever you were waiting to hear has not gone anywhere.",
+    "cta": "Draw a reading",
+    "footerNote": "You receive this because you asked the Veil to remind you.",
+    "unsubscribe": "Stop the reminders"
+  }
+}

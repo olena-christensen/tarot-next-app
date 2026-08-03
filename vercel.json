@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/daily-card",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/reading-reminder",
+      "schedule": "0 16 * * *"
     }
   ]
 }
