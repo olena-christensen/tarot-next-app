@@ -56,6 +56,11 @@ model User {
   /// second send: the deterministic pick keeps a rerun on the same card, but only
   /// this stops it going out twice.
   dailyCardSentOn String?
+  /// Opt-in for the "you haven't drawn in a while" nudge. Off by default.
+  readingReminder Boolean              @default(false)
+  /// UTC day (YYYY-MM-DD) of the last reminder sent, or null. Enforces the
+  /// once-a-week floor — the job runs daily, the nudge must not.
+  reminderSentOn  String?
   accounts        Account[]
   sessions        Session[]
   readings        Reading[]

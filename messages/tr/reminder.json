@@ -1,0 +1,12 @@
+{
+  "reminder": {
+    "subject": "Kartlar sizi bekliyordu",
+    "preheader": "Son açılımınızın üzerinden zaman geçti.",
+    "greeting": "Bir süredir yoktunuz, {name}.",
+    "greetingAnon": "Bir süredir yoktunuz.",
+    "body": "Deste son açılımınızdan beri el değmemiş duruyor. Duymayı beklediğiniz şey bir yere gitmedi.",
+    "cta": "Bir açılım çekin",
+    "footerNote": "Bu mektubu alıyorsunuz çünkü Peçe'den hatırlatmasını istediniz.",
+    "unsubscribe": "Hatırlatmaları durdur"
+  }
+}

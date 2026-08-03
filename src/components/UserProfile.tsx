@@ -43,11 +43,13 @@ export const UserProfile = () => {
   const [credits, setCredits] = useState<number>(0);
   const [isSubscriber, setIsSubscriber] = useState(false);
   const [dailySaving, setDailySaving] = useState(false);
+  const [reminderSaving, setReminderSaving] = useState(false);
   // Deck and reader are read straight from the session (reactive) so their editor
   // modals' update({ preferredX }) reflects here immediately — same as language via useLocale().
   const deckId = session?.user?.preferredDeck ?? null;
   const readerId = (session?.user?.preferredReader ?? null) as ReaderId | null;
   const dailyCardEmail = session?.user?.dailyCardEmail ?? false;
+  const readingReminder = session?.user?.readingReminder ?? false;
   const [isReaderSelectOpen, setIsReaderSelectOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [isDeckSelectOpen, setIsDeckSelectOpen] = useState(false);
@@ -349,6 +351,26 @@ export const UserProfile = () => {
     }
   };
 
+  const handleToggleReminder = async () => {
+    if (reminderSaving) return;
+    setReminderSaving(true);
+    const next = !readingReminder;
+    try {
+      const res = await fetch("/api/user/reading-reminder", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ readingReminder: next }),
+      });
+      if (res.ok) {
+        await update({ readingReminder: next });
+      }
+    } catch {
+      // silent — user can retry
+    } finally {
+      setReminderSaving(false);
+    }
+  };
+
   return (
     <div className="user-profile">
       <div className="user-profile__avatar-block">
@@ -535,6 +557,38 @@ export const UserProfile = () => {
                 {dailyCardEmail
                   ? t("profileDailyCardSilence")
                   : t("profileDailyCardSummon")}
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="user-profile__row-cta"
+              onClick={() => setIsSubscriptionOpen(true)}
+            >
+              {t("beginInitiation")}
+            </button>
+          )}
+        </span>
+      </div>
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("profileReminder")}</span>
+        <span className="user-profile__value-group">
+          {isSubscriber ? (
+            <>
+              <span className="user-profile__value">
+                {readingReminder
+                  ? t("profileReminderOn")
+                  : t("profileReminderOff")}
+              </span>
+              <button
+                type="button"
+                className="user-profile__row-cta"
+                onClick={handleToggleReminder}
+                disabled={reminderSaving}
+              >
+                {readingReminder
+                  ? t("profileReminderSilence")
+                  : t("profileReminderSummon")}
               </button>
             </>
           ) : (

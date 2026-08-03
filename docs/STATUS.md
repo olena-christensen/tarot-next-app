@@ -28,7 +28,7 @@ pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows b
 | Favorites & personal notes (MONTHLY) | ✅ built 2026-08-02 — star toggle + "favourites only" filter, free-text note per reading (see Reading History in CLAUDE.md) |
 | Long-form interpretations (MONTHLY) | ⏳ not built — the pricing copy now says **"(coming soon)"** in all five locales (2026-08-02), so the claim is honest while it waits |
 | Daily card email (MONTHLY) | ✅ built 2026-08-02, sending live since 2026-08-03 — opt-in profile toggle, deterministic per-user card, PNG art for Outlook, 78 lines × 5 locales, `/api/cron/daily-card` at `0 2 * * *` (04:00 Kyiv). Day-one fixes: Promotions-tab markup, duplicate sends, attempt-vs-acceptance counting. See `docs/features/daily-card-email.md` |
-| Reminder notifications (MONTHLY) | ❌ not built — judge build-vs-cut |
+| Reminder notifications (MONTHLY) | ✅ built 2026-08-03 — opt-in "The Nudge" profile row; `/api/cron/reading-reminder` at `0 16 * * *` (18:00 Kyiv) emails a subscriber who hasn't drawn in 7 days, at most once a week. Rule is pure + tested in `readingReminder.ts` |
 | Exclusive seasonal decks (YEARLY) | ❌ not built (all three decks available to every subscriber) — judge build-vs-cut |
 | Early access to new diviners & decks (YEARLY) | ❌ not built (no mechanism) — judge build-vs-cut |
 
@@ -135,6 +135,12 @@ for account-level expectations or "does the marketing copy match the code". Trea
 
 Not real work. Consider only after launch, when there's genuinely nothing else on the plate.
 
+- **Get the daily card email into Gmail's Primary tab.** It reliably lands in Promotions.
+  Markup was already tried and ruled out (`docs/features/daily-card-email.md` §2a) — do not
+  redesign the template for this again. What is left: confirm SPF/DKIM/DMARC for
+  `nothingweird.agency` in Zoho; consider asking subscribers to add the sender to their
+  contacts when they switch the toggle on; and accept that placement is per-recipient and
+  learned, so it can be influenced but never guaranteed.
 - **Currency presentation.** Prices advertised in EUR (€1/€5/€39) but Mono settles in
   UAH (Ukrainian hryvnia) — EU customers see ~254 UAH on statements for €5. (1) Ask Mono
   whether EUR settlement is possible — a bank question, not code; (2) if not, add a

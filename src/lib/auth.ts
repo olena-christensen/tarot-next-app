@@ -60,6 +60,7 @@ export const authOptions: NextAuthOptions = {
           preferredReader: user.preferredReader,
           preferredLocale: user.preferredLocale,
           dailyCardEmail: user.dailyCardEmail,
+          readingReminder: user.readingReminder,
         };
       },
     }),
@@ -78,6 +79,7 @@ export const authOptions: NextAuthOptions = {
         token.preferredReader = user.preferredReader ?? "vespera";
         token.preferredLocale = user.preferredLocale ?? "en";
         token.dailyCardEmail = user.dailyCardEmail ?? false;
+        token.readingReminder = user.readingReminder ?? false;
       }
       if (trigger === "update") {
         if (updateData?.name) {
@@ -100,6 +102,9 @@ export const authOptions: NextAuthOptions = {
         if (updateData?.dailyCardEmail !== undefined) {
           token.dailyCardEmail = updateData.dailyCardEmail;
         }
+        if (updateData?.readingReminder !== undefined) {
+          token.readingReminder = updateData.readingReminder;
+        }
       }
 
       const now = Date.now();
@@ -118,6 +123,7 @@ export const authOptions: NextAuthOptions = {
           preferredReader: string;
           preferredLocale: string;
           dailyCardEmail: boolean;
+          readingReminder: boolean;
         } | null;
         try {
           // Same query that answers "do you still exist", widened to re-read the
@@ -135,6 +141,7 @@ export const authOptions: NextAuthOptions = {
               preferredReader: true,
               preferredLocale: true,
               dailyCardEmail: true,
+              readingReminder: true,
             },
           });
         } catch (err) {
@@ -157,6 +164,7 @@ export const authOptions: NextAuthOptions = {
         token.preferredReader = fresh.preferredReader;
         token.preferredLocale = fresh.preferredLocale;
         token.dailyCardEmail = fresh.dailyCardEmail;
+        token.readingReminder = fresh.readingReminder;
         token.verifiedAt = now;
       }
 
@@ -173,6 +181,7 @@ export const authOptions: NextAuthOptions = {
         session.user.preferredReader = token.preferredReader as string | undefined;
         session.user.preferredLocale = token.preferredLocale as string | undefined;
         session.user.dailyCardEmail = token.dailyCardEmail as boolean | undefined;
+        session.user.readingReminder = token.readingReminder as boolean | undefined;
         // Keep the avatar reactive to update({ image }) — token.picture is the
         // NextAuth-standard slot the jwt callback writes on an avatar change.
         session.user.image = (token.picture as string | null | undefined) ?? null;

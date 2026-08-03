@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "cron:renew": "bash scripts/dev/cron-renew.sh",
-    "cron:daily-card": "bash scripts/dev/cron-daily-card.sh"
+    "cron:daily-card": "bash scripts/dev/cron-daily-card.sh",
+    "cron:reading-reminder": "bash scripts/dev/cron-reading-reminder.sh"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",

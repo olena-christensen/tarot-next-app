@@ -4,6 +4,10 @@ import {
   renderDailyCardEmail,
   type DailyCardEmailStrings,
 } from "./dailyCardEmail";
+import {
+  renderReminderEmail,
+  type ReminderEmailStrings,
+} from "./reminderEmail";
 
 // Transactional emails for recurring renewal. BEST-EFFORT by contract: every
 // send is wrapped so a mail failure can never throw into (and roll back) a
@@ -200,6 +204,26 @@ export async function sendDailyCardEmail(args: {
   strings: DailyCardEmailStrings;
 }): Promise<boolean> {
   const { subject, text, html } = renderDailyCardEmail({
+    ...args,
+    profileUrl: profileUrl(),
+    wordmark: FROM_NAME,
+  });
+  return send(subject, args.to, text, { html });
+}
+
+/**
+ * The "you haven't drawn in a while" nudge. Subscription mail, so
+ * List-Unsubscribe is on. Body lives in `reminderEmail.ts`.
+ *
+ * Returns whether SMTP accepted the message, so the cron can count real sends.
+ */
+export async function sendReadingReminderEmail(args: {
+  to: string;
+  name: string | null;
+  appUrl: string;
+  strings: ReminderEmailStrings;
+}): Promise<boolean> {
+  const { subject, text, html } = renderReminderEmail({
     ...args,
     profileUrl: profileUrl(),
     wordmark: FROM_NAME,

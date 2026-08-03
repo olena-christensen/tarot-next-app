@@ -8,6 +8,7 @@ declare module "next-auth" {
     preferredReader?: string;
     preferredLocale?: string;
     dailyCardEmail?: boolean;
+    readingReminder?: boolean;
   }
   interface Session {
     user: {
@@ -20,6 +21,7 @@ declare module "next-auth" {
       preferredReader?: string;
       preferredLocale?: string;
       dailyCardEmail?: boolean;
+      readingReminder?: boolean;
     };
   }
 }
@@ -32,6 +34,7 @@ declare module "next-auth/jwt" {
     preferredReader?: string;
     preferredLocale?: string;
     dailyCardEmail?: boolean;
+    readingReminder?: boolean;
     /** Epoch ms of the last successful "does this user still exist" check. */
     verifiedAt?: number;
   }
