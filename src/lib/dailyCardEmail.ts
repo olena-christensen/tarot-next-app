@@ -117,11 +117,19 @@ export function renderDailyCardEmail(args: DailyCardEmailArgs): {
           </td>
         </tr>
         ${spacer(28)}
-        <tr>
-          <td align="center">
-            <img src="${esc(args.cardImageUrl)}" width="200" alt="${esc(args.cardName)}" style="display:block;width:200px;max-width:100%;height:auto;border:1px solid ${RULE};" />
-          </td>
-        </tr>
+        <!--
+          TEST, 2026-08-03 — card image removed on purpose.
+
+          The reminder email reaches Gmail's Primary tab and this one does not,
+          and the two differ in exactly two ways: the image, and the subject.
+          Rewriting the subject as a sentence changed nothing, which leaves the
+          image as the only untested variable.
+
+          args.cardImageUrl is still passed in so restoring this is one line.
+          PUT IT BACK once the answer is known — the card is the point of the
+          email — unless the image turns out to be what costs the Primary tab
+          and that trade is accepted deliberately.
+        -->
         ${spacer(22)}
         <tr>
           <td align="center" style="font-family:${FONT};font-size:19px;letter-spacing:0.1em;color:${GOLD};">
