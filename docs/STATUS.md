@@ -13,7 +13,7 @@ exposure, not just a product gap. Decision: **build the cheap ones, then re-cut 
 list**. Cutting a line = editing five JSON files.
 
 Both cheap ones are done (PDF export, favourites & notes). Since then the daily card email
-was built (everything but its cron slot) and long-form interpretations were marked
+was built and its cron scheduled (`0 2 * * *` in `vercel.json`), and long-form interpretations were marked
 "coming soon" rather than cut. The **yearly "save 58%" claim was wrong** — €5×12 vs €39 is
 35%, corrected in all five locales 2026-08-02. What remains needs artwork or a release
 pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows below**.
@@ -27,7 +27,7 @@ pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows b
 | Export readings as PDF (MONTHLY) | ✅ built 2026-08-02 — print view per entry, browser "Save as PDF" does the conversion |
 | Favorites & personal notes (MONTHLY) | ✅ built 2026-08-02 — star toggle + "favourites only" filter, free-text note per reading (see Reading History in CLAUDE.md) |
 | Long-form interpretations (MONTHLY) | ⏳ not built — the pricing copy now says **"(coming soon)"** in all five locales (2026-08-02), so the claim is honest while it waits |
-| Daily card email (MONTHLY) | ✅ built 2026-08-02 — opt-in profile toggle, deterministic per-user card, PNG art for Outlook, 78 lines × 5 locales, `/api/cron/daily-card` scheduled `0 2 * * *` (04:00 Kyiv). See `docs/features/daily-card-email.md` |
+| Daily card email (MONTHLY) | ✅ built 2026-08-02, sending live since 2026-08-03 — opt-in profile toggle, deterministic per-user card, PNG art for Outlook, 78 lines × 5 locales, `/api/cron/daily-card` at `0 2 * * *` (04:00 Kyiv). Day-one fixes: Promotions-tab markup, duplicate sends, attempt-vs-acceptance counting. See `docs/features/daily-card-email.md` |
 | Reminder notifications (MONTHLY) | ❌ not built — judge build-vs-cut |
 | Exclusive seasonal decks (YEARLY) | ❌ not built (all three decks available to every subscriber) — judge build-vs-cut |
 | Early access to new diviners & decks (YEARLY) | ❌ not built (no mechanism) — judge build-vs-cut |
