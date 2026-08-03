@@ -61,6 +61,23 @@ address is in their contacts), then authentication and volume patterns. Markup i
 input. This is why a heavily-branded, button-laden SaaS newsletter reaches Primary for
 someone who uses that product, while a plain note from an unknown sender does not.
 
+**Then the reading reminder landed in Primary on its first send** (2026-08-03) — same
+sender, same domain, same authentication, same table markup, same `List-Unsubscribe`, sent
+minutes apart. That narrows it to what actually differs between the two:
+
+| | Daily card | Reminder |
+|---|---|---|
+| Card image | yes | none |
+| Subject | `{card} — your card for today` | a sentence |
+| Landed | Promotions | Primary |
+
+Engagement history does **not** explain it: the daily card went to Promotions on its very
+first send, before any history existed. So the remaining candidates are the image and the
+subject shape. The image is the point of the email and is not being dropped, so the
+subject was rewritten to a sentence (`{card} came up for you today`, and the equivalent in
+each locale) — a `Name — descriptor` subject is a newsletter tell. Whether that alone
+moves it is unproven.
+
 Consequences worth holding on to:
 
 - **A recipient who has already received these in Promotions is no longer a clean test.**
@@ -71,7 +88,8 @@ Consequences worth holding on to:
   no markup change compensates.
 - `List-Unsubscribe` **stays.** It is a bulk-mail signal, but removing it trades a better
   tab for a worse spam score, which is the wrong way round.
-- **Do not redesign this template for the tab again.** It has been tried.
+- **Do not redesign the layout for the tab again.** It has been tried. The subject line and
+  the image are the only variables still in play, and the image stays.
 
 ## 2b. The email's shape
 

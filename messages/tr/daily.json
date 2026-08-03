@@ -1,6 +1,6 @@
 {
   "daily": {
-    "subject": "{card} — bugünkü kartınız",
+    "subject": "Bugün size {card} çıktı",
     "preheader": "Siz uyurken Peçe bir kart çevirdi.",
     "greeting": "Siz uyurken Peçe bir kart çevirdi, {name}.",
     "greetingAnon": "Siz uyurken Peçe bir kart çevirdi.",
