@@ -1,5 +1,9 @@
 import nodemailer from "nodemailer";
 import { getResetEmailStrings } from "./passwordReset";
+import {
+  renderDailyCardEmail,
+  type DailyCardEmailStrings,
+} from "./dailyCardEmail";
 
 // Transactional emails for recurring renewal. BEST-EFFORT by contract: every
 // send is wrapped so a mail failure can never throw into (and roll back) a
@@ -173,39 +177,15 @@ export async function sendSubscriptionEndedEmail(args: {
   await send("Your The Veil subscription has ended", args.to, text);
 }
 
-/** Minimal HTML escape for values interpolated into the mail body. */
-function esc(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function fill(template: string, values: Record<string, string>): string {
-  return template.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match);
-}
-
 /**
  * The daily card. Subscription mail, so List-Unsubscribe is on (it points at the
  * profile, where the toggle lives — no separate unauthenticated opt-out route).
  *
  * Card art is served as PNG by `/api/card-image`: the deck is WebP and Outlook
- * desktop can't render it. Every mail client also needs absolute URLs and inline
- * styles — no stylesheet is loaded, so the markup stays deliberately plain.
+ * desktop can't render it.
  *
- * **The markup is deliberately un-promotional.** The first version landed in
- * Gmail's Promotions tab, which is worse than spam — nobody reads it. Gmail reads
- * a bordered call-to-action button, a large hero image, nested layout tables and
- * uppercase link text as marketing, so all of them are gone: a left-aligned
- * single column, a small image, and the call to action as an ordinary sentence
- * with an inline link. Do NOT reintroduce a button here.
- *
- * `List-Unsubscribe` stays even though it is itself a bulk-mail signal — dropping
- * it would help the tab and hurt the spam score, which is the worse trade.
- *
- * Tab placement is per-recipient and partly learned from behaviour, so none of
- * this can guarantee Primary; it only removes the signals we control.
+ * The body itself lives in `dailyCardEmail.ts` so it can be rendered and looked
+ * at without sending — see that file for why it is shaped the way it is.
  *
  * Returns whether SMTP accepted the message, so the cron can count real sends.
  */
@@ -217,58 +197,12 @@ export async function sendDailyCardEmail(args: {
   line: string;
   readerName: string | null;
   appUrl: string;
-  strings: {
-    subject: string;
-    preheader: string;
-    greeting: string;
-    greetingAnon: string;
-    cta: string;
-    ctaFallback: string;
-    footerNote: string;
-    unsubscribe: string;
-  };
+  strings: DailyCardEmailStrings;
 }): Promise<boolean> {
-  const s = args.strings;
-  const subject = fill(s.subject, { card: args.cardName });
-  const greeting = args.name
-    ? fill(s.greeting, { name: args.name })
-    : s.greetingAnon;
-  const cta = args.readerName
-    ? fill(s.cta, { reader: args.readerName })
-    : s.ctaFallback;
-
-  const text = [
-    greeting,
-    "",
-    args.cardName.toUpperCase(),
-    args.line,
-    "",
-    `${cta}: ${args.appUrl}`,
-    "",
-    s.footerNote,
-    `${s.unsubscribe}: ${profileUrl()}`,
-    `— ${FROM_NAME}`,
-  ].join("\n");
-
-  // Light background and ordinary body text: a dark themed shell is another
-  // marketing tell, and the on-site palette doesn't survive most mail clients
-  // anyway (the same reason _print.scss flips the variables for paper).
-  const body =
-    "font-family:Georgia,'Times New Roman',serif;color:#1a1a1a;font-size:16px;line-height:1.7;";
-
-  const html = `
-<div style="${body}max-width:460px;">
-  <span style="display:none;font-size:0;line-height:0;color:#ffffff;">${esc(s.preheader)}</span>
-  <p style="margin:0 0 18px;">${esc(greeting)}</p>
-  <p style="margin:0 0 6px;"><strong>${esc(args.cardName)}</strong></p>
-  <img src="${esc(args.cardImageUrl)}" width="150" alt="${esc(args.cardName)}" style="display:block;width:150px;max-width:100%;height:auto;border:0;margin:0 0 16px;" />
-  <p style="margin:0 0 18px;">${esc(args.line)}</p>
-  <p style="margin:0 0 24px;"><a href="${esc(args.appUrl)}" style="color:#1a1a1a;">${esc(cta)}</a></p>
-  <p style="margin:0;font-size:12px;color:#777777;">
-    ${esc(s.footerNote)}
-    <a href="${esc(profileUrl())}" style="color:#777777;">${esc(s.unsubscribe)}</a>
-  </p>
-</div>`.trim();
-
+  const { subject, text, html } = renderDailyCardEmail({
+    ...args,
+    profileUrl: profileUrl(),
+    wordmark: FROM_NAME,
+  });
   return send(subject, args.to, text, { html });
 }
