@@ -11,10 +11,17 @@ import { ReaderSelectionModal } from "@/components/ReaderSelectionModal";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { DeckSelector } from "@/components/DeckSelector";
 import { Modal } from "@/components/Modal";
+import { Switch } from "@/components/Switch";
+import { MysticButton } from "@/components/MysticButton";
 import EditIcon from "@/assets/svg/edit.svg";
 import EyeIcon from "@/assets/svg/eye.svg";
+import EyeOffIcon from "@/assets/svg/eye-off.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
+
+// Fixed length on purpose — dots matching the real address would leak how long
+// it is to anyone reading over a shoulder.
+const EMAIL_MASK = "••••••••••••";
 
 const LOCALE_NAMES: Record<string, string> = {
   en: "English",
@@ -44,6 +51,7 @@ export const UserProfile = () => {
   const [isSubscriber, setIsSubscriber] = useState(false);
   const [dailySaving, setDailySaving] = useState(false);
   const [reminderSaving, setReminderSaving] = useState(false);
+  const [emailRevealed, setEmailRevealed] = useState(false);
   // Deck and reader are read straight from the session (reactive) so their editor
   // modals' update({ preferredX }) reflects here immediately — same as language via useLocale().
   const deckId = session?.user?.preferredDeck ?? null;
@@ -412,23 +420,32 @@ export const UserProfile = () => {
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileName")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">
-            {session?.user?.name || t("mysticOne")}
-          </span>
           <button
             type="button"
-            className="user-profile__edit-icon"
+            className="user-profile__value-btn"
             onClick={handleEditName}
             aria-label={t("name")}
           >
-            <EditIcon />
+            {session?.user?.name || t("mysticOne")}
           </button>
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileEmail")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">{session?.user?.email}</span>
+          <span className="user-profile__value">
+            {emailRevealed ? session?.user?.email : EMAIL_MASK}
+          </span>
+          <button
+            type="button"
+            className="user-profile__edit-icon"
+            onClick={() => setEmailRevealed((v) => !v)}
+            aria-label={emailRevealed ? t("conceal") : t("reveal")}
+            title={emailRevealed ? t("conceal") : t("reveal")}
+            aria-pressed={emailRevealed}
+          >
+            {emailRevealed ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
@@ -464,14 +481,13 @@ export const UserProfile = () => {
         <div className="user-profile__field user-profile__field--row">
           <span className="user-profile__label">{t("profileCredits")}</span>
           <span className="user-profile__value-group">
-            <span className="user-profile__value">{credits}</span>
             <button
               type="button"
-              className="user-profile__edit-icon"
+              className="user-profile__value-btn"
               onClick={() => setIsSubscriptionOpen(true)}
               aria-label={t("credits")}
             >
-              <EditIcon />
+              {credits}
             </button>
           </span>
         </div>
@@ -479,34 +495,28 @@ export const UserProfile = () => {
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileDeck")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">
-            {deckId === "Rider-Waite" ? t("deckRiderWaite") :
-             deckId === "Klimt" ? t("deckKlimt") :
-             deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
-          </span>
           <button
             type="button"
-            className="user-profile__edit-icon"
+            className="user-profile__value-btn"
             onClick={() => setIsDeckSelectOpen(true)}
             aria-label={t("chooseDeck")}
           >
-            <EditIcon />
+            {deckId === "Rider-Waite" ? t("deckRiderWaite") :
+             deckId === "Klimt" ? t("deckKlimt") :
+             deckId === "Gothic-Vintage" ? t("deckGothicVintage") : "—"}
           </button>
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileReader")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">
-            {readerId ? tReaders(`${readerId}.displayName`) : "—"}
-          </span>
           <button
             type="button"
-            className="user-profile__edit-icon"
+            className="user-profile__value-btn"
             onClick={() => setIsReaderSelectOpen(true)}
             aria-label={t("chooseReader")}
           >
-            <EditIcon />
+            {readerId ? tReaders(`${readerId}.displayName`) : "—"}
           </button>
         </span>
       </div>
@@ -514,17 +524,14 @@ export const UserProfile = () => {
         <span className="user-profile__label">{t("profileHistory")}</span>
         <span className="user-profile__value-group">
           {isSubscriber ? (
-            <>
-              <span className="user-profile__value">{t("profileHistoryOpen")}</span>
-              <button
-                type="button"
-                className="user-profile__edit-icon"
-                onClick={() => router.push("/history")}
-                aria-label={t("profileHistory")}
-              >
-                <EyeIcon />
-              </button>
-            </>
+            <button
+              type="button"
+              className="user-profile__value-btn"
+              onClick={() => router.push("/history")}
+              aria-label={t("profileHistory")}
+            >
+              {t("profileHistoryOpen")}
+            </button>
           ) : (
             // Free users can't open the ledger, so offer the upgrade instead of
             // an affordance that only ever leads to a paywall.
@@ -542,23 +549,14 @@ export const UserProfile = () => {
         <span className="user-profile__label">{t("profileDailyCard")}</span>
         <span className="user-profile__value-group">
           {isSubscriber ? (
-            <>
-              <span className="user-profile__value">
-                {dailyCardEmail
-                  ? t("profileDailyCardOn")
-                  : t("profileDailyCardOff")}
-              </span>
-              <button
-                type="button"
-                className="user-profile__row-cta"
-                onClick={handleToggleDailyCard}
-                disabled={dailySaving}
-              >
-                {dailyCardEmail
-                  ? t("profileDailyCardSilence")
-                  : t("profileDailyCardSummon")}
-              </button>
-            </>
+            <Switch
+              checked={dailyCardEmail}
+              onChange={handleToggleDailyCard}
+              disabled={dailySaving}
+              label={t("profileDailyCard")}
+              onLabel={t("profileDailyCardOn")}
+              offLabel={t("profileDailyCardOff")}
+            />
           ) : (
             <button
               type="button"
@@ -574,23 +572,14 @@ export const UserProfile = () => {
         <span className="user-profile__label">{t("profileReminder")}</span>
         <span className="user-profile__value-group">
           {isSubscriber ? (
-            <>
-              <span className="user-profile__value">
-                {readingReminder
-                  ? t("profileReminderOn")
-                  : t("profileReminderOff")}
-              </span>
-              <button
-                type="button"
-                className="user-profile__row-cta"
-                onClick={handleToggleReminder}
-                disabled={reminderSaving}
-              >
-                {readingReminder
-                  ? t("profileReminderSilence")
-                  : t("profileReminderSummon")}
-              </button>
-            </>
+            <Switch
+              checked={readingReminder}
+              onChange={handleToggleReminder}
+              disabled={reminderSaving}
+              label={t("profileReminder")}
+              onLabel={t("profileReminderOn")}
+              offLabel={t("profileReminderOff")}
+            />
           ) : (
             <button
               type="button"
@@ -605,39 +594,42 @@ export const UserProfile = () => {
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileLanguage")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">{LOCALE_NAMES[locale]}</span>
           <button
             type="button"
-            className="user-profile__edit-icon"
+            className="user-profile__value-btn"
             onClick={handleOpenLanguage}
             aria-label={t("language")}
           >
-            <EditIcon />
+            {LOCALE_NAMES[locale]}
           </button>
         </span>
       </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profilePassword")}</span>
         <span className="user-profile__value-group">
-          <span className="user-profile__value">
-            {hasPassword ? t("profileBreakSeal") : t("profileForgeSeal")}
-          </span>
           <button
             type="button"
-            className="user-profile__edit-icon"
+            className="user-profile__value-btn"
             onClick={handleEditPassword}
             aria-label={t("password")}
           >
-            <EditIcon />
+            {hasPassword ? t("profileBreakSeal") : t("profileForgeSeal")}
           </button>
         </span>
       </div>
-      <button
-        className="btn user-profile__btn"
-        onClick={() => signOut({ callbackUrl: "/" })}
-      >
-        {t("slipIntoShadows")}
-      </button>
+      <div className="user-profile__actions">
+        {/* Same button as the one that leaves the reading screen, so "back to
+            the app" looks the same wherever it appears. */}
+        <MysticButton onClick={() => router.push("/")}>
+          {t("backToSanctum")}
+        </MysticButton>
+        <button
+          className="btn user-profile__btn"
+          onClick={() => signOut({ callbackUrl: "/" })}
+        >
+          {t("slipIntoShadows")}
+        </button>
+      </div>
       <section className="user-profile__danger-zone">
         <h2 className="user-profile__danger-zone-title">
           {t("deleteAccountHeading")}

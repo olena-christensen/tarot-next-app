@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import MainMenu from "@/components/MainMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { HeaderAvatar } from "@/components/HeaderAvatar";
+import { HeaderGreeting } from "@/components/HeaderGreeting";
 
 let hasPlayedHeaderIntro = false;
 
@@ -29,10 +30,21 @@ export const Header = ({onOpenLogin}: HeaderProps) => {
     });
 
     return (
-        <header className={`main-header container${skipIntro ? " skip-intro" : ""}`}>
-            <Logo />
-            <MainMenu onOpenLogin={onOpenLogin} />
-            {session?.user ? <HeaderAvatar /> : <LanguageSwitcher />}
-        </header>
+        <>
+            {/* Mobile only, and deliberately OUTSIDE <header>: .main-header is
+                animated with a transform, which would make it the containing
+                block for a position:fixed child. Hidden at md+, where the nav
+                row has space for the greeting inline. */}
+            <HeaderGreeting className="header-greeting--bar" />
+            <header
+                className={`main-header container${skipIntro ? " skip-intro" : ""}${
+                    session?.user ? " main-header--greeted" : ""
+                }`}
+            >
+                <Logo />
+                <MainMenu onOpenLogin={onOpenLogin} />
+                {session?.user ? <HeaderAvatar /> : <LanguageSwitcher />}
+            </header>
+        </>
     );
 };

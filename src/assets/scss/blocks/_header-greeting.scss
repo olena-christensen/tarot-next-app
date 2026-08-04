@@ -1,0 +1,35 @@
+// The rotating signed-in greeting. Two placements, one at a time.
+//
+// Mobile-first: the fixed strip is the base state, the inline nav placement is
+// the scale-up. Below `md` the greetings — which are whole sentences — had no
+// room in the nav row and were ellipsed down to a few unreadable words.
+
+// Mobile: a strip pinned to the top of the viewport, above the header.
+// It is a sibling of <header>, not a child; .main-header is transformed by its
+// intro animation and would otherwise become the containing block for this.
+.header-greeting--bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 31; // header(30) < this < tarot-screen(40)
+  padding: 0.35rem 1rem;
+  background: var(--overlay);
+  color: var(--text-soft);
+  font-family: var(--font-family);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight);
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  // A sentence must be allowed to wrap — truncating it is what made it
+  // unreadable in the first place.
+  overflow-wrap: break-word;
+
+  @include respond-above(md) {
+    display: none;
+  }
+}
+
+// The desktop placement is not styled here — it is an ordinary `.main-menu__link`
+// inside the nav, and `.main-menu` owns whether that row item shows.

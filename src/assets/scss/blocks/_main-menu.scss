@@ -8,6 +8,17 @@
     gap: 1rem;
   }
 
+  // The greeting only appears in the nav row from `md` up; below that it is the
+  // fixed strip above the header. Hidden here on the LI rather than on the link,
+  // because `.main-menu .main-menu__link` outranks a single class on the anchor.
+  .main-menu__item--greeting {
+    display: none;
+
+    @include respond-above(md) {
+      display: block;
+    }
+  }
+
   .main-menu__link {
     @include link-style;
     padding: 0.5rem;
