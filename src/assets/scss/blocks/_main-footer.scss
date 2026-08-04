@@ -82,7 +82,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@include respond-above(lg) {
   .main-footer {
     .main-footer__copyright {
       padding-left: 120px;

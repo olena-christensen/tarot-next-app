@@ -30,17 +30,9 @@
       @include trimEllipses; // ellipsis a long welcome name instead of wrapping the row
     }
   }
-
-  .main-menu__welcome {
-    @include link-style;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-  }
 }
 
-@media (min-width: 600px) {
+@include respond-above(sm) {
   .main-menu {
 
     .main-menu__link {

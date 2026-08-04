@@ -97,14 +97,19 @@ doesn't back. Ordered by severity.
 - [x] **Rate limiting** — built 2026-08-04. Postgres-backed, two axes (per email and per
   IP), sitting in front of bcrypt in `authorize`; register and contact throttled per IP.
   Fails open on a DB error. See CLAUDE.md → Rate Limiting.
-  - [ ] **Still worth adding: a Vercel Firewall rate-limit rule.** Dashboard-only, no code,
-    available on Pro. It stops floods at the edge before they reach a function at all,
-    which the app-level layer cannot do — by the time this code runs you have already paid
-    for the invocation.
-- [ ] **No error boundaries.** No `error.tsx` / `global-error.tsx` anywhere — an
-  unhandled render error drops users on Next's default screen, outside the app's design.
-- [ ] **No alerting.** Both scheduled jobs and the payment webhook only `console.error`.
-  Cheapest fix: have the existing mailer email `founder@` on job/webhook failure.
+  - [x] **Vercel Firewall rate-limit rules** added 2026-08-04 — sign-in 20/60s, register and
+    contact 10/60s, keyed by IP, all with the **Log** action.
+  - [ ] **Switch those three rules from Log to 429.** They currently record without
+    blocking. Review the Firewall traffic view after a few days of real traffic; if only
+    bots are matching, enforce. If real users are, raise the limits first.
+- [x] **Error boundaries** — built 2026-08-04, verified against a deliberately thrown error.
+  `[locale]/error.tsx` (themed, translated) and `global-error.tsx` (inline-styled,
+  English-only by necessity). See CLAUDE.md → Error Boundaries.
+- [x] **Alerting** — built 2026-08-04. All four crons and the payment webhook email the
+  operator on failure, throttled to one per hour per alert key. See CLAUDE.md → Alerting.
+  - [ ] Alerts fire on *reported* failures only. A job that never runs at all — a cron
+    silently unregistered, a deploy that dropped it — still goes unnoticed. A dead-man's
+    switch (alert when a job has NOT checked in for N hours) is the missing half.
 - [ ] **Data portability is claimed but manual.** Privacy Policy lists the right; there is
   no export endpoint. Handling by hand via the contact route is defensible for a solo
   operator — worth a recorded decision, not urgent.
@@ -125,15 +130,13 @@ Re-checked against the code 2026-08-04.
 - [x] **Header greeting unreadable on mobile** — fixed 2026-08-04. It is now a fixed strip
   above the header below `md`, wrapping freely instead of being ellipsed to a few words by
   a rule written for long names. See CLAUDE.md → Header.
-- [ ] **Nine raw `@media` blocks in `src/assets/scss/blocks/`** — `_container`, `_btn`,
-  `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
-  `_tarot` — using hardcoded `600px` / `768px` / `900px` instead of the shared
-  `respond-above` mixin and its `$breakpoints` map. CLAUDE.md says not to write raw
-  queries; these predate that. Mechanical to convert (`600px` → `sm`, `768px` → `md`,
-  `900px` → `lg`) and it puts every breakpoint back in one place. (`_print.scss` is
-  excluded — `@media print` has no mixin and shouldn't get one.)
-- [ ] **`.main-menu__welcome` is dead CSS** — no markup references it anywhere in `src/`.
-  Delete it.
+- [x] **Nine raw `@media` blocks converted** to `respond-above` 2026-08-04 — `_container`,
+  `_btn`, `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
+  `_tarot`. Zero raw queries remain outside `@media print` and `prefers-reduced-motion`.
+  Note this is not a pure no-op: the map is in `em`, so the breakpoints now respect a
+  reader's browser font size instead of being pinned to pixels. Identical at default
+  settings, which is why the compiled diff shows only the query values changing.
+- [x] **`.main-menu__welcome` deleted** — dead since nothing in `src/` referenced it.
 
 **Removed as stale (do not re-add):** an item to "decide on remaining `respond-below(sm)`
 overrides", which CLAUDE.md already decided — they are mobile bases with a shrink override,

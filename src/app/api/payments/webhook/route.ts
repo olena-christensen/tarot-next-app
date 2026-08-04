@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { alertOps } from "@/lib/alert";
 import { verifyMonoWebhook } from "@/lib/mono";
 import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
 
@@ -30,6 +31,17 @@ export async function POST(req: Request) {
   // Security-critical: reject anything that doesn't verify against mono's key.
   const valid = await verifyMonoWebhook(rawBody, xSign);
   if (!valid) {
+    // Either someone is probing the endpoint or mono rotated its key and our
+    // cache is stale — both are worth knowing about, and the hourly throttle
+    // stops a probe from flooding the inbox.
+    await alertOps(
+      "webhook:signature",
+      "[theveil] payment webhook: invalid signature",
+      [
+        "A request to /api/payments/webhook failed signature verification.",
+        "If this repeats, check mono's public key and the cached copy.",
+      ]
+    );
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
@@ -49,17 +61,34 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  await applyMonoInvoiceStatus(
-    {
-      invoiceId,
-      status,
-      cardToken: payload.walletData?.cardToken,
-      maskedPan: payload.paymentInfo?.maskedPan,
-      paymentSystem: payload.paymentInfo?.paymentSystem,
-      failureReason: payload.failureReason,
-    },
-    new Date()
-  );
+  try {
+    await applyMonoInvoiceStatus(
+      {
+        invoiceId,
+        status,
+        cardToken: payload.walletData?.cardToken,
+        maskedPan: payload.paymentInfo?.maskedPan,
+        paymentSystem: payload.paymentInfo?.paymentSystem,
+        failureReason: payload.failureReason,
+      },
+      new Date()
+    );
+  } catch (err) {
+    console.error("[webhook] applyMonoInvoiceStatus failed", { invoiceId, err });
+    await alertOps(
+      "webhook:apply",
+      "[theveil] payment webhook: failed to apply a verified payment",
+      [
+        `Invoice ${invoiceId} (status ${status}) could not be applied.`,
+        "The customer may have paid without receiving their tier or credit.",
+        "The reconcile sweep should recover it within the hour; if it does not,",
+        "check the Payment ledger row for this invoice.",
+      ]
+    );
+    // Rethrow on purpose: a 500 makes mono retry, which is the right response to
+    // a transient failure. Acking here would drop the payment on the floor.
+    throw err;
+  }
 
   // Always ack (200) after a verified payload so mono stops retrying.
   return NextResponse.json({ ok: true });

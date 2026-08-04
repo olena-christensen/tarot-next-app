@@ -4,6 +4,7 @@ import { isActiveTier } from "@/lib/readingAccess";
 import { decideReminder } from "@/lib/readingReminder";
 import { getReminderStrings } from "@/lib/reminderEmail";
 import { sendReadingReminderEmail } from "@/lib/mailer";
+import { alertOnJobFailures } from "@/lib/alert";
 import { utcDayKey } from "@/lib/dailyCard";
 import type { PlanId } from "@/lib/plans";
 
@@ -129,6 +130,7 @@ export async function GET(req: Request) {
 
   const result = { day, sent, skipped, failed, nextCursor };
   console.log("[cron/reading-reminder] done", result);
+  await alertOnJobFailures("reading-reminder", result);
 
   return NextResponse.json(result);
 }
