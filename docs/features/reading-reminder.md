@@ -57,9 +57,13 @@ Copy is `messages/{locale}/reminder.json`, all five locales, **not** registered 
 rather than the daily card's 04:00: two emails landing within minutes of each other reads
 as spam from one sender.
 
-Cursor-paged at 200 users, returns `{day, sent, skipped, failed, nextCursor}`. `sent`
-means SMTP accepted; a refusal leaves `reminderSentOn` untouched so tomorrow retries
-rather than starting a week-long cooldown on an email that never left.
+Loops in rounds until the work runs out or 240s elapse, then reports
+`{day, sent, skipped, failed, remaining}`. `sent` means SMTP accepted; a refusal leaves
+`reminderSentOn` untouched so tomorrow retries rather than starting a week-long cooldown
+on an email that never left. See CLAUDE.md → Cron jobs: rounds, not pages — in particular
+why the in-memory `settled` set is load-bearing here: most of this job's rows are people
+who need no nudge, and without excluding them the loop would never reach anyone behind
+them.
 
 Only the newest reading's timestamp is selected per user — the whole ledger isn't needed
 to answer "when did they last draw".
@@ -69,7 +73,6 @@ Trigger it by hand with `npm run cron:reading-reminder -- https://theveil.app`.
 ## Still open
 
 - Shares the Zoho send cap with the daily card — see `STATUS.md`.
-- Paging past 200 recipients: the cursor exists, nothing drives it.
 - No alerting on a failed run; counted and logged only.
 - **Not seen live.** Built, typechecked, and unit-tested; no reminder has been sent, and
   triggering one needs an account that has been idle for seven days.

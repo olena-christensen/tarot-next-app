@@ -630,6 +630,16 @@ export const UserProfile = () => {
           {t("slipIntoShadows")}
         </button>
       </div>
+      {/* Sits above the danger zone on purpose: taking your data with you is the
+          step that should come BEFORE burning the account, and putting it beside
+          "Break the Pact" is how people click the wrong one. */}
+      <a
+        className="user-profile__export"
+        href="/api/user/export"
+        download
+      >
+        {t("exportData")}
+      </a>
       <section className="user-profile__danger-zone">
         <h2 className="user-profile__danger-zone-title">
           {t("deleteAccountHeading")}

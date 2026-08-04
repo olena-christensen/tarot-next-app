@@ -394,6 +394,31 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - "Try Again" (`reset()`) sits **beside** the way home, not in front of it: `reset()` fixes a transient failure and does nothing for a deterministic one, so a user must always have the other exit.
 - **Testing one:** add a temporary page that throws, with `export const dynamic = "force-dynamic"`. Without that it throws during static generation and fails the BUILD instead of exercising the boundary.
 
+## Data Export ("take your record with you")
+
+- **`GET /api/user/export`** returns the signed-in user's data as a downloaded JSON file — GDPR Art. 15 (access) and Art. 20 (portability). Linked from the profile as `ui.exportData`, placed **above** the danger zone: taking your data with you is the step that comes before burning the account, and putting it beside "Break the Pact" is how people click the wrong one.
+- Covers account fields, readings, subscription, the payment ledger and which sign-in providers are linked.
+- **Credentials are deliberately excluded** — password hash, Mono card token, OAuth access/refresh tokens. They are not "their data" in any useful sense, and a file that lands in a downloads folder (or gets forwarded) must not carry a key. The masked card number is included instead. Everything left out is listed in the file's `_omitted` array, so the export is honest about not being the whole row.
+- **Self-service was a choice, not a requirement.** Manual fulfilment via `privacy@` is legal — the Privacy Policy claimed the right and the contact form already routed DSAR categories there. What was missing was any way to actually produce the data, which meant hand-querying five tables under a one-month deadline at whatever moment a request arrived.
+- `Content-Disposition: attachment` + `Cache-Control: no-store` — downloaded rather than rendered, and never cached.
+
+## Dead-man's switch (job heartbeats)
+
+- **`JobHeartbeat` + `src/lib/heartbeat.ts`** (migration `add_job_heartbeat`, 2026-08-04). Every scheduled job stamps `recordHeartbeat(name, result)` at the END of a run — at the end specifically, so a job that crashes halfway does not claim to have finished.
+- **The hourly reconcile sweep is the watchman.** It reads the heartbeats and alerts on anything that has gone quiet past its window, then stamps its own. That ORDER matters: checking first is what lets reconcile report *its own* outage when it comes back, instead of silently overwriting the evidence.
+- **Why it exists:** `alertOnJobFailures` only fires when a job RUNS and reports failures. A job that stops being called at all — a cron dropped by a deploy, a broken schedule — says nothing, and silence is indistinguishable from success.
+- **Windows** (`JOB_MAX_SILENCE`): 26h for the daily jobs, 3h for hourly reconcile. The 26 is deliberate slack — an alarm that fires on an ordinary morning gets ignored, and then it is not an alarm. **Adding a cron to `vercel.json` without adding a window here leaves it unmonitored**; `heartbeat.test.ts` asserts the list matches.
+- **A job with no heartbeat row is seeded, not reported.** Otherwise this would alert on every fresh deploy and on every newly added job. The cost is one quiet cycle before a job that has never run once is noticed.
+- **Known gap, by construction: the watchman can die.** If reconcile stops, nothing watches anything. Closing that needs something OUTSIDE the app pinging it (an uptime monitor / Healthchecks.io) — a signup, not code.
+
+## Cron jobs: rounds, not pages
+
+- **The two email jobs loop in rounds until the work runs out or a deadline hits**, rather than sending one page and reporting a cursor. Applies to `/api/cron/{daily-card,reading-reminder}`.
+- **The sent-stamp IS the bookmark.** `dailyCardSentOn` / `reminderSentOn` are excluded in the WHERE clause, so each round's query naturally returns the next people who still need mail. There is no cursor to carry and a rerun resumes exactly where the last one stopped.
+- **Why it changed (2026-08-04):** the old shape fetched the first 200 users, mailed them, and returned `nextCursor` — **and nothing ever called back with it.** With 500 subscribers, 201–500 would never have received a single email on any day, while the logs read `sent: 200, failed: 0` every morning. A cap that only reports itself into a response body nobody reads is not a cap, it is silent data loss.
+- **`settled` (an in-memory Set of ids) is load-bearing, not an optimisation.** Anyone looked at but NOT stamped — lapsed, in cooldown, not idle enough, failed send — still matches the query. Without excluding them the loop re-fetches the same rows forever and never reaches anyone behind them. For the reminder job that is most of the list, since the common case is "active reader, no nudge needed".
+- `DEADLINE_MS` is 240s against a 300s `maxDuration`; the headroom covers a send already in flight. A run cut short reports `remaining: true`, which is a *deadline*, not a silent drop.
+
 ## Alerting
 
 - **`src/lib/alert.ts`** — `alertOps(key, subject, lines)` and `alertOnJobFailures(job, result)`. Until 2026-08-04 every scheduled job and the payment webhook only reached `console.error`, so a run that mailed nobody looked exactly like a quiet day unless someone opened the Vercel logs.
@@ -403,6 +428,17 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - **The webhook rethrows after alerting.** A 500 makes mono retry, which is the right answer to a transient failure; acking there would drop a real payment on the floor. Don't "tidy" that into a caught-and-acked branch.
 - Recipient is `ALERT_EMAIL`, falling back to `ZOHO_SMTP_USER`, falling back to `founder@nothingweird.agency` — no new env var is required for it to work.
 - Sent via `sendOpsAlertEmail` with `unsubscribe: false`: this is operator mail, and a `List-Unsubscribe` header on your own outage alerts is an invitation to silence them.
+
+## Email Verification
+
+- **The rule, decided 2026-08-04: an unverified address blocks CHECKOUT ONLY.** Reading tarot doesn't need a reachable address; charging someone €5 whose receipt and password-reset would both bounce does. Nothing else is gated — no wall at the door, which is where verification usually loses people. If you extend this, decide deliberately; don't let it creep.
+- Enforced in `POST /api/payments/create-invoice` (403 `email_not_verified`). **Server-side** — the prompt in `SubscriptionPlans` is cosmetic on top of it.
+- **`EmailVerificationToken`** (migration `add_email_verification_token`) mirrors `PasswordResetToken` exactly: SHA-256 of the token only, single-use, one live token per user, 24h TTL (longer than the reset's 1h — this isn't a security-sensitive grant, and a link that dies before someone checks their inbox just makes support mail). 60s resend throttle. Constants in `src/lib/emailVerification.ts`.
+- **Routes:** `POST /api/auth/verify-email` sends/resends (auth-gated — unlike forgot-password it will NOT accept an arbitrary address, which would be a way to mail anyone from your domain); `PUT` consumes a token. Unknown / expired / already-used all return the same `invalid_token`.
+- **Google users are marked verified automatically** in `events.createUser`. That event only fires for adapter-created users — the credentials path creates its row in `/api/auth/register` — so it's OAuth-only by construction. Google has already proven the address; asking again would be theatre.
+- **Registration sends the link best-effort.** An SMTP blip must not fail the sign-up: the address is unverified either way and the user can resend from the checkout prompt.
+- **`/[locale]/verify-email`** consumes the token in an effect, guarded by a `useRef` — React 18 StrictMode mounts effects twice in dev, and the token is single-use, so the second call would report "invalid" over a success. `noindex`, and `useSearchParams` means it needs the same `<Suspense>` wrapper as the reset page.
+- **Existing accounts were NOT backfilled.** All 5 users at rollout were unverified; grandfathering would assert those addresses are real when nothing has proven it. Renewals are unaffected (the cron charges a stored token and never touches create-invoice), but any existing user buying something must verify first.
 
 ## Rate Limiting
 

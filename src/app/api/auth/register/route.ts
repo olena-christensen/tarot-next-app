@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { clientIp, consumeRateLimit, REGISTER_BY_IP } from "@/lib/rateLimit";
+import { issueVerificationToken } from "@/lib/emailVerification";
+import { sendVerificationEmail } from "@/lib/mailer";
+import { routing } from "@/i18n/routing";
+
+function appOrigin(): string {
+  return (process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app").replace(
+    /\/$/,
+    ""
+  );
+}
 
 export async function POST(request: Request) {
   try {
@@ -19,7 +29,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, email, password, acceptTerms, acceptAge } = await request.json();
+    const { name, email, password, acceptTerms, acceptAge, locale } =
+      await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -70,14 +81,34 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await prisma.user.create({
+    const created = await prisma.user.create({
       data: {
         name: name || null,
         email,
         password: hashedPassword,
         termsAcceptedAt: new Date(),
       },
+      select: { id: true },
     });
+
+    // Best-effort: registration must succeed even if the mail does not. The
+    // address is unverified either way, and the user can resend from the
+    // checkout prompt — failing the sign-up over an SMTP blip would be worse.
+    try {
+      const raw = await issueVerificationToken(created.id);
+      if (raw) {
+        const safeLocale = routing.locales.includes(locale)
+          ? (locale as string)
+          : routing.defaultLocale;
+        await sendVerificationEmail({
+          to: email,
+          locale: safeLocale,
+          link: `${appOrigin()}/${safeLocale}/verify-email?token=${raw}`,
+        });
+      }
+    } catch (err) {
+      console.error("[register] verification email failed", err);
+    }
 
     return NextResponse.json(
       { message: "User created successfully" },

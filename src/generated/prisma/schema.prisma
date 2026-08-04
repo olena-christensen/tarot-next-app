@@ -37,36 +37,51 @@ model Session {
 }
 
 model User {
-  id              String               @id @default(cuid())
-  name            String?
-  email           String?              @unique
-  emailVerified   DateTime?
-  password        String?
-  image           String?
-  createdAt       DateTime             @default(now())
-  termsAcceptedAt DateTime?
-  preferredDeck   String               @default("Rider-Waite")
-  preferredReader String               @default("vespera")
-  preferredLocale String               @default("en")
+  id                 String                   @id @default(cuid())
+  name               String?
+  email              String?                  @unique
+  emailVerified      DateTime?
+  password           String?
+  image              String?
+  createdAt          DateTime                 @default(now())
+  termsAcceptedAt    DateTime?
+  preferredDeck      String                   @default("Rider-Waite")
+  preferredReader    String                   @default("vespera")
+  preferredLocale    String                   @default("en")
   /// Opt-in for the daily card email. Off by default — nobody is enrolled without asking.
   /// Entitlement is re-checked at send time, so a lapsed subscriber stops receiving it
   /// without this flag changing.
-  dailyCardEmail  Boolean              @default(false)
+  dailyCardEmail     Boolean                  @default(false)
   /// UTC day (YYYY-MM-DD) of the last daily card sent, or null. Guards against a
   /// second send: the deterministic pick keeps a rerun on the same card, but only
   /// this stops it going out twice.
-  dailyCardSentOn String?
+  dailyCardSentOn    String?
   /// Opt-in for the "you haven't drawn in a while" nudge. Off by default.
-  readingReminder Boolean              @default(false)
+  readingReminder    Boolean                  @default(false)
   /// UTC day (YYYY-MM-DD) of the last reminder sent, or null. Enforces the
   /// once-a-week floor — the job runs daily, the nudge must not.
-  reminderSentOn  String?
-  accounts        Account[]
-  sessions        Session[]
-  readings        Reading[]
-  subscription    Subscription?
-  payments        Payment[]
-  passwordResets  PasswordResetToken[]
+  reminderSentOn     String?
+  accounts           Account[]
+  sessions           Session[]
+  readings           Reading[]
+  subscription       Subscription?
+  payments           Payment[]
+  passwordResets     PasswordResetToken[]
+  emailVerifications EmailVerificationToken[]
+}
+
+/// Heartbeat: one row per scheduled job, stamped when that job finishes a run.
+///
+/// The point is the ABSENCE of a fresh row. Alerting only fires when a job runs
+/// and reports failures; a job that stops being called at all — a dropped cron,
+/// a broken schedule — is silent, and silence is indistinguishable from success.
+/// The hourly reconcile sweep reads these and complains about anything stale.
+model JobHeartbeat {
+  /// Job name, e.g. "daily-card".
+  job         String   @id
+  completedAt DateTime
+  /// Last run's result, for context in the alert.
+  detail      String?
 }
 
 /// One counter per throttled thing (an email address, an IP, a form).
@@ -86,6 +101,22 @@ model RateLimit {
   updatedAt    DateTime  @updatedAt
 
   @@index([windowEndsAt])
+}
+
+/// Single-use email-verification grant. Same shape as PasswordResetToken and for
+/// the same reason: only the SHA-256 is stored, so a leaked DB row can't be turned
+/// back into a usable link.
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 /// Single-use password-reset grant. Only the SHA-256 of the token is stored —

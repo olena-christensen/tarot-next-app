@@ -255,6 +255,19 @@ export const authOptions: NextAuthOptions = {
       // OAuth redirect. The age cookie (AGE_CONSENT_COOKIE) is also set on
       // the client; a corresponding ageAcceptedAt column would need a Prisma
       // migration to persist it server-side.
+      // This event only fires for adapter-created users, i.e. OAuth — the
+      // credentials path creates its row in /api/auth/register directly. So a
+      // user reaching here signed in through Google, which has already proven
+      // the address; asking them to verify it again would be theatre.
+      try {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { emailVerified: new Date() },
+        });
+      } catch (err) {
+        console.error("[auth] failed to mark OAuth email verified", err);
+      }
+
       try {
         const consent = cookies().get(TERMS_CONSENT_COOKIE)?.value;
         if (consent === "1") {

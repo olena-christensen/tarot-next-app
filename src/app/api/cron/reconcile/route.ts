@@ -3,7 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { getInvoiceStatus } from "@/lib/mono";
 import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
 import { pruneRateLimits } from "@/lib/rateLimit";
-import { alertOnJobFailures } from "@/lib/alert";
+import { alertOnJobFailures, alertOps } from "@/lib/alert";
+import {
+  checkJobHeartbeats,
+  formatSilence,
+  recordHeartbeat,
+} from "@/lib/heartbeat";
 
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
@@ -99,6 +104,24 @@ export async function GET(req: Request) {
     new Date(now.getTime() - 24 * 60 * 60 * 1000)
   );
 
+  // The watchman. Runs BEFORE this sweep stamps its own heartbeat, so a
+  // reconcile that was down for hours and has just come back reports its own
+  // gap rather than quietly overwriting the evidence.
+  const stale = await checkJobHeartbeats(now);
+  for (const job of stale) {
+    await alertOps(
+      `heartbeat:${job.job}`,
+      `[theveil] ${job.job} has not run for ${formatSilence(job.silentForMs)}`,
+      [
+        `The ${job.job} job last completed at ${job.lastSeen.toISOString()}.`,
+        `That is ${formatSilence(job.silentForMs)} ago; it is expected at least every ${formatSilence(job.allowedMs)}.`,
+        "",
+        "Check the Cron Jobs tab in Vercel — the usual cause is a schedule that",
+        "was dropped by a deploy, or a function erroring before it can report.",
+      ]
+    );
+  }
+
   const result = {
     ok: true,
     scanned: stuck.length,
@@ -106,8 +129,10 @@ export async function GET(req: Request) {
     stillPending,
     errors,
     prunedRateLimits,
+    staleJobs: stale.map((s) => s.job),
   };
   await alertOnJobFailures("reconcile", result);
+  await recordHeartbeat("reconcile", result);
 
   return NextResponse.json(result);
 }

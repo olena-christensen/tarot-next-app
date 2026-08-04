@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { alertOnJobFailures } from "@/lib/alert";
+import { recordHeartbeat } from "@/lib/heartbeat";
 import { prisma } from "@/lib/prisma";
 import { chargeByToken, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
@@ -151,6 +152,9 @@ export async function GET(req: Request) {
   // The money path: a silent failure here is a customer who quietly loses access
   // or is quietly not charged.
   await alertOnJobFailures("renew", result);
+  // Proof of life. Stamped at the END, so a run that crashes halfway does not
+  // claim to have finished.
+  await recordHeartbeat("renew", result);
 
   return NextResponse.json(result);
 }

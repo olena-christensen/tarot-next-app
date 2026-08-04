@@ -161,11 +161,10 @@ a retry or a run straddling midnight makes double-firing realistic.
 - Send through `send()` in `src/lib/mailer.ts` with `unsubscribe: true`. Never build a
   transporter in the route — the shared sender carries the `from` display name that
   deliverability depends on.
-- **Function timeout.** A serialized SMTP loop at ~1s per message fits roughly 250–300
-  recipients in the 300s `maxDuration`. The route therefore pages 200 users per invocation
-  and returns `nextCursor` when more remain — a cap that isn't reported reads as "everyone
-  got mail" when they didn't. Nothing calls it with a cursor yet: past 200 opted-in
-  subscribers, the follow-up pages need driving (a second scheduled hit, or a self-recall).
+- **Function timeout.** A serialized SMTP loop runs at ~1s per message against a 300s
+  `maxDuration`. The job loops in rounds until the work runs out or 240s elapse, then
+  reports `remaining: true`. See CLAUDE.md → Cron jobs: rounds, not pages — including why
+  the original cursor design silently dropped everyone past the first 200.
 - **Zoho SMTP daily send caps are the real ceiling**, not Vercel. This is the first feature
   that scales with subscriber count rather than with events, so it hits that cap first, and
   silently — as bounces. Tracked in `STATUS.md`.
@@ -237,7 +236,6 @@ rather than SMTP acceptances (§5).
 
 - **Zoho's daily send cap** — the number for the current plan is unknown; tracked in
   `STATUS.md` → Account & platform gaps.
-- **Paging past 200 recipients** — the cursor exists, nothing drives it yet.
 - **Alerting on a failed run** — counted and logged only.
 - **Bounces are invisible.** SMTP acceptance is not delivery; nothing reads the bounce
   mailbox, so a permanently dead address is re-mailed daily forever.

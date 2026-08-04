@@ -245,6 +245,26 @@
     font-size: 12px;
   }
 
+  // Quiet by design — a right you can exercise, not a feature being sold.
+  .user-profile__export {
+    align-self: center;
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    // No global anchor reset; without this it arrives underlined.
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+
+    &:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+  }
+
   .user-profile__danger-zone {
     margin-top: 1rem;
     display: flex;
