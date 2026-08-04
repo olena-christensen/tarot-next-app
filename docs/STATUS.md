@@ -117,14 +117,63 @@ for account-level expectations or "does the marketing copy match the code". Trea
 <details>
 <summary><b>🎨 UI / UX — open</b></summary>
 
-- [ ] **Header greeting on mobile.** Rotating signed-in greetings can be long ("The others
-  said you wouldn't return, {name}. They were wrong."). Check overflow in the header nav
-  on mobile — truncate/ellipsis, wrap, or drop the longest lines from the pool.
-- [ ] **Decide on remaining `respond-below(sm)` overrides.** The three desktop-first files
-  are converted; what's left are small tweaks inside otherwise mobile-first files
-  (`_tarot`, `_main-header`, `_mystic-btn`, `_user-profile`, `_main-footer`, `_main-menu`,
-  `_title`, `_reader-selection`) — mobile base, shrink for tiny screens, some documented
-  as intentional. Flip to `respond-above` only for strict single-direction consistency.
+Re-checked against the code 2026-08-04. Two entries here were stale and have been
+replaced by what is actually true.
+
+- [ ] **The header greeting can't be read on mobile.** `.main-menu__link` sets
+  `max-width: 45vw` + `trimEllipses` below `sm` (`_main-menu.scss`). That rule was written
+  for a long *name*; the greetings are whole sentences, so on a phone the line clips to a
+  few words and an ellipsis. The layout doesn't break, which is why this reads as cosmetic
+  — it isn't. The copy is simply never delivered to anyone on a phone.
+  Fix direction: wrap to a second line instead of truncating, and/or keep the longest
+  greetings out of the pool below `sm`. Ellipsis is the wrong tool for a sentence.
+- [ ] **Nine raw `@media` blocks in `src/assets/scss/blocks/`** — `_login`, `_main-menu`,
+  `_offer-block`, `_container`, `_btn`, `_main-footer`, `_main-header`, `_tarot`, `_modal`
+  — using hardcoded `600px` / `768px` / `900px` instead of the shared `respond-above`
+  mixin and its `$breakpoints` map. CLAUDE.md says not to write raw queries; these predate
+  that. Mechanical to convert (`600px` → `sm`, `768px` → `md`, `900px` → `lg`) and it puts
+  every breakpoint back in one place.
+- [ ] **`.main-menu__welcome` is dead CSS** — no markup references it anywhere in `src/`.
+  Delete it.
+
+**Removed as stale (do not re-add):** an item to "decide on remaining `respond-below(sm)`
+overrides", which CLAUDE.md already decided — they are mobile bases with a shrink override,
+not desktop-first, and are to be left alone unless someone does a deliberate
+single-direction sweep. Its file list was wrong too (it omitted `_offer-block`).
+
+</details>
+
+---
+
+<details open>
+<summary><b>🟢 Next after launch — showing ads on The Veil (AdSense)</b></summary>
+
+Not distant-future work: the intended next project once the blocking and platform items
+above are closed. Ads **on the app**, shown to free users as a second revenue line
+alongside subscriptions.
+This is what makes the "Ad-free" MONTHLY claim mean anything: today it is true only by
+accident, because no ads exist.
+
+An earlier version of this section described *buying* Google Ads to acquire traffic. That
+was never planned and has been removed — do not reintroduce it.
+
+Two pieces of work, and they must ship together or paying subscribers will see ads:
+
+- [ ] **Serve ads to free and anonymous users** — AdSense account, site verification, ad
+  slots placed where they don't wreck the reading flow (the full-screen card modal and the
+  intro animation are the obvious places not to put them).
+- [ ] **Gate them on entitlement** — read `isSubscriber` from `GET /api/user/plan`, never
+  re-derive from `planId`. Same rule as every other paid feature.
+
+To research before building:
+
+- [ ] **Does AdSense even allow this?** Tarot and divination fall under Google's
+  restricted-content policies. Confirm the app is eligible at all, and under what
+  conditions, before any of the above is worth doing.
+- [ ] **Consent.** Ads mean tracking, so the cookie banner has to gate them rather than
+  just mention them, and `Sec-GPC: 1` must disable them for users who send it (see the
+  ads-era compliance note under Nice to have).
+- [ ] Revenue expectation at this traffic level — it may not be worth the design cost yet.
 
 </details>
 
@@ -171,27 +220,6 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
 - Card flip animation — highlight cards one by one when ready for flipping
 - Spooky background sound during the app loading animation
 - Footer — animation for highlighted items
-
-</details>
-
----
-
-<details>
-<summary><b>🎯 Future — paid acquisition (Google Ads / paid traffic)</b></summary>
-
-A separate workstream, not near-term. Prerequisites to research and meet first:
-
-- [ ] Google Ads advertiser verification (identity + business).
-- [ ] Tarot/divination has specific Google ad-content policies — review whether allowed
-  at all, and under what restrictions.
-- [ ] Landing page needs clear pricing, refund policy, contact info, Terms + Privacy —
-  all of these now exist; keep them visible.
-- [ ] Likely cannot claim accuracy or predictive power — the entertainment framing must
-  be airtight in ad copy and landing pages.
-- [ ] Conversion tracking (Google Analytics or equivalent) installed at that point.
-- [ ] Budget plan + acceptable customer-acquisition cost.
-- [ ] Other channels (Reddit, TikTok, niche newsletters) have different rules — evaluate
-  separately.
 
 </details>
 

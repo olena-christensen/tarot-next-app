@@ -1,0 +1,129 @@
+// On/off switch for a settings row: a pill track with the state word inside and
+// a gold jewel that slides across. Intrinsic styles only — the row owns where it
+// sits.
+//
+// The jewel reuses the app's existing glow vocabulary rather than inventing one:
+// the same radial-gradient + inset-shadow bead as the current-reader and
+// current-plan markers, and a pulse in the spirit of `glowPulse` on the deck.
+// No new colours.
+.switch {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(250, 225, 163, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  cursor: pointer;
+  // Inset shadow gives the track a hollow, carved feel instead of a flat pill.
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  .switch__knob {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    // Highlight top-left → a rounded, jewel-like body. Same construction as the
+    // current-reader bead in _reader-selection.scss.
+    background: radial-gradient(circle at 35% 30%, var(--gold), var(--primary));
+    box-shadow:
+      0 0 5px rgba(250, 225, 163, 0.35),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+    opacity: 0.55;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  // Both state words occupy ONE grid cell, so the track always reserves the
+  // wider of the two and its width never changes when toggled.
+  .switch__labels {
+    display: grid;
+    align-items: center;
+  }
+
+  .switch__label {
+    grid-area: 1 / 1;
+    font-family: var(--font-family);
+    font-size: 0.6rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-faint);
+    opacity: 0;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+
+  .switch__label--off {
+    opacity: 1;
+  }
+
+  &[data-checked="true"] {
+    background: rgba(250, 225, 163, 0.09);
+    border-color: var(--primary);
+    box-shadow:
+      inset 0 1px 3px rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(250, 225, 163, 0.22);
+
+    .switch__knob {
+      // Slides to the far side by reordering rather than translating, so the
+      // gap and padding stay symmetrical at both ends.
+      order: 2;
+      opacity: 1;
+      box-shadow:
+        0 0 9px rgba(250, 225, 163, 0.6),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+      animation: switchJewelPulse 2.5s ease-in-out infinite;
+    }
+
+    .switch__label {
+      color: var(--gold);
+    }
+
+    .switch__label--off {
+      opacity: 0;
+    }
+
+    .switch__label--on {
+      opacity: 1;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+
+    .switch__knob {
+      opacity: 1;
+    }
+  }
+
+  // `disabled` here means "saving", for a few hundred milliseconds — not
+  // "unavailable". A not-allowed cursor flashed a ban icon on every click, which
+  // read as rejection. The dim alone is the hint; the cursor stays put.
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+// Kept small on purpose — this is a 14px bead in a settings row, not the deck.
+@keyframes switchJewelPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 9px rgba(250, 225, 163, 0.6),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 14px rgba(250, 225, 163, 0.85),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch[data-checked="true"] .switch__knob {
+    animation: none;
+  }
+}

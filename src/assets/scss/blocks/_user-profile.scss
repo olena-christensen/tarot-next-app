@@ -35,7 +35,7 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
 
   .user-profile__avatar-block {
     display: flex;
@@ -132,6 +132,10 @@
     align-items: center;
     gap: 0.75rem;
     min-width: 0;
+    // When a long label forces the row to wrap, the value drops to its own line
+    // and `space-between` leaves it stranded at the left, under the label. The
+    // auto margin keeps it pinned right on either line.
+    margin-left: auto;
 
     .user-profile__value {
       @include trimEllipses;
@@ -201,8 +205,9 @@
     color: var(--primary);
   }
 
-  // The plan name doubles as the way into the pricing modal, so it reads as a
-  // value but behaves as a button.
+  // Every editable row's value IS its control — the pencils are gone. Styled to
+  // match .user-profile__value exactly, so the row still reads as label + value;
+  // the pointer and the hover colour are the only affordance.
   .user-profile__value-btn {
     @include trimEllipses;
     padding: 0;
@@ -212,8 +217,7 @@
     font-family: var(--font-family);
     font-size: 1.1rem;
     font-weight: var(--font-weight);
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
+    text-align: right;
     cursor: pointer;
     transition: color 0.2s;
 
@@ -226,9 +230,21 @@
   // auth modal) inside a portaled Modal — the bespoke .user-profile__edit /
   // __input / __edit-btn / __error / __success rules that lived here are gone.
 
-  .user-profile__btn {
+  // Stacked, not side by side: "back to the sanctum" is the primary way out and
+  // sits on top; signing out is the quieter, secondary action beneath it.
+  .user-profile__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
     margin-top: 1rem;
-    font-size: 20px;
+  }
+
+  // Deliberately half the weight of the Mystic button above it — signing out is
+  // not the thing most people came here to do.
+  .user-profile__btn {
+    padding: 0.5rem 1.125rem;
+    font-size: 12px;
   }
 
   .user-profile__danger-zone {

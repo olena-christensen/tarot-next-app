@@ -1,10 +1,8 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { resolveGreeting } from "@/lib/greetings";
+import { HeaderGreeting } from "@/components/HeaderGreeting";
 
 type MainMenuProps = {
     onOpenLogin: () => void;
@@ -13,32 +11,18 @@ type MainMenuProps = {
 export default function MainMenu({ onOpenLogin }: MainMenuProps) {
     const { data: session, status } = useSession();
     const t = useTranslations("ui");
-    const tGreeting = useTranslations("greetings");
-    const [greeting, setGreeting] = useState<string | null>(null);
-    const name = session?.user?.name ?? "";
-
-    // Resolve once when auth settles; sessionStorage holds it stable across
-    // re-renders and navigation (keyed on status, not name/t, so no reshuffle).
-    useEffect(() => {
-        if (status !== "authenticated") {
-            setGreeting(null);
-            return;
-        }
-        setGreeting(resolveGreeting({ name, t: tGreeting }));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [status]);
 
     return (
         <nav className="main-menu">
             <ul className="main-menu__list">
                 {status === "loading" ? null : session ? (
-                    greeting ? (
-                        <li className="main-menu__item">
-                            <Link className="btn main-menu__link" href="/profile">
-                                {greeting}
-                            </Link>
-                        </li>
-                    ) : null
+                    // Desktop placement. The LI is what hides below `md` — a class
+                    // on the link itself loses to `.main-menu .main-menu__link` on
+                    // specificity. The fixed strip in Header.tsx shows instead; a
+                    // sentence has no room in the nav row on a phone.
+                    <li className="main-menu__item main-menu__item--greeting">
+                        <HeaderGreeting className="btn main-menu__link" />
+                    </li>
                 ) : (
                     <li className="main-menu__item">
                         <button

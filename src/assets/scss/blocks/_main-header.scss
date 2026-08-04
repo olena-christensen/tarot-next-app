@@ -7,12 +7,13 @@
   align-items: center;
   gap: 2rem;
   padding-top: 1rem;
-  z-index: 30; // layer scale: content < header(30) < tarot-screen(40) < footer(50) < banner(60) < modal(100)
+  z-index: 30; // layer scale: content < header(30) < greeting-bar(31) < tarot-screen(40) < footer(50) < banner(60) < modal(100)
 
   @include respond-below(sm) {
     gap: 1rem;
     padding-top: 0.5rem;
   }
+
   opacity: 0;
   transform: translateY(-20px);
   animation: headerSlideIn 1s ease-out 1.5s forwards;
@@ -22,9 +23,26 @@
     animation-delay: 0s !important;
   }
 
+  // Signed in, below md: the greeting strip is fixed above this row, so the row
+  // drops to clear it. A modifier rather than a blanket rule — a signed-out
+  // visitor has no strip and would just get dead space.
+  &--greeted {
+    padding-top: 2.25rem; // ~30% less than the 3.25rem first tried
+
+    @include respond-above(md) {
+      padding-top: 1rem;
+    }
+  }
+
   .logo {
     width: 80px;
     height: 80px;
+    flex: 0 0 auto;
+  }
+
+  // The header owns placement. The avatar is a fixed-size circle and must never
+  // be squeezed by whatever else shares the row.
+  .header-avatar {
     flex: 0 0 auto;
   }
 }
