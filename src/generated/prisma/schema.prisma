@@ -69,6 +69,25 @@ model User {
   passwordResets  PasswordResetToken[]
 }
 
+/// One counter per throttled thing (an email address, an IP, a form).
+///
+/// Deliberately NOT tied to User: most of what needs throttling is unauthenticated,
+/// and an attempt against an address that doesn't exist still has to be counted —
+/// otherwise "did this row appear" becomes an account-enumeration oracle.
+model RateLimit {
+  /// Namespaced subject, e.g. "login:email:a@b.c" or "register:ip:1.2.3.4".
+  key          String    @id
+  /// Attempts inside the current window.
+  count        Int       @default(0)
+  /// When the current counting window ends.
+  windowEndsAt DateTime
+  /// Set once the limit is exceeded; null while under it.
+  blockedUntil DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  @@index([windowEndsAt])
+}
+
 /// Single-use password-reset grant. Only the SHA-256 of the token is stored —
 /// the raw value exists solely in the emailed link, so a DB leak can't reset anyone.
 model PasswordResetToken {

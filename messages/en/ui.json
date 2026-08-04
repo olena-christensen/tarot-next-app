@@ -115,6 +115,7 @@
     "and": "and",
     "agreeToTerms": "I agree to the {terms} and {privacy}.",
     "acceptTermsError": "Please accept the Terms of Service and Privacy Policy to continue.",
+    "tooManyAttempts": "Too many attempts. The gate is sealed for a while — try again later.",
     "invalidCredentials": "Invalid email or password",
     "somethingWentWrong": "Something went wrong. Please try again.",
     "channeling": "Channeling...",

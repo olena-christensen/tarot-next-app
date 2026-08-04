@@ -1,6 +1,6 @@
 # The Veil — Status & Roadmap
 
-**Last updated:** 2026-08-02 · App scope only — umbrella/entity matters stay in the project notes.
+**Last updated:** 2026-08-04 · App scope only — umbrella/entity matters stay in the project notes.
 
 <details open>
 <summary><b>🔴 Blocking — before taking real money</b></summary>
@@ -94,10 +94,13 @@ doesn't back. Ordered by severity.
 - [ ] **No email verification.** `emailVerified` column exists and is never written or
   read. Anyone can register with an address they don't control. Decide: verify on
   sign-up, or accept and document why.
-- [ ] **No rate limiting on login or registration.** Credential stuffing and brute force
-  are unthrottled; the only throttle in the app is the 60-second one on password reset.
-  `api/contact` still carries its original "TODO: add rate limiting" comment (honeypot
-  is its only defence).
+- [x] **Rate limiting** — built 2026-08-04. Postgres-backed, two axes (per email and per
+  IP), sitting in front of bcrypt in `authorize`; register and contact throttled per IP.
+  Fails open on a DB error. See CLAUDE.md → Rate Limiting.
+  - [ ] **Still worth adding: a Vercel Firewall rate-limit rule.** Dashboard-only, no code,
+    available on Pro. It stops floods at the edge before they reach a function at all,
+    which the app-level layer cannot do — by the time this code runs you have already paid
+    for the invocation.
 - [ ] **No error boundaries.** No `error.tsx` / `global-error.tsx` anywhere — an
   unhandled render error drops users on Next's default screen, outside the app's design.
 - [ ] **No alerting.** Both scheduled jobs and the payment webhook only `console.error`.
@@ -117,22 +120,18 @@ for account-level expectations or "does the marketing copy match the code". Trea
 <details>
 <summary><b>🎨 UI / UX — open</b></summary>
 
-Re-checked against the code 2026-08-04. Two entries here were stale and have been
-replaced by what is actually true.
+Re-checked against the code 2026-08-04.
 
-- [ ] **The header greeting can't be read on mobile.** `.main-menu__link` sets
-  `max-width: 45vw` + `trimEllipses` below `sm` (`_main-menu.scss`). That rule was written
-  for a long *name*; the greetings are whole sentences, so on a phone the line clips to a
-  few words and an ellipsis. The layout doesn't break, which is why this reads as cosmetic
-  — it isn't. The copy is simply never delivered to anyone on a phone.
-  Fix direction: wrap to a second line instead of truncating, and/or keep the longest
-  greetings out of the pool below `sm`. Ellipsis is the wrong tool for a sentence.
-- [ ] **Nine raw `@media` blocks in `src/assets/scss/blocks/`** — `_login`, `_main-menu`,
-  `_offer-block`, `_container`, `_btn`, `_main-footer`, `_main-header`, `_tarot`, `_modal`
-  — using hardcoded `600px` / `768px` / `900px` instead of the shared `respond-above`
-  mixin and its `$breakpoints` map. CLAUDE.md says not to write raw queries; these predate
-  that. Mechanical to convert (`600px` → `sm`, `768px` → `md`, `900px` → `lg`) and it puts
-  every breakpoint back in one place.
+- [x] **Header greeting unreadable on mobile** — fixed 2026-08-04. It is now a fixed strip
+  above the header below `md`, wrapping freely instead of being ellipsed to a few words by
+  a rule written for long names. See CLAUDE.md → Header.
+- [ ] **Nine raw `@media` blocks in `src/assets/scss/blocks/`** — `_container`, `_btn`,
+  `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
+  `_tarot` — using hardcoded `600px` / `768px` / `900px` instead of the shared
+  `respond-above` mixin and its `$breakpoints` map. CLAUDE.md says not to write raw
+  queries; these predate that. Mechanical to convert (`600px` → `sm`, `768px` → `md`,
+  `900px` → `lg`) and it puts every breakpoint back in one place. (`_print.scss` is
+  excluded — `@media print` has no mixin and shouldn't get one.)
 - [ ] **`.main-menu__welcome` is dead CSS** — no markup references it anywhere in `src/`.
   Delete it.
 

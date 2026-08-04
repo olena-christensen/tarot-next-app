@@ -1,9 +1,24 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { clientIp, consumeRateLimit, REGISTER_BY_IP } from "@/lib/rateLimit";
 
 export async function POST(request: Request) {
   try {
+    // Before any work: unlimited registration is free account creation, and
+    // `emailVerified` is never checked, so those rows are indistinguishable
+    // from real users.
+    const { blocked, retryAfterSeconds } = await consumeRateLimit(
+      `register:ip:${clientIp(request.headers)}`,
+      REGISTER_BY_IP
+    );
+    if (blocked) {
+      return NextResponse.json(
+        { error: "Too many attempts. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } }
+      );
+    }
+
     const { name, email, password, acceptTerms, acceptAge } = await request.json();
 
     if (!email || !password) {

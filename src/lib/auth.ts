@@ -5,6 +5,13 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
+import {
+  clearRateLimit,
+  clientIp,
+  consumeRateLimit,
+  LOGIN_BY_EMAIL,
+  LOGIN_BY_IP,
+} from "./rateLimit";
 
 export const TERMS_CONSENT_COOKIE = "tarot_terms_consent";
 export const AGE_CONSENT_COOKIE = "tarot_age_consent";
@@ -43,13 +50,33 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
         rememberMe: { label: "Remember me", type: "text" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
+        const email = credentials.email.toLowerCase().trim();
+        // NextAuth v4 hands the raw request in as the second argument; its
+        // headers are the only place the client IP is available here.
+        const ip = clientIp(new Headers((req?.headers ?? {}) as HeadersInit));
+
+        // Both axes are consumed BEFORE bcrypt. The hash is deliberately slow
+        // (cost 12, ~250ms of CPU), so letting an unthrottled flood reach it is
+        // itself the denial-of-service — the throttle has to sit in front of it,
+        // not behind it.
+        const [byIp, byEmail] = await Promise.all([
+          consumeRateLimit(`login:ip:${ip}`, LOGIN_BY_IP),
+          consumeRateLimit(`login:email:${email}`, LOGIN_BY_EMAIL),
+        ]);
+        if (byIp.blocked || byEmail.blocked) {
+          // A distinct error so the form can say "too many attempts" instead of
+          // "wrong password", which would send people off resetting a password
+          // that was never wrong.
+          throw new Error("rate_limited");
+        }
+
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
 
         if (!user || !user.password) {
@@ -61,6 +88,10 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) {
           return null;
         }
+
+        // Right phrase: forget the failures. Someone who mistyped four times and
+        // then got in shouldn't stay one slip away from a lockout.
+        await clearRateLimit(`login:email:${email}`);
 
         return {
           id: user.id,

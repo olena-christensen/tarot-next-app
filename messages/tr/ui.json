@@ -115,6 +115,7 @@
     "and": "ve",
     "agreeToTerms": "{terms} ve {privacy} koşullarını kabul ediyorum.",
     "acceptTermsError": "Devam etmek için lütfen Kullanım Koşulları'nı ve Gizlilik Politikası'nı kabul edin.",
+    "tooManyAttempts": "Çok fazla deneme. Kapı bir süreliğine mühürlendi — sonra tekrar deneyin.",
     "invalidCredentials": "Geçersiz e-posta veya şifre",
     "somethingWentWrong": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
     "channeling": "Ruhlarla bağlantı kuruluyor...",
