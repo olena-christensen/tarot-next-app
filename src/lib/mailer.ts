@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { getResetEmailStrings } from "./passwordReset";
 import { getVerifyEmailStrings } from "./emailVerification";
+import { routing } from "@/i18n/routing";
 import {
   renderDailyCardEmail,
   type DailyCardEmailStrings,
@@ -88,13 +89,46 @@ async function send(
   }
 }
 
-// Tier names must match what the pricing page sold them (plans.json, Set A).
-// The billing period is kept in brackets: a receipt has to be unambiguous about
-// what is being charged and how often, which a bare title isn't.
-const PLAN_LABEL: Record<"MONTHLY" | "YEARLY", string> = {
-  MONTHLY: "Initiate (monthly)",
-  YEARLY: "Adept (yearly)",
-};
+/**
+ * "Initiate (monthly)" in the recipient's language.
+ *
+ * Tier names must match what the pricing page sold them, so the NAME comes from
+ * `plans.json` rather than being duplicated here; only the billing word is a
+ * separate key. The period stays in brackets because a receipt has to be
+ * unambiguous about what is charged and how often, which a bare title isn't.
+ */
+async function planLabel(
+  locale: string,
+  planId: "MONTHLY" | "YEARLY"
+): Promise<string> {
+  const safe = routing.locales.includes(locale as (typeof routing.locales)[number])
+    ? locale
+    : routing.defaultLocale;
+  const [plans, ui] = await Promise.all([
+    import(`../../messages/${safe}/plans.json`).then((m) => m.default),
+    import(`../../messages/${safe}/ui.json`).then((m) => m.default),
+  ]);
+  const name = plans.plans?.[planId]?.name ?? planId;
+  const period =
+    planId === "MONTHLY" ? ui.ui.billingMonthly : ui.ui.billingYearly;
+  return `${name} (${period})`;
+}
+
+/** Payment-email copy in the recipient's language. */
+async function paymentStrings(locale: string): Promise<Record<string, string>> {
+  const safe = routing.locales.includes(locale as (typeof routing.locales)[number])
+    ? locale
+    : routing.defaultLocale;
+  const messages = (await import(`../../messages/${safe}/ui.json`)).default;
+  return messages.ui as Record<string, string>;
+}
+
+function fillTemplate(
+  template: string,
+  values: Record<string, string>
+): string {
+  return template.replace(/\{(\w+)\}/g, (m, k) => values[k] ?? m);
+}
 
 function formatEuro(amountMinor: number): string {
   return `€${(amountMinor / 100).toFixed(2)}`;
@@ -131,55 +165,58 @@ export async function sendPasswordResetEmail(args: {
 
 export async function sendRenewalReceiptEmail(args: {
   to: string;
+  locale: string;
   planId: "MONTHLY" | "YEARLY";
   amountMinor: number;
   expiresAt: Date;
 }): Promise<void> {
+  const t = await paymentStrings(args.locale);
+  const plan = await planLabel(args.locale, args.planId);
   const text = [
-    `Your The Veil ${PLAN_LABEL[args.planId]} subscription has renewed.`,
+    fillTemplate(t.renewalIntro, { plan }),
     "",
-    `Amount charged: ${formatEuro(args.amountMinor)}`,
-    `Your access now continues until ${args.expiresAt.toISOString().slice(0, 10)}.`,
+    fillTemplate(t.renewalAmount, { amount: formatEuro(args.amountMinor) }),
+    fillTemplate(t.renewalUntil, {
+      date: args.expiresAt.toISOString().slice(0, 10),
+    }),
     "",
-    "Manage or cancel your subscription any time in your profile.",
-    "— The Veil",
+    t.renewalManage,
+    `— ${FROM_NAME}`,
   ].join("\n");
-  await send("Your The Veil subscription renewed", args.to, text);
+  await send(fillTemplate(t.renewalSubject, { plan }), args.to, text);
 }
 
 export async function sendPaymentFailedEmail(args: {
   to: string;
+  locale: string;
   planId: "MONTHLY" | "YEARLY";
 }): Promise<void> {
+  const t = await paymentStrings(args.locale);
+  const plan = await planLabel(args.locale, args.planId);
   const text = [
-    `We couldn't charge your card for your The Veil ${PLAN_LABEL[args.planId]} subscription.`,
+    fillTemplate(t.paymentFailedIntro, { plan }),
     "",
-    "We'll automatically try again over the next few days. Your access continues",
-    "while we retry. To avoid losing access, please update your card details by",
-    "starting a new subscription from your profile.",
+    t.paymentFailedRetry,
     "",
-    "— The Veil",
+    `— ${FROM_NAME}`,
   ].join("\n");
-  await send("Payment failed — we'll retry your The Veil subscription", args.to, text);
+  await send(t.paymentFailedSubject, args.to, text);
 }
 
 export async function sendSubscriptionEndedEmail(args: {
   to: string;
+  locale: string;
   reason: "canceled" | "payment_failed" | "no_token";
 }): Promise<void> {
-  const lead =
-    args.reason === "canceled"
-      ? "Your The Veil subscription has ended, as requested."
-      : "Your The Veil subscription has ended because we couldn't renew your payment.";
+  const t = await paymentStrings(args.locale);
   const text = [
-    lead,
+    args.reason === "canceled" ? t.subEndedCanceled : t.subEndedFailed,
     "",
-    "You're now on the free plan. You can resubscribe any time from your profile",
-    "to restore full access.",
+    t.subEndedFree,
     "",
-    "— The Veil",
+    `— ${FROM_NAME}`,
   ].join("\n");
-  await send("Your The Veil subscription has ended", args.to, text);
+  await send(t.subEndedSubject, args.to, text);
 }
 
 /**

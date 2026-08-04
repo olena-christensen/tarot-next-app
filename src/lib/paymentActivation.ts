@@ -179,11 +179,12 @@ export async function applyMonoInvoiceStatus(
     ) {
       const user = await prisma.user.findUnique({
         where: { id: sub.userId },
-        select: { email: true },
+        select: { email: true, preferredLocale: true },
       });
       if (user?.email) {
         await sendRenewalReceiptEmail({
           to: user.email,
+          locale: user.preferredLocale,
           planId: pendingPlanId,
           // The EUR price we bill (500/3900 minor). Do NOT use the mono-echoed
           // amount — it's the settled amount in UAH minor units.
@@ -210,10 +211,14 @@ export async function applyMonoInvoiceStatus(
     if (isRenewal && (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY")) {
       const user = await prisma.user.findUnique({
         where: { id: sub.userId },
-        select: { email: true },
+        select: { email: true, preferredLocale: true },
       });
       if (user?.email) {
-        await sendPaymentFailedEmail({ to: user.email, planId: pendingPlanId });
+        await sendPaymentFailedEmail({
+          to: user.email,
+          locale: user.preferredLocale,
+          planId: pendingPlanId,
+        });
       }
     }
     return "failure";

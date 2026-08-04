@@ -13,6 +13,9 @@ function appOrigin(): string {
   );
 }
 
+// Errors are machine CODES, never prose. The sign-up form renders whatever this
+// returns, so an English sentence here lands untranslated on a Russian user's
+// screen at the exact moment they are already stuck. The client owns the wording.
 export async function POST(request: Request) {
   try {
     // Before any work: unlimited registration is free account creation, and
@@ -24,7 +27,7 @@ export async function POST(request: Request) {
     );
     if (blocked) {
       return NextResponse.json(
-        { error: "Too many attempts. Please try again later." },
+        { error: "rate_limited" },
         { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } }
       );
     }
@@ -34,28 +37,28 @@ export async function POST(request: Request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Email and password are required" },
+        { error: "missing_credentials" },
         { status: 400 }
       );
     }
 
     if (!acceptAge) {
       return NextResponse.json(
-        { error: "You must confirm you are 18 or older to register" },
+        { error: "age_required" },
         { status: 400 }
       );
     }
 
     if (!acceptTerms) {
       return NextResponse.json(
-        { error: "You must accept the Terms of Service and Privacy Policy" },
+        { error: "terms_required" },
         { status: 400 }
       );
     }
 
     if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
+        { error: "weak_password" },
         { status: 400 }
       );
     }
@@ -63,7 +66,7 @@ export async function POST(request: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "Invalid email format" },
+        { error: "invalid_email" },
         { status: 400 }
       );
     }
@@ -74,7 +77,7 @@ export async function POST(request: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "Email already registered" },
+        { error: "email_taken" },
         { status: 409 }
       );
     }
@@ -116,7 +119,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "internal_error" },
       { status: 500 }
     );
   }

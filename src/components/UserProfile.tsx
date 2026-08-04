@@ -142,8 +142,16 @@ export const UserProfile = () => {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || t("failedToUpdateName"));
+        const data = await res.json().catch(() => ({}));
+        // Codes, not prose — the old `data.error || t(...)` let the server's
+        // English win over the translated fallback whenever it was present.
+        setError(
+          data.error === "name_required"
+            ? t("nameCannotBeEmpty")
+            : data.error === "name_too_long"
+              ? t("nameTooLong")
+              : t("failedToUpdateName")
+        );
         return;
       }
 
