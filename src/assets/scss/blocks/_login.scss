@@ -54,7 +54,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@include respond-above(lg) {
   .login {
     padding-top: 80px;
     padding-bottom: 80px;

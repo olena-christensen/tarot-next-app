@@ -330,7 +330,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@include respond-above(lg) {
   .offer-block {
 
     &::before {

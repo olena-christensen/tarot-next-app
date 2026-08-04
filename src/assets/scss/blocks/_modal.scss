@@ -76,7 +76,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@include respond-above(md) {
   .modal .modal__content {
     padding: 2.5rem;
     max-width: 740px;

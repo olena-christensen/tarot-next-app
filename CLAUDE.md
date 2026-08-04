@@ -222,6 +222,8 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - `@include respond-below($bp)` — `max-width` (use in desktop-first files).
 - `@include respond-above($bp)` — `min-width` (use in mobile-first files).
 
+**No raw `@media` queries remain in `blocks/`** (swept 2026-08-04) — the only exceptions are `@media print` in `_print.scss` and `prefers-reduced-motion`, neither of which has a mixin. The map is in `em` on purpose: breakpoints follow the reader's browser font size rather than being pinned to pixels, identical at default settings.
+
 **The whole app is mobile-first.** Base styles target mobile; scale UP with `respond-above`. `subscription`/`decks`/`legal-page` were converted from desktop-first on 2026-07-13 (their raw `max-width: 720px/960px` queries were remapped to the shared tokens `md`/`lg`). What remains as `respond-below` are small single-property tweaks inside mobile-first files (`_tarot`, `_main-header`, `_mystic-btn`, `_user-profile`, `_main-footer`, `_main-menu`, `_title`, `_reader-selection`) — a mobile base with a shrink override, NOT desktop-first; leave them unless doing a deliberate single-direction sweep. A global `overflow-x: hidden` safety net lives on `body` in `global/_scafolding.scss`. `.mystic-btn` has a mobile override (padding/font shrink at `respond-below(sm)`) and is reused on the offer-block Summon, tarot post-actions, and reader-selection — don't re-break it.
 
 ## Gotchas

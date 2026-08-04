@@ -130,15 +130,13 @@ Re-checked against the code 2026-08-04.
 - [x] **Header greeting unreadable on mobile** — fixed 2026-08-04. It is now a fixed strip
   above the header below `md`, wrapping freely instead of being ellipsed to a few words by
   a rule written for long names. See CLAUDE.md → Header.
-- [ ] **Nine raw `@media` blocks in `src/assets/scss/blocks/`** — `_container`, `_btn`,
-  `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
-  `_tarot` — using hardcoded `600px` / `768px` / `900px` instead of the shared
-  `respond-above` mixin and its `$breakpoints` map. CLAUDE.md says not to write raw
-  queries; these predate that. Mechanical to convert (`600px` → `sm`, `768px` → `md`,
-  `900px` → `lg`) and it puts every breakpoint back in one place. (`_print.scss` is
-  excluded — `@media print` has no mixin and shouldn't get one.)
-- [ ] **`.main-menu__welcome` is dead CSS** — no markup references it anywhere in `src/`.
-  Delete it.
+- [x] **Nine raw `@media` blocks converted** to `respond-above` 2026-08-04 — `_container`,
+  `_btn`, `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
+  `_tarot`. Zero raw queries remain outside `@media print` and `prefers-reduced-motion`.
+  Note this is not a pure no-op: the map is in `em`, so the breakpoints now respect a
+  reader's browser font size instead of being pinned to pixels. Identical at default
+  settings, which is why the compiled diff shows only the query values changing.
+- [x] **`.main-menu__welcome` deleted** — dead since nothing in `src/` referenced it.
 
 **Removed as stale (do not re-add):** an item to "decide on remaining `respond-below(sm)`
 overrides", which CLAUDE.md already decided — they are mobile bases with a shrink override,

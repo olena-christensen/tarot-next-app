@@ -292,7 +292,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@include respond-above(lg) {
   .tarot__title {
     font-size: 26px;
   }
