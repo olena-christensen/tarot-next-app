@@ -70,6 +70,20 @@ model User {
   emailVerifications EmailVerificationToken[]
 }
 
+/// Heartbeat: one row per scheduled job, stamped when that job finishes a run.
+///
+/// The point is the ABSENCE of a fresh row. Alerting only fires when a job runs
+/// and reports failures; a job that stops being called at all — a dropped cron,
+/// a broken schedule — is silent, and silence is indistinguishable from success.
+/// The hourly reconcile sweep reads these and complains about anything stale.
+model JobHeartbeat {
+  /// Job name, e.g. "daily-card".
+  job         String   @id
+  completedAt DateTime
+  /// Last run's result, for context in the alert.
+  detail      String?
+}
+
 /// One counter per throttled thing (an email address, an IP, a form).
 ///
 /// Deliberately NOT tied to User: most of what needs throttling is unauthenticated,

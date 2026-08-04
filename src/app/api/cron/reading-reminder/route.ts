@@ -5,6 +5,7 @@ import { decideReminder } from "@/lib/readingReminder";
 import { getReminderStrings } from "@/lib/reminderEmail";
 import { sendReadingReminderEmail } from "@/lib/mailer";
 import { alertOnJobFailures } from "@/lib/alert";
+import { recordHeartbeat } from "@/lib/heartbeat";
 import { utcDayKey } from "@/lib/dailyCard";
 import type { PlanId } from "@/lib/plans";
 
@@ -156,6 +157,9 @@ export async function GET(req: Request) {
   const result = { day, sent, skipped, failed, remaining };
   console.log("[cron/reading-reminder] done", result);
   await alertOnJobFailures("reading-reminder", result);
+  // Proof of life. Stamped at the END, so a run that crashes halfway does not
+  // claim to have finished.
+  await recordHeartbeat("reading-reminder", result);
 
   return NextResponse.json(result);
 }

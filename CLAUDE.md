@@ -394,6 +394,15 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - "Try Again" (`reset()`) sits **beside** the way home, not in front of it: `reset()` fixes a transient failure and does nothing for a deterministic one, so a user must always have the other exit.
 - **Testing one:** add a temporary page that throws, with `export const dynamic = "force-dynamic"`. Without that it throws during static generation and fails the BUILD instead of exercising the boundary.
 
+## Dead-man's switch (job heartbeats)
+
+- **`JobHeartbeat` + `src/lib/heartbeat.ts`** (migration `add_job_heartbeat`, 2026-08-04). Every scheduled job stamps `recordHeartbeat(name, result)` at the END of a run — at the end specifically, so a job that crashes halfway does not claim to have finished.
+- **The hourly reconcile sweep is the watchman.** It reads the heartbeats and alerts on anything that has gone quiet past its window, then stamps its own. That ORDER matters: checking first is what lets reconcile report *its own* outage when it comes back, instead of silently overwriting the evidence.
+- **Why it exists:** `alertOnJobFailures` only fires when a job RUNS and reports failures. A job that stops being called at all — a cron dropped by a deploy, a broken schedule — says nothing, and silence is indistinguishable from success.
+- **Windows** (`JOB_MAX_SILENCE`): 26h for the daily jobs, 3h for hourly reconcile. The 26 is deliberate slack — an alarm that fires on an ordinary morning gets ignored, and then it is not an alarm. **Adding a cron to `vercel.json` without adding a window here leaves it unmonitored**; `heartbeat.test.ts` asserts the list matches.
+- **A job with no heartbeat row is seeded, not reported.** Otherwise this would alert on every fresh deploy and on every newly added job. The cost is one quiet cycle before a job that has never run once is noticed.
+- **Known gap, by construction: the watchman can die.** If reconcile stops, nothing watches anything. Closing that needs something OUTSIDE the app pinging it (an uptime monitor / Healthchecks.io) — a signup, not code.
+
 ## Cron jobs: rounds, not pages
 
 - **The two email jobs loop in rounds until the work runs out or a deadline hits**, rather than sending one page and reporting a cursor. Applies to `/api/cron/{daily-card,reading-reminder}`.

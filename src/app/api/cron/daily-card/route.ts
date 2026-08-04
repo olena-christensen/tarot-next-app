@@ -9,6 +9,7 @@ import {
 } from "@/lib/dailyCardStrings";
 import { sendDailyCardEmail } from "@/lib/mailer";
 import { alertOnJobFailures } from "@/lib/alert";
+import { recordHeartbeat } from "@/lib/heartbeat";
 import { DEFAULT_DECK } from "@/lib/decks";
 import type { PlanId } from "@/lib/plans";
 
@@ -188,6 +189,9 @@ export async function GET(req: Request) {
   const result = { day, sent, skipped, duplicate, failed, remaining };
   console.log("[cron/daily-card] done", result);
   await alertOnJobFailures("daily-card", result);
+  // Proof of life. Stamped at the END, so a run that crashes halfway does not
+  // claim to have finished.
+  await recordHeartbeat("daily-card", result);
 
   return NextResponse.json(result);
 }

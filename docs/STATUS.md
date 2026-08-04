@@ -9,14 +9,20 @@
 
 `messages/*/plans.json` is the contract shown on the pricing page and in the in-app
 modal. Taking €5/month against unbuilt features is refund and consumer-protection
-exposure, not just a product gap. Decision: **build the cheap ones, then re-cut the
-list**. Cutting a line = editing five JSON files.
+exposure, not just a product gap. **Resolved 2026-08-04** — kept here as the record of
+what was promised and what backs it; audit any new plan copy the same way.
 
-Both cheap ones are done (PDF export, favourites & notes). Since then the daily card email
-was built and its cron scheduled (`0 2 * * *` in `vercel.json`), and long-form interpretations were marked
-"coming soon" rather than cut. The **yearly "save 58%" claim was wrong** — €5×12 vs €39 is
-35%, corrected in all five locales 2026-08-02. What remains needs artwork or a release
-pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows below**.
+**Nothing on this list is now advertised unqualified except ad-free, which is true.** The
+daily card email and reminder notifications were built (2026-08-03); the three that need
+artwork or a release pipeline — long-form interpretations, seasonal decks, early access —
+are marked "coming soon" on the card instead of being cut, so the copy stays honest while
+they wait. The **yearly "save 58%" claim was wrong** (€5×12 vs €39 is 35%), corrected in
+all five locales 2026-08-02.
+
+**The marker is `ui.comingSoon`, rendered from `Plan.comingSoonFeatures` (indices into the
+feature array) — not text pasted into each locale.** `plans.test.ts` enforces that: equal
+feature counts across locales, every marker pointing at a real line, and no inline
+"coming soon" creeping back in.
 
 | Advertised claim | Status |
 |---|---|
@@ -26,11 +32,11 @@ pipeline, so the next step is a **build-vs-cut judgement on the three ❌ rows b
 | Ad-free (MONTHLY) | ⚠️ NOT built — no tier gating exists; only true today because the app has no ads. The day ads are added, subscribers see them too unless free-tier-only gating ships in the same change. |
 | Export readings as PDF (MONTHLY) | ✅ built 2026-08-02 — print view per entry, browser "Save as PDF" does the conversion |
 | Favorites & personal notes (MONTHLY) | ✅ built 2026-08-02 — star toggle + "favourites only" filter, free-text note per reading (see Reading History in CLAUDE.md) |
-| Long-form interpretations (MONTHLY) | ⏳ not built — the pricing copy now says **"(coming soon)"** in all five locales (2026-08-02), so the claim is honest while it waits |
+| Long-form interpretations (MONTHLY) | ⏳ not built — the card renders **`ui.comingSoon`** beside it, so the claim is qualified in every locale from one key |
 | Daily card email (MONTHLY) | ✅ built 2026-08-02, sending live since 2026-08-03 — opt-in profile toggle, deterministic per-user card, PNG art for Outlook, 78 lines × 5 locales, `/api/cron/daily-card` at `0 2 * * *` (04:00 Kyiv). Day-one fixes: Promotions-tab markup, duplicate sends, attempt-vs-acceptance counting. See `docs/features/daily-card-email.md` |
 | Reminder notifications (MONTHLY) | ✅ built 2026-08-03 — opt-in "The Nudge" profile row; `/api/cron/reading-reminder` at `0 16 * * *` (18:00 Kyiv) emails a subscriber who hasn't drawn in 7 days, at most once a week. Rule is pure + tested in `readingReminder.ts` |
-| Exclusive seasonal decks (YEARLY) | ❌ not built (all three decks available to every subscriber) — judge build-vs-cut |
-| Early access to new diviners & decks (YEARLY) | ❌ not built (no mechanism) — judge build-vs-cut |
+| Exclusive seasonal decks (YEARLY) | ⏳ not built (all three decks go to every subscriber) — marked **coming soon** 2026-08-04 |
+| Early access to new diviners & decks (YEARLY) | ⏳ not built (no mechanism) — marked **coming soon** 2026-08-04 |
 
 ### Translations — native-level QUALITY proofread
 
@@ -110,9 +116,10 @@ doesn't back. Ordered by severity.
   English-only by necessity). See CLAUDE.md → Error Boundaries.
 - [x] **Alerting** — built 2026-08-04. All four crons and the payment webhook email the
   operator on failure, throttled to one per hour per alert key. See CLAUDE.md → Alerting.
-  - [ ] Alerts fire on *reported* failures only. A job that never runs at all — a cron
-    silently unregistered, a deploy that dropped it — still goes unnoticed. A dead-man's
-    switch (alert when a job has NOT checked in for N hours) is the missing half.
+  - [x] **Dead-man's switch** — built 2026-08-04. Jobs stamp a `JobHeartbeat`; the hourly
+    reconcile sweep alerts on anything that has gone quiet. See CLAUDE.md.
+  - [ ] **The watchman itself is unwatched.** If reconcile stops running, nothing notices.
+    Closing that needs an external uptime monitor pinging the app — a signup, not code.
 - [ ] **Data portability is claimed but manual.** Privacy Policy lists the right; there is
   no export endpoint. Handling by hand via the contact route is defensible for a solo
   operator — worth a recorded decision, not urgent.
