@@ -102,10 +102,14 @@ doesn't back. Ordered by severity.
   - [ ] **Switch those three rules from Log to 429.** They currently record without
     blocking. Review the Firewall traffic view after a few days of real traffic; if only
     bots are matching, enforce. If real users are, raise the limits first.
-- [ ] **No error boundaries.** No `error.tsx` / `global-error.tsx` anywhere — an
-  unhandled render error drops users on Next's default screen, outside the app's design.
-- [ ] **No alerting.** Both scheduled jobs and the payment webhook only `console.error`.
-  Cheapest fix: have the existing mailer email `founder@` on job/webhook failure.
+- [x] **Error boundaries** — built 2026-08-04, verified against a deliberately thrown error.
+  `[locale]/error.tsx` (themed, translated) and `global-error.tsx` (inline-styled,
+  English-only by necessity). See CLAUDE.md → Error Boundaries.
+- [x] **Alerting** — built 2026-08-04. All four crons and the payment webhook email the
+  operator on failure, throttled to one per hour per alert key. See CLAUDE.md → Alerting.
+  - [ ] Alerts fire on *reported* failures only. A job that never runs at all — a cron
+    silently unregistered, a deploy that dropped it — still goes unnoticed. A dead-man's
+    switch (alert when a job has NOT checked in for N hours) is the missing half.
 - [ ] **Data portability is claimed but manual.** Privacy Policy lists the right; there is
   no export endpoint. Handling by hand via the contact route is defensible for a solo
   operator — worth a recorded decision, not urgent.

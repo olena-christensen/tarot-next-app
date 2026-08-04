@@ -8,16 +8,15 @@ import {
   getReaderName,
 } from "@/lib/dailyCardStrings";
 import { sendDailyCardEmail } from "@/lib/mailer";
+import { alertOnJobFailures } from "@/lib/alert";
 import { DEFAULT_DECK } from "@/lib/decks";
 import type { PlanId } from "@/lib/plans";
 
 // The daily card email. Sends one card per opted-in subscriber, in their locale,
 // with their deck's art.
 //
-// NOT YET REGISTERED IN vercel.json: Hobby allows two cron jobs and both slots
-// are taken (renew, reconcile). Add this at the Pro upgrade —
-//   { "path": "/api/cron/daily-card", "schedule": "0 2 * * *" }
-// which is 04:00 Kyiv (GMT+2). See docs/features/daily-card-email.md.
+// Scheduled in vercel.json at "0 2 * * *" — 04:00 Kyiv (GMT+2); crons run in UTC.
+// See docs/features/daily-card-email.md.
 //
 // Bearer-auth via CRON_SECRET, same as the other two cron routes.
 
@@ -166,6 +165,7 @@ export async function GET(req: Request) {
   // reports failed:N, where it used to report a clean sent:N.
   const result = { day, sent, skipped, duplicate, failed, nextCursor };
   console.log("[cron/daily-card] done", result);
+  await alertOnJobFailures("daily-card", result);
 
   return NextResponse.json(result);
 }

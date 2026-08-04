@@ -230,3 +230,20 @@ export async function sendReadingReminderEmail(args: {
   });
   return send(subject, args.to, text, { html });
 }
+
+/**
+ * Operational alert to the operator, not to a user.
+ *
+ * Plain text and no `List-Unsubscribe`: this is not subscription mail, and an
+ * unsubscribe link on your own outage alerts is an invitation to silence them.
+ * Returns whether SMTP accepted it — if the alert itself can't be sent, the
+ * caller logs that rather than pretending it went.
+ */
+export async function sendOpsAlertEmail(args: {
+  to: string;
+  subject: string;
+  lines: string[];
+}): Promise<boolean> {
+  const text = [...args.lines, "", `— ${FROM_NAME}`].join("\n");
+  return send(args.subject, args.to, text, { unsubscribe: false });
+}

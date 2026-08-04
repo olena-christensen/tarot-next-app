@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getInvoiceStatus } from "@/lib/mono";
 import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
 import { pruneRateLimits } from "@/lib/rateLimit";
+import { alertOnJobFailures } from "@/lib/alert";
 
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
@@ -98,12 +99,15 @@ export async function GET(req: Request) {
     new Date(now.getTime() - 24 * 60 * 60 * 1000)
   );
 
-  return NextResponse.json({
+  const result = {
     ok: true,
     scanned: stuck.length,
     reconciled,
     stillPending,
     errors,
     prunedRateLimits,
-  });
+  };
+  await alertOnJobFailures("reconcile", result);
+
+  return NextResponse.json(result);
 }

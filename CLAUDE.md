@@ -381,6 +381,27 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
   2. **Email prefill.** On a *successful* credentials sign-in the address is written to `localStorage` under `theveil_remembered_email` and read back on mount; unticking clears it. **The EMAIL only — never the password.** Storing a password client-side is not something to add later.
 - **Password autofill is the browser's job, and it needs the right attributes.** Until 2026-08-04 no input in the app carried `autoComplete`, so Chrome never recognised the login form and never offered to save anything. The email field uses `autoComplete="username"` (NOT `"email"` — `username` is the token password managers key on to pair an identifier with a password), and the password field switches `current-password` / `new-password` on sign-in vs sign-up. With `current-password` on a registration field a manager autofills the OLD password instead of offering to generate one. The same attributes were added to the profile's change-password modal and the reset-password page.
 
+## Error Boundaries
+
+- **`src/app/[locale]/error.tsx`** — the normal case. Reuses `PageShell` and the `.not-found` block so a crash still looks like the app, and is translated (`ui.errorTitle` / `errorBody` / `errorRetry`), because the locale layout's `NextIntlClientProvider` is mounted by the time a page can fail.
+- **`src/app/global-error.tsx`** — last resort, for an error thrown by a ROOT layout. Three things make it deliberately unlike everything else, and all three are load-bearing:
+  1. It **replaces** the root layout, so it renders its own `<html>` and `<body>` — nothing else will.
+  2. **Styles are inline**, and the palette hexes are repeated from `_variables.scss`. The stylesheet is imported by the layout that just failed; a class here risks unstyled black-on-white.
+  3. **Copy is English only.** Reaching this file means `NextIntlClientProvider` never mounted, so `useTranslations` would throw and take the fallback down with it. This is the ONE place exempt from the translation gate — **do not "fix" it by adding a hook.**
+- Both log `error.digest`, the only handle on the server-side stack (Next withholds the real stack from the client in production).
+- "Try Again" (`reset()`) sits **beside** the way home, not in front of it: `reset()` fixes a transient failure and does nothing for a deterministic one, so a user must always have the other exit.
+- **Testing one:** add a temporary page that throws, with `export const dynamic = "force-dynamic"`. Without that it throws during static generation and fails the BUILD instead of exercising the boundary.
+
+## Alerting
+
+- **`src/lib/alert.ts`** — `alertOps(key, subject, lines)` and `alertOnJobFailures(job, result)`. Until 2026-08-04 every scheduled job and the payment webhook only reached `console.error`, so a run that mailed nobody looked exactly like a quiet day unless someone opened the Vercel logs.
+- **Wired into:** `/api/cron/{daily-card,reading-reminder,reconcile,renew}` (alert only when the run reports `failed`/`errors` > 0) and `/api/payments/webhook` (invalid signature, and a verified payload that couldn't be applied).
+- **Throttled to one alert per key per hour**, reusing the `RateLimit` table rather than a second counter. This is the point of the feature, not a detail: a broken job doesn't fail once — a lost database or an expired SMTP password produces a continuous stream, and an unthrottled alert would bury the very inbox it is trying to reach.
+- **`alertOps` never throws.** An alert that breaks the job it is reporting on is the worst possible outcome, so callers don't wrap it.
+- **The webhook rethrows after alerting.** A 500 makes mono retry, which is the right answer to a transient failure; acking there would drop a real payment on the floor. Don't "tidy" that into a caught-and-acked branch.
+- Recipient is `ALERT_EMAIL`, falling back to `ZOHO_SMTP_USER`, falling back to `founder@nothingweird.agency` — no new env var is required for it to work.
+- Sent via `sendOpsAlertEmail` with `unsubscribe: false`: this is operator mail, and a `List-Unsubscribe` header on your own outage alerts is an invitation to silence them.
+
 ## Rate Limiting
 
 - **`src/lib/rateLimit.ts` + the `RateLimit` model** (migration `add_rate_limit`, 2026-08-04). State lives in Postgres because each request may land on a different serverless instance — an in-process counter resets unpredictably and protects nothing.

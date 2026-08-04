@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { alertOnJobFailures } from "@/lib/alert";
 import { prisma } from "@/lib/prisma";
 import { chargeByToken, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
@@ -43,6 +44,9 @@ export async function GET(req: Request) {
 
   let charged = 0;
   let downgraded = 0;
+  // Counted so the run can report a failure rather than only whispering it into
+  // the logs. Every increment sits beside an existing console.error.
+  let errors = 0;
 
   for (const sub of subs) {
     const action = decideRenewalAction(
@@ -67,6 +71,7 @@ export async function GET(req: Request) {
         downgraded++;
       } catch (err) {
         console.error(`[cron/renew] downgrade failed for sub ${sub.id}`, err);
+        errors++;
       }
       continue;
     }
@@ -92,6 +97,7 @@ export async function GET(req: Request) {
       });
     } catch (err) {
       console.error(`[cron/renew] failed to reserve attempt for sub ${sub.id}`, err);
+      errors++;
       continue;
     }
 
@@ -109,6 +115,7 @@ export async function GET(req: Request) {
       // Charge initiation failed (network/API). Mark the attempt failed so the
       // state machine retries tomorrow; leave the bumped counter in place.
       console.error(`[cron/renew] chargeByToken failed for sub ${sub.id}`, err);
+      errors++;
       await prisma.subscription
         .update({ where: { id: sub.id }, data: { paymentStatus: "failure" } })
         .catch((e) => console.error(`[cron/renew] failed to mark failure for sub ${sub.id}`, e));
@@ -139,5 +146,11 @@ export async function GET(req: Request) {
     charged++;
   }
 
-  return NextResponse.json({ ok: true, scanned: subs.length, charged, downgraded });
+  const result = { ok: true, scanned: subs.length, charged, downgraded, errors };
+  console.log("[cron/renew] done", result);
+  // The money path: a silent failure here is a customer who quietly loses access
+  // or is quietly not charged.
+  await alertOnJobFailures("renew", result);
+
+  return NextResponse.json(result);
 }
