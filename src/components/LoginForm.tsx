@@ -200,6 +200,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <input
             type="text"
             id="name"
+            name="name"
+            autoComplete="name"
             className="form__input"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -210,9 +212,14 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <label htmlFor="email" className="form__label">
           {t("pledgeYourSoul")}
         </label>
+        {/* `name` + `autoComplete` are what tell a password manager this is a
+            login form worth saving. Without them Chrome never offers to fill it.
+            "username" rather than "email" — that is the token managers key on. */}
         <input
           type="email"
           id="email"
+          name="email"
+          autoComplete="username"
           className="form__input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -225,6 +232,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <input
             type="password"
             id="password"
+            name="password"
+            autoComplete={isSignUp ? "new-password" : "current-password"}
             className="form__input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
