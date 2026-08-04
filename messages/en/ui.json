@@ -159,6 +159,7 @@
     "beginInitiation": "Begin Initiation",
     "reader": "Reader",
     "chooseReader": "Choose Your Reader",
+    "exportData": "Take your record with you",
     "deleteAccountHeading": "The Point of No Return",
     "deleteAccountTrigger": "Break the Pact",
     "deleteAccountWarning": "This will permanently erase your account, reading history, deck and reader preferences, subscription record, and any linked sign-in providers. This action cannot be undone.",

@@ -120,9 +120,9 @@ doesn't back. Ordered by severity.
     reconcile sweep alerts on anything that has gone quiet. See CLAUDE.md.
   - [ ] **The watchman itself is unwatched.** If reconcile stops running, nothing notices.
     Closing that needs an external uptime monitor pinging the app — a signup, not code.
-- [ ] **Data portability is claimed but manual.** Privacy Policy lists the right; there is
-  no export endpoint. Handling by hand via the contact route is defensible for a solo
-  operator — worth a recorded decision, not urgent.
+- [x] **Data portability** — built 2026-08-04. `GET /api/user/export` returns the user's
+  data as a downloaded JSON file, linked from the profile above the danger zone.
+  Credentials excluded and listed in the file's `_omitted` array. See CLAUDE.md.
 
 **Process note:** the old go-live doc grew out of a payments checklist and had no section
 for account-level expectations or "does the marketing copy match the code". Treat

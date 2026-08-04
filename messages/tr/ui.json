@@ -159,6 +159,7 @@
     "beginInitiation": "İnisiyasyonu Başlat",
     "reader": "Okuyucu",
     "chooseReader": "Okuyucunuzu Seçin",
+    "exportData": "Kaydınızı yanınıza alın",
     "deleteAccountHeading": "Dönüşü Olmayan Nokta",
     "deleteAccountTrigger": "Antlaşmayı Boz",
     "deleteAccountWarning": "Bu işlem hesabınızı, okuma geçmişinizi, deste ve okuyucu tercihlerinizi, abonelik kaydınızı ve bağlı tüm oturum açma sağlayıcılarını kalıcı olarak siler. Bu işlem geri alınamaz.",

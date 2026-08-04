@@ -394,6 +394,14 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - "Try Again" (`reset()`) sits **beside** the way home, not in front of it: `reset()` fixes a transient failure and does nothing for a deterministic one, so a user must always have the other exit.
 - **Testing one:** add a temporary page that throws, with `export const dynamic = "force-dynamic"`. Without that it throws during static generation and fails the BUILD instead of exercising the boundary.
 
+## Data Export ("take your record with you")
+
+- **`GET /api/user/export`** returns the signed-in user's data as a downloaded JSON file — GDPR Art. 15 (access) and Art. 20 (portability). Linked from the profile as `ui.exportData`, placed **above** the danger zone: taking your data with you is the step that comes before burning the account, and putting it beside "Break the Pact" is how people click the wrong one.
+- Covers account fields, readings, subscription, the payment ledger and which sign-in providers are linked.
+- **Credentials are deliberately excluded** — password hash, Mono card token, OAuth access/refresh tokens. They are not "their data" in any useful sense, and a file that lands in a downloads folder (or gets forwarded) must not carry a key. The masked card number is included instead. Everything left out is listed in the file's `_omitted` array, so the export is honest about not being the whole row.
+- **Self-service was a choice, not a requirement.** Manual fulfilment via `privacy@` is legal — the Privacy Policy claimed the right and the contact form already routed DSAR categories there. What was missing was any way to actually produce the data, which meant hand-querying five tables under a one-month deadline at whatever moment a request arrived.
+- `Content-Disposition: attachment` + `Cache-Control: no-store` — downloaded rather than rendered, and never cached.
+
 ## Dead-man's switch (job heartbeats)
 
 - **`JobHeartbeat` + `src/lib/heartbeat.ts`** (migration `add_job_heartbeat`, 2026-08-04). Every scheduled job stamps `recordHeartbeat(name, result)` at the END of a run — at the end specifically, so a job that crashes halfway does not claim to have finished.
