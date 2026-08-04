@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { clientIp, consumeRateLimit, CONTACT_BY_IP } from "@/lib/rateLimit";
 
-// TODO: add rate limiting (per-IP token bucket or Upstash) — currently unprotected beyond the honeypot.
 
 const CATEGORIES = [
   "general",
@@ -28,6 +28,19 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const isString = (v: unknown): v is string => typeof v === "string";
 
 export async function POST(request: Request) {
+  // The honeypot only catches naive bots; this bounds everything else, and with
+  // it the Zoho send quota the whole app shares.
+  const limit = await consumeRateLimit(
+    `contact:ip:${clientIp(request.headers)}`,
+    CONTACT_BY_IP
+  );
+  if (limit.blocked) {
+    return NextResponse.json(
+      { ok: false, error: "Too many messages. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   let payload: unknown;
   try {
     payload = await request.json();

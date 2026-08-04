@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getInvoiceStatus } from "@/lib/mono";
 import { applyMonoInvoiceStatus } from "@/lib/paymentActivation";
+import { pruneRateLimits } from "@/lib/rateLimit";
 
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
@@ -91,11 +92,18 @@ export async function GET(req: Request) {
     }
   }
 
+  // Piggybacked on the hourly sweep rather than given its own cron: rate-limit
+  // rows are bounded by distinct keys, so this is housekeeping, not a job.
+  const prunedRateLimits = await pruneRateLimits(
+    new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  );
+
   return NextResponse.json({
     ok: true,
     scanned: stuck.length,
     reconciled,
     stillPending,
     errors,
+    prunedRateLimits,
   });
 }

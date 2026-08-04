@@ -115,6 +115,7 @@
     "and": "og",
     "agreeToTerms": "Jeg godtar {terms} og {privacy}.",
     "acceptTermsError": "Vennligst godta vilkårene for bruk og personvernerklæringen for å fortsette.",
+    "tooManyAttempts": "For mange forsøk. Porten er forseglet en stund — prøv igjen senere.",
     "invalidCredentials": "Ugyldig e-post eller passord",
     "somethingWentWrong": "Noe gikk galt. Vennligst prøv igjen.",
     "channeling": "Kanaliserer...",

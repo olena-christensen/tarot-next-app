@@ -87,7 +87,14 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       });
 
       if (result?.error) {
-        setError(t("invalidCredentials"));
+        // authorize() throws "rate_limited" when the throttle trips; anything
+        // else is a genuine credential failure. Telling them apart matters —
+        // "wrong password" would send someone off resetting a correct one.
+        setError(
+          result.error.includes("rate_limited")
+            ? t("tooManyAttempts")
+            : t("invalidCredentials")
+        );
       } else {
         // Only after a sign-in that actually worked — no point remembering an
         // address that was rejected. Unticking clears it.
