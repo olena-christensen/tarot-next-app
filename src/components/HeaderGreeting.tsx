@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { resolveGreeting } from "@/lib/greetings";
 
 type HeaderGreetingProps = {
@@ -12,7 +11,10 @@ type HeaderGreetingProps = {
 };
 
 /**
- * The rotating signed-in greeting, as a link to the profile.
+ * The rotating signed-in greeting.
+ *
+ * Plain text, not a link: the avatar beside it is the one way into the profile,
+ * so the greeting no longer duplicates that target.
  *
  * Rendered TWICE on purpose: once as a fixed strip above the header (mobile)
  * and once inline in the nav (desktop), with CSS showing exactly one at a time.
@@ -47,9 +49,5 @@ export const HeaderGreeting = ({ className }: HeaderGreetingProps) => {
 
   if (!session || !greeting) return null;
 
-  return (
-    <Link className={className} href="/profile">
-      {greeting}
-    </Link>
-  );
+  return <span className={className}>{greeting}</span>;
 };

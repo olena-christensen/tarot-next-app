@@ -1,9 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { signIn } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+
+/**
+ * Where the last-used address is kept when "remember me" is ticked. The EMAIL
+ * only — a password is never stored client-side; that is the browser password
+ * manager's job, not ours.
+ */
+const REMEMBERED_EMAIL_KEY = "theveil_remembered_email";
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -21,6 +28,17 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptAge, setAcceptAge] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+
+  // Prefill from the last remembered address. Runs after hydration, so the
+  // server and the first client render still agree on an empty field.
+  useEffect(() => {
+    const saved = window.localStorage.getItem(REMEMBERED_EMAIL_KEY);
+    if (saved) {
+      setEmail(saved);
+      setRememberMe(true);
+    }
+  }, []);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -63,12 +81,21 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       const result = await signIn("credentials", {
         email,
         password,
+        // Credentials are transported as strings; auth.ts parses it back.
+        rememberMe: String(rememberMe),
         redirect: false,
       });
 
       if (result?.error) {
         setError(t("invalidCredentials"));
       } else {
+        // Only after a sign-in that actually worked — no point remembering an
+        // address that was rejected. Unticking clears it.
+        if (rememberMe) {
+          window.localStorage.setItem(REMEMBERED_EMAIL_KEY, email);
+        } else {
+          window.localStorage.removeItem(REMEMBERED_EMAIL_KEY);
+        }
         onSuccess?.();
       }
     } catch {
@@ -217,6 +244,22 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           </a>
         )}
       </div>
+
+      {/* Sign-in only. On sign-up the account is brand new, so keeping the
+          session is the sane default and one more checkbox is noise. */}
+      {!isSignUp && (
+        <div className="form__input-block form__input-block--checkbox">
+          <label className="form__checkbox-label">
+            <input
+              type="checkbox"
+              className="form__checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <span>{t("rememberMe")}</span>
+          </label>
+        </div>
+      )}
 
       {isSignUp && (
         <div className="form__input-block form__input-block--checkbox">

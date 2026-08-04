@@ -32,6 +32,71 @@
     }
   }
 
+  // Checkbox rows (terms, 18+, remember me). Until now these were the raw
+  // browser control — a grey system square on a gold-on-black form.
+  .form__input-block--checkbox {
+    gap: 0.75rem;
+  }
+
+  .form__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-faint);
+  }
+
+  .form__checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    // Nudged down to sit on the first line of the label rather than above it.
+    margin: 0.15rem 0 0;
+    // Empty box either way — no fill. Unchecked is a faintly lit outline;
+    // checked brightens that outline and adds a glowing tick.
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(250, 225, 163, 0.12);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 7px rgba(250, 225, 163, 0.25);
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    &:checked {
+      border-color: var(--gold);
+      box-shadow: 0 0 9px rgba(250, 225, 163, 0.45);
+
+      // Tick drawn from two borders — no icon font, no SVG to load. The glow is
+      // a drop-shadow filter so it follows the tick's shape, not its box.
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 4px;
+        height: 8px;
+        margin: auto;
+        border: solid var(--gold);
+        border-width: 0 2px 2px 0;
+        transform: translateY(-1px) rotate(45deg);
+        filter: drop-shadow(0 0 3px rgba(250, 225, 163, 0.8));
+      }
+    }
+  }
+
   .form__input-wrap {
     &--password {
       position: relative;

@@ -56,11 +56,11 @@ export const DeckSelector = ({ inModal = false }: { inModal?: boolean } = {}) =>
             ? "decks__card decks__card--selected"
             : "decks__card";
 
+          // The chosen deck is marked by the gold bead on the card's top border
+          // (see _decks.scss) — the app-wide "this one" marker. The CTA below
+          // still says so in words for anyone who can't see it.
           return (
             <article key={id} className={cardClass}>
-              {isSelected && (
-                <span className="decks__badge">{t("selected")}</span>
-              )}
               <Image
                 className="decks__preview"
                 src={deck.preview}
