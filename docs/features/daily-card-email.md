@@ -71,12 +71,25 @@ minutes apart. That narrows it to what actually differs between the two:
 | Subject | `{card} — your card for today` | a sentence |
 | Landed | Promotions | Primary |
 
-Engagement history does **not** explain it: the daily card went to Promotions on its very
-first send, before any history existed. So the remaining candidates are the image and the
-subject shape. The image is the point of the email and is not being dropped, so the
-subject was rewritten to a sentence (`{card} came up for you today`, and the equivalent in
-each locale) — a `Name — descriptor` subject is a newsletter tell. Whether that alone
-moves it is unproven.
+Engagement history does **not** explain the first one: the daily card went to Promotions on
+its very first send, before any history existed. That left the image and the subject, and
+**both were then tested and both were ruled out**:
+
+- Subject rewritten from `{card} — your card for today` to a sentence
+  (`{card} came up for you today`, and the equivalent in each locale). Still Promotions.
+  The sentence form was kept — it reads better regardless.
+- Card image removed entirely for one send. Still Promotions. The image was restored;
+  removing it cost the design and proved only a negative.
+
+So it is not the markup, not the subject, not the image, and not authentication (the
+reminder shares the sender, domain and DKIM setup). What is left is the nature of the
+thing: **a recurring automated content email is what Gmail means by a newsletter.** It
+announces itself as one — "you asked the Veil to speak daily", with an offer to silence it.
+The reminder reached Primary in part because it was a rare, unseen message type.
+
+**The developer's inbox can no longer measure this.** After a run of near-identical
+messages filed under Promotions, the classification is sticky per sender-and-similarity.
+A clean test needs a Gmail address that has never received one.
 
 Consequences worth holding on to:
 
@@ -88,8 +101,9 @@ Consequences worth holding on to:
   no markup change compensates.
 - `List-Unsubscribe` **stays.** It is a bulk-mail signal, but removing it trades a better
   tab for a worse spam score, which is the wrong way round.
-- **Do not redesign the layout for the tab again.** It has been tried. The subject line and
-  the image are the only variables still in play, and the image stays.
+- **Do not chase the Promotions tab again.** Layout, subject and image have each been
+  tested against production and each ruled out. There is nothing left to change in this
+  template that would move it, and the next person to try will spend the same hours.
 
 ## 2b. The email's shape
 

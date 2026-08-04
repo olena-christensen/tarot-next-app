@@ -135,12 +135,17 @@ for account-level expectations or "does the marketing copy match the code". Trea
 
 Not real work. Consider only after launch, when there's genuinely nothing else on the plate.
 
-- **Get the daily card email into Gmail's Primary tab.** It reliably lands in Promotions.
-  Markup was already tried and ruled out (`docs/features/daily-card-email.md` §2a) — do not
-  redesign the template for this again. What is left: confirm SPF/DKIM/DMARC for
-  `nothingweird.agency` in Zoho; consider asking subscribers to add the sender to their
-  contacts when they switch the toggle on; and accept that placement is per-recipient and
-  learned, so it can be influenced but never guaranteed.
+- **Get the daily card email into Gmail's Primary tab.** It reliably lands in Promotions,
+  while the reading reminder — same sender, domain and DKIM setup — reaches Primary.
+  **Do not retry the template.** Layout, subject line and the card image were each tested
+  against production on 2026-08-03 and each ruled out (`docs/features/daily-card-email.md`
+  §2a); repeating that costs hours and proves nothing. What is genuinely untried:
+  confirm SPF/DKIM/DMARC for `nothingweird.agency` in Zoho; ask subscribers to add the
+  sender to their contacts when they switch the toggle on; and run one send to a Gmail
+  address that has never received these, since the developer's own inbox has filed the
+  stream under Promotions often enough that it can no longer measure a change. Accept that
+  a recurring automated content email is what Gmail means by a newsletter, and placement is
+  per-recipient and learned — it can be influenced, never guaranteed.
 - **Currency presentation.** Prices advertised in EUR (€1/€5/€39) but Mono settles in
   UAH (Ukrainian hryvnia) — EU customers see ~254 UAH on statements for €5. (1) Ask Mono
   whether EUR settlement is possible — a bank question, not code; (2) if not, add a
