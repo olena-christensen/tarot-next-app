@@ -161,6 +161,19 @@
     }
   }
 
+  // Inline action inside an error line (e.g. "send the link again") — a link in
+  // prose, not a second button competing with the plan CTAs.
+  &__inline-link {
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
   &__error {
     margin-top: 20px;
     color: var(--error);

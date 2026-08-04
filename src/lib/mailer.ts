@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { getResetEmailStrings } from "./passwordReset";
+import { getVerifyEmailStrings } from "./emailVerification";
 import {
   renderDailyCardEmail,
   type DailyCardEmailStrings,
@@ -246,4 +247,33 @@ export async function sendOpsAlertEmail(args: {
 }): Promise<boolean> {
   const text = [...args.lines, "", `— ${FROM_NAME}`].join("\n");
   return send(args.subject, args.to, text, { unsubscribe: false });
+}
+
+/**
+ * Email-verification link. Localized to the recipient; no `List-Unsubscribe` —
+ * like the password reset this is account mail, not subscription mail, and you
+ * cannot opt out of being asked to confirm your own address.
+ */
+export async function sendVerificationEmail(args: {
+  to: string;
+  locale: string;
+  link: string;
+}): Promise<boolean> {
+  const t = await getVerifyEmailStrings(args.locale);
+  const text = [
+    t.verifyEmailIntro,
+    "",
+    args.link,
+    "",
+    t.verifyEmailExpiry,
+    t.verifyEmailIgnore,
+    "",
+    `— ${FROM_NAME}`,
+  ].join("\n");
+  const html =
+    `<p>${t.verifyEmailIntro}</p>` +
+    `<p><a href="${args.link}">${t.verifyEmailCta}</a></p>` +
+    `<p>${t.verifyEmailExpiry}</p>` +
+    `<p>${t.verifyEmailIgnore}</p>`;
+  return send(t.verifyEmailSubject, args.to, text, { html, unsubscribe: false });
 }

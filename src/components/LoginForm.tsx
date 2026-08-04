@@ -66,7 +66,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           // acceptAge added alongside acceptTerms — server validates both.
-          body: JSON.stringify({ name, email, password, acceptTerms, acceptAge }),
+          body: JSON.stringify({ name, email, password, acceptTerms, acceptAge, locale }),
         });
 
         const data = await res.json();

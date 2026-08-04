@@ -30,6 +30,10 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   // button and shows a busy label; other buttons stay clickable.
   const [busyPlan, setBusyPlan] = useState<PlanId | null>(null);
   const [error, setError] = useState(false);
+  // Distinct from `error`: an unverified address is a fixable state with its own
+  // action, not a generic failure.
+  const [needsVerify, setNeedsVerify] = useState(false);
+  const [verifySent, setVerifySent] = useState(false);
 
   // The user's active recurring tier (FREE/MONTHLY/YEARLY), or null until the
   // `/api/user/plan` fetch resolves. SINGLE is a consumable credit, never a tier,
@@ -89,6 +93,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     if (busyPlan) return;
     setBusyPlan(planId);
     setError(false);
+    setNeedsVerify(false);
     try {
       const res = await fetch("/api/payments/create-invoice", {
         method: "POST",
@@ -103,6 +108,15 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
         openLogin();
         setBusyPlan(null);
         return;
+      }
+
+      if (res.status === 403) {
+        const data = await res.json().catch(() => ({}));
+        if (data?.error === "email_not_verified") {
+          setNeedsVerify(true);
+          setBusyPlan(null);
+          return;
+        }
       }
 
       if (!res.ok) {
@@ -225,6 +239,30 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
             );
           })}
         </div>
+
+        {needsVerify && (
+          <p className="subscription__error" role="alert">
+            {verifySent ? t("verificationSent") : t("emailNotVerified")}{" "}
+            {!verifySent && (
+              <button
+                type="button"
+                className="subscription__inline-link"
+                onClick={async () => {
+                  await fetch("/api/auth/verify-email", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ locale }),
+                  });
+                  // The endpoint always answers ok — throttled and already-verified
+                  // are indistinguishable on purpose — so this never reports failure.
+                  setVerifySent(true);
+                }}
+              >
+                {t("resendVerification")}
+              </button>
+            )}
+          </p>
+        )}
 
         {error && (
           <p className="subscription__error" role="alert">

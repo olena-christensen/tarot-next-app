@@ -404,6 +404,17 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - Recipient is `ALERT_EMAIL`, falling back to `ZOHO_SMTP_USER`, falling back to `founder@nothingweird.agency` — no new env var is required for it to work.
 - Sent via `sendOpsAlertEmail` with `unsubscribe: false`: this is operator mail, and a `List-Unsubscribe` header on your own outage alerts is an invitation to silence them.
 
+## Email Verification
+
+- **The rule, decided 2026-08-04: an unverified address blocks CHECKOUT ONLY.** Reading tarot doesn't need a reachable address; charging someone €5 whose receipt and password-reset would both bounce does. Nothing else is gated — no wall at the door, which is where verification usually loses people. If you extend this, decide deliberately; don't let it creep.
+- Enforced in `POST /api/payments/create-invoice` (403 `email_not_verified`). **Server-side** — the prompt in `SubscriptionPlans` is cosmetic on top of it.
+- **`EmailVerificationToken`** (migration `add_email_verification_token`) mirrors `PasswordResetToken` exactly: SHA-256 of the token only, single-use, one live token per user, 24h TTL (longer than the reset's 1h — this isn't a security-sensitive grant, and a link that dies before someone checks their inbox just makes support mail). 60s resend throttle. Constants in `src/lib/emailVerification.ts`.
+- **Routes:** `POST /api/auth/verify-email` sends/resends (auth-gated — unlike forgot-password it will NOT accept an arbitrary address, which would be a way to mail anyone from your domain); `PUT` consumes a token. Unknown / expired / already-used all return the same `invalid_token`.
+- **Google users are marked verified automatically** in `events.createUser`. That event only fires for adapter-created users — the credentials path creates its row in `/api/auth/register` — so it's OAuth-only by construction. Google has already proven the address; asking again would be theatre.
+- **Registration sends the link best-effort.** An SMTP blip must not fail the sign-up: the address is unverified either way and the user can resend from the checkout prompt.
+- **`/[locale]/verify-email`** consumes the token in an effect, guarded by a `useRef` — React 18 StrictMode mounts effects twice in dev, and the token is single-use, so the second call would report "invalid" over a success. `noindex`, and `useSearchParams` means it needs the same `<Suspense>` wrapper as the reset page.
+- **Existing accounts were NOT backfilled.** All 5 users at rollout were unverified; grandfathering would assert those addresses are real when nothing has proven it. Renewals are unaffected (the cron charges a stored token and never touches create-invoice), but any existing user buying something must verify first.
+
 ## Rate Limiting
 
 - **`src/lib/rateLimit.ts` + the `RateLimit` model** (migration `add_rate_limit`, 2026-08-04). State lives in Postgres because each request may land on a different serverless instance — an in-process counter resets unpredictably and protects nothing.

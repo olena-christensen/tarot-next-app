@@ -38,6 +38,21 @@ export async function POST(request: Request) {
   }
   const plan = planId as PaidPlanId;
 
+  // Checkout is the ONE thing an unverified address blocks (decided 2026-08-04).
+  // Reading tarot doesn't need a reachable address; charging someone €5 whose
+  // receipt and password-reset would both bounce does. Enforced server-side —
+  // the UI hint is cosmetic on top of this.
+  const verifyCheck = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { emailVerified: true },
+  });
+  if (!verifyCheck?.emailVerified) {
+    return NextResponse.json(
+      { error: "email_not_verified" },
+      { status: 403 }
+    );
+  }
+
   // Route Mono's post-payment redirect to the localized result page. Prefer the
   // locale the client is currently viewing; if it's missing/unrecognized (e.g. a
   // stale bundle), fall back to the user's saved account language — payments are

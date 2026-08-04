@@ -91,9 +91,12 @@ doesn't back. Ordered by severity.
   as bounces. Find the number for the current Zoho plan and write it here. Past it this
   needs a bulk sender (Resend / SES): a different integration and a new cost line, so it
   wants deciding before the list grows, not after.
-- [ ] **No email verification.** `emailVerified` column exists and is never written or
-  read. Anyone can register with an address they don't control. Decide: verify on
-  sign-up, or accept and document why.
+- [x] **Email verification** — built 2026-08-04. Blocks **checkout only**: reading is
+  ungated, buying requires a confirmed address. Google sign-ins are auto-verified. See
+  CLAUDE.md → Email Verification.
+  - [ ] The 5 pre-existing accounts are unverified and will hit the prompt on their next
+    purchase. Deliberate — backfilling would assert those addresses are real. Renewals of
+    the 2 live subscriptions are unaffected.
 - [x] **Rate limiting** — built 2026-08-04. Postgres-backed, two axes (per email and per
   IP), sitting in front of bcrypt in `authorize`; register and contact throttled per IP.
   Fails open on a DB error. See CLAUDE.md → Rate Limiting.
