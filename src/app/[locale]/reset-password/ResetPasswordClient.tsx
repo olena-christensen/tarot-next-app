@@ -91,6 +91,7 @@ function ResetForm() {
               id="reset-password-new"
               className="form__input"
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               minLength={MIN_PASSWORD_LENGTH}
@@ -106,6 +107,7 @@ function ResetForm() {
               id="reset-password-confirm"
               className="form__input"
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={isSaving}

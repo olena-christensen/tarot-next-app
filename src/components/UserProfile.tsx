@@ -715,6 +715,7 @@ export const UserProfile = () => {
                 id="current-password"
                 className="form__input"
                 type="password"
+                autoComplete="current-password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 disabled={passwordSaving}
@@ -729,6 +730,7 @@ export const UserProfile = () => {
               id="new-password"
               className="form__input"
               type="password"
+              autoComplete="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               minLength={8}
@@ -744,6 +746,7 @@ export const UserProfile = () => {
               id="confirm-password"
               className="form__input"
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={passwordSaving}
