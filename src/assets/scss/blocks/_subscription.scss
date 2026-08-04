@@ -161,6 +161,17 @@
     }
   }
 
+  // "Coming soon" beside an advertised-but-unbuilt feature. Quiet on purpose —
+  // it qualifies the claim without turning the card into a disclaimer.
+  &__soon {
+    margin-left: 0.4rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
   // Inline action inside an error line (e.g. "send the link again") — a link in
   // prose, not a second button competing with the plan CTAs.
   &__inline-link {

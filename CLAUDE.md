@@ -394,6 +394,14 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - "Try Again" (`reset()`) sits **beside** the way home, not in front of it: `reset()` fixes a transient failure and does nothing for a deterministic one, so a user must always have the other exit.
 - **Testing one:** add a temporary page that throws, with `export const dynamic = "force-dynamic"`. Without that it throws during static generation and fails the BUILD instead of exercising the boundary.
 
+## Cron jobs: rounds, not pages
+
+- **The two email jobs loop in rounds until the work runs out or a deadline hits**, rather than sending one page and reporting a cursor. Applies to `/api/cron/{daily-card,reading-reminder}`.
+- **The sent-stamp IS the bookmark.** `dailyCardSentOn` / `reminderSentOn` are excluded in the WHERE clause, so each round's query naturally returns the next people who still need mail. There is no cursor to carry and a rerun resumes exactly where the last one stopped.
+- **Why it changed (2026-08-04):** the old shape fetched the first 200 users, mailed them, and returned `nextCursor` — **and nothing ever called back with it.** With 500 subscribers, 201–500 would never have received a single email on any day, while the logs read `sent: 200, failed: 0` every morning. A cap that only reports itself into a response body nobody reads is not a cap, it is silent data loss.
+- **`settled` (an in-memory Set of ids) is load-bearing, not an optimisation.** Anyone looked at but NOT stamped — lapsed, in cooldown, not idle enough, failed send — still matches the query. Without excluding them the loop re-fetches the same rows forever and never reaches anyone behind them. For the reminder job that is most of the list, since the common case is "active reader, no nudge needed".
+- `DEADLINE_MS` is 240s against a 300s `maxDuration`; the headroom covers a send already in flight. A run cut short reports `remaining: true`, which is a *deadline*, not a silent drop.
+
 ## Alerting
 
 - **`src/lib/alert.ts`** — `alertOps(key, subject, lines)` and `alertOnJobFailures(job, result)`. Until 2026-08-04 every scheduled job and the payment webhook only reached `console.error`, so a run that mailed nobody looked exactly like a quiet day unless someone opened the Vercel logs.

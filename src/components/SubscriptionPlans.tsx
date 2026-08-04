@@ -210,11 +210,18 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                   )}
                 </div>
                 <ul className="subscription__features">
-                  {(tPlans.raw(`${plan.id}.features`) as string[]).map((feature) => (
-                    <li key={feature} className="subscription__feature">
-                      {feature}
-                    </li>
-                  ))}
+                  {(tPlans.raw(`${plan.id}.features`) as string[]).map(
+                    (feature, i) => (
+                      <li key={feature} className="subscription__feature">
+                        {feature}
+                        {plan.comingSoonFeatures?.includes(i) && (
+                          <span className="subscription__soon">
+                            {t("comingSoon")}
+                          </span>
+                        )}
+                      </li>
+                    )
+                  )}
                 </ul>
                 <button
                   type="button"
