@@ -12,4 +12,22 @@
     max-width: 32rem;
     color: var(--text-faint);
   }
+
+  // Shared with the error boundary, which reuses this block: retry sits beside
+  // the way home rather than in front of it, because reset() only helps a
+  // transient failure and does nothing for a deterministic one.
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  &__home {
+    // No global anchor reset, so a Link styled as .btn arrives underlined.
+    text-decoration: none;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.8rem;
+  }
 }

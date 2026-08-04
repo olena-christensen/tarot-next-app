@@ -97,10 +97,11 @@ doesn't back. Ordered by severity.
 - [x] **Rate limiting** — built 2026-08-04. Postgres-backed, two axes (per email and per
   IP), sitting in front of bcrypt in `authorize`; register and contact throttled per IP.
   Fails open on a DB error. See CLAUDE.md → Rate Limiting.
-  - [ ] **Still worth adding: a Vercel Firewall rate-limit rule.** Dashboard-only, no code,
-    available on Pro. It stops floods at the edge before they reach a function at all,
-    which the app-level layer cannot do — by the time this code runs you have already paid
-    for the invocation.
+  - [x] **Vercel Firewall rate-limit rules** added 2026-08-04 — sign-in 20/60s, register and
+    contact 10/60s, keyed by IP, all with the **Log** action.
+  - [ ] **Switch those three rules from Log to 429.** They currently record without
+    blocking. Review the Firewall traffic view after a few days of real traffic; if only
+    bots are matching, enforce. If real users are, raise the limits first.
 - [ ] **No error boundaries.** No `error.tsx` / `global-error.tsx` anywhere — an
   unhandled render error drops users on Next's default screen, outside the app's design.
 - [ ] **No alerting.** Both scheduled jobs and the payment webhook only `console.error`.
