@@ -12,9 +12,11 @@
 }
 
 
+// No `cursor: not-allowed`. Every disable on these buttons is transient — a
+// form submitting, a preference saving — and a ban cursor flashing under the
+// pointer reads as rejection. The dim is the only signal needed.
 .btn:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .btn:hover {

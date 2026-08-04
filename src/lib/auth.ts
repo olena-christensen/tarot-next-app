@@ -18,6 +18,17 @@ export const AGE_CONSENT_COOKIE = "tarot_age_consent";
  */
 const USER_VERIFY_INTERVAL_MS = 5 * 60 * 1000;
 
+/**
+ * How long a session survives when "remember me" was NOT ticked.
+ *
+ * `session.maxAge` is static config and cannot vary per sign-in, so the choice
+ * rides on the token instead: an absolute deadline stamped at login and checked
+ * on every read. Past it the jwt callback throws, which is the same mechanism
+ * that already evicts deleted users — NextAuth v4 catches it, logs
+ * JWT_SESSION_ERROR and clears the cookie.
+ */
+const SHORT_SESSION_MS = 12 * 60 * 60 * 1000;
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma as any) as NextAuthOptions["adapter"],
   providers: [
@@ -30,6 +41,7 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        rememberMe: { label: "Remember me", type: "text" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -61,6 +73,8 @@ export const authOptions: NextAuthOptions = {
           preferredLocale: user.preferredLocale,
           dailyCardEmail: user.dailyCardEmail,
           readingReminder: user.readingReminder,
+          // Arrives as a string over the credentials transport.
+          rememberMe: credentials.rememberMe === "true",
         };
       },
     }),
@@ -80,6 +94,20 @@ export const authOptions: NextAuthOptions = {
         token.preferredLocale = user.preferredLocale ?? "en";
         token.dailyCardEmail = user.dailyCardEmail ?? false;
         token.readingReminder = user.readingReminder ?? false;
+        // Google sign-in has no checkbox to carry, so it is always remembered.
+        const remembered = user.rememberMe !== false;
+        token.sessionExpiresAt = remembered
+          ? null
+          : Date.now() + SHORT_SESSION_MS;
+      }
+
+      // Absolute deadline for a not-remembered session. Checked before anything
+      // else so an expired token can't be refreshed back to life.
+      if (
+        typeof token.sessionExpiresAt === "number" &&
+        Date.now() > token.sessionExpiresAt
+      ) {
+        throw new Error("session_expired");
       }
       if (trigger === "update") {
         if (updateData?.name) {
