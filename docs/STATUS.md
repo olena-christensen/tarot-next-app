@@ -42,23 +42,26 @@ feature counts across locales, every marker pointing at a real line, and no inli
 
 Coverage is 100% (verified 2026-07-14, key-by-key against English — 0 missing / 0 empty /
 0 untranslated across all locales × namespaces; remaining English-identical keys are
-intentional brand/proper names). What's left is how it *reads*:
+intentional brand/proper names). What's left is how it *reads*.
 
-- [ ] **Russian** — rough app-wide. Formal "вы" in all UI, gender-neutral readings (no
-  gendered past-tense with "ты"), "таролог" never "гадалка", brand = "Завеса". Reader
-  voice lines may use "ты" in-character. Full rules: `CLAUDE.md` i18n section.
+**Every non-English string in this app was written by an agent, not a native speaker** —
+the original copy, the 2026-08-02 reading-history and password-reset strings, and the
+2026-08-04 batch (profile labels, payment emails, register/profile errors). There is no
+point tracking those batches separately: a language pass means reading that locale end to
+end, which covers all of them. One item per language, and that is the whole list.
+
+**Give the email copy the closest look.** In-app text can be corrected and the next visitor
+sees the fix; a sent email cannot. Eight kinds now go out — password reset, verification,
+daily card, reading reminder, renewal receipt, payment failed, subscription ended, and the
+operator alerts (English on purpose, nobody else reads them).
+
+- [ ] **Russian** — roughest. Formal "вы" in all UI, gender-neutral readings (no gendered
+  past-tense with "ты"), "таролог" never "гадалка", brand = "Завеса". Reader voice lines may
+  use "ты" in-character. Full rules: `CLAUDE.md` i18n section.
 - [ ] **Ukrainian** — full naturalness pass (brand = "Завіса", "таролог").
-- [ ] **Turkish** — full pass (machine-assisted, needs a native eye).
+- [ ] **Turkish** — full pass. The profile page title is the one I would question first:
+  «Peçe'nin Sizin Hakkınızda Bildikleri» is grammatical but heavy for a heading.
 - [ ] **Norwegian** — light sanity pass.
-- [ ] **Reading-history + password-reset strings (2026-08-02)** — written translated (not
-  placeholders) but want the same native eye; especially the reset **email** copy, the
-  only user-facing text sent outside the app.
-- [ ] **Profile page labels + avatar strings — still English placeholders in no/ru/uk/tr.**
-  16 `ui` keys (`profileTitle`, `profileName`, `profileEmail`, `profilePlan`,
-  `profileCredits`, `profileDeck`, `profileReader`, `profileLanguage`, `profilePassword`,
-  `profileBreakSeal`, `profileForgeSeal`, `profileAvatar`, `profilePictureAria`,
-  `avatarTooLarge`, `avatarBadType`, `avatarUploadFailed`). Voice: mystic / ironic /
-  cult-like, never self-describing. Flagged `[TRANSLATE]` in `translation-review/*.csv`.
 
 </details>
 
@@ -84,11 +87,11 @@ intentional brand/proper names). What's left is how it *reads*:
 ---
 
 <details open>
-<summary><b>🟡 Account & platform gaps (audit 2026-08-02)</b></summary>
+<summary><b>🟡 Account & platform — open follow-ups</b></summary>
 
-Found by auditing for the class of hole that let "forgot your password" ship un-planned:
-things a user reasonably expects from an account, and claims made in copy that the code
-doesn't back. Ordered by severity.
+What is left of the 2026-08-02 audit. **The audit itself is closed** — every gap it found
+was built on 2026-08-04 (see Done → Hardening pass). These four are the loose ends it left
+behind, and **none of them is code**: three are a browser tab and one is a number to look up.
 
 - [ ] **Zoho's daily send cap is the ceiling on the daily card email.** Every message the
   app sends goes through one Zoho mailbox over SMTP, and Zoho caps messages per day per
@@ -97,61 +100,25 @@ doesn't back. Ordered by severity.
   as bounces. Find the number for the current Zoho plan and write it here. Past it this
   needs a bulk sender (Resend / SES): a different integration and a new cost line, so it
   wants deciding before the list grows, not after.
-- [x] **Email verification** — built 2026-08-04. Blocks **checkout only**: reading is
-  ungated, buying requires a confirmed address. Google sign-ins are auto-verified. See
-  CLAUDE.md → Email Verification.
-  - [ ] The 5 pre-existing accounts are unverified and will hit the prompt on their next
-    purchase. Deliberate — backfilling would assert those addresses are real. Renewals of
-    the 2 live subscriptions are unaffected.
-- [x] **Rate limiting** — built 2026-08-04. Postgres-backed, two axes (per email and per
-  IP), sitting in front of bcrypt in `authorize`; register and contact throttled per IP.
-  Fails open on a DB error. See CLAUDE.md → Rate Limiting.
-  - [x] **Vercel Firewall rate-limit rules** added 2026-08-04 — sign-in 20/60s, register and
-    contact 10/60s, keyed by IP, all with the **Log** action.
-  - [ ] **Switch those three rules from Log to 429.** They currently record without
-    blocking. Review the Firewall traffic view after a few days of real traffic; if only
-    bots are matching, enforce. If real users are, raise the limits first.
-- [x] **Error boundaries** — built 2026-08-04, verified against a deliberately thrown error.
-  `[locale]/error.tsx` (themed, translated) and `global-error.tsx` (inline-styled,
-  English-only by necessity). See CLAUDE.md → Error Boundaries.
-- [x] **Alerting** — built 2026-08-04. All four crons and the payment webhook email the
-  operator on failure, throttled to one per hour per alert key. See CLAUDE.md → Alerting.
-  - [x] **Dead-man's switch** — built 2026-08-04. Jobs stamp a `JobHeartbeat`; the hourly
-    reconcile sweep alerts on anything that has gone quiet. See CLAUDE.md.
-  - [ ] **The watchman itself is unwatched.** If reconcile stops running, nothing notices.
-    Closing that needs an external uptime monitor pinging the app — a signup, not code.
-- [x] **Data portability** — built 2026-08-04. `GET /api/user/export` returns the user's
-  data as a downloaded JSON file, linked from the profile above the danger zone.
-  Credentials excluded and listed in the file's `_omitted` array. See CLAUDE.md.
+- [ ] **The 5 pre-existing accounts are unverified** and will hit the email-verification
+  prompt on their next purchase. Deliberate — backfilling would assert those addresses are
+  real when nothing has proven it. Renewals of the 2 live subscriptions are unaffected.
+- [ ] **Switch the three Firewall rules from Log to 429.** They record without blocking
+  today. Review the Firewall traffic view after a few days of real traffic: if only bots
+  are matching, enforce; if real users are, raise the limits first.
+- [ ] **The watchman itself is unwatched.** The heartbeat check rides on the hourly
+  reconcile sweep, so if reconcile stops running nothing notices. Closing that needs an
+  external uptime monitor pinging the app — a signup, not code.
 
-**Process note:** the old go-live doc grew out of a payments checklist and had no section
-for account-level expectations or "does the marketing copy match the code". Treat
-`plans.json` and the legal pages as **contracts to audit against the code** before launch.
+**Process note that earned its keep:** this section exists because the original go-live doc
+grew out of a payments checklist and had no room for "what does a user reasonably expect
+from an account" or "does the marketing copy match the code". Both questions found real
+holes. Treat `plans.json` and the legal pages as **contracts to audit against the code**.
 
-</details>
-
----
-
-<details>
-<summary><b>🎨 UI / UX — open</b></summary>
-
-Re-checked against the code 2026-08-04.
-
-- [x] **Header greeting unreadable on mobile** — fixed 2026-08-04. It is now a fixed strip
-  above the header below `md`, wrapping freely instead of being ellipsed to a few words by
-  a rule written for long names. See CLAUDE.md → Header.
-- [x] **Nine raw `@media` blocks converted** to `respond-above` 2026-08-04 — `_container`,
-  `_btn`, `_main-footer`, `_login`, `_main-header`, `_main-menu`, `_modal`, `_offer-block`,
-  `_tarot`. Zero raw queries remain outside `@media print` and `prefers-reduced-motion`.
-  Note this is not a pure no-op: the map is in `em`, so the breakpoints now respect a
-  reader's browser font size instead of being pinned to pixels. Identical at default
-  settings, which is why the compiled diff shows only the query values changing.
-- [x] **`.main-menu__welcome` deleted** — dead since nothing in `src/` referenced it.
-
-**Removed as stale (do not re-add):** an item to "decide on remaining `respond-below(sm)`
-overrides", which CLAUDE.md already decided — they are mobile bases with a shrink override,
-not desktop-first, and are to be left alone unless someone does a deliberate
-single-direction sweep. Its file list was wrong too (it omitted `_offer-block`).
+**How to keep this file usable:** an item is either open or it is in the archive. Do not
+leave `[x]` lines in the sections above — a checklist that carries its own history makes
+you read past finished work to find what is left, which is exactly what happened here by
+2026-08-04.
 
 </details>
 
@@ -329,6 +296,55 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
   - Both filesystem traps passed locally and failed only in production. Anything that
     touches disk in a route needs checking against a real deployment, not just dev.
 - `history` translation namespace in all 5 locales, `seo.history`, fully translated.
+
+### Hardening pass (2026-08-04) — the platform-gap audit, closed
+
+Every item from the 2026-08-02 audit, plus what each surfaced. Detail lives in `CLAUDE.md`
+under the matching heading; this is the index.
+
+- **Rate limiting** — Postgres-backed, two axes (per email, per IP), in front of bcrypt in
+  `authorize`; register and contact throttled per IP. Fails open on a DB error. Verified on
+  production: attempts 1–10 rejected normally, 11–12 blocked, and the count stopped rising
+  while blocked. Vercel Firewall rules added alongside (Log action).
+- **Error boundaries** — `[locale]/error.tsx` (themed, translated) and `global-error.tsx`
+  (inline-styled, English-only by necessity). Verified against a deliberately thrown error.
+- **Alerting** — all four crons and the payment webhook mail the operator on failure,
+  throttled to one per hour per key.
+- **Dead-man's switch** — jobs stamp a `JobHeartbeat`; the hourly reconcile sweep alerts on
+  anything that has gone quiet, checking BEFORE stamping its own so it can report its own
+  outage.
+- **Email verification** — blocks checkout only. Google sign-ins auto-verified.
+- **Data portability** — `GET /api/user/export`, credentials excluded and listed in the
+  file's own `_omitted` array.
+- **Cron paging** — the two email jobs now loop in rounds until the work runs out. The old
+  shape mailed the first 200 and returned a cursor **nobody ever called back with**, so
+  subscriber 201 onward would never have received anything, on any day, while the logs read
+  `sent: 200, failed: 0`.
+- **Hardcoded English swept** — register and profile routes return machine codes instead of
+  prose (the sign-up form rendered the server's English verbatim), and the three payment
+  emails (receipt, dunning, subscription-ended) are localized. Dunning mattered most: it is
+  the message telling someone they are about to lose access.
+
+### UI / UX (2026-08-04)
+
+- **Header greeting** — a fixed strip above the header below `md`, wrapping freely. It had
+  been ellipsed to a few unreadable words by a `max-width: 45vw` rule written for long
+  *names*, applied to whole sentences.
+- **Profile rebuilt** — pencils gone, each row's value is its own control; email masked
+  behind an eye toggle; the two email preferences became a `Switch` component; "Back to the
+  Sanctum" added beside sign-out.
+- **Pricing cards** — cancel/resume moved onto the active tier's card; `ui.comingSoon`
+  rendered from `Plan.comingSoonFeatures` instead of the phrase being pasted into every
+  locale.
+- **Deck screen** — gold bead instead of a "SELECTED" pill, previews sized by height (three
+  different aspect ratios were guaranteeing three different heights), faint gold card wash
+  so each deck's own dark border has something to sit against.
+- **Checkboxes styled** — there were no checkbox styles at all; terms, 18+ and remember-me
+  were raw system controls on a gold-on-black form.
+- **`cursor: not-allowed` removed** from transient disables — it flashed a ban icon on every
+  click of a form that was succeeding.
+- **SCSS breakpoints** — nine raw `@media` blocks converted to `respond-above`; zero remain
+  outside `@media print` and `prefers-reduced-motion`. `.main-menu__welcome` deleted as dead.
 
 ### Account features
 

@@ -14,14 +14,14 @@ export async function PATCH(request: Request) {
 
   if (typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json(
-      { error: "Name is required" },
+      { error: "name_required" },
       { status: 400 }
     );
   }
 
   if (name.trim().length > 100) {
     return NextResponse.json(
-      { error: "Name must be 100 characters or less" },
+      { error: "name_too_long" },
       { status: 400 }
     );
   }

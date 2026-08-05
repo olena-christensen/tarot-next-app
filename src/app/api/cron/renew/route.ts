@@ -25,10 +25,16 @@ async function downgradeToFree(
   });
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { email: true },
+    // Their language, not the server's — this is the last thing they hear from
+    // the app before losing access.
+    select: { email: true, preferredLocale: true },
   });
   if (user?.email) {
-    await sendSubscriptionEndedEmail({ to: user.email, reason });
+    await sendSubscriptionEndedEmail({
+      to: user.email,
+      locale: user.preferredLocale,
+      reason,
+    });
   }
 }
 

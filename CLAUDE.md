@@ -72,6 +72,8 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 - When the user voices a concern about a choice already made ("I like X but worried about Y"), answer Y directly. Don't generate new alternatives unless asked.
 
 **Communication.**
+- **ACTION FIRST, one line. Everything else only if asked.** When the user needs to do something, the whole reply is that instruction. `Vercel → Logs → search for create-invoice → paste me the error line.` — not four paragraphs of diagnosis with the instruction buried in the middle. Diagnosis, test output she did not request, quoted code, "my first suspect is…", and "two more things to check while you're there" are the agent's working notes, not her instructions. Keep them in your head; offer them in one short sentence at most, and only when they change what she does next.
+- **One ask per reply.** Do not stack a primary action plus optional extras plus an offer — she then has to work out which one is the real one. If a second thing genuinely matters, say it after she has done the first.
 - Direct and dense. Cut filler, hedging, throat-clearing, and narration of routine steps or things an experienced dev already knows (how to commit, basic tooling).
 - **NO standing status recaps** — say a thing once; don't re-emit "what's done / uncommitted / left" every turn.
 - Copy-paste content goes in a fenced code block, **never** a `>` blockquote (the `>` chars and border get copied).

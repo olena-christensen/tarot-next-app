@@ -20,6 +20,33 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const t = useTranslations("ui");
   const tDisc = useTranslations("disclaimers");
   const locale = useLocale();
+  /**
+   * The register route answers with machine codes, never prose — an English
+   * sentence from the server would land untranslated on the sign-up form, which
+   * is exactly where a stuck user is least able to cope with it. An unknown code
+   * falls back to the generic message rather than rendering the raw string.
+   */
+  const registerError = (code: unknown): string => {
+    switch (code) {
+      case "rate_limited":
+        return t("tooManyAttempts");
+      case "missing_credentials":
+        return t("invalidCredentials");
+      case "age_required":
+        return tDisc("ageRequiredError");
+      case "terms_required":
+        return t("acceptTermsError");
+      case "weak_password":
+        return t("passwordMinLength");
+      case "invalid_email":
+        return t("invalidEmailFormat");
+      case "email_taken":
+        return t("emailTaken");
+      default:
+        return t("somethingWentWrong");
+    }
+  };
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgot, setIsForgot] = useState(false);
   const [resetSent, setResetSent] = useState(false);
@@ -72,7 +99,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         const data = await res.json();
 
         if (!res.ok) {
-          setError(data.error);
+          setError(registerError(data.error));
           setIsLoading(false);
           return;
         }

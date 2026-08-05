@@ -142,8 +142,16 @@ export const UserProfile = () => {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || t("failedToUpdateName"));
+        const data = await res.json().catch(() => ({}));
+        // Codes, not prose — the old `data.error || t(...)` let the server's
+        // English win over the translated fallback whenever it was present.
+        setError(
+          data.error === "name_required"
+            ? t("nameCannotBeEmpty")
+            : data.error === "name_too_long"
+              ? t("nameTooLong")
+              : t("failedToUpdateName")
+        );
         return;
       }
 
@@ -462,16 +470,32 @@ export const UserProfile = () => {
               {t("beginInitiation")}
             </button>
           ) : (
-            // The tier name itself is the way to the pricing modal — no separate
-            // pencil, no expiry date, and cancelling lives on that modal's card.
-            <button
-              type="button"
-              className="user-profile__value-btn"
-              onClick={() => setIsSubscriptionOpen(true)}
-              aria-label={t("currentPlan")}
-            >
-              {planId ? tPlans(`${planId}.name`) : "—"}
-            </button>
+            <>
+              {/* The tier name opens the pricing modal — no pencil, no expiry
+                  date, and cancelling lives on that modal's card. */}
+              <button
+                type="button"
+                className="user-profile__value-btn"
+                onClick={() => setIsSubscriptionOpen(true)}
+                aria-label={t("currentPlan")}
+              >
+                {planId ? tPlans(`${planId}.name`) : "—"}
+              </button>
+              {/* Subscribers had NO visible route to the plans: every other
+                  paywall CTA is free-tier only, and the tier name is styled to
+                  look like a plain value. Neutral wording on purpose — "upgrade"
+                  is wrong for someone already on Adept, who may want to move the
+                  other way or just look. */}
+              {isSubscriber && (
+                <button
+                  type="button"
+                  className="user-profile__row-cta"
+                  onClick={() => setIsSubscriptionOpen(true)}
+                >
+                  {t("changeStation")}
+                </button>
+              )}
+            </>
           )}
         </span>
       </div>
