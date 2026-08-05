@@ -76,12 +76,27 @@ export async function POST(request: Request) {
   // Unique reference to correlate the webhook callback with this user + plan.
   const reference = `${userId}:${plan}:${Date.now()}`;
 
+  const lineItem = `The Veil — ${plan} subscription`;
+
   const payload: Record<string, unknown> = {
     amount,
     ccy: CCY_EUR,
     merchantPaymInfo: {
       reference,
-      destination: `The Veil — ${plan} subscription`,
+      destination: lineItem,
+      // Mandatory since mono made fiscalization a requirement — omitting it is
+      // rejected with INVALID_MERCHANT_PAYM_INFO / "'basketOrder' cannot be
+      // empty" (2026-08-05). One line per invoice: `sum` is the whole amount in
+      // minor units and must match `amount`, or mono refuses the invoice.
+      basketOrder: [
+        {
+          name: lineItem,
+          qty: 1,
+          sum: amount,
+          unit: "шт.",
+          code: plan,
+        },
+      ],
     },
     redirectUrl: `${appUrl}/${resultLocale}/payment/result`,
     webHookUrl: `${appUrl}/api/payments/webhook`,
