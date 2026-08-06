@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { tarots } from "@/data";
-import { CARD_MEANINGS } from "./cardMeanings";
+import { CARD_MEANINGS, buildCardSearchIndex, matchCards } from "./cardMeanings";
 
 /**
  * These slugs are indexed URLs. A slug that changes is a 404 and a lost ranking,
@@ -157,5 +157,61 @@ describe("card meaning content", () => {
     for (const card of CARD_MEANINGS) {
       expect(card.suit, card.slug).toBe(suitById.get(card.id));
     }
+  });
+});
+
+describe("card search", () => {
+  const index = buildCardSearchIndex();
+  const slugs = (query: string) => matchCards(index, query).map((c) => c.slug);
+
+  it("indexes every card once", () => {
+    expect(index).toHaveLength(78);
+  });
+
+  it("matches the displayed name", () => {
+    expect(slugs("queen of swords")).toEqual(["queen-of-swords"]);
+  });
+
+  // The app calls the suit Chalices; "cup" is what people type.
+  it("finds Chalices by 'cup' and 'cups'", () => {
+    expect(slugs("cup")).toHaveLength(14);
+    expect(slugs("cups")).toHaveLength(14);
+    expect(slugs("two of cups")).toEqual(["two-of-cups"]);
+    expect(matchCards(index, "cup").every((c) => c.slug.endsWith("-of-cups"))).toBe(true);
+  });
+
+  it("accepts the other common suit names", () => {
+    expect(slugs("coins")).toHaveLength(14);
+    expect(slugs("disks")).toHaveLength(14);
+    expect(slugs("staves")).toHaveLength(14);
+    expect(slugs("blades")).toHaveLength(14);
+  });
+
+  it("accepts numerals for the pips", () => {
+    expect(slugs("2 of cups")).toEqual(["two-of-cups"]);
+    expect(slugs("10 pentacles")).toEqual(["ten-of-pentacles"]);
+  });
+
+  it("narrows as tokens are added rather than widening", () => {
+    expect(slugs("queen").length).toBe(4);
+    expect(slugs("queen sword")).toEqual(["queen-of-swords"]);
+  });
+
+  it("ignores case, punctuation and extra spacing", () => {
+    expect(slugs("  QUEEN,  of   SWORDS!  ")).toEqual(["queen-of-swords"]);
+  });
+
+  it("finds a major by a bare word", () => {
+    expect(slugs("fool")).toEqual(["the-fool"]);
+    expect(slugs("major arcana")).toHaveLength(22);
+  });
+
+  it("returns nothing for an empty query, so the caller can show the full index", () => {
+    expect(matchCards(index, "")).toEqual([]);
+    expect(matchCards(index, "   ")).toEqual([]);
+  });
+
+  it("returns nothing for a non-card", () => {
+    expect(slugs("zebra")).toEqual([]);
   });
 });

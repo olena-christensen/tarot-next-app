@@ -353,6 +353,15 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
   Deliberately not a `useState` accordion: no client boundary, keyboard-accessible for free, and
   the 78 links stay in the server-rendered HTML while closed so a crawler still walks them.
   The default disclosure triangle is killed with `list-style: none` + `::-webkit-details-marker`.
+- **Search filters the index in place** (`CardSearch.tsx`). The grouped accordions are passed in
+  as server `children` and rendered whenever the box is empty, so all 78 links stay in the static
+  HTML for crawlers; typing swaps them for a flat result grid. The client receives a **slim index**
+  from `buildCardSearchIndex()` — slug, title, image, and a flattened `terms` string — never
+  `CARD_MEANINGS` itself, which carries four paragraphs per card.
+- **`terms` is where the vocabulary gap is closed.** The app names the suit *Chalices*, but people
+  type *cups* — likewise coins/disks for pentacles, staves/rods for wands, blades for swords, and
+  bare numerals ("2 of cups"). `matchCards` is pure and tested; every token must match, so adding
+  words narrows rather than widens.
 - **`<Image>` needs `sizes` whenever CSS resizes it, or the art renders soft.** Card art is
   854×1500, so resolution was never the problem — the first version declared `width={120}` with
   CSS `width: 100%`, and Next then generated only 128px and 256px candidates. A phone at DPR 2–3

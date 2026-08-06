@@ -6,7 +6,8 @@ import { PageShell } from "@/components/PageShell";
 import { routing } from "@/i18n/routing";
 import { tarots } from "@/data";
 import { DEFAULT_DECK, getCardImagePath } from "@/lib/decks";
-import { CARD_GROUPS, PAPUS_SOURCE } from "@/lib/cardMeanings";
+import { CARD_GROUPS, PAPUS_SOURCE, buildCardSearchIndex } from "@/lib/cardMeanings";
+import { CardSearch } from "@/components/CardSearch";
 import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 import {
   CARD_CONTENT_LOCALES,
@@ -73,6 +74,13 @@ export default async function CardsIndexPage({ params }: Props) {
   unstable_setRequestLocale(params.locale);
   const t = await getTranslations({ locale: params.locale, namespace: "cardMeanings" });
 
+  // Built here so the client gets slugs, titles and search words — not the four
+  // paragraphs of prose each card carries.
+  const searchIndex = buildCardSearchIndex().map((entry) => ({
+    ...entry,
+    image: getCardImagePath(DEFAULT_DECK, CARD_IMAGES[entry.id]),
+  }));
+
   return (
     <PageShell>
       <main className="cards-index container">
@@ -81,14 +89,15 @@ export default async function CardsIndexPage({ params }: Props) {
           <p className="cards-index__note">{t("englishOnly")}</p>
         )}
 
-        {/*
-          <details>, not a client component: the group collapses with no JS, it
-          is keyboard-accessible for free, and — the reason that matters here —
-          the links stay in the server-rendered HTML while closed, so a crawler
-          still walks all 78. A useState accordion would ship a client boundary
-          to achieve exactly the same thing.
-        */}
-        {CARD_GROUPS.map(({ key, cards }) => (
+        <CardSearch index={searchIndex}>
+          {/*
+            <details>, not a client component: the group collapses with no JS, it
+            is keyboard-accessible for free, and — the reason that matters here —
+            the links stay in the server-rendered HTML while closed, so a crawler
+            still walks all 78. A useState accordion would ship a client boundary
+            to achieve exactly the same thing.
+          */}
+          {CARD_GROUPS.map(({ key, cards }) => (
           <details className="cards-index__group" key={key}>
             <summary className="cards-index__group-summary">
               <h2 className="cards-index__group-title">{t(GROUP_LABEL_KEYS[key])}</h2>
@@ -115,8 +124,9 @@ export default async function CardsIndexPage({ params }: Props) {
                 </li>
               ))}
             </ul>
-          </details>
-        ))}
+            </details>
+          ))}
+        </CardSearch>
 
         <aside className="cards-index__source">
           <h2 className="cards-index__source-title">{t("sourceHeading")}</h2>
