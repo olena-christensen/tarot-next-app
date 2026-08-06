@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { HeaderGreeting } from "@/components/HeaderGreeting";
+import SearchIcon from "@/assets/svg/search.svg";
 
 type MainMenuProps = {
     onOpenLogin: () => void;
@@ -18,8 +19,14 @@ export default function MainMenu({ onOpenLogin }: MainMenuProps) {
         <nav className="main-menu">
             <ul className="main-menu__list">
                 <li className="main-menu__item">
-                    <Link className="btn main-menu__link" href="/cards">
-                        {tCards("navLabel")}
+                    {/* Icon only — the label is the accessible name, not visible text. */}
+                    <Link
+                        className="main-menu__icon-link"
+                        href="/cards"
+                        aria-label={tCards("navLabel")}
+                        title={tCards("navLabel")}
+                    >
+                        <SearchIcon aria-hidden="true" />
                     </Link>
                 </li>
                 {status === "loading" ? null : session ? (

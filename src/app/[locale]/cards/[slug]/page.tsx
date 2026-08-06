@@ -132,12 +132,6 @@ export default async function CardPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="card-page container">
-        <nav className="card-page__crumbs" aria-label={t("indexTitle")}>
-          <Link className="card-page__crumb" href="/cards">
-            {t("backToIndex")}
-          </Link>
-        </nav>
-
         <article className="card-page__panel">
           <header className="card-page__header">
             <Image
@@ -221,9 +215,16 @@ export default async function CardPage({ params }: Props) {
               <span className="card-page__pager-name">{previous.title}</span>
             </Link>
           ) : (
+            // Placeholder so the middle link stays centred on the first and
+            // last cards, where one of the two arrows is missing.
             <span />
           )}
-          {next && (
+
+          <Link className="card-page__pager-all" href="/cards">
+            {t("backToIndex")}
+          </Link>
+
+          {next ? (
             <Link
               className="card-page__pager-link card-page__pager-link--next"
               href={`/cards/${next.slug}`}
@@ -231,6 +232,8 @@ export default async function CardPage({ params }: Props) {
               <span className="card-page__pager-label">{t("nextCard")}</span>
               <span className="card-page__pager-name">{next.title}</span>
             </Link>
+          ) : (
+            <span />
           )}
         </nav>
       </main>

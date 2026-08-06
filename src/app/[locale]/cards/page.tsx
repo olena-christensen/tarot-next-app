@@ -129,7 +129,6 @@ export default async function CardsIndexPage({ params }: Props) {
         </CardSearch>
 
         <aside className="cards-index__source">
-          <h2 className="cards-index__source-title">{t("sourceHeading")}</h2>
           <p className="cards-index__source-lead">{t("sourceLead")}</p>
           <p className="cards-index__citation">{PAPUS_SOURCE.citation}</p>
         </aside>

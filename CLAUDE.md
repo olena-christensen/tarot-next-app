@@ -95,6 +95,8 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 
 **CSS / UI.**
 - Modern shorthand (`inset: 0`, `gap`). Keep component styles self-contained — never leak a parent's layout concerns into a child.
+- **Padding is written as `padding-block` / `padding-inline`, always. The `padding` shorthand is banned** — no `padding: 100px 0 60px`, no `padding: 20px`. Two reasons it is not a style preference: a shorthand silently sets the sides it doesn't mention, so `padding: 140px 0 60px` on a `.container` child wipes that container's inline gutter and the element goes flush to the screen edge on mobile (this happened twice in `_cards.scss`); and the logical properties say which axis is meant instead of leaving it to be counted out of a four-value list. Same reasoning applies to `margin` — prefer `margin-block` / `margin-inline` in new code.
+- **Overriding `.container`'s `padding-inline` means restoring it at `lg`.** `.container` gives `1rem`, widening to `3rem` at `lg`; a block that sets its own inline padding wins at every width, so it must re-state `3rem` inside `respond-above(lg)` or the desktop gutter quietly disappears.
 - Reusable components carry only intrinsic styles (padding/font/color/border) — **NEVER** layout (`flex`, `width`, `min-width`, `text-align`); layout belongs to the parent that owns the context.
 - New buttons/UI match sibling styling — no "simplified/subtle" variants unless asked.
 - Don't set CSS variable defaults that React always overrides inline (dead code).
