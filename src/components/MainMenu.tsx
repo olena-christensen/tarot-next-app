@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { HeaderGreeting } from "@/components/HeaderGreeting";
 
 type MainMenuProps = {
@@ -11,10 +12,16 @@ type MainMenuProps = {
 export default function MainMenu({ onOpenLogin }: MainMenuProps) {
     const { data: session, status } = useSession();
     const t = useTranslations("ui");
+    const tCards = useTranslations("cardMeanings");
 
     return (
         <nav className="main-menu">
             <ul className="main-menu__list">
+                <li className="main-menu__item">
+                    <Link className="btn main-menu__link" href="/cards">
+                        {tCards("navLabel")}
+                    </Link>
+                </li>
                 {status === "loading" ? null : session ? (
                     // Desktop placement. The LI is what hides below `md` — a class
                     // on the link itself loses to `.main-menu .main-menu__link` on

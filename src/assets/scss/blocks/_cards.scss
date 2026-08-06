@@ -1,0 +1,436 @@
+// Public card-meanings section: the index of all 78 and the per-card page.
+// Mobile-first — base styles are the phone layout, `respond-above` scales up.
+
+.cards-index {
+  // `.page-shell` pins the footer with `margin-top: auto`, so with every group
+  // collapsed the page is short and the source block would float up with the
+  // content. Growing to fill the shell lets the block claim the slack instead
+  // and sit against the footer.
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  // Longhands, not the shorthand: a shorthand here would wipe out `.container`'s
+  // own inline padding at every width.
+  padding-top: 100px;
+  padding-bottom: 0;
+  padding-inline: 20px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  @include respond-above(md) {
+    padding-bottom: 60px;
+  }
+
+  @include respond-above(lg) {
+    // Back in step with `.container`'s wide gutter, which the line above overrode.
+    padding-inline: 3rem;
+  }
+
+  &__title {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 12px;
+
+    @include respond-above(md) {
+      margin-top: 100px;
+    }
+  }
+
+  &__note {
+    margin: 0 auto 32px;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+
+  &__group {
+    margin-top: 32px;
+
+    // `margin-top: auto` on the source block collapses to 0 once the groups are
+    // open and fill the page, so the gap above it lives here.
+    &:last-of-type {
+      margin-bottom: 56px;
+    }
+  }
+
+  &__group-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    // The default disclosure triangle sits before the content and can't be
+    // styled; the chevron on the right replaces it.
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover .cards-index__group-title,
+    &:focus-visible .cards-index__group-title {
+      color: var(--gold);
+    }
+  }
+
+  &__group-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+    transition: color 0.25s ease;
+  }
+
+  &__chevron {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    color: var(--primary);
+    transition: transform 0.25s ease;
+  }
+
+  &__group[open] &__chevron {
+    transform: rotate(180deg);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 14px;
+    margin: 0;
+    padding: 16px 0 0;
+    list-style: none;
+
+    @include respond-above(sm) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include respond-above(md) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px 20px;
+    }
+
+    @include respond-above(lg) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  &__item {
+    display: flex;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    // No global anchor reset in this project — a link styled as a tile arrives
+    // underlined unless it says otherwise.
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.25s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: auto;
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+
+  &__name {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__source {
+    max-width: 46rem;
+    // Top `auto` takes the leftover height; left/right `auto` keeps it centred.
+    margin: auto auto 0;
+    padding: 20px;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background: rgba(9, 9, 9, 0.6);
+  }
+
+  &__source-title {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  &__source-lead {
+    margin: 0 0 8px;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  &__citation {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-faint);
+  }
+}
+
+.card-page {
+  padding: 100px 0 60px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  &__crumbs {
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  &__crumb {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-faint);
+    transition: color 0.25s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  &__panel {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 24px;
+    background: rgba(9, 9, 9, 0.6);
+    border: var(--border);
+    border-radius: var(--border-radius);
+
+    @include respond-above(md) {
+      padding: 36px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: var(--border);
+
+    @include respond-above(md) {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 28px;
+    }
+  }
+
+  &__img {
+    width: 180px;
+    height: auto;
+    flex: 0 0 auto;
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+
+    @include respond-above(md) {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__kicker {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  &__share {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color 0.25s ease,
+      border-color 0.25s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+  }
+
+  &__section {
+    margin-top: 28px;
+
+    &--derivation {
+      padding: 16px;
+      border-left: 2px solid var(--primary);
+      background: rgba(9, 9, 9, 0.5);
+    }
+  }
+
+  &__section-title {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  &__text {
+    margin: 0;
+    line-height: 1.8;
+    color: var(--text-soft);
+  }
+
+  &__correspondences {
+    margin: 0;
+  }
+
+  &__correspondence {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: var(--border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    @include respond-above(md) {
+      flex-direction: row;
+      gap: 16px;
+    }
+  }
+
+  &__correspondence-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+
+    @include respond-above(md) {
+      flex: 0 0 11rem;
+    }
+  }
+
+  &__correspondence-value {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  &__source {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: var(--border);
+  }
+
+  &__source-title {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  &__source-lead {
+    margin: 0 0 8px;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  &__citation {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-faint);
+  }
+
+  &__pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    max-width: 46rem;
+    margin: 28px auto 0;
+  }
+
+  &__pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.25s ease;
+
+    &--next {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  &__pager-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  &__pager-name {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cardMeanings": {
+    "navLabel": "Kortbetydninger",
+    "metaTitle": "Tarotkortenes betydning — alle 78 kort",
+    "metaDescription": "Betydningen av alle 78 tarotkort, oppreist og omvendt, med korrespondanser, hentet fra Papus' The Tarot of the Bohemians (1889).",
+    "indexTitle": "De syttiåtte",
+    "groupMajor": "Store arkana",
+    "groupWands": "Staver",
+    "groupChalices": "Beger",
+    "groupSwords": "Sverd",
+    "groupPentacles": "Pentakler",
+    "upright": "Oppreist",
+    "reversed": "Omvendt",
+    "correspondences": "Korrespondanser",
+    "inSpread": "I et legg",
+    "derivation": "Hvordan dette kortet utledes",
+    "sourceHeading": "Kilde",
+    "sourceLead": "Disse tydningene bygger på Papus' arbeid.",
+    "backToIndex": "Alle syttiåtte kort",
+    "previousCard": "Forrige",
+    "nextCard": "Neste",
+    "shareBody": "Alle med denne lenken kan lese dette kortet.",
+    "englishOnly": "Kortbetydningene finnes foreløpig kun på engelsk."
+  }
+}

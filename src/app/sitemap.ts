@@ -1,12 +1,14 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import {
+  CARD_CONTENT_LOCALES,
   GLOBAL_ROUTES,
   HREFLANG_MAP,
   PUBLIC_ROUTES,
   absoluteUrl,
   localizedPath,
 } from "@/lib/seo";
+import { CARDS_IN_READING_ORDER } from "@/lib/cardMeanings";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -37,5 +39,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.3,
   }));
 
-  return [...localized, ...global];
+  // Card meanings are English-only for now, so only the locales that actually
+  // have the words are listed — the other four are noindex and submitting them
+  // would just ask a crawler to index the same English page five times.
+  const cards = CARD_CONTENT_LOCALES.flatMap((locale) => [
+    {
+      url: absoluteUrl(localizedPath(locale, "/cards")),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    ...CARDS_IN_READING_ORDER.map((card) => ({
+      url: absoluteUrl(localizedPath(locale, `/cards/${card.slug}`)),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    })),
+  ]);
+
+  return [...localized, ...cards, ...global];
 }
