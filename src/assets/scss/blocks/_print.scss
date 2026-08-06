@@ -32,6 +32,25 @@
     display: none !important;
   }
 
+  // A full-viewport-height shell reserves a whole sheet before any content can
+  // start, which is what put the reading on page two with page one blank.
+  div#root,
+  .page-shell {
+    min-height: 0;
+  }
+
+  // 120px of screen breathing room is an inch of wasted paper, and the ledger's
+  // own heading is redundant on a sheet holding one reading that carries its
+  // own title and date.
+  .history-page {
+    padding-block: 0;
+    padding-inline: 0;
+
+    &__title {
+      display: none;
+    }
+  }
+
   .reading-history {
     // Controls are interactive-only.
     &__entry-actions,
@@ -50,10 +69,19 @@
     &__entry {
       background: none;
       border: none;
-      padding: 0;
+      padding-block: 0;
+      padding-inline: 0;
       // Never split a reading across two sheets.
       break-inside: avoid;
       page-break-inside: avoid;
+    }
+
+    // Single-entry print: it is the only thing on the sheet, so there is nothing
+    // to keep it with. Left on, `avoid` bumps a reading that is merely taller
+    // than the space left over onto a page of its own.
+    &[data-printing="true"] &__entry[data-printing="true"] {
+      break-inside: auto;
+      page-break-inside: auto;
     }
 
     // Printing one entry: every sibling is hidden so the sheet holds exactly the

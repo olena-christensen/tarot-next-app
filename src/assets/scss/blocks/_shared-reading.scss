@@ -1,7 +1,8 @@
 // Public page for a reading its owner published. Deliberately spare — a
 // stranger arrives here from a social link with no account and no context.
 .shared-reading {
-  padding: 100px 0 60px;
+  padding-block: 100px 60px;
+  padding-inline: 20px;
   color: var(--text-color);
   font-family: var(--font-family);
 
@@ -90,7 +91,7 @@
   }
 
   @include respond-above(md) {
-    padding: 140px 0 80px;
+    padding-block: 140px 80px;
 
     &__panel {
       max-width: 900px;
@@ -104,5 +105,10 @@
     &__card {
       width: 120px;
     }
+  }
+
+  @include respond-above(lg) {
+    // Back in step with `.container`'s wide gutter, which the base overrode.
+    padding-inline: 3rem;
   }
 }
