@@ -48,8 +48,12 @@ type ShareDialogProps = {
   url: string;
   /** Title handed to the native share sheet. */
   shareTitle: string;
-  /** One line saying what this link exposes. */
-  body: string;
+  /** Modal heading. Omit for a bare dialog. */
+  title?: string;
+  /** One line saying what this link exposes. Omit where there is nothing to warn about. */
+  body?: string;
+  /** Tightens the spacing for a dialog with no heading and no body. */
+  compact?: boolean;
   /** True while a link is being minted; shows a placeholder instead of an empty row. */
   isBusy?: boolean;
   /**
@@ -73,7 +77,9 @@ export const ShareDialog = ({
   onClose,
   url,
   shareTitle,
+  title,
   body,
+  compact = false,
   isBusy = false,
   onRevoke,
 }: ShareDialogProps) => {
@@ -117,9 +123,9 @@ export const ShareDialog = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={t("share")}>
-      <div className="reading-share">
-        <p className="reading-share__body">{body}</p>
+    <Modal isOpen={isOpen} onClose={onClose} title={title} narrow>
+      <div className={`reading-share${compact ? " reading-share--compact" : ""}`}>
+        {body && <p className="reading-share__body">{body}</p>}
         {isBusy && !url ? (
           <p className="reading-history__status">{t("loading")}</p>
         ) : (
@@ -131,7 +137,7 @@ export const ShareDialog = ({
               <span className="reading-share__url">{url}</span>
               <button
                 type="button"
-                className="reading-share__network"
+                className="reading-share__network reading-share__network--copy"
                 data-active={copied ? "true" : undefined}
                 onClick={handleCopy}
                 aria-label={copied ? t("shareCopied") : t("shareCopy")}

@@ -286,6 +286,13 @@
 
 // Share dialog — link + per-network intent links + revoke.
 .reading-share {
+  // No heading, no body — the link and the networks close up.
+  &--compact {
+    .reading-share__networks {
+      margin-block-start: 12px;
+    }
+  }
+
   &__body {
     margin: 0 0 20px;
     line-height: 1.6;
@@ -356,6 +363,12 @@
     &[data-active="true"] {
       color: var(--success);
       border-color: var(--success);
+    }
+
+    // The copy button sits inline with the link, not in the boxed network row —
+    // a frame around it reads as a second, competing control.
+    &--copy {
+      border: none;
     }
   }
 

@@ -7,12 +7,15 @@ import Skull from "../assets/svg/skull.svg";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  /** Omit for a bare dialog — the close button stands on its own. */
+  title?: string;
   children: React.ReactNode;
   wide?: boolean;
+  /** Narrower than the 740px default, for dialogs holding a single short control. */
+  narrow?: boolean;
 };
 
-export const Modal = ({ isOpen, onClose, title, children, wide }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, wide, narrow }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -34,11 +37,14 @@ export const Modal = ({ isOpen, onClose, title, children, wide }: ModalProps) =>
   // fixed .tarot-modal) and layers globally above the overlay footer.
   return createPortal(
     <div className="modal" onClick={onClose}>
-      <div className={`modal__content${wide ? " modal__content--wide" : ""}`} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`modal__content${wide ? " modal__content--wide" : ""}${narrow ? " modal__content--narrow" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="modal__close" onClick={onClose}>
           <Skull />
         </button>
-        <h2 className="title title--secondary modal__title">{title}</h2>
+        {title && <h2 className="title title--secondary modal__title">{title}</h2>}
         {children}
       </div>
     </div>,

@@ -16,7 +16,6 @@ type Props = {
  * to mint and nothing to revoke — it hands its own URL to the shared dialog.
  */
 export const CardShareButton = ({ url, cardTitle }: Props) => {
-  const t = useTranslations("cardMeanings");
   const tHistory = useTranslations("history");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,12 +29,14 @@ export const CardShareButton = ({ url, cardTitle }: Props) => {
         <ShareIcon />
         <span>{tHistory("share")}</span>
       </button>
+      {/* No heading and no warning line: the card page is already public, so
+          there is nothing about the link to explain. */}
       <ShareDialog
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         url={url}
         shareTitle={cardTitle}
-        body={t("shareBody")}
+        compact
       />
     </>
   );
