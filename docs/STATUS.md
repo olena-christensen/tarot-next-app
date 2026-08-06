@@ -1,6 +1,6 @@
 # The Veil — Status & Roadmap
 
-**Last updated:** 2026-08-05 · App scope only — umbrella/entity matters stay in the project notes.
+**Last updated:** 2026-08-06 · App scope only — umbrella/entity matters stay in the project notes.
 
 <details open>
 <summary><b>🟠 Fiscal & legal</b></summary>
@@ -129,6 +129,43 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
 <details>
 <summary><b>✅ Done — archive (chronological-ish, with the gotchas worth remembering)</b></summary>
 
+### Database outage, and the silent failure it exposed — 2026-08-06
+
+Neon was unreachable between 02:01 and 03:00 (Coordinated Universal Time). The hourly
+reconcile sweep failed at 03:00, 04:00 and 05:00, then recovered on its own. **Email was
+not affected** — the daily card went out normally at 02:00.
+
+The outage was not the problem. The three hours of silence were:
+
+- Every cron route reported only at the END of a run — `alertOnJobFailures` and
+  `recordHeartbeat` are the last two statements. A run that THREW skipped both, so a crash
+  produced a 500 and nothing else. `alertOnJobFailures` fires on errors counted inside the
+  loop; a crash never reaches it.
+- Heartbeats live in the same database, so a job that cannot connect cannot record that it
+  failed either. Both internal safety nets shared the single point of failure they watch.
+- UptimeRobot pinged `theveil.app`, which needs no database, so it stayed green throughout.
+  The one watcher outside the failure domain was watching the wrong thing.
+
+It surfaced only because the recovered run checks every heartbeat BEFORE stamping its own,
+and so reported its own three-hour gap — by design, but three hours late.
+
+Fixed:
+
+- `src/lib/cronJob.ts` — `runCronJob(name, work)` wraps all four routes, catches a throw,
+  mails the operator, returns 500. Works during a database outage because `consumeRateLimit`
+  already fails open, so the throttle cannot block the one message that matters. Costs one
+  email per run while an outage lasts — one an hour for the sweep.
+- `src/app/api/health` — `SELECT 1`, no table or migration dependency, 503 when the database
+  is down. UptimeRobot now checks it every 30 min, alongside the unchanged 5-min check on
+  the home page.
+- Reconcile: explicit `maxDuration = 120` and a 90s deadline reporting `remaining: true`, so
+  a slow mono can no longer kill the run before its heartbeat.
+
+Root cause of the outage itself: **unknown, and not compute exhaustion** — usage was 5.6 of
+100 compute-unit-hours. Neon published no incident. Most likely an unreported wake failure,
+the same shape as their 15 July one. Nothing to fix; the point is that next time it takes 30
+minutes to hear about it, not three hours.
+
 ### Terms §18 vs §19 contradiction — resolved 2026-08-05
 
 §18 gave the courts of Ukraine **exclusive** jurisdiction; §19 sent the same disputes to
@@ -211,8 +248,8 @@ with free-tier-only gating (tracked in the AdSense section).
     different ways in three components, two ignoring expiry — all three now read one
     server-computed `isSubscriber`).
 - Not live-testable, unit-covered: real card decline / forged `failure` webhook — the
-  retry loop + `failure` branch rest on the 12 `decideRenewalAction` tests (36 tests
-  pass overall).
+  retry loop + `failure` branch rest on the 12 `decideRenewalAction` tests (85 tests
+  pass overall, across 11 files).
 
 ### Reading history (built 2026-08-02)
 
@@ -385,7 +422,9 @@ under the matching heading; this is the index.
 | Payment processor | Plata by mono (JSC Universal Bank), acquiring API v2410 |
 | Plans | FREE / SINGLE €1 (credit) / MONTHLY €5 / YEARLY €39 — base currency EUR, settles UAH |
 | Contact routing | `/contact` form → privacy@ / legal@ / billing@ / support@ `nothingweird.agency` |
-| Hosting | Vercel **Pro**; DB Neon Postgres; uploads Vercel Blob |
+| Hosting | Vercel **Pro**; uploads Vercel Blob |
+| Database | Neon Postgres, **Free plan** — 100 compute-unit-hours/month/project. Compute sleeps after 5 min idle; run out of hours and it stays suspended until the next billing period or an upgrade. |
+| Monitoring | UptimeRobot: `theveil.app` every 5 min (no database), `/api/health` every **30 min**. Never put the health check on a short interval while on the Free plan — a check more often than every 5 min never lets the compute sleep and burns ~182 of the 100 hours. |
 
 Entity, banking, domain and email-hosting references are umbrella-level — project notes, not this repo.
 
