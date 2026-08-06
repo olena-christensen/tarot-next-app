@@ -1599,6 +1599,88 @@ export function getCardMeaning(slug: string): CardMeaning | undefined {
   return BY_SLUG.get(slug);
 }
 
+/* ------------------------------------------------------------------ *
+ * Search
+ * ------------------------------------------------------------------ */
+
+/**
+ * What people actually type. This app names the suit Chalices, but "cups" is
+ * the far commoner English word for it — and the same is true of coins for
+ * pentacles and staves for wands. Searching only the displayed name would fail
+ * the most likely query in the box.
+ */
+const SUIT_SEARCH_TERMS: Record<SuitId, string> = {
+  chalices: "chalices chalice cups cup",
+  pentacles: "pentacles pentacle coins coin disks disk discs disc",
+  wands: "wands wand staves staff rods rod batons baton",
+  swords: "swords sword blades blade",
+};
+
+/** Keyed by the first word of a minor's slug. Numerals matter — people type "2 of cups". */
+const RANK_SEARCH_TERMS: Record<string, string> = {
+  ace: "ace one 1",
+  two: "two 2",
+  three: "three 3",
+  four: "four 4",
+  five: "five 5",
+  six: "six 6",
+  seven: "seven 7",
+  eight: "eight 8",
+  nine: "nine 9",
+  ten: "ten 10",
+  page: "page knave valet jack",
+  knight: "knight cavalier",
+  queen: "queen",
+  king: "king",
+};
+
+/** Lowercase, and everything that isn't a letter or digit becomes a space. */
+function normalize(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+export type CardSearchEntry = {
+  id: string;
+  slug: string;
+  title: string;
+  /** Pre-flattened haystack. Built on the server so the client ships words, not prose. */
+  terms: string;
+};
+
+/**
+ * The slim list handed to the client. Deliberately NOT `CARD_MEANINGS` itself —
+ * that carries four paragraphs per card, and bundling all 78 into the page's JS
+ * to power a text box would be absurd.
+ */
+export function buildCardSearchIndex(): CardSearchEntry[] {
+  return CARDS_IN_READING_ORDER.map((card) => {
+    const parts = [normalize(card.title), normalize(card.slug)];
+    if (card.suit) {
+      parts.push(SUIT_SEARCH_TERMS[card.suit]);
+      parts.push(RANK_SEARCH_TERMS[card.slug.split("-")[0]] ?? "");
+    } else {
+      parts.push("major arcana trump");
+    }
+    return {
+      id: card.id,
+      slug: card.slug,
+      title: card.title,
+      terms: parts.filter(Boolean).join(" "),
+    };
+  });
+}
+
+/**
+ * Every token must appear somewhere in the card's terms, so "queen sword" and
+ * "2 cups" both narrow rather than widening. An empty query matches nothing —
+ * the caller shows the full index instead.
+ */
+export function matchCards<T extends { terms: string }>(index: T[], query: string): T[] {
+  const tokens = normalize(query).split(" ").filter(Boolean);
+  if (tokens.length === 0) return [];
+  return index.filter((entry) => tokens.every((token) => entry.terms.includes(token)));
+}
+
 /** Previous/next in reading order. The ends do not wrap — the last card is the last card. */
 export function getAdjacentCards(slug: string): {
   previous: CardMeaning | null;

@@ -9,17 +9,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  // Longhands, not the shorthand: a shorthand here would wipe out `.container`'s
-  // own inline padding at every width.
-  padding-top: 100px;
-  padding-bottom: 0;
+  // Never the `padding` shorthand: it would wipe `.container`'s own inline
+  // padding at every width.
+  padding-block: 100px 0;
   padding-inline: 20px;
   color: var(--text-color);
   font-family: var(--font-family);
-
-  @include respond-above(md) {
-    padding-bottom: 60px;
-  }
 
   @include respond-above(lg) {
     // Back in step with `.container`'s wide gutter, which the line above overrode.
@@ -47,7 +42,7 @@
   &__group {
     margin-top: 32px;
 
-    // `margin-top: auto` on the source block collapses to 0 once the groups are
+    // `margin-top: auto` on the search box collapses to 0 once the groups are
     // open and fill the page, so the gap above it lives here.
     &:last-of-type {
       margin-bottom: 56px;
@@ -59,7 +54,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 8px 0;
+    padding-block: 8px;
     cursor: pointer;
     // The default disclosure triangle sits before the content and can't be
     // styled; the chevron on the right replaces it.
@@ -102,7 +97,8 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px 14px;
     margin: 0;
-    padding: 16px 0 0;
+    padding-block: 16px 0;
+    padding-inline: 0; // clears the UA list indent
     list-style: none;
 
     @include respond-above(sm) {
@@ -156,21 +152,11 @@
 
   &__source {
     max-width: 46rem;
-    // Top `auto` takes the leftover height; left/right `auto` keeps it centred.
-    margin: auto auto 0;
-    padding: 20px;
-    border: var(--border);
-    border-radius: var(--border-radius);
-    background: rgba(9, 9, 9, 0.6);
-  }
-
-  &__source-title {
-    margin: 0 0 8px;
-    font-size: 0.85rem;
-    font-weight: var(--font-weight);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--primary);
+    // The slack is claimed by `.cards-search` above, which pushes this down with it.
+    margin: 0 auto;
+    padding-block: 20px;
+    padding-inline: 20px;
+    text-align: center;
   }
 
   &__source-lead {
@@ -187,41 +173,86 @@
   }
 }
 
+// Top-level, not nested in `.cards-index` — the results list and the empty
+// message are siblings of the groups, not children of any one of them.
+.cards-search {
+  width: 100%;
+  max-width: 28rem;
+  // Top `auto` takes the leftover height so the search box and the source block
+  // below it sit together at the foot of a short page; left/right keep it centred.
+  margin: auto auto 32px;
+
+  &__input {
+    width: 100%;
+    padding-block: 12px;
+    padding-inline: 16px;
+    background: var(--input-bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+
+    &::placeholder {
+      color: var(--text-faint);
+    }
+
+    // Cleared on focus. Kept as a transparent placeholder rather than removed,
+    // so the accessible name from `aria-label` is untouched and it comes back
+    // on blur if nothing was typed. `:focus`, not `:focus-visible` — a click
+    // should clear it too, not just keyboard entry.
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    // Safari draws its own clear button on type="search"; on a dark field it
+    // reads as a pale blob.
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
+  }
+}
+
+.cards-search__results {
+  margin-top: 24px;
+}
+
+.cards-search__empty {
+  margin: 32px 0;
+  text-align: center;
+  color: var(--text-faint);
+}
+
 .card-page {
-  padding: 100px 0 60px;
+  // 140, not 100: the header occupies 116, and the panel needs to clear it.
+  padding-block: 140px 60px;
+  padding-inline: 20px;
   color: var(--text-color);
   font-family: var(--font-family);
 
-  &__crumbs {
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
-  &__crumb {
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--text-faint);
-    transition: color 0.25s ease;
-
-    &:hover,
-    &:focus-visible {
-      color: var(--gold);
-    }
+  @include respond-above(lg) {
+    // Back in step with `.container`'s wide gutter, which the line above overrode.
+    padding-inline: 3rem;
   }
 
   &__panel {
     width: 100%;
     max-width: 46rem;
     margin: 0 auto;
-    padding: 24px;
+    padding-block: 24px;
+    padding-inline: 24px;
     background: rgba(9, 9, 9, 0.6);
     border: var(--border);
     border-radius: var(--border-radius);
 
     @include respond-above(md) {
-      padding: 36px;
+      padding-block: 36px;
+      padding-inline: 36px;
     }
   }
 
@@ -230,7 +261,7 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding-bottom: 24px;
+    padding-block-end: 24px;
     border-bottom: var(--border);
 
     @include respond-above(md) {
@@ -278,7 +309,8 @@
     align-items: center;
     gap: 8px;
     margin-top: 6px;
-    padding: 8px 16px;
+    padding-block: 8px;
+    padding-inline: 16px;
     background: transparent;
     border: var(--border);
     border-radius: var(--border-radius);
@@ -308,7 +340,8 @@
     margin-top: 28px;
 
     &--derivation {
-      padding: 16px;
+      padding-block: 16px;
+      padding-inline: 16px;
       border-left: 2px solid var(--primary);
       background: rgba(9, 9, 9, 0.5);
     }
@@ -337,7 +370,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding: 10px 0;
+    padding-block: 10px;
     border-bottom: var(--border);
 
     &:last-child {
@@ -369,7 +402,7 @@
 
   &__source {
     margin-top: 36px;
-    padding-top: 20px;
+    padding-block-start: 20px;
     border-top: var(--border);
   }
 
@@ -397,11 +430,28 @@
 
   &__pager {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
     max-width: 46rem;
     margin: 28px auto 0;
+  }
+
+  // The way back to the index, between the two arrows.
+  &__pager-all {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-faint);
+    transition: color 0.25s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
   }
 
   &__pager-link {
@@ -412,8 +462,9 @@
     color: var(--text-color);
     transition: color 0.25s ease;
 
+    // No `margin-left: auto` — the placeholder spans keep the three cells
+    // aligned, and an auto margin here would shove the middle link left.
     &--next {
-      margin-left: auto;
       text-align: right;
     }
 

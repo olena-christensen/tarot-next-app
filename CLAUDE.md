@@ -95,6 +95,8 @@ Never present unverified or typecheck-only work as "done" — the Verified-vs-no
 
 **CSS / UI.**
 - Modern shorthand (`inset: 0`, `gap`). Keep component styles self-contained — never leak a parent's layout concerns into a child.
+- **Padding is written as `padding-block` / `padding-inline`, always. The `padding` shorthand is banned** — no `padding: 100px 0 60px`, no `padding: 20px`. Two reasons it is not a style preference: a shorthand silently sets the sides it doesn't mention, so `padding: 140px 0 60px` on a `.container` child wipes that container's inline gutter and the element goes flush to the screen edge on mobile (this happened twice in `_cards.scss`); and the logical properties say which axis is meant instead of leaving it to be counted out of a four-value list. Same reasoning applies to `margin` — prefer `margin-block` / `margin-inline` in new code.
+- **Overriding `.container`'s `padding-inline` means restoring it at `lg`.** `.container` gives `1rem`, widening to `3rem` at `lg`; a block that sets its own inline padding wins at every width, so it must re-state `3rem` inside `respond-above(lg)` or the desktop gutter quietly disappears.
 - Reusable components carry only intrinsic styles (padding/font/color/border) — **NEVER** layout (`flex`, `width`, `min-width`, `text-align`); layout belongs to the parent that owns the context.
 - New buttons/UI match sibling styling — no "simplified/subtle" variants unless asked.
 - Don't set CSS variable defaults that React always overrides inline (dead code).
@@ -353,6 +355,15 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
   Deliberately not a `useState` accordion: no client boundary, keyboard-accessible for free, and
   the 78 links stay in the server-rendered HTML while closed so a crawler still walks them.
   The default disclosure triangle is killed with `list-style: none` + `::-webkit-details-marker`.
+- **Search filters the index in place** (`CardSearch.tsx`). The grouped accordions are passed in
+  as server `children` and rendered whenever the box is empty, so all 78 links stay in the static
+  HTML for crawlers; typing swaps them for a flat result grid. The client receives a **slim index**
+  from `buildCardSearchIndex()` — slug, title, image, and a flattened `terms` string — never
+  `CARD_MEANINGS` itself, which carries four paragraphs per card.
+- **`terms` is where the vocabulary gap is closed.** The app names the suit *Chalices*, but people
+  type *cups* — likewise coins/disks for pentacles, staves/rods for wands, blades for swords, and
+  bare numerals ("2 of cups"). `matchCards` is pure and tested; every token must match, so adding
+  words narrows rather than widens.
 - **`<Image>` needs `sizes` whenever CSS resizes it, or the art renders soft.** Card art is
   854×1500, so resolution was never the problem — the first version declared `width={120}` with
   CSS `width: 100%`, and Next then generated only 128px and 256px candidates. A phone at DPR 2–3

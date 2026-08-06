@@ -19,6 +19,27 @@
     }
   }
 
+  // Nude icon link: no border, no background — the glyph is the whole control.
+  .main-menu__icon-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    transition: color 0.25s ease;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
   .main-menu__link {
     @include link-style;
     padding: 0.5rem;
