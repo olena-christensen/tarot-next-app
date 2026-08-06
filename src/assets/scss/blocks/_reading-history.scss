@@ -1,5 +1,6 @@
 .history-page {
-  padding: 120px 0 80px;
+  padding-block: 120px 80px;
+  padding-inline: 20px;
 
   &__title {
     text-align: center;
@@ -7,7 +8,12 @@
   }
 
   @include respond-above(md) {
-    padding: 160px 0 100px;
+    padding-block: 160px 100px;
+  }
+
+  @include respond-above(lg) {
+    // Back in step with `.container`'s wide gutter, which the line above overrode.
+    padding-inline: 3rem;
   }
 }
 
