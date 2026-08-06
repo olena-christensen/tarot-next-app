@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { chargeByToken, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
+import { runCronJob } from "@/lib/cronJob";
 
 // Daily renewal cron. Vercel attaches `Authorization: Bearer ${CRON_SECRET}`
 // automatically when CRON_SECRET is set, so we reject anything else — without
@@ -44,6 +45,12 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Wrapped so a throw still reaches the inbox: everything below reports at the
+  // END of the run, which is no help when the run dies at the first query.
+  return runCronJob("renew", renewDueSubscriptions);
+}
+
+async function renewDueSubscriptions() {
   const now = new Date();
   const subs = await prisma.subscription.findMany({
     where: { planId: { in: ["MONTHLY", "YEARLY"] } },
@@ -162,5 +169,5 @@ export async function GET(req: Request) {
   // claim to have finished.
   await recordHeartbeat("renew", result);
 
-  return NextResponse.json(result);
+  return result;
 }

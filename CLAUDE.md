@@ -44,6 +44,9 @@ Mobile-first, mobile-first, mobile-first. If you are about to write a
 - **Document rules, conventions, decisions, and handovers in repo files (this CLAUDE.md or `docs/`) — NEVER in agent/private memory.** Everything must be human-readable by the user and any dev, and re-read from the file each session. Do not rely on private memory for durable knowledge; if you learn something worth keeping, write it into the relevant repo file.
 - **Dev server runs on `localhost:3001`** (not 3000 — the user runs multiple projects).
 - When reducing permission prompts / fixing settings, edit `.claude/settings.json` directly — don't run steps that themselves prompt (transcript scans, out-of-project reads). In subagents, use the Read tool, not `cat`/`ls`/`for` loops (shell expansion defeats the allowlist).
+- **STATUS.md hygiene:** open sections contain checkboxes only — no intro paragraphs, no
+  process notes, no `[x]` history. Finished work moves to the Done archive; lessons and
+  conventions go here in CLAUDE.md, never into the to-do sections.
 - **NEVER add verification checkpoints to docs.** Testing is the user's own concern, done on her schedule. When she closes a task or moves on to the next feature, that MEANS it was checked — do not append "verify live", "not yet exercised live", "awaiting live verification" or any similar follow-up items to `docs/STATUS.md` or anywhere else, and do not carry such items forward from older docs. (This does not change the Handover Convention's "Verified vs not" split — that applies only to work the agent itself did in the current session.)
 
 ## Handover Convention
