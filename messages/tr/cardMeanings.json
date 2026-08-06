@@ -1,0 +1,25 @@
+{
+  "cardMeanings": {
+    "navLabel": "Kart Anlamları",
+    "metaTitle": "Tarot Kart Anlamları — 78 Kartın Tamamı",
+    "metaDescription": "78 tarot kartının düz ve ters anlamları, karşılıklarıyla birlikte; Papus'un The Tarot of the Bohemians (1889) adlı eserinden.",
+    "indexTitle": "Yetmiş Sekiz",
+    "groupMajor": "Büyük Arkana",
+    "groupWands": "Asalar",
+    "groupChalices": "Kupalar",
+    "groupSwords": "Kılıçlar",
+    "groupPentacles": "Tılsımlar",
+    "upright": "Düz",
+    "reversed": "Ters",
+    "correspondences": "Karşılıklar",
+    "inSpread": "Açılımda",
+    "derivation": "Bu Kart Nasıl Türetilir",
+    "sourceHeading": "Kaynak",
+    "sourceLead": "Bu yorumlar Papus'un çalışmasına dayanmaktadır.",
+    "backToIndex": "Yetmiş Sekiz Kartın Tamamı",
+    "previousCard": "Önceki",
+    "nextCard": "Sonraki",
+    "shareBody": "Bu bağlantıya sahip olan herkes bu kartı okuyabilir.",
+    "englishOnly": "Kart anlamları şu anda yalnızca İngilizce olarak yazılmıştır."
+  }
+}

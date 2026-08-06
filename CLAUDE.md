@@ -304,6 +304,64 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 - **Empty state** shows the copy plus a centered `Draw Your First Fate` link back to `/` (`history.emptyCta`) — an empty ledger must offer the way to fill it, not just say it's empty.
 - **Anchors styled as `.btn` need `text-decoration: none`.** There is no global anchor reset, so a `<Link className="btn …">` arrives underlined. Both `reading-history__empty-cta` and `reset-password__back` set it explicitly (as `_payment-result.scss` already did).
 
+## Card Meanings (`/cards`) — the indexable content play
+
+- **Why it exists:** real crawlable content for SEO and the AdSense review. Everything is
+  server-rendered and statically generated — no client-side data fetching on either route.
+- **Routes:** `/[locale]/cards` (index of all 78, grouped) and `/[locale]/cards/[slug]`
+  (one page per card). Both `generateStaticParams`; the detail route emits 78 × 5 = 390 pages.
+  Neither is auth-gated. Styles: `src/assets/scss/blocks/_cards.scss`.
+- **Data lives in `src/lib/cardMeanings.ts`** (not `src/data/` — `src/data.ts` already exists and
+  a sibling directory reads as a trap; every other static catalog is in `src/lib/`). It is `.ts`
+  rather than JSON so the 78 entries are compile-time checkable against `tarots[].id`.
+- **Source is Papus, "The Tarot of the Bohemians" (1889; A. P. Morton translation, 1892),**
+  public domain. `PAPUS_SOURCE.citation` is the full bibliographic form and is rendered on both
+  routes — attribution here is accuracy, not licensing: these pages are *his* reading.
+- **⚠️ The majors use Papus's numbering, NOT Waite's.** Le Mat is the 21st arcanum (Shin) and
+  Le Monde the 22nd (Tau); Magician = 1 = Aleph. This looks like an error to anyone raised on
+  Golden Dawn attributions — it isn't. Don't "fix" it.
+- **No astronomical correspondence row.** Papus's astronomical tarot is a separate scheme that
+  can't be reproduced card-by-card without guessing, so each major carries his **septenary**
+  placement instead (three series of seven — Divine / Man / Nature — plus Le Monde closing the
+  circle). Never invent a planet or sign and attribute it to him.
+- **The 56 minors are DERIVED, and every page says so.** Papus gives no card-by-card prose for
+  them; he derives them from suit (Tetragrammaton letter + world), number, and court rank. The
+  `derivation` field states that explicitly and is composed from `SUIT_WORLDS` / `NUMBER_TERMS` /
+  `COURT_TERMS`. Do NOT write Waite-style keyword lists and attribute them to Papus.
+  The decade runs the four-term rhythm three times — `1·2·3·4 — 4·5·6·7 — 7·8·9·10` — which is
+  why 4 and 7 are pivots.
+- **Slugs are frozen literals and are indexed URLs.** `cardMeanings.test.ts` asserts them against
+  a hard-coded list; a failure there is almost never fixed by updating the expectation. Note the
+  split: slugs say **cups** (`two-of-cups`, the search term) while titles say **Chalices**, matching
+  `cards.json` and the rest of the app.
+- **English only, and one list controls that.** `CARD_CONTENT_LOCALES` in `src/lib/seo.ts` drives
+  indexing, the sitemap, and hreflang together. Non-`en` locales still render (so middleware never
+  404s) but get `noindex, follow` + a self-canonical, are absent from the sitemap, and are never
+  pointed at by an hreflang — an alternate claiming a translation that doesn't exist is a lie to
+  the crawler. `buildAlternates` takes an optional `translatedLocales` subset for this.
+  Adding a translated locale = add it to that one array.
+- **UI strings are the `cardMeanings` namespace** (`messages/*/cardMeanings.json`), NOT `cards` —
+  that name is already taken by the 78 card *names*. Registered in `request.ts`.
+- **One share dialog app-wide: `src/components/ShareDialog.tsx`.** Extracted from `ReadingHistory`
+  (which now consumes it) so the card pages reuse it rather than growing a second one. Labels come
+  from the `history` namespace, already translated in all five locales. Shared readings mint a
+  revocable link and pass `onRevoke`; a card page is already public, so it just passes its own URL
+  and omits it. Still plain intent URLs — no third-party SDKs, no trackers, nothing touching
+  cookie consent.
+- **The index groups are `<details>`/`<summary>`, collapsed by default** — title and chevron, and
+  nothing else. No border, no background, no card count.
+  Deliberately not a `useState` accordion: no client boundary, keyboard-accessible for free, and
+  the 78 links stay in the server-rendered HTML while closed so a crawler still walks them.
+  The default disclosure triangle is killed with `list-style: none` + `::-webkit-details-marker`.
+- **`<Image>` needs `sizes` whenever CSS resizes it, or the art renders soft.** Card art is
+  854×1500, so resolution was never the problem — the first version declared `width={120}` with
+  CSS `width: 100%`, and Next then generated only 128px and 256px candidates. A phone at DPR 2–3
+  needs ~500px for those cells, so the browser upscaled the 256. Both routes now declare the true
+  intrinsic ratio (427×750) plus a `sizes` string, which is what makes Next emit the full
+  `deviceSizes` srcset (128 → 3840). Quality is raised off the default 75 (85 on thumbnails, 90 on
+  the hero) because these are detailed illustrations. Any future card art must do the same.
+- JSON-LD per card page: `Article` (with `isBasedOn` pointing at the Papus book) + `BreadcrumbList`.
+
 ## Deck Selection
 
 - **Available decks:** Rider-Waite (default), Klimt, Gothic-Vintage. Card images live under `public/Cards/{deckName}/` with identical folder structures and filenames across all decks.

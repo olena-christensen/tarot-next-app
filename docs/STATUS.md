@@ -75,6 +75,11 @@ Not real work. Consider only after launch, when there's genuinely nothing else o
   - [ ] Ukrainian
   - [ ] Turkish
   - [ ] Norwegian
+- [ ] **Translate the /cards meanings.** The 78 card meanings in `src/lib/cardMeanings.ts` are
+  English only; the routes render in all 5 locales but every non-`en` one is `noindex` and is
+  kept out of the sitemap and hreflang set. When a locale's translations land, add it to
+  `CARD_CONTENT_LOCALES` in `src/lib/seo.ts` — that one list drives indexing, the sitemap and
+  the alternates.
 - [ ] **Lawyer review of Terms + Privacy** (~$150–400 in Ukraine; also flag financial-record
   retention law vs the GDPR cascade-delete of `Payment` rows)
 - **Get the daily card email into Gmail's Primary tab.** It reliably lands in Promotions,

@@ -1,0 +1,25 @@
+{
+  "cardMeanings": {
+    "navLabel": "Card Meanings",
+    "metaTitle": "Tarot Card Meanings — All 78 Cards",
+    "metaDescription": "Upright and reversed meanings for all 78 tarot cards, with correspondences, drawn from Papus's The Tarot of the Bohemians (1889).",
+    "indexTitle": "The Seventy-Eight",
+    "groupMajor": "Major Arcana",
+    "groupWands": "Wands",
+    "groupChalices": "Chalices",
+    "groupSwords": "Swords",
+    "groupPentacles": "Pentacles",
+    "upright": "Upright",
+    "reversed": "Reversed",
+    "correspondences": "Correspondences",
+    "inSpread": "In a Spread",
+    "derivation": "How This Card Is Derived",
+    "sourceHeading": "Source",
+    "sourceLead": "These readings are based on the work of Papus.",
+    "backToIndex": "All Seventy-Eight Cards",
+    "previousCard": "Previous",
+    "nextCard": "Next",
+    "shareBody": "Anyone with this link can read this card.",
+    "englishOnly": "Card meanings are currently written in English only."
+  }
+}
