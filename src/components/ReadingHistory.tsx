@@ -493,6 +493,7 @@ export const ReadingHistory = () => {
         onClose={() => setSharing(null)}
         url={shareUrl}
         shareTitle={t("sharedTitle")}
+        title={t("share")}
         body={t("shareBody")}
         isBusy={shareBusy}
         onRevoke={handleUnshare}

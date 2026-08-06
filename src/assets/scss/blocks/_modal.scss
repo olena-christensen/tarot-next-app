@@ -86,6 +86,12 @@
     border: var(--border);
     border-radius: var(--border-radius);
 
+    // A link and a row of icons don't need 740px.
+    &--narrow {
+      max-width: 550px;
+      width: 550px;
+    }
+
     &--wide {
       max-width: 1150px;
       width: 1150px;
