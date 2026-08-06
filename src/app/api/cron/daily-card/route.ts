@@ -10,6 +10,7 @@ import {
 import { sendDailyCardEmail } from "@/lib/mailer";
 import { alertOnJobFailures } from "@/lib/alert";
 import { recordHeartbeat } from "@/lib/heartbeat";
+import { runCronJob } from "@/lib/cronJob";
 import { DEFAULT_DECK } from "@/lib/decks";
 import type { PlanId } from "@/lib/plans";
 
@@ -49,6 +50,12 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Wrapped so a throw still reaches the inbox: everything below reports at the
+  // END of the run, which is no help when the run dies at the first query.
+  return runCronJob("daily-card", sendDailyCards);
+}
+
+async function sendDailyCards() {
   const startedAt = Date.now();
   const now = new Date();
   const day = utcDayKey(now);
@@ -193,5 +200,5 @@ export async function GET(req: Request) {
   // claim to have finished.
   await recordHeartbeat("daily-card", result);
 
-  return NextResponse.json(result);
+  return result;
 }

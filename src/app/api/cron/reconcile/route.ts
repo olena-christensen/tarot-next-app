@@ -9,6 +9,7 @@ import {
   formatSilence,
   recordHeartbeat,
 } from "@/lib/heartbeat";
+import { runCronJob } from "@/lib/cronJob";
 
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
@@ -22,6 +23,13 @@ import {
 // ${CRON_SECRET}` automatically, so we reject anything else (same as cron/renew).
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+// Every stuck row costs one network round-trip to mono, so a slow or unreachable
+// acquirer is what is most likely to stretch this run. Bounded explicitly rather
+// than inheriting the platform default, which is short enough that a handful of
+// slow calls could kill the run before it reaches its heartbeat — and a run that
+// dies before its heartbeat is a run nobody hears about.
+export const maxDuration = 120;
 
 // Only reconcile after 30 min unconfirmed — a real payment confirms in seconds,
 // so this avoids poking an invoice the user is still actively paying.
@@ -34,12 +42,26 @@ export const dynamic = "force-dynamic";
 const STUCK_MS = 30 * 60 * 1000;
 const WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
 
+/**
+ * Stop starting new work after this long and report `remaining: true`.
+ * `maxDuration` is 120s; the headroom covers the mono call already in flight
+ * plus the heartbeat write that must still happen.
+ */
+const DEADLINE_MS = 90_000;
+
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Wrapped so a throw still reaches the inbox: everything below reports at the
+  // END of the run, which is no help when the run dies at the first query.
+  return runCronJob("reconcile", reconcileSweep);
+}
+
+async function reconcileSweep() {
+  const startedAt = Date.now();
   const now = new Date();
   const stuckBefore = new Date(now.getTime() - STUCK_MS);
   const giveUpBefore = new Date(now.getTime() - WINDOW_MS);
@@ -55,8 +77,17 @@ export async function GET(req: Request) {
   let reconciled = 0;
   let stillPending = 0;
   let errors = 0;
+  let remaining = false;
 
   for (const { monoInvoiceId } of stuck) {
+    // Hand the rest to the next sweep rather than being killed mid-loop. The
+    // heartbeat and the watchman below are what must not be skipped, and any row
+    // left behind matches the same query again in an hour — nothing is lost.
+    if (Date.now() - startedAt > DEADLINE_MS) {
+      remaining = true;
+      break;
+    }
+
     try {
       const res = await getInvoiceStatus(monoInvoiceId);
       if (!res.status) {
@@ -128,11 +159,12 @@ export async function GET(req: Request) {
     reconciled,
     stillPending,
     errors,
+    remaining,
     prunedRateLimits,
     staleJobs: stale.map((s) => s.job),
   };
   await alertOnJobFailures("reconcile", result);
   await recordHeartbeat("reconcile", result);
 
-  return NextResponse.json(result);
+  return result;
 }
