@@ -100,6 +100,7 @@
     "subscribeBtn": "Abone ol",
     "buyReadingBtn": "Bir fal al",
     "processingBtn": "İşleniyor…",
+    "chargedInHryvnia": "Fiyatlar euro olarak gösterilir. Kartınızdan sabit bir kurla Ukrayna grivnası (₴) olarak tahsilat yapılır — bankanız tutarı geri çevirir ve döviz işlem ücreti ekleyebilir.",
     "paymentStartFailed": "Ödeme başlatılırken bir sorun oluştu. Lütfen tekrar deneyin.",
     "paymentsLaunchingSoon": "Ödemeler yakında aktif olacak",
     "termsOfService": "Kullanım Koşulları",

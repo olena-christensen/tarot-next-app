@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { alertOnJobFailures } from "@/lib/alert";
 import { recordHeartbeat } from "@/lib/heartbeat";
 import { prisma } from "@/lib/prisma";
-import { chargeByToken, PLAN_PRICES } from "@/lib/mono";
+import { chargeByToken, LEDGER_CURRENCY, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
 import { runCronJob } from "@/lib/cronJob";
@@ -151,7 +151,7 @@ async function renewDueSubscriptions() {
           reference,
           productType: plan,
           amount: PLAN_PRICES[plan],
-          currency: "EUR",
+          currency: LEDGER_CURRENCY,
           status: "created",
         },
       })
