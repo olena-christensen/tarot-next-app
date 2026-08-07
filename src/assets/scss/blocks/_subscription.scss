@@ -192,6 +192,17 @@
     font-size: 0.95rem;
   }
 
+  // Currency disclosure. Quiet, but never hidden — it has to be readable before
+  // the user pays, so no collapsing it behind a toggle.
+  &__note {
+    margin: 24px auto 0;
+    max-width: 52ch;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
   .modal & {
     padding: 0;
     background: none;

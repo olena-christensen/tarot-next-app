@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { PLANS, PLAN_ORDER, type PlanId } from "./plans";
+import { PLAN_PRICES_EUR } from "./mono";
 import en from "../../messages/en/plans.json";
 import no from "../../messages/no/plans.json";
 import ru from "../../messages/ru/plans.json";
@@ -8,6 +9,21 @@ import tr from "../../messages/tr/plans.json";
 
 const LOCALES = { en, no, ru, uk, tr } as const;
 type Catalogue = { plans: Record<string, { name: string; features: string[] }> };
+
+describe("price label vs price charged", () => {
+  // Two sources of truth by necessity: `priceLabel` is what the card shows, and
+  // PLAN_PRICES_EUR is what the hryvnia charge is pegged to. Since the charge
+  // itself is in a different currency, NOTHING in the interface can reveal a
+  // drift between them — a customer would see €5 and be billed for €7 with no
+  // visible clue. This test is the only thing standing between those two.
+  it("advertises exactly the euro price the hryvnia charge is pegged to", () => {
+    for (const id of ["SINGLE", "MONTHLY", "YEARLY"] as const) {
+      expect(PLANS[id].priceLabel, `${id} price label`).toBe(
+        `€${PLAN_PRICES_EUR[id]}`
+      );
+    }
+  });
+});
 
 describe("plan catalogue vs translations", () => {
   it("every plan exists in every locale", () => {

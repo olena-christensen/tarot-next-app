@@ -5,14 +5,63 @@ import { createVerify } from "crypto";
 
 export const MONO_API_BASE = "https://api.monobank.ua";
 
-// ISO 4217 numeric currency code for EUR.
-export const CCY_EUR = 978;
+export type PaidPlan = "SINGLE" | "MONTHLY" | "YEARLY";
 
-// Plan prices in minor units (cents).
-export const PLAN_PRICES: Record<"SINGLE" | "MONTHLY" | "YEARLY", number> = {
-  SINGLE: 100,
-  MONTHLY: 500,
-  YEARLY: 3900,
+/**
+ * ISO 4217 numeric currency code for UAH (hryvnia) — what mono is charged.
+ *
+ * NOT euro, despite every price being advertised in euros. Ukrainian fiscal
+ * receipts (PRRO via Checkbox) and mono's automatic bank integration only
+ * fiscalize invoices in 980. An invoice in 978 is accepted and the card is
+ * charged, but mono never emits the fiscalization request, so no receipt is
+ * ever issued and nothing arrives at Checkbox — which is exactly what happened
+ * between 2026-08-05 and 2026-08-07, and what monobank support finally
+ * identified. Changing this back breaks fiscal compliance, silently.
+ */
+export const CCY_UAH = 980;
+
+/** Currency string for `Payment.currency` ledger rows. Matches CCY_UAH. */
+export const LEDGER_CURRENCY = "UAH";
+
+/**
+ * Advertised prices, in whole euros. DISPLAY ONLY — never sent to mono.
+ *
+ * The audience is European; hryvnia price tags would read as a foreign, riskier
+ * product. So the label stays in euros and the charge goes out in hryvnia.
+ */
+export const PLAN_PRICES_EUR: Record<PaidPlan, number> = {
+  SINGLE: 1,
+  MONTHLY: 5,
+  YEARLY: 39,
+};
+
+/**
+ * The euro-to-hryvnia rate the hryvnia prices below are pegged at.
+ *
+ * Deliberately a fixed peg rather than a live rate looked up per invoice: a
+ * live rate puts a network call in the payment path, makes every renewal a
+ * different amount, and makes the ledger impossible to reconcile by eye. The
+ * cost is drift — as the rate moves, the euro figure stops being exact.
+ *
+ * RE-PEG when the real rate drifts more than ~5% from this number: change
+ * PEG_EUR_UAH and PLAN_PRICES together, nothing else. mono's own rate is at
+ * https://api.monobank.ua/bank/currency (currencyCodeA 978, currencyCodeB 980).
+ *
+ * Set 2026-08-07 against mono's sell rate of 52.07, rounded up for margin.
+ */
+export const PEG_EUR_UAH = 52.5;
+
+/**
+ * Plan prices in minor units (kopiykas) — what is actually charged.
+ *
+ * PLAN_PRICES_EUR × PEG_EUR_UAH × 100. Kept as literals rather than computed so
+ * the exact charged amount is greppable and can never shift under a rounding
+ * change.
+ */
+export const PLAN_PRICES: Record<PaidPlan, number> = {
+  SINGLE: 5250, // €1  → ₴52.50
+  MONTHLY: 26250, // €5  → ₴262.50
+  YEARLY: 204750, // €39 → ₴2047.50
 };
 
 /**
@@ -124,7 +173,7 @@ export async function verifyMonoWebhook(
 
 export type ChargeByTokenParams = {
   cardToken: string;
-  amount: number; // minor units (cents)
+  amount: number; // minor units (kopiykas)
   reference: string;
   destination: string;
 };
@@ -147,7 +196,7 @@ export async function chargeByToken(
     body: JSON.stringify({
       cardToken: params.cardToken,
       amount: params.amount,
-      ccy: CCY_EUR,
+      ccy: CCY_UAH,
       initiationKind: "merchant",
       merchantPaymInfo: {
         reference: params.reference,

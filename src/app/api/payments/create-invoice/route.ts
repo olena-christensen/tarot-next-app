@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { CCY_EUR, PLAN_PRICES, monoFetch } from "@/lib/mono";
+import { CCY_UAH, LEDGER_CURRENCY, PLAN_PRICES, monoFetch } from "@/lib/mono";
 import { routing } from "@/i18n/routing";
 
 type PaidPlanId = keyof typeof PLAN_PRICES;
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   const plan = planId as PaidPlanId;
 
   // Checkout is the ONE thing an unverified address blocks (decided 2026-08-04).
-  // Reading tarot doesn't need a reachable address; charging someone €5 whose
+  // Reading tarot doesn't need a reachable address; charging someone whose
   // receipt and password-reset would both bounce does. Enforced server-side —
   // the UI hint is cosmetic on top of this.
   const verifyCheck = await prisma.user.findUnique({
@@ -78,9 +78,11 @@ export async function POST(request: Request) {
 
   const lineItem = `The Veil — ${plan} subscription`;
 
+  // Charged in hryvnia even though the price is advertised in euros — mono only
+  // fiscalizes 980. See CCY_UAH in lib/mono.ts.
   const payload: Record<string, unknown> = {
     amount,
-    ccy: CCY_EUR,
+    ccy: CCY_UAH,
     merchantPaymInfo: {
       reference,
       destination: lineItem,
@@ -169,7 +171,7 @@ export async function POST(request: Request) {
         reference,
         productType: plan,
         amount,
-        currency: "EUR",
+        currency: LEDGER_CURRENCY,
         status: "created",
       },
     });

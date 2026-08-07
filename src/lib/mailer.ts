@@ -130,8 +130,17 @@ function fillTemplate(
   return template.replace(/\{(\w+)\}/g, (m, k) => values[k] ?? m);
 }
 
-function formatEuro(amountMinor: number): string {
-  return `€${(amountMinor / 100).toFixed(2)}`;
+/**
+ * The amount line on a receipt.
+ *
+ * Shows BOTH numbers, deliberately: the euro price the customer agreed to, and
+ * the hryvnia amount their card was actually charged. Since 2026-08-07 those
+ * are different — mono only fiscalizes invoices in hryvnia (see CCY_UAH), so
+ * the charge goes out in ₴ while the price tag stays in €. Printing only the
+ * euro figure would make the receipt contradict the customer's bank statement.
+ */
+function formatCharged(amountMinorUah: number, amountEur: number): string {
+  return `€${amountEur.toFixed(2)} (₴${(amountMinorUah / 100).toFixed(2)})`;
 }
 
 /**
@@ -167,7 +176,10 @@ export async function sendRenewalReceiptEmail(args: {
   to: string;
   locale: string;
   planId: "MONTHLY" | "YEARLY";
+  /** Hryvnia minor units — what the card was actually charged. */
   amountMinor: number;
+  /** Whole euros — the advertised price. */
+  amountEur: number;
   expiresAt: Date;
 }): Promise<void> {
   const t = await paymentStrings(args.locale);
@@ -175,7 +187,9 @@ export async function sendRenewalReceiptEmail(args: {
   const text = [
     fillTemplate(t.renewalIntro, { plan }),
     "",
-    fillTemplate(t.renewalAmount, { amount: formatEuro(args.amountMinor) }),
+    fillTemplate(t.renewalAmount, {
+      amount: formatCharged(args.amountMinor, args.amountEur),
+    }),
     fillTemplate(t.renewalUntil, {
       date: args.expiresAt.toISOString().slice(0, 10),
     }),

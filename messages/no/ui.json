@@ -100,6 +100,7 @@
     "subscribeBtn": "Abonner",
     "buyReadingBtn": "Kjøp en spådom",
     "processingBtn": "Behandler…",
+    "chargedInHryvnia": "Prisene vises i euro. Kortet ditt belastes i ukrainske hryvnia (₴) til en fast kurs — banken din konverterer beløpet tilbake og kan legge til et valutagebyr.",
     "paymentStartFailed": "Noe gikk galt da betalingen skulle startes. Prøv igjen.",
     "paymentsLaunchingSoon": "Betaling lanseres snart",
     "termsOfService": "Vilkår for bruk",

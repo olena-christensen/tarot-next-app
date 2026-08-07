@@ -247,6 +247,16 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
           })}
         </div>
 
+        {/*
+          Required disclosure, not decoration: the price tags say euros but the
+          card is charged in hryvnia (mono only fiscalizes 980 — see CCY_UAH).
+          The customer's own bank converts it back, so the figure on their
+          statement will not match the figure on this page exactly. Saying so
+          before they pay is the difference between a rounding difference and a
+          complaint.
+        */}
+        <p className="subscription__note">{t("chargedInHryvnia")}</p>
+
         {needsVerify && (
           <p className="subscription__error" role="alert">
             {verifySent ? t("verificationSent") : t("emailNotVerified")}{" "}

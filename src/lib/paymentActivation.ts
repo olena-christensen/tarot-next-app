@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { PLAN_PRICES } from "@/lib/mono";
+import { PLAN_PRICES, PLAN_PRICES_EUR } from "@/lib/mono";
 import { sendRenewalReceiptEmail, sendPaymentFailedEmail } from "@/lib/mailer";
 import type { Prisma } from "@/generated/prisma";
 
@@ -186,9 +186,12 @@ export async function applyMonoInvoiceStatus(
           to: user.email,
           locale: user.preferredLocale,
           planId: pendingPlanId,
-          // The EUR price we bill (500/3900 minor). Do NOT use the mono-echoed
-          // amount — it's the settled amount in UAH minor units.
+          // Both figures, from our own price table — never the mono-echoed
+          // amount, which reflects whatever mono settled and can differ.
+          // amountMinor is hryvnia (what the card was charged), amountEur is
+          // the advertised price. The receipt prints both; see formatCharged.
           amountMinor: PLAN_PRICES[pendingPlanId],
+          amountEur: PLAN_PRICES_EUR[pendingPlanId],
           expiresAt: renewalExpiresAt,
         });
       }

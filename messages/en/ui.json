@@ -100,6 +100,7 @@
     "subscribeBtn": "Subscribe",
     "buyReadingBtn": "Buy a reading",
     "processingBtn": "Processing…",
+    "chargedInHryvnia": "Prices are shown in euros. Your card is charged in Ukrainian hryvnia (₴) at a fixed rate — your bank converts it back, and may add a currency fee.",
     "paymentStartFailed": "Something went wrong starting your payment. Please try again.",
     "paymentsLaunchingSoon": "Payments launching soon",
     "termsOfService": "Terms of Service",

@@ -1,5 +1,21 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { chargeByToken } from "./mono";
+import { CCY_UAH, PEG_EUR_UAH, PLAN_PRICES, PLAN_PRICES_EUR, chargeByToken } from "./mono";
+
+describe("pricing", () => {
+  // The charge goes out in hryvnia while the price tag says euros, so nothing
+  // in the UI can catch a mismatch. These are the only guard.
+  it("charges in hryvnia, never euro — mono only fiscalizes 980", () => {
+    expect(CCY_UAH).toBe(980);
+  });
+
+  it("keeps every hryvnia price consistent with its euro label at the peg", () => {
+    for (const plan of ["SINGLE", "MONTHLY", "YEARLY"] as const) {
+      expect(PLAN_PRICES[plan]).toBe(
+        Math.round(PLAN_PRICES_EUR[plan] * PEG_EUR_UAH * 100)
+      );
+    }
+  });
+});
 
 describe("chargeByToken", () => {
   beforeEach(() => {
@@ -16,7 +32,7 @@ describe("chargeByToken", () => {
 
     const result = await chargeByToken({
       cardToken: "tok_abc",
-      amount: 500,
+      amount: 26250,
       reference: "user1:MONTHLY:renewal:123",
       destination: "The Veil — MONTHLY renewal",
     });
@@ -32,8 +48,8 @@ describe("chargeByToken", () => {
     const body = JSON.parse(init.body);
     expect(body).toMatchObject({
       cardToken: "tok_abc",
-      amount: 500,
-      ccy: 978,
+      amount: 26250,
+      ccy: 980,
       initiationKind: "merchant",
       merchantPaymInfo: {
         reference: "user1:MONTHLY:renewal:123",
