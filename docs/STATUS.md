@@ -78,6 +78,10 @@ Detail lives in `docs/features/` and `CLAUDE.md`, never here.
 
 ### 2026-08
 
+- 2026-08-08 · Moved functions to Frankfurt — they ran in Washington, the database is in Frankfurt.
+- 2026-08-08 · Retried the first query of every cron job so a sleeping database costs 3 seconds, not a run.
+- 2026-08-08 · Throttled stale-job alerts to once a day instead of once an hour.
+
 - 2026-08-07 · Fixed fiscal receipts — charge in hryvnia, price in euro. `docs/features/currency-and-fiscal-receipts.md`
 - 2026-08-07 · Verified a live €1 purchase issues a registered tax receipt.
 - 2026-08-07 · Confirmed tarot is allowed on AdSense, created the account, verified ownership.
