@@ -24,6 +24,26 @@ const ALERT_THROTTLE: RateLimitRule = {
   blockMs: 60 * 60 * 1000,
 };
 
+/**
+ * At most one alert per day for a job that has gone quiet.
+ *
+ * A job down for 37 hours does not need telling 37 times. The hourly rule above
+ * is right for a job that is failing repeatedly — each failure is news. It is
+ * wrong for a stale heartbeat, which is the SAME fact restated every hour until
+ * someone acts, and which arrives while the operator already knows.
+ *
+ * Learned 2026-08-06: a dead renew job produced an hourly stream that buried the
+ * one email that mattered.
+ */
+const STALE_JOB_THROTTLE: RateLimitRule = {
+  limit: 1,
+  windowMs: 24 * 60 * 60 * 1000,
+  blockMs: 24 * 60 * 60 * 1000,
+};
+
+/** Keys minted by the heartbeat sweep, which restate one fact until it is fixed. */
+const STALE_JOB_PREFIX = "heartbeat:";
+
 function alertRecipient(): string {
   return (
     process.env.ALERT_EMAIL ??
@@ -46,10 +66,14 @@ export async function alertOps(
   subject: string,
   lines: string[]
 ): Promise<void> {
+  const throttle = key.startsWith(STALE_JOB_PREFIX)
+    ? STALE_JOB_THROTTLE
+    : ALERT_THROTTLE;
+
   try {
-    const { blocked } = await consumeRateLimit(`alert:${key}`, ALERT_THROTTLE);
+    const { blocked } = await consumeRateLimit(`alert:${key}`, throttle);
     if (blocked) {
-      console.warn("[alert] suppressed (already sent within the hour)", { key });
+      console.warn("[alert] suppressed (already sent within the window)", { key });
       return;
     }
     await sendOpsAlertEmail({

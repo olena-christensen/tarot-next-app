@@ -7,6 +7,7 @@ import { sendReadingReminderEmail } from "@/lib/mailer";
 import { alertOnJobFailures } from "@/lib/alert";
 import { recordHeartbeat } from "@/lib/heartbeat";
 import { runCronJob } from "@/lib/cronJob";
+import { withDbWake } from "@/lib/dbWake";
 import { utcDayKey } from "@/lib/dailyCard";
 import type { PlanId } from "@/lib/plans";
 
@@ -70,7 +71,10 @@ async function sendReadingReminders() {
       break;
     }
 
-    const users = await prisma.user.findMany({
+    // Wrapped because the compute has usually been asleep and this is the call
+    // that wakes it. See lib/dbWake.ts.
+    const users = await withDbWake("reading-reminder", () =>
+      prisma.user.findMany({
       where: {
         readingReminder: true,
         email: { not: null },
@@ -96,7 +100,8 @@ async function sendReadingReminders() {
       },
       orderBy: { id: "asc" },
       take: BATCH_SIZE,
-    });
+      })
+    );
 
     if (users.length === 0) break;
 
