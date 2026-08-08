@@ -19,7 +19,7 @@ describe("withDbWake", () => {
     expect(work).toHaveBeenCalledTimes(1);
   });
 
-  it("retries once when the database is unreachable, and succeeds", async () => {
+  it("retries when the database is unreachable, and succeeds", async () => {
     const unreachable = Object.assign(
       new Error("Can't reach database server at ep-x.eu-central-1.aws.neon.tech"),
       { code: "P1001" }
@@ -31,6 +31,25 @@ describe("withDbWake", () => {
 
     await expect(promise).resolves.toBe("rows");
     expect(work).toHaveBeenCalledTimes(2);
+  });
+
+  it("survives a wake slower than the first retry", async () => {
+    // The 2026-08-08 failure: one retry after 3s was not enough, both attempts
+    // died inside the same slow start. The second gap has to outlast it.
+    const unreachable = Object.assign(new Error("Can't reach database server"), {
+      code: "P1001",
+    });
+    const work = vi
+      .fn()
+      .mockRejectedValueOnce(unreachable)
+      .mockRejectedValueOnce(unreachable)
+      .mockResolvedValue("rows");
+
+    const promise = withDbWake("test", work);
+    await vi.advanceTimersByTimeAsync(11000);
+
+    await expect(promise).resolves.toBe("rows");
+    expect(work).toHaveBeenCalledTimes(3);
   });
 
   it("does NOT retry a real query error", async () => {
@@ -47,7 +66,7 @@ describe("withDbWake", () => {
     expect(work).toHaveBeenCalledTimes(1);
   });
 
-  it("gives up after the second failure so a real outage still alerts", async () => {
+  it("gives up after three attempts so a real outage still alerts", async () => {
     const unreachable = Object.assign(new Error("Can't reach database server"), {
       code: "P1001",
     });
@@ -57,10 +76,10 @@ describe("withDbWake", () => {
     const assertion = expect(promise).rejects.toThrow(
       "Can't reach database server"
     );
-    await vi.advanceTimersByTimeAsync(3000);
+    await vi.advanceTimersByTimeAsync(11000);
     await assertion;
 
-    expect(work).toHaveBeenCalledTimes(2);
+    expect(work).toHaveBeenCalledTimes(3);
   });
 
   it("recognises an initialization error with no code", async () => {

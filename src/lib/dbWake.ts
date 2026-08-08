@@ -49,7 +49,17 @@ function isConnectionError(err: unknown): boolean {
   );
 }
 
-const WAKE_DELAY_MS = 3000;
+/**
+ * Backoff between attempts. Three tries, not two.
+ *
+ * The first version retried once after 3 seconds and still lost runs on
+ * 2026-08-08: both attempts failed inside the same slow wake. Prisma's default
+ * connect timeout is 5 seconds, so a compute taking longer than that to come
+ * back refuses both attempts identically. The connection string now carries
+ * connect_timeout=15, and the gaps here are wide enough to outlast a slow start
+ * rather than hammering a door that is still opening.
+ */
+const WAKE_DELAYS_MS = [3000, 8000];
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -69,19 +79,24 @@ export async function withDbWake<T>(
   job: string,
   work: () => Promise<T>
 ): Promise<T> {
-  try {
-    return await work();
-  } catch (err) {
-    if (!isConnectionError(err)) throw err;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await work();
+    } catch (err) {
+      // A query that REACHED the database and failed is a real bug. Retrying it
+      // wastes seconds and then reports the same failure, later.
+      if (!isConnectionError(err)) throw err;
 
-    console.warn(
-      `[db-wake] ${job}: database unreachable, retrying once in ${WAKE_DELAY_MS}ms`,
-      err
-    );
-    await sleep(WAKE_DELAY_MS);
+      // Out of retries: this is not a sleeping compute, and the caller's crash
+      // guard must report it rather than us swallowing a genuine outage.
+      if (attempt >= WAKE_DELAYS_MS.length) throw err;
 
-    // No second catch: if the retry fails too, this is not a sleeping compute
-    // and the caller's crash guard must report it.
-    return work();
+      const delay = WAKE_DELAYS_MS[attempt]!;
+      console.warn(
+        `[db-wake] ${job}: database unreachable, retry ${attempt + 1} of ${WAKE_DELAYS_MS.length} in ${delay}ms`,
+        err
+      );
+      await sleep(delay);
+    }
   }
 }
