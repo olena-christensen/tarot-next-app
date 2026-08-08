@@ -6,6 +6,7 @@ import { chargeByToken, LEDGER_CURRENCY, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
 import { runCronJob } from "@/lib/cronJob";
+import { withDbWake } from "@/lib/dbWake";
 
 // Daily renewal cron. Vercel attaches `Authorization: Bearer ${CRON_SECRET}`
 // automatically when CRON_SECRET is set, so we reject anything else — without
@@ -52,9 +53,13 @@ export async function GET(req: Request) {
 
 async function renewDueSubscriptions() {
   const now = new Date();
-  const subs = await prisma.subscription.findMany({
-    where: { planId: { in: ["MONTHLY", "YEARLY"] } },
-  });
+  // First query of the run — wrapped because at this traffic the compute is
+  // usually asleep and this is the call that wakes it. See lib/dbWake.ts.
+  const subs = await withDbWake("renew", () =>
+    prisma.subscription.findMany({
+      where: { planId: { in: ["MONTHLY", "YEARLY"] } },
+    })
+  );
 
   let charged = 0;
   let downgraded = 0;

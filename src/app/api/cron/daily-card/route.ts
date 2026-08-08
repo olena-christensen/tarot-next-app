@@ -11,6 +11,7 @@ import { sendDailyCardEmail } from "@/lib/mailer";
 import { alertOnJobFailures } from "@/lib/alert";
 import { recordHeartbeat } from "@/lib/heartbeat";
 import { runCronJob } from "@/lib/cronJob";
+import { withDbWake } from "@/lib/dbWake";
 import { DEFAULT_DECK } from "@/lib/decks";
 import type { PlanId } from "@/lib/plans";
 
@@ -83,7 +84,10 @@ async function sendDailyCards() {
       break;
     }
 
-    const users = await prisma.user.findMany({
+    // Wrapped because at 02:00 the compute has usually been asleep for hours and
+    // this is the call that wakes it. See lib/dbWake.ts.
+    const users = await withDbWake("daily-card", () =>
+      prisma.user.findMany({
       where: {
         dailyCardEmail: true,
         email: { not: null },
@@ -105,7 +109,8 @@ async function sendDailyCards() {
       },
       orderBy: { id: "asc" },
       take: BATCH_SIZE,
-    });
+      })
+    );
 
     if (users.length === 0) break;
 

@@ -24,6 +24,16 @@ Mobile-first, mobile-first, mobile-first. If you are about to write a
 
 ## Rules
 
+### Before touching `docs/STATUS.md`:
+
+**Read and follow `.claude/skills/task-doc/SKILL.md`.** Not optional and not a style
+preference. That file holds the shape rule for the task list — one line per item, verb
+first, wraps in the editor means it is wrong — plus where detail goes instead, and why
+nothing addressed to a future assistant belongs in the owner's list.
+
+The rule exists because it was broken repeatedly: every violation cost the owner time
+reading prose that was written for the writer's benefit, not the reader's.
+
 ### Before upgrading ANY dependency:
 1. State clearly what version is currently installed and what version you want to install
 2. List every breaking change between those versions

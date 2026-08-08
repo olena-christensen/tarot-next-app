@@ -10,6 +10,7 @@ import {
   recordHeartbeat,
 } from "@/lib/heartbeat";
 import { runCronJob } from "@/lib/cronJob";
+import { withDbWake } from "@/lib/dbWake";
 
 // Reconciliation sweep. A payment only activates when mono delivers its webhook;
 // if that delivery is ever lost, the Payment ledger row (and its Subscription)
@@ -66,13 +67,17 @@ async function reconcileSweep() {
   const stuckBefore = new Date(now.getTime() - STUCK_MS);
   const giveUpBefore = new Date(now.getTime() - WINDOW_MS);
 
-  const stuck = await prisma.payment.findMany({
-    where: {
-      status: { in: ["created", "processing"] },
-      createdAt: { lt: stuckBefore, gte: giveUpBefore },
-    },
-    select: { monoInvoiceId: true },
-  });
+  // First query of the run — wrapped because at this traffic the compute is
+  // usually asleep and this is the call that wakes it. See lib/dbWake.ts.
+  const stuck = await withDbWake("reconcile", () =>
+    prisma.payment.findMany({
+      where: {
+        status: { in: ["created", "processing"] },
+        createdAt: { lt: stuckBefore, gte: giveUpBefore },
+      },
+      select: { monoInvoiceId: true },
+    })
+  );
 
   let reconciled = 0;
   let stillPending = 0;
