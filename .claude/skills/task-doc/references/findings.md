@@ -47,6 +47,13 @@ to kill a run before it can report.
 turns monitoring into an overspend and then a suspension. Check the interval against the
 sleep timeout.
 
+**Check the function region against the database region before blaming the database.**
+Vercel puts serverless functions in Washington unless the project says otherwise. A database
+in Frankfurt then means every query crosses the Atlantic — slow, and dropping often enough
+to kill a job every few hours. Every symptom looks like an unreliable database. The response
+header `x-vercel-id` names the region the function actually ran in. Fixing it took one line
+and cut a trivial query from 1895 ms to 304 ms.
+
 ## Email
 
 **A cron that mails the first page and returns a cursor nobody calls back with** silently

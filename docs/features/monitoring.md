@@ -63,8 +63,42 @@ suspended until the next billing period**. Monitoring would cause a multi-day ou
 At 30 minutes it costs about 36 compute-unit-hours a month, on top of roughly 28 from real
 traffic and the hourly cron. Comfortable under 100.
 
+## The actual cause of the repeated outages, 2026-08-08
+
+After the crash guard landed, the same failure kept arriving: "Can't reach database server",
+several times a day, with usage at 5.6 of 100 compute-unit-hours and no Neon incident.
+
+The health endpoint's own response header gave it away. `x-vercel-id: fra1::iad1::…` — the
+request entered at Frankfurt and the **function executed in `iad1`, Washington**. The
+database is in `eu-central-1`, Frankfurt. Every query crossed the Atlantic and back.
+
+Nobody chose that. Vercel puts serverless functions in `iad1` unless the project says
+otherwise; the database went to Frankfurt because that is where the audience is. Two
+defaults, never reconciled, since the project was created.
+
+**Fix:** `"regions": ["fra1"]` in `vercel.json`. Requires the Pro plan; on Hobby the region
+is fixed.
+
+**Measured:** `SELECT 1` through the health endpoint went from 1895 ms to 304 ms, and the
+compute slot in `x-vercel-id` changed from `iad1` to `fra1`.
+
+**Check this first on any new project.** A long, fragile link fails far more often than a
+short one, and every symptom it produces looks like the database being unreliable.
+
+## Retrying a sleeping compute
+
+`src/lib/dbWake.ts` — `withDbWake(job, work)` wraps the FIRST query of each cron job. One
+retry, after 3 seconds, on connection failures only. A query that reaches the database and
+fails still surfaces immediately; retrying a constraint violation would hide a bug instead
+of an outage.
+
+Two attempts, not five: this covers a cold start, not an outage. If the second fails, the
+crash guard reports it and the run still counts as missed.
+
 ## Known weakness
 
-A stale-job alert repeats once an hour for as long as the job stays dead. A job down for 37
-hours does not need telling 37 times. It should alert on the transition and then at most
-daily.
+Stale-job alerts now throttle to once per day (`STALE_JOB_THROTTLE` in `src/lib/alert.ts`,
+keyed on the `heartbeat:` prefix). Alerts about a job actively failing stay hourly, because
+each of those is new information; a stale heartbeat is the same fact restated.
+
+Still imperfect: it alerts daily rather than on the transition from healthy to stale.
