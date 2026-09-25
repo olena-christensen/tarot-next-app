@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   // silently drops the property when the tag disappears.
   verification: {
     google: "nUZQLHYx7Ffqrw2ljqs70-iHqhcUUlq8NJ3MaGUqp-Y",
+    // Pinterest website claim, added 2026-09-25. Do not remove — Pinterest
+    // re-checks and unclaims the site if the tag disappears.
+    other: {
+      "p:domain_verify": "86e5dcbbdac79f946b53c778a2f847cb",
+    },
   },
 };
 
