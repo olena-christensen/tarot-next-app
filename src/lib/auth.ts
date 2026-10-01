@@ -309,5 +309,9 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/",
+    // First Google sign-in creates the account: land the newcomer on their
+    // profile instead of the home page (her call, 2026-10-01). Returning users
+    // still go to callbackUrl ("/"). Middleware adds the locale prefix.
+    newUser: "/profile",
   },
 };
