@@ -206,6 +206,10 @@
     "buyMoonstonesAria": "Buy {count, plural, one {# moonstone} other {# moonstones}}",
     "buyMoonstonesTitle": "Buy moonstones",
     "moonstonesPackLabel": "Number of moonstones",
-    "googleNotLinked": "This email already has an account. Sign in with your password once and confirm your email — after that, Google sign-in works too."
+    "googleNotLinked": "This email already has an account. Sign in with your password once and confirm your email — after that, Google sign-in works too.",
+    "welcomeConsentLead": "Welcome, {name}. Before your first reading, one small rite.",
+    "welcomeConsentLeadNoName": "Welcome. Before your first reading, one small rite.",
+    "sealThePact": "Seal the Pact",
+    "welcomeSignOut": "Not now — sign out"
   }
 }

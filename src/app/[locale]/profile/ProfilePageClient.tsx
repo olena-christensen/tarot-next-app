@@ -6,6 +6,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useEffect } from "react";
 import { PageShell } from "@/components/PageShell";
 import { UserProfile } from "@/components/UserProfile";
+import { WelcomeConsent } from "@/components/WelcomeConsent";
 
 function ProfileContent() {
   const { data: session, status } = useSession();
@@ -27,6 +28,7 @@ function ProfileContent() {
           persists across an update(), so this stays mounted; unauthenticated is
           handled by the redirect effect above. */}
       {session?.user ? <UserProfile /> : null}
+      {session?.user ? <WelcomeConsent /> : null}
     </main>
   );
 }

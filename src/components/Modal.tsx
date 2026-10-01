@@ -13,9 +13,14 @@ type ModalProps = {
   wide?: boolean;
   /** Narrower than the 740px default, for dialogs holding a single short control. */
   narrow?: boolean;
+  /**
+   * false = no close button and no close on backdrop click: the user must act
+   * inside the dialog (used by the first-sign-in consent window).
+   */
+  dismissible?: boolean;
 };
 
-export const Modal = ({ isOpen, onClose, title, children, wide, narrow }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissible = true }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -36,14 +41,16 @@ export const Modal = ({ isOpen, onClose, title, children, wide, narrow }: ModalP
   // Portal to body so the modal escapes any parent stacking context (e.g. the
   // fixed .tarot-modal) and layers globally above the overlay footer.
   return createPortal(
-    <div className="modal" onClick={onClose}>
+    <div className="modal" onClick={dismissible ? onClose : undefined}>
       <div
         className={`modal__content${wide ? " modal__content--wide" : ""}${narrow ? " modal__content--narrow" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal__close" onClick={onClose}>
-          <Skull />
-        </button>
+        {dismissible && (
+          <button className="modal__close" onClick={onClose}>
+            <Skull />
+          </button>
+        )}
         {title && <h2 className="title title--secondary modal__title">{title}</h2>}
         {children}
       </div>
