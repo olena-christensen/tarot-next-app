@@ -10,6 +10,8 @@ import {
   type MoonstonePackId,
 } from "@/lib/moonstones";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
+import { Link } from "@/i18n/navigation";
+import { isMoonstonePack } from "@/lib/moonstones";
 
 // What a CTA on this page can buy: a recurring plan or a moonstone pack. Both
 // go through the same create-invoice call.
@@ -40,6 +42,9 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   // button and shows a busy label; other buttons stay clickable.
   const [busyPlan, setBusyPlan] = useState<Purchasable | null>(null);
   const [error, setError] = useState(false);
+  // Set while the user pays in mono's tab (or the monobank app): this tab then
+  // shows the waiting screen and polls until the payment settles.
+  const [waiting, setWaiting] = useState<{ product: Purchasable; pageUrl: string } | null>(null);
   // Distinct from `error`: an unverified address is a fixable state with its own
   // action, not a generic failure.
   const [needsVerify, setNeedsVerify] = useState(false);
@@ -104,6 +109,15 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     setBusyPlan(planId);
     setError(false);
     setNeedsVerify(false);
+    // Open mono's tab NOW, inside the click, so the browser does not block it as
+    // a pop-up; it gets its address once the invoice exists. Paying in the
+    // monobank app (QR / phone) never redirects any browser back to us, so the
+    // user must keep a tab of ours that notices the payment by itself.
+    const payWin = window.open("", "_blank");
+    if (payWin) payWin.opener = null;
+    const closePayWin = () => {
+      if (payWin && !payWin.closed) payWin.close();
+    };
     try {
       const res = await fetch("/api/payments/create-invoice", {
         method: "POST",
@@ -115,6 +129,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
 
       if (res.status === 401) {
         // Not signed in — hand off to the branded login modal instead of failing.
+        closePayWin();
         openLogin();
         setBusyPlan(null);
         return;
@@ -123,6 +138,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
       if (res.status === 403) {
         const data = await res.json().catch(() => ({}));
         if (data?.error === "email_not_verified") {
+          closePayWin();
           setNeedsVerify(true);
           setBusyPlan(null);
           return;
@@ -130,6 +146,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
       }
 
       if (!res.ok) {
+        closePayWin();
         setError(true);
         setBusyPlan(null);
         return;
@@ -137,19 +154,39 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
 
       const { pageUrl } = (await res.json()) as { pageUrl?: string };
       if (!pageUrl) {
+        closePayWin();
         setError(true);
         setBusyPlan(null);
         return;
       }
 
-      // Leave busyPlan set: the button stays in its busy state through the
-      // full-page navigation to Mono's hosted payment page.
+      if (payWin && !payWin.closed) {
+        payWin.location.href = pageUrl;
+        setWaiting({ product: planId, pageUrl });
+        setBusyPlan(null);
+        return;
+      }
+
+      // Pop-up blocked: fall back to the old same-tab flow. Mono's redirect then
+      // lands on /payment/result, which polls the same way.
+      // Leave busyPlan set: the button stays busy through the navigation.
       window.location.assign(pageUrl);
     } catch {
+      closePayWin();
       setError(true);
       setBusyPlan(null);
     }
   };
+
+  if (waiting) {
+    return (
+      <PaymentWaiting
+        product={waiting.product}
+        pageUrl={waiting.pageUrl}
+        onClose={() => setWaiting(null)}
+      />
+    );
+  }
 
   return (
     <section className="subscription">
@@ -397,6 +434,148 @@ function MoonstoneBuyRow({ busy, disabled, onBuy }: MoonstoneBuyRowProps) {
       >
         {busy === selected ? t("processingBtn") : t("buyMoonstonesBtn")}
       </button>
+    </div>
+  );
+}
+
+// ── Waiting for a payment made in mono's tab or the monobank app ──
+
+type WaitPhase = "waiting" | "success" | "failed" | "slow";
+
+// Every 4s for up to 15 minutes, then "still confirming" with a manual re-check.
+// Bounded so an abandoned tab does not keep the database awake for the hour
+// mono's invoice stays valid.
+const WAIT_POLL_MS = 4000;
+const WAIT_MAX_ATTEMPTS = 225;
+
+type PaymentWaitingProps = {
+  product: Purchasable;
+  pageUrl: string;
+  onClose: () => void;
+};
+
+function PaymentWaiting({ product, pageUrl, onClose }: PaymentWaitingProps) {
+  const t = useTranslations("payment");
+  const [phase, setPhase] = useState<WaitPhase>("waiting");
+  const [credits, setCredits] = useState(0);
+  const [nonce, setNonce] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    let attempts = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    setPhase("waiting");
+
+    const poll = async () => {
+      attempts += 1;
+      try {
+        const res = await fetch("/api/user/plan", { cache: "no-store" });
+        if (cancelled) return;
+        if (res.ok) {
+          const data = await res.json();
+          if (cancelled) return;
+          if (data.paymentStatus === "success") {
+            setCredits(data.readingCredits ?? 0);
+            setPhase("success");
+            return;
+          }
+          if (["failure", "reversed", "expired"].includes(data.paymentStatus)) {
+            setPhase("failed");
+            return;
+          }
+        }
+      } catch {
+        // Network hiccup — try again on the next tick.
+      }
+      if (cancelled) return;
+      if (attempts >= WAIT_MAX_ATTEMPTS) {
+        setPhase("slow");
+        return;
+      }
+      timer = setTimeout(poll, WAIT_POLL_MS);
+    };
+
+    timer = setTimeout(poll, WAIT_POLL_MS);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [nonce]);
+
+  const isPack = isMoonstonePack(product);
+
+  return (
+    <div className="payment-result payment-result--inline" role="status" aria-live="polite">
+      <div className="payment-result__inner">
+        {phase === "waiting" && (
+          <>
+            <div className="payment-result__spinner" aria-hidden="true" />
+            <h2 className="payment-result__title">{t("waitingTitle")}</h2>
+            <p className="payment-result__message">{t("waitingMessage")}</p>
+            <div className="payment-result__actions">
+              <button
+                type="button"
+                className="payment-result__text-link"
+                onClick={() => window.open(pageUrl, "_blank", "noopener")}
+              >
+                {t("reopenPayment")}
+              </button>
+              <button type="button" className="payment-result__text-link" onClick={onClose}>
+                {t("cancelWaiting")}
+              </button>
+            </div>
+          </>
+        )}
+
+        {phase === "success" && (
+          <>
+            {isPack && (
+              <MoonstoneIcon className="payment-result__icon" aria-hidden="true" />
+            )}
+            <h2 className="payment-result__title">
+              {isPack ? t("creditAddedTitle") : t("subActiveTitle")}
+            </h2>
+            <p className="payment-result__message">
+              {isPack
+                ? t("creditAddedMessage", { count: credits })
+                : product === "YEARLY"
+                  ? t("subActiveYearly")
+                  : t("subActiveMonthly")}
+            </p>
+            <Link className="payment-result__link" href="/">
+              {t("backToCards")}
+            </Link>
+          </>
+        )}
+
+        {phase === "failed" && (
+          <>
+            <h2 className="payment-result__title">{t("failedTitle")}</h2>
+            <p className="payment-result__message">{t("failedMessage")}</p>
+            <button
+              type="button"
+              className="payment-result__link payment-result__link--button"
+              onClick={onClose}
+            >
+              {t("tryAgain")}
+            </button>
+          </>
+        )}
+
+        {phase === "slow" && (
+          <>
+            <h2 className="payment-result__title">{t("processingTitle")}</h2>
+            <p className="payment-result__message">{t("processingMessage")}</p>
+            <button
+              type="button"
+              className="payment-result__link payment-result__link--button"
+              onClick={() => setNonce((n) => n + 1)}
+            >
+              {t("checkAgain")}
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
