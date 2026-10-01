@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { OfferBlock } from "@/components/OfferBlock";
 import { Tarot } from "@/components/Tarot";
@@ -25,6 +25,23 @@ function HomeFooter() {
 export function HomePageClient() {
   const t = useTranslations("ui");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [loginNotice, setLoginNotice] = useState<string | undefined>();
+
+  // A refused Google sign-in lands here as /?error=… (pages.signIn in auth.ts).
+  // Open the login modal with an explanation instead of failing silently, then
+  // drop the query so a refresh does not reopen it.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const authError = params.get("error");
+    if (authError === "GoogleNotLinked" || authError === "OAuthAccountNotLinked") {
+      setLoginNotice(t("googleNotLinked"));
+      setIsLoginOpen(true);
+      params.delete("error");
+      params.delete("callbackUrl");
+      const qs = params.toString();
+      window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : ""));
+    }
+  }, [t]);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [gateReason, setGateReason] = useState<GateReason | null>(null);
 
@@ -56,7 +73,7 @@ export function HomePageClient() {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
       >
-        <LoginForm onSuccess={() => setIsLoginOpen(false)} />
+        <LoginForm notice={loginNotice} onSuccess={() => setIsLoginOpen(false)} />
       </Modal>
       <SubscriptionModal
         isOpen={isSubscriptionOpen}

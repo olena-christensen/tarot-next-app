@@ -205,6 +205,7 @@
     "buyMoonstonesBtn": "Satın Al",
     "buyMoonstonesAria": "{count} ay taşı satın al",
     "buyMoonstonesTitle": "Ay Taşı Satın Al",
-    "moonstonesPackLabel": "Ay taşı sayısı"
+    "moonstonesPackLabel": "Ay taşı sayısı",
+    "googleNotLinked": "Bu e-posta adresinin zaten bir hesabı var. Bir kez şifrenizle giriş yapıp e-postanızı onaylayın — bundan sonra Google ile giriş de çalışır."
   }
 }

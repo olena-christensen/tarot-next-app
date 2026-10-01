@@ -205,6 +205,7 @@
     "buyMoonstonesBtn": "Buy",
     "buyMoonstonesAria": "Buy {count, plural, one {# moonstone} other {# moonstones}}",
     "buyMoonstonesTitle": "Buy moonstones",
-    "moonstonesPackLabel": "Number of moonstones"
+    "moonstonesPackLabel": "Number of moonstones",
+    "googleNotLinked": "This email already has an account. Sign in with your password once and confirm your email — after that, Google sign-in works too."
   }
 }
