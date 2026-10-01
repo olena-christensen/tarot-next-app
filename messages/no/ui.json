@@ -201,11 +201,10 @@
       "backHome": "Tilbake til helligdommen"
     },
     "moonstonesTitle": "Månesteiner",
-    "moonstonesBody": "Valutaen i The Veil. Bruk dem på en lesning når dagens lesninger er brukt opp, og på mer av The Veil etter hvert som den vokser: nye kortstokker, ritualer og andre skatter. De falmer aldri, og du trenger ikke abonnement.",
-    "moonstonesUnit": "{count, plural, one {månestein} other {månesteiner}}",
     "moonstonesCount": "{count, plural, one {# månestein} other {# månesteiner}}",
-    "moonstonesBest": "Best for de fleste",
     "buyMoonstonesBtn": "Kjøp",
-    "buyMoonstonesAria": "Kjøp {count, plural, one {# månestein} other {# månesteiner}}"
+    "buyMoonstonesAria": "Kjøp {count, plural, one {# månestein} other {# månesteiner}}",
+    "buyMoonstonesTitle": "Kjøp månesteiner",
+    "moonstonesPackLabel": "Antall månesteiner"
   }
 }

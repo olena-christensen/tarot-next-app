@@ -201,11 +201,10 @@
       "backHome": "Back to the sanctum"
     },
     "moonstonesTitle": "Moonstones",
-    "moonstonesBody": "The currency of The Veil. Spend them on a reading whenever your daily ones run out, and on more of The Veil as it grows: new decks, rituals and other treasures. They never fade, and no subscription is needed.",
-    "moonstonesUnit": "{count, plural, one {moonstone} other {moonstones}}",
     "moonstonesCount": "{count, plural, one {# moonstone} other {# moonstones}}",
-    "moonstonesBest": "Best for most",
     "buyMoonstonesBtn": "Buy",
-    "buyMoonstonesAria": "Buy {count, plural, one {# moonstone} other {# moonstones}}"
+    "buyMoonstonesAria": "Buy {count, plural, one {# moonstone} other {# moonstones}}",
+    "buyMoonstonesTitle": "Buy moonstones",
+    "moonstonesPackLabel": "Number of moonstones"
   }
 }
