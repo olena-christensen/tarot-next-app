@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PLAN_ORDER, PLANS, type Plan, type PlanId } from "@/lib/plans";
 import { useTranslations, useLocale } from "next-intl";
 import { useOpenLogin } from "@/components/LoginContext";
@@ -258,50 +258,15 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
         </div>
 
         {/*
-          Moonstones — a currency, not a step between tiers, so they sit in their
-          own section under the plans rather than as a card among them.
+          Moonstones — a currency, not a step between tiers, so they sit in one
+          compact row under the plans: title, pack dropdown, live price, Buy.
+          Kept to a single row so the whole page fits one laptop screen.
         */}
-        <div className="subscription__divider" aria-hidden="true">
-          <span />
-          <MoonstoneIcon className="subscription__moonstone subscription__moonstone--divider" />
-          <span />
-        </div>
-        <header className="subscription__moon-header">
-          <h2 className="subscription__moon-title">{t("moonstonesTitle")}</h2>
-          <p className="subscription__moon-text">{t("moonstonesBody")}</p>
-        </header>
-        <div className="subscription__packs">
-          {MOONSTONE_PACK_ORDER.map((id) => {
-            const pack = MOONSTONE_PACKS[id];
-            const isBusy = busyPlan === id;
-            return (
-              <article
-                key={id}
-                className={`subscription__card subscription__pack${pack.highlight ? " subscription__card--popular" : ""}`}
-              >
-                {pack.highlight && (
-                  <span className="subscription__badge">{t("moonstonesBest")}</span>
-                )}
-                <MoonstoneIcon className="subscription__moonstone subscription__moonstone--pack" aria-hidden="true" />
-                <div className="subscription__pack-qty">{pack.qty}</div>
-                <div className="subscription__pack-unit">
-                  {t("moonstonesUnit", { count: pack.qty })}
-                </div>
-                <div className="subscription__pack-price">€{pack.priceEur}</div>
-                <button
-                  type="button"
-                  className="subscription__cta"
-                  disabled={Boolean(busyPlan)}
-                  aria-busy={isBusy}
-                  aria-label={t("buyMoonstonesAria", { count: pack.qty })}
-                  onClick={() => handleSubscribe(id)}
-                >
-                  {isBusy ? t("processingBtn") : t("buyMoonstonesBtn")}
-                </button>
-              </article>
-            );
-          })}
-        </div>
+        <MoonstoneBuyRow
+          busy={busyPlan}
+          disabled={Boolean(busyPlan)}
+          onBuy={(id) => handleSubscribe(id)}
+        />
 
         {/*
           Required disclosure, not decoration: the price tags say euros but the
@@ -346,3 +311,92 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     </section>
   );
 };
+
+type MoonstoneBuyRowProps = {
+  busy: Purchasable | null;
+  disabled: boolean;
+  onBuy: (id: MoonstonePackId) => void;
+};
+
+// Custom listbox rather than a native <select>: the options carry the
+// moonstone icon, which a native option cannot render.
+function MoonstoneBuyRow({ busy, disabled, onBuy }: MoonstoneBuyRowProps) {
+  const t = useTranslations("ui");
+  const defaultPack =
+    MOONSTONE_PACK_ORDER.find((id) => MOONSTONE_PACKS[id].highlight) ??
+    MOONSTONE_PACK_ORDER[0];
+  const [selected, setSelected] = useState<MoonstonePackId>(defaultPack);
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const pack = MOONSTONE_PACKS[selected];
+
+  // Close on an outside click or Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="subscription__buy-row">
+      <span className="subscription__buy-title">
+        <MoonstoneIcon className="subscription__moonstone subscription__moonstone--title" aria-hidden="true" />
+        {t("buyMoonstonesTitle")}
+      </span>
+      <div className="subscription__dd" ref={rootRef}>
+        <button
+          type="button"
+          className="subscription__dd-btn"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-label={t("moonstonesPackLabel")}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <MoonstoneIcon className="subscription__moonstone" aria-hidden="true" />
+          {pack.qty}
+          <span className="subscription__dd-caret" aria-hidden="true">▾</span>
+        </button>
+        {open && (
+          <ul className="subscription__dd-list" role="listbox" aria-label={t("moonstonesPackLabel")}>
+            {MOONSTONE_PACK_ORDER.map((id) => (
+              <li key={id} role="option" aria-selected={id === selected}>
+                <button
+                  type="button"
+                  className={`subscription__dd-opt${id === selected ? " subscription__dd-opt--on" : ""}`}
+                  onClick={() => {
+                    setSelected(id);
+                    setOpen(false);
+                  }}
+                >
+                  <MoonstoneIcon className="subscription__moonstone" aria-hidden="true" />
+                  {MOONSTONE_PACKS[id].qty}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <span className="subscription__buy-price">€{pack.priceEur}</span>
+      <button
+        type="button"
+        className="subscription__cta subscription__buy-cta"
+        disabled={disabled}
+        aria-busy={busy === selected}
+        aria-label={t("buyMoonstonesAria", { count: pack.qty })}
+        onClick={() => onBuy(selected)}
+      >
+        {busy === selected ? t("processingBtn") : t("buyMoonstonesBtn")}
+      </button>
+    </div>
+  );
+}

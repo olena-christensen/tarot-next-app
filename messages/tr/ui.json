@@ -201,11 +201,10 @@
       "backHome": "Mabede geri dön"
     },
     "moonstonesTitle": "Ay Taşları",
-    "moonstonesBody": "The Veil'in para birimi. Günlük fallarınız bittiğinde bir fal için harcayın; The Veil büyüdükçe yeni desteler, ritüeller ve diğer hazineler için de. Asla solmazlar ve abonelik gerekmez.",
-    "moonstonesUnit": "ay taşı",
     "moonstonesCount": "{count} ay taşı",
-    "moonstonesBest": "Çoğu kişi için en iyisi",
     "buyMoonstonesBtn": "Satın Al",
-    "buyMoonstonesAria": "{count} ay taşı satın al"
+    "buyMoonstonesAria": "{count} ay taşı satın al",
+    "buyMoonstonesTitle": "Ay Taşı Satın Al",
+    "moonstonesPackLabel": "Ay taşı sayısı"
   }
 }

@@ -16,14 +16,14 @@
 
   &__header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: 32px;
   }
 
   &__title {
     font-size: 1.9rem;
     font-weight: var(--font-weight);
     letter-spacing: 0.04em;
-    margin: 0 0 16px;
+    margin: 0 0 10px;
     color: var(--primary);
   }
 
@@ -48,7 +48,7 @@
     background: rgba(9, 9, 9, 0.6);
     border: var(--border);
     border-radius: var(--border-radius);
-    padding: 28px;
+    padding: 22px 26px;
     transition: border-color 0.2s ease;
 
     &--popular {
@@ -105,7 +105,7 @@
   &__card-price {
     font-size: 2.2rem;
     font-weight: var(--font-weight);
-    margin-bottom: 24px;
+    margin-bottom: 14px;
     color: var(--primary);
   }
 
@@ -118,13 +118,13 @@
   &__features {
     list-style: none;
     padding: 0;
-    margin: 0 0 28px;
+    margin: 0 0 16px;
     flex: 1;
   }
 
   &__feature {
     position: relative;
-    padding: 6px 0 6px 22px;
+    padding: 3px 0 3px 22px;
     font-size: 0.95rem;
     font-weight: var(--font-weight);
     color: var(--primary);
@@ -192,98 +192,116 @@
     font-size: 0.95rem;
   }
 
-  // ── Moonstones section (under the plans) ──
-  &__divider {
+  // ── Moonstones: one compact row under the plans ──
+  &__buy-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px 22px;
+    max-width: 620px;
+    margin: 22px auto 0;
+    padding: 12px 22px;
+    background: rgba(9, 9, 9, 0.6);
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+
+  &__buy-title {
     display: flex;
     align-items: center;
-    gap: 18px;
-    max-width: 520px;
-    margin: 72px auto 28px;
-
-    span {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-    }
+    gap: 10px;
+    margin-right: auto;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   &__moonstone {
     display: block;
     flex: none;
+    width: 18px;
+    height: 18px;
 
-    &--divider {
-      width: 30px;
-      height: 30px;
-    }
-
-    &--pack {
-      width: 44px;
-      height: 44px;
-      margin: 0 auto 14px;
+    &--title {
+      width: 24px;
+      height: 24px;
     }
   }
 
-  &__moon-header {
-    text-align: center;
+  &__dd {
+    position: relative;
   }
 
-  &__moon-title {
-    font-size: 1.6rem;
-    font-weight: var(--font-weight);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin: 0 0 14px;
-    color: var(--primary);
-  }
-
-  &__moon-text {
-    max-width: 620px;
-    margin: 0 auto 40px;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: var(--text-soft);
-  }
-
-  &__packs {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    max-width: 820px;
-    margin: 0 auto;
-  }
-
-  &__pack {
+  &__dd-btn,
+  &__dd-opt {
+    display: flex;
     align-items: center;
-    text-align: center;
-    padding: 30px 24px;
-
-    .subscription__cta {
-      width: 100%;
-    }
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    color: var(--primary);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: var(--font-weight);
+    cursor: pointer;
   }
 
-  &__pack-qty {
-    font-size: 2.6rem;
-    line-height: 1;
+  &__dd-btn {
+    min-width: 96px;
+    padding: 8px 12px;
+    border: var(--border);
+    border-radius: var(--border-radius);
   }
 
-  &__pack-unit {
-    margin: 6px 0 16px;
+  &__dd-caret {
+    margin-left: auto;
     font-size: 0.8rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
     color: var(--text-faint);
   }
 
-  &__pack-price {
+  // Opens upward: the row is the last thing on the page, so a list dropping
+  // down would fall off the bottom of a laptop screen.
+  &__dd-list {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    background: var(--grey-dark);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    z-index: 5;
+  }
+
+  &__dd-opt {
+    padding: 7px 8px;
+    border: none;
+    border-radius: 6px;
+
+    &:hover,
+    &--on {
+      background: rgba(250, 225, 163, 0.1);
+      color: var(--gold);
+    }
+  }
+
+  &__buy-price {
+    min-width: 56px;
     font-size: 1.6rem;
-    margin-bottom: 20px;
+    text-align: right;
+  }
+
+  &__buy-cta {
+    padding: 10px 26px;
   }
 
   // Currency disclosure. Quiet, but never hidden — it has to be readable before
   // the user pays, so no collapsing it behind a toggle.
   &__note {
-    margin: 24px auto 0;
+    margin: 16px auto 0;
     max-width: 52ch;
     text-align: center;
     font-size: 0.8rem;
@@ -301,23 +319,16 @@
   }
 
   @include respond-above(md) {
-    padding: 160px 0 100px;
+    padding: 156px 0 40px;
 
     &__title {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
     }
 
     &__grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    &__moon-title {
-      font-size: 1.9rem;
-    }
-
-    &__packs {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   @include respond-above(lg) {

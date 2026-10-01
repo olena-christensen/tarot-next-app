@@ -4,7 +4,9 @@
       "name": "Seeker",
       "features": [
         "3 readings per day",
-        "Resets at midnight"
+        "Resets at midnight",
+        "Deck: Rider-Waite",
+        "Diviner: Madame Vespera"
       ]
     },
     "SINGLE": {
