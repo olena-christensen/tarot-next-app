@@ -4,10 +4,14 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CCY_UAH, LEDGER_CURRENCY, PLAN_PRICES, monoFetch } from "@/lib/mono";
 import { routing } from "@/i18n/routing";
+import { MOONSTONE_PACKS, isMoonstonePack, type MoonstonePackId } from "@/lib/moonstones";
 
 type PaidPlanId = keyof typeof PLAN_PRICES;
 
-const PAID_PLANS: PaidPlanId[] = ["SINGLE", "MONTHLY", "YEARLY"];
+// SINGLE (the €1 "Offering") is no longer sold — moonstone packs replaced it
+// (2026-10-01). It stays in PLAN_PRICES and in applyMonoInvoiceStatus so an
+// invoice created before the switch still activates when it settles.
+const PAID_PLANS: PaidPlanId[] = ["MONTHLY", "YEARLY"];
 
 // Plans whose payments should tokenize the card for later recurring charges.
 const RECURRING_PLANS: PaidPlanId[] = ["MONTHLY", "YEARLY"];
@@ -33,10 +37,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  if (typeof planId !== "string" || !PAID_PLANS.includes(planId as PaidPlanId)) {
+  // `planId` carries either a recurring plan or a moonstone pack id — both are
+  // one product per invoice and share this whole flow.
+  if (
+    typeof planId !== "string" ||
+    !(PAID_PLANS.includes(planId as PaidPlanId) || isMoonstonePack(planId))
+  ) {
     return NextResponse.json({ error: "Invalid planId" }, { status: 400 });
   }
-  const plan = planId as PaidPlanId;
+  const plan = planId as PaidPlanId | MoonstonePackId;
+  const pack = isMoonstonePack(plan) ? MOONSTONE_PACKS[plan] : null;
 
   // Checkout is the ONE thing an unverified address blocks (decided 2026-08-04).
   // Reading tarot doesn't need a reachable address; charging someone whose
@@ -72,11 +82,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
   }
 
-  const amount = PLAN_PRICES[plan];
+  const amount = pack ? pack.priceMinorUah : PLAN_PRICES[plan as PaidPlanId];
   // Unique reference to correlate the webhook callback with this user + plan.
   const reference = `${userId}:${plan}:${Date.now()}`;
 
-  const lineItem = `The Veil — ${plan} subscription`;
+  const lineItem = pack
+    ? `The Veil — ${pack.qty} moonstones`
+    : `The Veil — ${plan} subscription`;
 
   // Charged in hryvnia even though the price is advertised in euros — mono only
   // fiscalizes 980. See CCY_UAH in lib/mono.ts.
@@ -107,7 +119,7 @@ export async function POST(request: Request) {
 
   // Tokenize the card for recurring plans so renewals can charge without the
   // user. Harmless to omit for one-time SINGLE purchases.
-  if (RECURRING_PLANS.includes(plan)) {
+  if (RECURRING_PLANS.includes(plan as PaidPlanId)) {
     payload.saveCardData = { saveCard: true };
   }
 

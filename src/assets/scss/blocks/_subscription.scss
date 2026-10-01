@@ -192,6 +192,94 @@
     font-size: 0.95rem;
   }
 
+  // ── Moonstones section (under the plans) ──
+  &__divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 520px;
+    margin: 72px auto 28px;
+
+    span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+    }
+  }
+
+  &__moonstone {
+    display: block;
+    flex: none;
+
+    &--divider {
+      width: 30px;
+      height: 30px;
+    }
+
+    &--pack {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 14px;
+    }
+  }
+
+  &__moon-header {
+    text-align: center;
+  }
+
+  &__moon-title {
+    font-size: 1.6rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    color: var(--primary);
+  }
+
+  &__moon-text {
+    max-width: 620px;
+    margin: 0 auto 40px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  &__packs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  &__pack {
+    align-items: center;
+    text-align: center;
+    padding: 30px 24px;
+
+    .subscription__cta {
+      width: 100%;
+    }
+  }
+
+  &__pack-qty {
+    font-size: 2.6rem;
+    line-height: 1;
+  }
+
+  &__pack-unit {
+    margin: 6px 0 16px;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  &__pack-price {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
   // Currency disclosure. Quiet, but never hidden — it has to be readable before
   // the user pays, so no collapsing it behind a toggle.
   &__note {
@@ -222,11 +310,19 @@
     &__grid {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    &__moon-title {
+      font-size: 1.9rem;
+    }
+
+    &__packs {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   @include respond-above(lg) {
     &__grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }

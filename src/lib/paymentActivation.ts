@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PLAN_PRICES, PLAN_PRICES_EUR } from "@/lib/mono";
+import { MOONSTONE_PACKS, isMoonstonePack } from "@/lib/moonstones";
 import { sendRenewalReceiptEmail, sendPaymentFailedEmail } from "@/lib/mailer";
 import type { Prisma } from "@/generated/prisma";
 
@@ -109,8 +110,12 @@ export async function applyMonoInvoiceStatus(
       pendingPlanId: null,
     };
 
-    if (pendingPlanId === "SINGLE") {
-      // Consumable credit — never changes the recurring tier (planId).
+    if (isMoonstonePack(pendingPlanId)) {
+      // Moonstone pack — adds to the balance, never changes the tier (planId).
+      data.readingCredits = { increment: MOONSTONE_PACKS[pendingPlanId].qty };
+    } else if (pendingPlanId === "SINGLE") {
+      // Legacy €1 "Offering" (no longer sold) — still honoured for invoices
+      // created before moonstones replaced it. One credit = one moonstone.
       data.readingCredits = { increment: 1 };
     } else if (pendingPlanId === "MONTHLY" || pendingPlanId === "YEARLY") {
       // Renewals extend from the PRIOR expiresAt (preserving the billing anchor

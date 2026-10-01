@@ -224,6 +224,19 @@
     }
   }
 
+  // Moonstone balance: the icon sits before the number, on one line.
+  .user-profile__moonstones {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .user-profile__moonstone {
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+
   // Name / Password editors now reuse the shared .form controls (matching the
   // auth modal) inside a portaled Modal — the bespoke .user-profile__edit /
   // __input / __edit-btn / __error / __success rules that lived here are gone.
