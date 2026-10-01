@@ -5,6 +5,7 @@ import enUi from "../../../messages/en/ui.json";
 import enPlans from "../../../messages/en/plans.json";
 import enReadings from "../../../messages/en/readings.json";
 import enDisclaimers from "../../../messages/en/disclaimers.json";
+import { Analytics } from "@vercel/analytics/next";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -27,6 +28,7 @@ export default function PrivacyLayout({
           {children}
           <CookieBanner />
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
