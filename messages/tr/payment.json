@@ -19,6 +19,12 @@
     "processingTitle": "Hâlâ onaylanıyor",
     "processingMessage": "Ödemeniz banka tarafından hâlâ onaylanıyor — bu biraz zaman alabilir. Satın alımınız onaylandığında otomatik olarak uygulanacak ve tekrar ücretlendirilmeyeceksiniz. Aşağıdan tekrar kontrol edin veya kısa süre sonra geri dönün; onaylanmadan önce bir okumaya başlarsanız kısa bir süre için abone olmanız istenebilir — birazdan tekrar deneyin.",
     "checkAgain": "Tekrar kontrol et",
-    "returnLink": "Perde'ye dön"
+    "returnLink": "Perde'ye dön",
+    "waitingTitle": "Ödemeniz bekleniyor",
+    "waitingMessage": "Ödemeyi monobank sekmesinde veya monobank uygulamasında tamamlayın. Ödeme geçer geçmez bu sayfa kendiliğinden güncellenir.",
+    "reopenPayment": "Ödeme sayfasını yeniden aç",
+    "cancelWaiting": "İptal",
+    "backToCards": "Kartlara dön",
+    "tryAgain": "Tekrar dene"
   }
 }

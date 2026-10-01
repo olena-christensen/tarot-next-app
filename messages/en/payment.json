@@ -19,6 +19,12 @@
     "processingTitle": "Still confirming",
     "processingMessage": "Your payment is still being confirmed by the bank — this can take a little while. Your purchase will be applied automatically once it clears, and you won't be charged again. Check again below, or come back shortly; if you start a reading before it clears you may briefly be asked to subscribe — just try again in a moment.",
     "checkAgain": "Check again",
-    "returnLink": "Return to The Veil"
+    "returnLink": "Return to The Veil",
+    "waitingTitle": "Waiting for your payment",
+    "waitingMessage": "Finish paying in the monobank tab or in the monobank app. This page updates by itself as soon as the payment clears.",
+    "reopenPayment": "Reopen the payment page",
+    "cancelWaiting": "Cancel",
+    "backToCards": "Back to the cards",
+    "tryAgain": "Try again"
   }
 }

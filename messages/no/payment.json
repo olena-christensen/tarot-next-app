@@ -19,6 +19,12 @@
     "processingTitle": "Bekrefter fortsatt",
     "processingMessage": "Betalingen din bekreftes fortsatt av banken — dette kan ta litt tid. Kjøpet ditt blir lagt til automatisk når det er klarert, og du blir ikke belastet igjen. Sjekk igjen nedenfor, eller kom tilbake snart; hvis du starter en lesning før den er klarert, kan du kortvarig bli bedt om å abonnere — bare prøv igjen om et øyeblikk.",
     "checkAgain": "Sjekk igjen",
-    "returnLink": "Tilbake til The Veil"
+    "returnLink": "Tilbake til The Veil",
+    "waitingTitle": "Venter på betalingen din",
+    "waitingMessage": "Fullfør betalingen i monobank-fanen eller i monobank-appen. Denne siden oppdateres av seg selv så snart betalingen er gjennomført.",
+    "reopenPayment": "Åpne betalingssiden igjen",
+    "cancelWaiting": "Avbryt",
+    "backToCards": "Tilbake til kortene",
+    "tryAgain": "Prøv igjen"
   }
 }
