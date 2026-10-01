@@ -14,9 +14,11 @@ const REMEMBERED_EMAIL_KEY = "theveil_remembered_email";
 
 type LoginFormProps = {
   onSuccess?: () => void;
+  /** Shown above the form when the modal was opened by a refused Google sign-in. */
+  notice?: string;
 };
 
-export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+export const LoginForm = ({ onSuccess, notice }: LoginFormProps) => {
   const t = useTranslations("ui");
   const tDisc = useTranslations("disclaimers");
   const locale = useLocale();
@@ -226,6 +228,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   return (
     <form className="form form--login" onSubmit={handleCredentialsSubmit}>
+      {notice && !isSignUp && (
+        <div className="form__error" role="alert">
+          {notice}
+        </div>
+      )}
       {isSignUp && (
         <div className="form__input-block">
           <label htmlFor="name" className="form__label">

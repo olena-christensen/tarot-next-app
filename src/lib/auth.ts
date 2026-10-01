@@ -42,6 +42,13 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // Lets someone who registered with email + password later sign in with
+      // Google on the same address (2026-10-01 — it used to fail silently with
+      // OAuthAccountNotLinked). Safe only because Google proves the address AND
+      // the signIn callback below refuses to link onto an UNVERIFIED password
+      // account — otherwise a squatter who registered your Gmail first would
+      // receive your Google sign-in.
+      allowDangerousEmailAccountLinking: true,
     }),
     CredentialsProvider({
       name: "credentials",
@@ -114,6 +121,25 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ account, profile }) {
+      if (account?.provider !== "google") return true;
+      const email = profile?.email?.toLowerCase();
+      // Google says whether it verified the address; never link on an unverified one.
+      if (!email || (profile as { email_verified?: boolean }).email_verified === false) {
+        return "/?error=GoogleNotLinked";
+      }
+      const existing = await prisma.user.findUnique({
+        where: { email },
+        select: {
+          emailVerified: true,
+          accounts: { where: { provider: "google" }, select: { id: true } },
+        },
+      });
+      // New user, or Google already linked: nothing to guard.
+      if (!existing || existing.accounts.length > 0) return true;
+      // Linking onto a password account: only once its owner proved the address.
+      return existing.emailVerified ? true : "/?error=GoogleNotLinked";
+    },
     async jwt({ token, user, trigger, session: updateData }) {
       if (user) {
         token.id = user.id;

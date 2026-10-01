@@ -205,6 +205,7 @@
     "buyMoonstonesBtn": "Купить",
     "buyMoonstonesAria": "Купить {count, plural, one {# лунный камень} few {# лунных камня} many {# лунных камней} other {# лунного камня}}",
     "buyMoonstonesTitle": "Купить лунные камни",
-    "moonstonesPackLabel": "Количество лунных камней"
+    "moonstonesPackLabel": "Количество лунных камней",
+    "googleNotLinked": "Для этого адреса уже есть аккаунт. Войдите один раз с паролем и подтвердите почту — после этого вход через Google тоже заработает."
   }
 }
