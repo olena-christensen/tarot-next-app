@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { buildAlternates, buildJsonLd } from "@/lib/seo";
 import { CookieBanner } from "@/components/CookieBanner";
+import { Analytics } from "@vercel/analytics/next";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -89,6 +90,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           {children}
           <CookieBanner />
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
