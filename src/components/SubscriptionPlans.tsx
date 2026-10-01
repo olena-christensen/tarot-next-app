@@ -4,6 +4,16 @@ import { useState, useEffect } from "react";
 import { PLAN_ORDER, PLANS, type Plan, type PlanId } from "@/lib/plans";
 import { useTranslations, useLocale } from "next-intl";
 import { useOpenLogin } from "@/components/LoginContext";
+import {
+  MOONSTONE_PACKS,
+  MOONSTONE_PACK_ORDER,
+  type MoonstonePackId,
+} from "@/lib/moonstones";
+import MoonstoneIcon from "@/assets/svg/moonstone.svg";
+
+// What a CTA on this page can buy: a recurring plan or a moonstone pack. Both
+// go through the same create-invoice call.
+type Purchasable = PlanId | MoonstonePackId;
 
 const intervalSuffix = (interval: Plan["interval"]): string => {
   switch (interval) {
@@ -28,7 +38,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
 
   // Which plan's invoice request is in flight (null = none). Disables that one
   // button and shows a busy label; other buttons stay clickable.
-  const [busyPlan, setBusyPlan] = useState<PlanId | null>(null);
+  const [busyPlan, setBusyPlan] = useState<Purchasable | null>(null);
   const [error, setError] = useState(false);
   // Distinct from `error`: an unverified address is a fixable state with its own
   // action, not a generic failure.
@@ -89,7 +99,7 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     }
   };
 
-  const handleSubscribe = async (planId: PlanId) => {
+  const handleSubscribe = async (planId: Purchasable) => {
     if (busyPlan) return;
     setBusyPlan(planId);
     setError(false);
@@ -241,6 +251,52 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
                   }
                 >
                   {label}
+                </button>
+              </article>
+            );
+          })}
+        </div>
+
+        {/*
+          Moonstones — a currency, not a step between tiers, so they sit in their
+          own section under the plans rather than as a card among them.
+        */}
+        <div className="subscription__divider" aria-hidden="true">
+          <span />
+          <MoonstoneIcon className="subscription__moonstone subscription__moonstone--divider" />
+          <span />
+        </div>
+        <header className="subscription__moon-header">
+          <h2 className="subscription__moon-title">{t("moonstonesTitle")}</h2>
+          <p className="subscription__moon-text">{t("moonstonesBody")}</p>
+        </header>
+        <div className="subscription__packs">
+          {MOONSTONE_PACK_ORDER.map((id) => {
+            const pack = MOONSTONE_PACKS[id];
+            const isBusy = busyPlan === id;
+            return (
+              <article
+                key={id}
+                className={`subscription__card subscription__pack${pack.highlight ? " subscription__card--popular" : ""}`}
+              >
+                {pack.highlight && (
+                  <span className="subscription__badge">{t("moonstonesBest")}</span>
+                )}
+                <MoonstoneIcon className="subscription__moonstone subscription__moonstone--pack" aria-hidden="true" />
+                <div className="subscription__pack-qty">{pack.qty}</div>
+                <div className="subscription__pack-unit">
+                  {t("moonstonesUnit", { count: pack.qty })}
+                </div>
+                <div className="subscription__pack-price">€{pack.priceEur}</div>
+                <button
+                  type="button"
+                  className="subscription__cta"
+                  disabled={Boolean(busyPlan)}
+                  aria-busy={isBusy}
+                  aria-label={t("buyMoonstonesAria", { count: pack.qty })}
+                  onClick={() => handleSubscribe(id)}
+                >
+                  {isBusy ? t("processingBtn") : t("buyMoonstonesBtn")}
                 </button>
               </article>
             );

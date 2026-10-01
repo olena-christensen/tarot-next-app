@@ -97,7 +97,8 @@ export const PaymentResult = () => {
     message = t("confirmingMessage");
   } else if (phase === "success") {
     const product = productRef.current;
-    if (product === "SINGLE") {
+    // Moonstone pack, or a legacy SINGLE invoice — both add to the balance.
+    if (product === "SINGLE" || product?.startsWith("MOONSTONES_")) {
       title = t("creditAddedTitle");
       message = t("creditAddedMessage", { count: status?.readingCredits ?? 0 });
     } else if (product === "MONTHLY" || product === "YEARLY") {

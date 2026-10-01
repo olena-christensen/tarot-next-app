@@ -46,4 +46,6 @@ export const PLANS: Record<PlanId, Plan> = {
   },
 };
 
-export const PLAN_ORDER: PlanId[] = ["FREE", "SINGLE", "MONTHLY", "YEARLY"];
+// The pricing page's tier cards. SINGLE is gone from sale (moonstones replaced
+// it, see lib/moonstones.ts) but stays in PLANS/PlanId for legacy invoices.
+export const PLAN_ORDER: PlanId[] = ["FREE", "MONTHLY", "YEARLY"];

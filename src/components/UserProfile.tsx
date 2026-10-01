@@ -16,6 +16,7 @@ import { MysticButton } from "@/components/MysticButton";
 import EditIcon from "@/assets/svg/edit.svg";
 import EyeIcon from "@/assets/svg/eye.svg";
 import EyeOffIcon from "@/assets/svg/eye-off.svg";
+import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 
 const DELETE_CONFIRMATION_TOKEN = "DELETE";
 
@@ -499,23 +500,23 @@ export const UserProfile = () => {
           )}
         </span>
       </div>
-      {/* Credits are meaningless on a paid tier — subscription readings are
-          unlimited and never touch the balance, so don't show a count. */}
-      {!isSubscriber && (
-        <div className="user-profile__field user-profile__field--row">
-          <span className="user-profile__label">{t("profileCredits")}</span>
-          <span className="user-profile__value-group">
-            <button
-              type="button"
-              className="user-profile__value-btn"
-              onClick={() => setIsSubscriptionOpen(true)}
-              aria-label={t("credits")}
-            >
-              {credits}
-            </button>
-          </span>
-        </div>
-      )}
+      {/* Moonstone balance (stored as readingCredits). Shown on every tier:
+          moonstones are a currency, not just spare readings, so a subscriber's
+          balance matters too. */}
+      <div className="user-profile__field user-profile__field--row">
+        <span className="user-profile__label">{t("moonstonesTitle")}</span>
+        <span className="user-profile__value-group">
+          <button
+            type="button"
+            className="user-profile__value-btn user-profile__moonstones"
+            onClick={() => setIsSubscriptionOpen(true)}
+            aria-label={t("moonstonesCount", { count: credits })}
+          >
+            <MoonstoneIcon className="user-profile__moonstone" aria-hidden="true" />
+            {credits}
+          </button>
+        </span>
+      </div>
       <div className="user-profile__field user-profile__field--row">
         <span className="user-profile__label">{t("profileDeck")}</span>
         <span className="user-profile__value-group">
