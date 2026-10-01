@@ -206,6 +206,10 @@
     "buyMoonstonesAria": "Kjøp {count, plural, one {# månestein} other {# månesteiner}}",
     "buyMoonstonesTitle": "Kjøp månesteiner",
     "moonstonesPackLabel": "Antall månesteiner",
-    "googleNotLinked": "Denne e-postadressen har allerede en konto. Logg inn med passordet ditt én gang og bekreft e-postadressen — etter det fungerer også innlogging med Google."
+    "googleNotLinked": "Denne e-postadressen har allerede en konto. Logg inn med passordet ditt én gang og bekreft e-postadressen — etter det fungerer også innlogging med Google.",
+    "welcomeConsentLead": "Velkommen, {name}. Før din første lesning, en liten rite.",
+    "welcomeConsentLeadNoName": "Velkommen. Før din første lesning, en liten rite.",
+    "sealThePact": "Besegl Pakten",
+    "welcomeSignOut": "Ikke nå — logg ut"
   }
 }

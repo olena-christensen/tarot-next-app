@@ -64,3 +64,33 @@
     }
   }
 }
+
+// First-sign-in consent window (WelcomeConsent.tsx) — reuses the login form's
+// checkboxes and button; only the lead line and the quiet sign-out link are new.
+.welcome-consent {
+  .welcome-consent__lead {
+    margin: 0;
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+
+  .welcome-consent__signout {
+    align-self: center;
+    margin-top: 0.75rem;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-soft);
+    }
+  }
+}
