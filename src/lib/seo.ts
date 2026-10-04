@@ -16,7 +16,7 @@ export const HREFLANG_MAP: Record<string, string> = {
   ru: "ru-RU",
 };
 
-export const PUBLIC_ROUTES = ["", "/decks", "/subscription"] as const;
+export const PUBLIC_ROUTES = ["", "/decks", "/subscription", "/game"] as const;
 export const GLOBAL_ROUTES = ["/privacy", "/terms"] as const;
 
 /**

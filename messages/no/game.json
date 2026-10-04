@@ -1,0 +1,28 @@
+{
+  "game": {
+    "metaTitle": "Brygg trylledrikken — et gratis spill med skjulte gjenstander",
+    "metaDescription": "Finn ingrediensene som er gjemt i heksens verksted, og brygg trylledrikken. Et gratis spill fra The Veil — ingen registrering.",
+    "title": "Brygg trylledrikken",
+    "subtitle": "Finn alle ingrediensene i oppskriften før trylledrikken koker over.",
+    "timeLabel": "Tid",
+    "hint": "Tips ({count})",
+    "recipe": "Oppskrift",
+    "recipeLine": "{name}: {got} av {count}",
+    "pinchHint": "Klyp for å zoome · dra for å se deg rundt",
+    "doneTitle": "Trylledrikken er brygget",
+    "doneFoundIn": "Alle {count} ingrediensene funnet på",
+    "drawCards": "Trekk kortene dine",
+    "brewAgain": "Brygg igjen",
+    "pinIt": "Lagre på Pinterest",
+    "pinDescription": "Finner du alle ingrediensene? Brygg trylledrikken — et gratis spill hos The Veil.",
+    "ingredients": {
+      "batEye": "Flaggermusøye",
+      "frogTongue": "Frosketunge",
+      "dragonTear": "Dragetåre",
+      "ravenFeather": "Ravnefjær",
+      "spider": "Edderkopp",
+      "toadstool": "Fluesopp",
+      "newtTail": "Salamanderhale"
+    }
+  }
+}

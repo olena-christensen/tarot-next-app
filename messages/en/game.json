@@ -1,0 +1,28 @@
+{
+  "game": {
+    "metaTitle": "Brew the Potion — a free hidden-object game",
+    "metaDescription": "Find the ingredients hidden in a witch's workshop and brew the potion. A free hidden-object game from The Veil — no sign-up needed.",
+    "title": "Brew the Potion",
+    "subtitle": "Find every ingredient in the recipe before the potion boils over.",
+    "timeLabel": "Time",
+    "hint": "Hint ({count})",
+    "recipe": "Recipe",
+    "recipeLine": "{name}: {got} of {count}",
+    "pinchHint": "Pinch to zoom · drag to look around",
+    "doneTitle": "The potion is brewed",
+    "doneFoundIn": "All {count} ingredients found in",
+    "drawCards": "Draw your cards",
+    "brewAgain": "Brew again",
+    "pinIt": "Pin it on Pinterest",
+    "pinDescription": "Can you find every ingredient? Brew the Potion — a free hidden-object game at The Veil.",
+    "ingredients": {
+      "batEye": "Bat eye",
+      "frogTongue": "Frog tongue",
+      "dragonTear": "Dragon tear",
+      "ravenFeather": "Raven feather",
+      "spider": "Spider",
+      "toadstool": "Toadstool",
+      "newtTail": "Newt tail"
+    }
+  }
+}
