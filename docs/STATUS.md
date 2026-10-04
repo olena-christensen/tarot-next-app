@@ -21,9 +21,9 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
    Shared readings offer Facebook, Telegram, WhatsApp and the phone's own share menu. There is no Pinterest, the one channel we are growing.
    Why 👥: every reading a visitor pins is a free pin pointing back to theveil.app.
 
-4. **Give the full-screen reading window a way out** · 🎨 mockup first · ~20 min
-   After the deck is clicked, the full-screen window has no close button and Escape does nothing. The only way out is to flip all 3 cards and wait about 5 seconds for the reading. A visitor who clicked by mistake is trapped. The reading is already counted when the window opens, so closing early must not refund it, and the mockup has to settle what closing means.
-   Why 🔁: being stuck in a full-screen overlay is the kind of thing that makes people leave.
+4. **Brew the Potion: moonstone reward and menu link** · 🎨 mockup first for the link · ~2 hours
+   The game is live at /game but nobody can find it and finishing it gives nothing yet.
+   Why 🔁💶: a daily moonstone for finishing pulls players into readings, which is where moonstones are spent.
 
 5. **Pinterest** · 📣 · 10 min a day
    Post the next pins from `docs/pinterest-pin-log.md` (you are at pin 10). Monday 12 October, 10:00: send a screenshot of https://analytics.pinterest.com so we can decide Batch 2.
@@ -65,6 +65,8 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
 
 ### 2026-10
 
+- 2026-10-05 · Built "Brew the Potion", a hidden-object game at /game: 7 ingredients, 16 hiding spots, a new recipe every round, pinch-to-zoom on phones, sounds and cauldron effects, in all 5 languages. Not in the menu yet; no moonstone reward yet. `docs/hidden-object-game.md`
+- 2026-10-04 · The full-screen reading window has a quiet "Back to the Sanctum" link under the title while the cards are turned; before, the only way out was to flip all three and wait.
 - 2026-10-04 · Moonstone balance chip in the header beside the avatar; opens the price list and refreshes after a purchase or a reading. `src/components/HeaderMoonstones.tsx`
 - 2026-10-01 · New Google sign-ups land on the profile and must accept terms + 18+ in a welcome window ("Seal the Pact"). `src/components/WelcomeConsent.tsx`
 - 2026-10-01 · Google sign-in now links onto an existing password account (verified emails only) instead of failing silently.

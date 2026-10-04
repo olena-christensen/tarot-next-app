@@ -1,0 +1,28 @@
+{
+  "game": {
+    "metaTitle": "İksiri Kaynat — ücretsiz gizli nesne oyunu",
+    "metaDescription": "Cadının atölyesine saklanmış malzemeleri bul ve iksiri kaynat. The Veil'den ücretsiz bir oyun — kayıt gerekmez.",
+    "title": "İksiri Kaynat",
+    "subtitle": "İksir taşmadan önce tarifteki tüm malzemeleri bul.",
+    "timeLabel": "Süre",
+    "hint": "İpucu ({count})",
+    "recipe": "Tarif",
+    "recipeLine": "{name}: {count} içinden {got}",
+    "pinchHint": "Yakınlaştırmak için parmaklarını aç · etrafa bakmak için sürükle",
+    "doneTitle": "İksir hazır",
+    "doneFoundIn": "{count} malzemenin hepsi bulundu, süre:",
+    "drawCards": "Kartlarını çek",
+    "brewAgain": "Yeniden kaynat",
+    "pinIt": "Pinterest'e kaydet",
+    "pinDescription": "Tüm malzemeleri bulabilir misin? İksiri Kaynat — The Veil'de ücretsiz bir oyun.",
+    "ingredients": {
+      "batEye": "Yarasa gözü",
+      "frogTongue": "Kurbağa dili",
+      "dragonTear": "Ejderha gözyaşı",
+      "ravenFeather": "Kuzgun tüyü",
+      "spider": "Örümcek",
+      "toadstool": "Sinek mantarı",
+      "newtTail": "Semender kuyruğu"
+    }
+  }
+}

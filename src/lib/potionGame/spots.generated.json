@@ -1,0 +1,549 @@
+{
+ "width": 1536,
+ "height": 1024,
+ "cauldron": {
+  "x": 785,
+  "y": 690
+ },
+ "spots": {
+  "herbs": {
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--herbs.webp",
+    "x": 480,
+    "y": 217,
+    "w": 36,
+    "h": 33,
+    "hit": [
+     481,
+     219,
+     34,
+     30
+    ]
+   }
+  },
+  "skull": {
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--skull.webp",
+    "x": 1068,
+    "y": 557,
+    "w": 32,
+    "h": 32,
+    "hit": [
+     1069,
+     558,
+     30,
+     30
+    ]
+   }
+  },
+  "benchFloor": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--benchFloor.webp",
+    "x": 421,
+    "y": 763,
+    "w": 67,
+    "h": 34,
+    "hit": [
+     422,
+     764,
+     65,
+     26
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--benchFloor.webp",
+    "x": 422,
+    "y": 757,
+    "w": 40,
+    "h": 50,
+    "hit": [
+     423,
+     758,
+     33,
+     40
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--benchFloor.webp",
+    "x": 424,
+    "y": 759,
+    "w": 52,
+    "h": 44,
+    "hit": [
+     425,
+     760,
+     49,
+     38
+    ]
+   }
+  },
+  "tableBottles": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--tableBottles.webp",
+    "x": 662,
+    "y": 538,
+    "w": 35,
+    "h": 70,
+    "hit": [
+     664,
+     539,
+     23,
+     58
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--tableBottles.webp",
+    "x": 656,
+    "y": 556,
+    "w": 47,
+    "h": 54,
+    "hit": [
+     658,
+     558,
+     38,
+     39
+    ]
+   }
+  },
+  "topShelf": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--topShelf.webp",
+    "x": 661,
+    "y": 275,
+    "w": 73,
+    "h": 36,
+    "hit": [
+     662,
+     276,
+     63,
+     25
+    ]
+   },
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--topShelf.webp",
+    "x": 648,
+    "y": 251,
+    "w": 83,
+    "h": 47,
+    "hit": [
+     649,
+     254,
+     77,
+     33
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--topShelf.webp",
+    "x": 674,
+    "y": 261,
+    "w": 43,
+    "h": 55,
+    "hit": [
+     675,
+     266,
+     33,
+     40
+    ]
+   }
+  },
+  "barrel": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--barrel.webp",
+    "x": 113,
+    "y": 679,
+    "w": 45,
+    "h": 33,
+    "hit": [
+     115,
+     681,
+     34,
+     21
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--barrel.webp",
+    "x": 114,
+    "y": 663,
+    "w": 47,
+    "h": 54,
+    "hit": [
+     117,
+     664,
+     35,
+     42
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--barrel.webp",
+    "x": 110,
+    "y": 667,
+    "w": 53,
+    "h": 45,
+    "hit": [
+     111,
+     668,
+     46,
+     36
+    ]
+   }
+  },
+  "candle": {
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--candle.webp",
+    "x": 1251,
+    "y": 564,
+    "w": 57,
+    "h": 88,
+    "hit": [
+     1254,
+     568,
+     42,
+     72
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--candle.webp",
+    "x": 1249,
+    "y": 591,
+    "w": 56,
+    "h": 61,
+    "hit": [
+     1250,
+     594,
+     44,
+     46
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--candle.webp",
+    "x": 1253,
+    "y": 601,
+    "w": 46,
+    "h": 50,
+    "hit": [
+     1256,
+     602,
+     32,
+     38
+    ]
+   }
+  },
+  "web": {
+   "spider": {
+    "src": "/game-art/potion/patches/spider--web.webp",
+    "x": 97,
+    "y": 131,
+    "w": 61,
+    "h": 48,
+    "hit": [
+     98,
+     132,
+     59,
+     46
+    ]
+   }
+  },
+  "lantern": {
+   "spider": {
+    "src": "/game-art/potion/patches/spider--lantern.webp",
+    "x": 1394,
+    "y": 328,
+    "w": 56,
+    "h": 46,
+    "hit": [
+     1396,
+     332,
+     44,
+     34
+    ]
+   }
+  },
+  "broom": {
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--broom.webp",
+    "x": 228,
+    "y": 626,
+    "w": 49,
+    "h": 94,
+    "hit": [
+     231,
+     627,
+     36,
+     84
+    ]
+   }
+  },
+  "crate": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--crate.webp",
+    "x": 1282,
+    "y": 733,
+    "w": 41,
+    "h": 63,
+    "hit": [
+     1284,
+     736,
+     31,
+     57
+    ]
+   },
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--crate.webp",
+    "x": 1270,
+    "y": 728,
+    "w": 76,
+    "h": 68,
+    "hit": [
+     1271,
+     729,
+     66,
+     64
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--crate.webp",
+    "x": 1279,
+    "y": 758,
+    "w": 48,
+    "h": 38,
+    "hit": [
+     1281,
+     760,
+     38,
+     33
+    ]
+   },
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--crate.webp",
+    "x": 1273,
+    "y": 742,
+    "w": 50,
+    "h": 54,
+    "hit": [
+     1274,
+     743,
+     44,
+     50
+    ]
+   }
+  },
+  "floorLeft": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--floorLeft.webp",
+    "x": 472,
+    "y": 864,
+    "w": 42,
+    "h": 81,
+    "hit": [
+     476,
+     867,
+     27,
+     66
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--floorLeft.webp",
+    "x": 461,
+    "y": 883,
+    "w": 63,
+    "h": 65,
+    "hit": [
+     465,
+     887,
+     46,
+     48
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--floorLeft.webp",
+    "x": 464,
+    "y": 885,
+    "w": 56,
+    "h": 62,
+    "hit": [
+     469,
+     889,
+     38,
+     46
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--floorLeft.webp",
+    "x": 465,
+    "y": 870,
+    "w": 53,
+    "h": 78,
+    "hit": [
+     470,
+     875,
+     35,
+     60
+    ]
+   }
+  },
+  "floorSack": {
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--floorSack.webp",
+    "x": 1074,
+    "y": 858,
+    "w": 57,
+    "h": 59,
+    "hit": [
+     1077,
+     861,
+     42,
+     44
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--floorSack.webp",
+    "x": 1071,
+    "y": 863,
+    "w": 62,
+    "h": 52,
+    "hit": [
+     1073,
+     867,
+     49,
+     38
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--floorSack.webp",
+    "x": 1077,
+    "y": 844,
+    "w": 50,
+    "h": 73,
+    "hit": [
+     1081,
+     847,
+     34,
+     58
+    ]
+   }
+  },
+  "books": {
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--books.webp",
+    "x": 1153,
+    "y": 349,
+    "w": 37,
+    "h": 46,
+    "hit": [
+     1154,
+     350,
+     28,
+     34
+    ]
+   },
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--books.webp",
+    "x": 1135,
+    "y": 333,
+    "w": 88,
+    "h": 50,
+    "hit": [
+     1136,
+     334,
+     77,
+     40
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--books.webp",
+    "x": 1184,
+    "y": 337,
+    "w": 39,
+    "h": 57,
+    "hit": [
+     1186,
+     338,
+     27,
+     46
+    ]
+   }
+  },
+  "sill": {
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--sill.webp",
+    "x": 91,
+    "y": 458,
+    "w": 54,
+    "h": 76,
+    "hit": [
+     95,
+     459,
+     42,
+     64
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--sill.webp",
+    "x": 95,
+    "y": 486,
+    "w": 55,
+    "h": 54,
+    "hit": [
+     99,
+     488,
+     38,
+     40
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--sill.webp",
+    "x": 92,
+    "y": 490,
+    "w": 60,
+    "h": 46,
+    "hit": [
+     95,
+     492,
+     46,
+     36
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--sill.webp",
+    "x": 101,
+    "y": 476,
+    "w": 46,
+    "h": 65,
+    "hit": [
+     105,
+     478,
+     29,
+     50
+    ]
+   }
+  },
+  "garlic": {
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--garlic.webp",
+    "x": 343,
+    "y": 214,
+    "w": 57,
+    "h": 56,
+    "hit": [
+     345,
+     217,
+     47,
+     41
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--garlic.webp",
+    "x": 354,
+    "y": 269,
+    "w": 55,
+    "h": 78,
+    "hit": [
+     355,
+     270,
+     46,
+     70
+    ]
+   }
+  }
+ }
+}

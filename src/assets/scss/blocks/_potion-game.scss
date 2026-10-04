@@ -1,0 +1,363 @@
+// "Brew the Potion" — hidden-object game page.
+// Desktop: timer/hint and recipe float over the picture (approved mockup).
+// Below md: they sit above and below it, and the picture opens zoomed in.
+
+.potion {
+  padding: 150px 16px 48px;
+  text-align: center;
+
+  @include respond-below(md) {
+    padding: 128px 0 32px;
+  }
+
+  &__title {
+    margin: 0 0 0.25rem;
+  }
+
+  &__subtitle {
+    margin: 0 auto 1.25rem;
+    max-width: 52ch;
+    padding: 0 16px;
+    color: var(--text-faint);
+  }
+
+  &__board {
+    position: relative;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  &__hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+
+    @include respond-below(md) {
+      position: static;
+      padding: 0 12px 8px;
+    }
+  }
+
+  &__pill {
+    padding: 6px 14px;
+    background: rgba(9, 9, 9, 0.75);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 18px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+
+    &--btn {
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+    }
+  }
+
+  &__stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border: 1px solid rgba(250, 225, 163, 0.25);
+    border-radius: 10px;
+    background: #0d0906;
+    touch-action: none; // we handle pinch and drag ourselves
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+
+    @include respond-below(md) {
+      aspect-ratio: auto;
+      height: 62vh;
+      max-height: 560px;
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+    }
+
+    &--shake {
+      animation: potionShake 0.35s ease-in-out;
+    }
+
+    &--blur .potion__world {
+      filter: blur(6px) brightness(0.8);
+      transition: filter 0.3s ease;
+    }
+  }
+
+  &__world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    transition: filter 0.6s ease;
+  }
+
+  &__room {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  &__patch {
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+
+    &--found {
+      opacity: 0;
+    }
+  }
+
+  &__hint-ring {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
+    border: 3px solid #ffe9a8;
+    border-radius: 50%;
+    box-shadow: 0 0 18px rgba(255, 233, 168, 0.7);
+    pointer-events: none;
+    animation: potionPulse 1s ease-in-out infinite;
+  }
+
+  &__pinch {
+    display: none;
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    padding: 5px 12px;
+    background: rgba(9, 9, 9, 0.75);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 14px;
+    font-size: 0.75rem;
+    color: var(--text-color);
+    pointer-events: none;
+
+    @media (pointer: coarse) {
+      display: block;
+    }
+  }
+
+  &__recipe {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 8px 20px;
+    background: rgba(9, 9, 9, 0.8);
+    border: 1px solid rgba(250, 225, 163, 0.4);
+    border-radius: 14px;
+    white-space: nowrap;
+
+    @include respond-below(md) {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      transform: none;
+      justify-content: center;
+      gap: 14px;
+      margin: 12px 12px 0;
+      padding: 8px 10px;
+    }
+  }
+
+  &__recipe-label {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1px 10px;
+    background: #090909;
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  &__ing {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.15rem;
+    transition: opacity 0.4s ease;
+
+    img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+
+    small {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    &--done {
+      opacity: 0.45;
+      text-decoration: line-through;
+      animation: potionTick 0.4s ease-out;
+    }
+  }
+
+  &__done {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(5, 3, 8, 0.72);
+    cursor: default;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  &__done-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px 28px;
+    background: #0d0a0f;
+    border: 1px solid rgba(250, 225, 163, 0.45);
+    border-radius: 14px;
+
+    p {
+      margin: 4px 0;
+      color: var(--text-faint);
+    }
+  }
+
+  &__done-title {
+    margin: 0 0 6px;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.06em;
+  }
+
+  &__done-time {
+    margin: 8px 0 14px !important;
+    font-size: 1.5rem;
+    color: var(--gold) !important;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__done-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: transparent;
+    border: 1px dashed rgba(250, 225, 163, 0.6);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--gold);
+    }
+  }
+
+  &__done-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--text-faint);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-underline-offset: 4px;
+  }
+}
+
+// Effects layer — lives inside the world, so it is in room pixels.
+.potion-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &__ring,
+  &__fly,
+  &__flash,
+  &__puff,
+  &__bubble,
+  &__spark {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &__ring {
+    border: 3px solid #ffe9a8;
+    border-radius: 50%;
+  }
+
+  &__fly {
+    object-fit: contain;
+    z-index: 2;
+  }
+
+  &__flash {
+    border-radius: 50%;
+    background: radial-gradient(ellipse, #d9ff7a 0%, rgba(150, 255, 60, 0.6) 40%, transparent 70%);
+    opacity: 0;
+  }
+
+  &__puff {
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 70%, rgba(190, 255, 100, 0.95), rgba(120, 255, 80, 0.45) 50%, transparent 70%);
+    filter: blur(10px);
+    opacity: 0;
+  }
+
+  &__bubble {
+    border: 3px solid rgba(200, 255, 120, 0.9);
+    border-radius: 50%;
+    background: rgba(160, 255, 80, 0.25);
+    opacity: 0;
+  }
+
+  &__spark {
+    border-radius: 50%;
+    background: #fff6c8;
+    box-shadow: 0 0 12px #ffe9a8, 0 0 22px #7fffd4;
+    opacity: 0;
+  }
+}
+
+@keyframes potionShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+}
+
+@keyframes potionPulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes potionTick {
+  50% { transform: scale(1.25); }
+}
