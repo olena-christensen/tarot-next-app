@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import MainMenu from "@/components/MainMenu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { HeaderAvatar } from "@/components/HeaderAvatar";
+import { HeaderMoonstones } from "@/components/HeaderMoonstones";
 import { HeaderGreeting } from "@/components/HeaderGreeting";
 
 let hasPlayedHeaderIntro = false;
@@ -43,7 +44,14 @@ export const Header = ({onOpenLogin}: HeaderProps) => {
             >
                 <Logo />
                 <MainMenu onOpenLogin={onOpenLogin} />
-                {session?.user ? <HeaderAvatar /> : <LanguageSwitcher />}
+                {session?.user ? (
+                    <>
+                        <HeaderMoonstones onOpenLogin={onOpenLogin} />
+                        <HeaderAvatar />
+                    </>
+                ) : (
+                    <LanguageSwitcher />
+                )}
             </header>
         </>
     );

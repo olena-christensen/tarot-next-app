@@ -49,3 +49,15 @@ export function isMoonstonePack(value: unknown): value is MoonstonePackId {
 
 /** Re-exported so the test can assert the literals against the same peg. */
 export { PEG_EUR_UAH };
+
+/**
+ * Client-side nudge: anything that changes the balance (a confirmed purchase,
+ * a reading that spent a moonstone) fires this so the header chip refetches.
+ */
+export const MOONSTONES_CHANGED_EVENT = "moonstones:changed";
+
+export function notifyMoonstonesChanged(): void {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(MOONSTONES_CHANGED_EVENT));
+  }
+}

@@ -11,7 +11,7 @@ import {
 } from "@/lib/moonstones";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 import { Link } from "@/i18n/navigation";
-import { isMoonstonePack } from "@/lib/moonstones";
+import { isMoonstonePack, notifyMoonstonesChanged } from "@/lib/moonstones";
 
 // What a CTA on this page can buy: a recurring plan or a moonstone pack. Both
 // go through the same create-invoice call.
@@ -477,6 +477,7 @@ function PaymentWaiting({ product, pageUrl, onClose }: PaymentWaitingProps) {
           if (data.paymentStatus === "success") {
             setCredits(data.readingCredits ?? 0);
             setPhase("success");
+            notifyMoonstonesChanged();
             return;
           }
           if (["failure", "reversed", "expired"].includes(data.paymentStatus)) {

@@ -1,0 +1,35 @@
+// Intrinsic styles only — the header owns where this sits.
+.header-moonstones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 9px;
+  border: 1px solid rgba(250, 225, 163, 0.35);
+  border-radius: 16px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--gold);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight);
+  line-height: 1;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--primary);
+    background-color: rgba(250, 225, 163, 0.07);
+  }
+
+  &--empty {
+    color: var(--text-faint);
+  }
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+  }
+}
