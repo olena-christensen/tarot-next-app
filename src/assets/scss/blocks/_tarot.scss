@@ -109,10 +109,43 @@
 .tarot__action-area {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 3rem;
   z-index: 5;
+}
+
+// Quiet "Back to the Sanctum" under the title while the cards are being turned.
+// Same look as .offer-block__change-btn; appears with the title.
+.tarot__leave {
+  position: relative;
+  z-index: 5;
+  appearance: none;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-family: var(--font-family);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  opacity: 0;
+  animation: tarotCardAppear 0.8s ease-out 3.2s forwards;
+  transition: opacity 0.8s ease-out, color 0.2s ease;
+
+  &:hover {
+    color: var(--text-color);
+  }
+
+  &--hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
 }
 
 .tarot__revoke-btn {

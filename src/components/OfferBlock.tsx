@@ -8,7 +8,7 @@ import Medallion4 from "../assets/svg/medallion4.svg";
 import Medallion5 from "../assets/svg/medallion5.svg";
 import Medallion6 from "../assets/svg/medallion6.svg";
 import {SmokeAnimation} from "@/components/SmokeAnimation";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { useTranslations, useMessages } from "next-intl";
 import {useSession} from "next-auth/react";
 import AnimatedCard from "@/components/AnimatedCard";
@@ -116,9 +116,32 @@ export const OfferBlock = ({
         }
     }, [state.isCardsModalOpen]);
 
+    // Shuffle sound for the 2-second deck twist. Created once, lazily.
+    const shuffleSoundRef = useRef<HTMLAudioElement | null>(null);
+
     const handleClick = async () => {
+        // Unlock the sound inside the click itself: beginReading() may wait on
+        // the network, and Safari refuses play() once the click is "too old".
+        // A silent play+pause now lets the real play() below go through.
+        if (!shuffleSoundRef.current) {
+            shuffleSoundRef.current = new Audio("/sounds/deck-shuffle.mp3");
+            shuffleSoundRef.current.preload = "auto";
+        }
+        const shuffle = shuffleSoundRef.current;
+        shuffle.muted = true;
+        // Only pause if still muted: for a visitor who isn't signed in, beginReading()
+        // resolves at once and the real play below may already have started.
+        shuffle.play().then(() => { if (shuffle.muted) shuffle.pause(); }).catch(() => {});
+
         const dealt = await beginReading();
         if (!dealt) return;
+
+        shuffle.pause();
+        shuffle.muted = false;
+        shuffle.volume = 0.6;
+        shuffle.currentTime = 0;
+        // Refused in some in-app browsers — the twist simply runs silent.
+        shuffle.play().catch(() => {});
 
         setIsDeckShaking(true);
         setTimeout(() => {
