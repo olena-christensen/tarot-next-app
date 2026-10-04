@@ -155,6 +155,17 @@ export const Tarot = ({ onBlockedAnon, onBlockedFree }: TarotProps) => {
                                 <h2 className={`tarot__title title${showLoader ? " tarot__title--hidden" : ""}`}>
                                     {t("unveilDestiny")}
                                 </h2>
+                                {/* The only way out before the reading arrives. Hidden with the
+                                    title once the loader starts. The reading is already counted
+                                    when this window opens, so leaving early still spends it. */}
+                                <button
+                                    type="button"
+                                    className={`tarot__leave${showLoader ? " tarot__leave--hidden" : ""}`}
+                                    onClick={handleBackToSanctum}
+                                    disabled={showLoader}
+                                >
+                                    {t("backToSanctum")}
+                                </button>
                                 {showLoader && (
                                     <div className={`tarot__loader${state.isPredictionReady ? " tarot__loader--hidden" : ""}`}>
                                         <LoaderSvg />

@@ -1,72 +1,60 @@
 # The Veil — Status & Roadmap
 
-**Last updated:** 2026-09-09 · App scope only.
+**Last updated:** 2026-10-04 · App scope only.
 
-One line per item. Markers: 💻 code · 🎨 interface · 📋 no-code · 📣 growth.
-Detail lives in `docs/features/` and `CLAUDE.md`, never here.
+Markers: 💻 code · 🎨 interface (mockup before any change) · 📋 no code · 📣 growth.
 
-<details open>
-<summary><b>🟢 Next — showing ads on The Veil</b></summary>
-
-- [ ] 📣 Estimate ad revenue at current traffic against the design cost.
-- [ ] 💻 Place ad slots outside the card modal and the intro animation.
-- [ ] 📋 Answer Google's review when it arrives — `docs/features/adsense.md`.
-
-</details>
-
----
+Every open item below was checked against the code on 2026-10-04. Each one says what is wrong, why it matters (👥 visitors · 💶 money · 🔁 keeps users) and how long it takes. If an item can't say that, it doesn't belong here.
 
 <details open>
-<summary><b>🔴 Must-have once triggered</b></summary>
+<summary><b>🟢 Do next — in this order</b></summary>
 
-- [ ] 📋 Register for European Union sales tax when the first European customer pays.
-- [ ] 💻 Hide ads from paying subscribers the day ads go live.
-- [ ] 💻 Make the cookie banner block ads until consent the day ads go live.
-- [ ] 📋 Move email to a bulk sender at 40 daily-card subscribers — `docs/features/email.md`.
+1. **Check the welcome window on the live site** · 📋 · 5 min
+   Sign up once with a Google account that has never used The Veil. You should land on the profile with the "Seal the Pact" window, and it must not close until both boxes are ticked.
+   Why 🔁: if it doesn't show, new Google users never accept the terms or confirm they're 18+.
 
-</details>
+2. **Show "readings left today" on the main page** · 🎨 mockup first · ~1 hour
+   Signed-in Seekers get 3 readings a day, but nothing on the screen says so. The first they learn of the limit is the wall after reading 3.
+   Why 💶: a visible "1 reading left" is the moment a Seeker thinks about moonstones. Today the paywall just appears with no warning.
 
----
+3. **Add Pinterest to the share window** · 🎨 mockup first · ~30 min
+   Shared readings offer Facebook, Telegram, WhatsApp and the phone's own share menu. There is no Pinterest, the one channel we are growing.
+   Why 👥: every reading a visitor pins is a free pin pointing back to theveil.app.
 
-<details>
-<summary><b>📣 Growth</b></summary>
+4. **Give the full-screen reading window a way out** · 🎨 mockup first · ~20 min
+   After the deck is clicked, the full-screen window has no close button and Escape does nothing. The only way out is to flip all 3 cards and wait about 5 seconds for the reading. A visitor who clicked by mistake is trapped. The reading is already counted when the window opens, so closing early must not refund it, and the mockup has to settle what closing means.
+   Why 🔁: being stuck in a full-screen overlay is the kind of thing that makes people leave.
 
-- [ ] 📣 Pick the one channel to actually work, and ignore the rest.
-- [ ] 📣 Measure arrivals, sign-ups and payments — three numbers, not a dashboard.
-- [ ] 📣 Add share buttons for Instagram, Pinterest, TikTok and Facebook.
-- [ ] 💻 Wire Facebook and Twitter sign-in — the tables already exist.
-
-</details>
-
----
-
-<details>
-<summary><b>🌱 Nice to have</b></summary>
-
-- [ ] 📋 Apply the Russian translation proofread.
-- [ ] 📋 Apply the Ukrainian translation proofread.
-- [ ] 📋 Apply the Turkish translation proofread.
-- [ ] 📋 Translate the 78 card meanings — `docs/features/card-meanings.md`.
-- [ ] 📋 Pay a lawyer to read the terms and privacy pages.
-- [ ] 💻 Get the daily card email into Gmail's Primary tab — `docs/features/daily-card-email.md`.
-- [ ] 💻 Replace the €1 single reading with buyable crystals — `docs/features/crystals.md`.
-- [ ] 🎨 Show readings left today on the main page.
-- [ ] 🎨 Move reader selection before the deck appears.
-- [ ] 🎨 Add a close button to the full-screen card modal.
-- [ ] 🎨 Rename "Revoke and Retry" to "Draw again".
-- [ ] 📋 Register a copyright agent with the United States Copyright Office.
+5. **Pinterest** · 📣 · 10 min a day
+   Post the next pins from `docs/pinterest-pin-log.md` (you are at pin 10). Monday 12 October, 10:00: send a screenshot of https://analytics.pinterest.com so we can decide Batch 2.
+   Why 👥: this is the only visitor source we have.
 
 </details>
 
 ---
 
 <details>
-<summary><b>💡 Ideas</b></summary>
+<summary><b>⏳ Only when something happens</b></summary>
+
+- **When a customer from the European Union pays:** register for European Union sales tax through its One-Stop Shop (one registration that covers every European Union country).
+- **When ads are approved:** hide ads from paying subscribers, make the cookie banner block ads until consent, and keep ad slots out of the reading window and the intro animation.
+- **When Pinterest brings steady visitors:** resubmit AdSense at https://www.google.com/adsense/new/u/0/pub-9839198217200431/home. It was rejected on 2026-09-25 with no reason given, most likely because the site is new and has almost no visitors.
+- **When there are paying monthly subscribers:** fix the daily card email landing in Gmail's Promotions tab. Two fixes have already been tried and failed, see `docs/features/daily-card-email.md` section 2a.
+- **When daily-card subscribers reach 40:** move email to a bulk sending service.
+- **When you have time to read Russian, Ukrainian or Turkish:** the proofread sheets in `translation-review/` are empty, so nobody has reviewed these languages yet. You can fill the Russian and Ukrainian ones yourself. Turkish needs a native speaker. The sheets predate moonstones, so tell me before starting and I'll regenerate them.
+
+</details>
+
+---
+
+<details>
+<summary><b>💡 Ideas (not tasks)</b></summary>
 
 - Login modal loader themed as an entrance to hell.
 - Card flip animation highlighting cards one by one.
 - Background sound during the loading animation.
 - Footer animation for highlighted items.
+- Moonstones paying for more than readings: decks, rituals, a shop.
 
 </details>
 
@@ -75,8 +63,24 @@ Detail lives in `docs/features/` and `CLAUDE.md`, never here.
 <details open>
 <summary><b>✅ Done</b></summary>
 
+### 2026-10
+
+- 2026-10-04 · Moonstone balance chip in the header beside the avatar; opens the price list and refreshes after a purchase or a reading. `src/components/HeaderMoonstones.tsx`
+- 2026-10-01 · New Google sign-ups land on the profile and must accept terms + 18+ in a welcome window ("Seal the Pact"). `src/components/WelcomeConsent.tsx`
+- 2026-10-01 · Google sign-in now links onto an existing password account (verified emails only) instead of failing silently.
+- 2026-10-01 · Checkout opens monobank in a new tab; The Veil's tab waits and confirms by itself — no dead end after paying in the monobank app.
+- 2026-10-01 · Moonstones as one compact row under the plans; Seeker card names the default deck and diviner.
+- 2026-10-01 · Verified a live 3-moonstone purchase on production.
+- 2026-10-01 · Renamed the Pinterest username to match the site.
+- 2026-10-01 · Replaced the €1 Offering with Moonstones — packs of 3/€3, 10/€8, 25/€18 in their own section under the plans; balance on the profile for every tier. `src/lib/moonstones.ts`
+- 2026-10-01 · Added Vercel Web Analytics (no cookies) to count visitors by source; upgraded Vercel to Node.js 24.
+- 2026-10-01 · Made Pinterest Batch 1 — 21 pins with pictures, titles, descriptions and links. `docs/pinterest-pin-log.md`
+- 2026-10-01 · Posted the first 6 pins, one on every board.
+
 ### 2026-09
 
+- 2026-09-25 · Picked Pinterest as the one growth channel; created The Veil business account, claimed theveil.app, set up 6 boards.
+- 2026-09-25 · Added the Pinterest verification tag to `src/app/layout.tsx`.
 - 2026-09-09 · Applied the Norwegian proofread — 540 accepted rewrites across 11 message files, including the daily-card and reminder email copy.
 
 ### 2026-08
@@ -131,11 +135,19 @@ Detail lives in `docs/features/` and `CLAUDE.md`, never here.
 | Product | The Veil — theveil.app |
 | Legal names | Olena Christensen, Individual Entrepreneur · trade name Nothing Weird |
 | Payments | Plata by mono (JSC Universal Bank) — charged in hryvnia, priced in euro |
-| Plans | FREE · SINGLE €1 · MONTHLY €5 · YEARLY €39 |
+| Plans | Seeker (free) · Monthly €5 · Yearly €39 · Moonstones 3/€3, 10/€8, 25/€18 |
 | Contact | `/contact` → privacy@ / legal@ / billing@ / support@ `nothingweird.agency` |
 | Hosting | Vercel Pro · uploads Vercel Blob |
 | Database | Neon Postgres, Free plan — 100 compute-unit-hours per month |
 | Monitoring | `theveil.app` every 5 min · `/api/health` every 30 min |
 | AdSense | `pub-9839198217200431`, verified by `public/ads.txt` |
+| AdSense — account (Resubmit screen while unapproved) | https://www.google.com/adsense/new/u/0/pub-9839198217200431/home |
+| AdSense — Program Policies | https://support.google.com/adsense/answer/48182 |
+| Search Console | https://search.google.com/search-console |
+| Pinterest — account | https://www.pinterest.com/founder0176/ |
+| Pinterest — create a pin | https://www.pinterest.com/pin-creation-tool/ |
+| Visitors | Vercel → theveil project → Analytics tab |
+| Pinterest — statistics | https://analytics.pinterest.com |
+| Pinterest — pin log | `docs/pinterest-pin-log.md` · https://claude.ai/code/artifact/a0cc822b-a9e8-4e2b-a296-8c18abc873f1 |
 
 </details>
