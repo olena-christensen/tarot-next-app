@@ -42,7 +42,8 @@
 
   // The header owns placement. The avatar is a fixed-size circle and must never
   // be squeezed by whatever else shares the row.
-  .header-avatar {
+  .header-avatar,
+  .header-moonstones {
     flex: 0 0 auto;
   }
 }

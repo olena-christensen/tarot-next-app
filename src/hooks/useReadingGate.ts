@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useAppContext } from "@/AppProvider";
 import { pickRandomCards } from "@/utils";
 import { generateReading } from "@/lib/generateReading";
+import { notifyMoonstonesChanged } from "@/lib/moonstones";
 import {
   evaluateAnonRead,
   ANON_STORAGE_KEY,
@@ -110,6 +111,8 @@ export function useReadingGate({
         const data = await res.json();
         if (data.allowed) {
           commit();
+          // A reading may have spent a moonstone — let the header chip refetch.
+          notifyMoonstonesChanged();
           return true;
         }
         setLoading(false);
