@@ -54,3 +54,6 @@ src/generated/prisma/wasm.js
 src/generated/prisma/runtime/
 src/generated/prisma/wasm-edge-light-loader.mjs
 src/generated/prisma/wasm-worker-loader.mjs
+
+# Claude local settings (per machine)
+.claude/settings.local.json

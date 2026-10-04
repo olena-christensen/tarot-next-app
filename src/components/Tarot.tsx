@@ -3,7 +3,7 @@
 import Medallion3 from "@/assets/svg/medallion3.svg";
 import Medallion4 from "@/assets/svg/medallion4.svg";
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { useTranslations } from "next-intl";
 import AnimatedCard from "@/components/AnimatedCard";
 import {Modal} from "@/components/Modal";
@@ -26,6 +26,18 @@ export const Tarot = ({ onBlockedAnon, onBlockedFree }: TarotProps) => {
     const [showLoader, setShowLoader] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const allFlipped = flippedCards.every(card => card);
+    // Card-flip click. Loaded once; played on each flip (a user click, so
+    // browsers allow it). Rewound so fast flips each get their own click.
+    const flipSoundRef = useRef<HTMLAudioElement | null>(null);
+    useEffect(() => {
+        const audio = new Audio("/sounds/card-flip.mp3");
+        audio.preload = "auto";
+        audio.volume = 0.6;
+        flipSoundRef.current = audio;
+        return () => {
+            flipSoundRef.current = null;
+        };
+    }, []);
 
     const { beginReading } = useReadingGate({
         onBlockedAnon,
@@ -94,6 +106,12 @@ export const Tarot = ({ onBlockedAnon, onBlockedFree }: TarotProps) => {
             const newFlippedCards = [...flippedCards];
             newFlippedCards[index] = true;
             setFlippedCards(newFlippedCards);
+            const sound = flipSoundRef.current;
+            if (sound) {
+                sound.currentTime = 0;
+                // Autoplay can still be refused (e.g. some in-app browsers) — silence is fine.
+                sound.play().catch(() => {});
+            }
         }
     };
 
