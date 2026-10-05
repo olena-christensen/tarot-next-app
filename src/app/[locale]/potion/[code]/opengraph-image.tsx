@@ -69,7 +69,26 @@ export default async function Image({ params }: { params: { locale: string; code
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 620 }}>
           <div style={{ fontSize: 40, color: GOLD_SOFT }}>{from}</div>
           <div style={{ fontSize: 68, color: GOLD, lineHeight: 1.1, marginTop: 14 }}>{potion}</div>
-          <div style={{ fontSize: 28, color: GOLD_SOFT, marginTop: 40 }}>The Veil · theveil.app</div>
+          {/* The whole card is the link in Messenger/Facebook, so this
+              "button" really does open the page. */}
+          <div
+            style={{
+              display: "flex",
+              alignSelf: "flex-start",
+              marginTop: 44,
+              padding: "18px 44px",
+              border: `2px solid ${GOLD}`,
+              borderRadius: 14,
+              background: "rgba(250,225,163,0.12)",
+              color: GOLD,
+              fontSize: 34,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+            }}
+          >
+            {t("gifButton")}
+          </div>
+          <div style={{ fontSize: 24, color: GOLD_SOFT, marginTop: 22 }}>The Veil · theveil.app</div>
         </div>
       </div>
     ),
