@@ -6,6 +6,7 @@ import { track } from "@vercel/analytics";
 import { useSession } from "next-auth/react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { ShareDialog } from "@/components/ShareDialog";
+import { makePotionGif } from "@/lib/potionGame/potionGif";
 import {
   CAULDRON,
   WORLD,
@@ -434,15 +435,51 @@ export const BrewPotionGame = () => {
     return `${window.location.origin}/${locale}/potion/${code}`;
   }, [potion, session?.user?.name, locale]);
 
+  // The animated picture for direct messages, made as soon as the potion is
+  // brewed — the share must start within the tap (iOS refuses a share that
+  // waits on slow work), so it has to be ready before "Send it to a friend".
+  const brewerName = cleanBrewerName(session?.user?.name);
+  const [gif, setGif] = useState<{ file: File; url: string } | null>(null);
+  // Plain strings as dependencies (not `t`), so a re-render never restarts the work.
+  const gifFrom = brewerName ? t("giftCardFrom", { name: brewerName }) : t("giftCardAnon");
+  const gifButton = t("gifButton");
+  useEffect(() => {
+    if (!finishedAt || !potionName) return;
+    let cancelled = false;
+    let url = "";
+    makePotionGif({ from: gifFrom, potion: potionName, button: gifButton, site: "theveil.app" })
+      .then((blob) => {
+        if (cancelled) return;
+        url = URL.createObjectURL(blob);
+        setGif({ file: new File([blob], "potion.gif", { type: "image/gif" }), url });
+      })
+      .catch(() => {
+        // No picture — sharing falls back to the link alone.
+      });
+    return () => {
+      cancelled = true;
+      if (url) URL.revokeObjectURL(url);
+      setGif(null);
+    };
+  }, [finishedAt, potionName, gifFrom, gifButton]);
+
   const sendToFriend = async () => {
     if (!giftUrl) return;
     track("potion_shared");
+    const message = `${t("shareText", { potion: potionName })} ${giftUrl}`;
     // Phones: the phone's own share menu (Messenger, WhatsApp, Slack, Instagram…).
     // Computers: our dialog — Facebook, Slack (copy), Telegram, WhatsApp, copy link.
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     if (coarse && navigator.share) {
       try {
-        await navigator.share({ title: t("shareTitle", { potion: potionName }), text: t("shareText"), url: giftUrl });
+        // Picture + link in one message where the phone can share files;
+        // the link goes inside the text because some apps drop `url` when a
+        // file is attached. Otherwise the link alone.
+        if (gif && navigator.canShare?.({ files: [gif.file] })) {
+          await navigator.share({ files: [gif.file], text: message });
+        } else {
+          await navigator.share({ title: t("shareTitle", { potion: potionName }), text: message, url: giftUrl });
+        }
       } catch {
         // Dismissed — not an error.
       }
@@ -575,6 +612,7 @@ export const BrewPotionGame = () => {
         shareTitle={t("shareTitle", { potion: potionName })}
         title={t("sendToFriend")}
         slackHint={t("slackCopied")}
+        download={gif ? { href: gif.url, filename: "potion.gif", label: t("downloadGif") } : undefined}
       />
     </section>
   );

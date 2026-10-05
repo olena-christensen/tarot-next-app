@@ -23,6 +23,7 @@
     "@vercel/blob": "^2.6.1",
     "bcryptjs": "^3.0.3",
     "dotenv": "^16.4.5",
+    "gifenc": "^1.0.3",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "next-intl": "^3.26.5",
