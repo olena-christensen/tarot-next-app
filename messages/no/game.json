@@ -49,6 +49,11 @@
       "newtTail": "Eliksir for nye sjanser"
     },
     "gifButton": "Brygg din egen",
-    "downloadGif": "Last ned det animerte bildet"
+    "downloadGif": "Last ned det animerte bildet",
+    "moonstoneProgress": "<b>{count} av {total}</b> trylledrikker i dag — {left, plural, one {én til} other {# til}} for en månestein",
+    "moonstoneEarned": "<b>+1 månestein!</b> Kom tilbake i morgen for en ny",
+    "moonstoneTaken": "Dagens månestein er din — kom tilbake i morgen",
+    "moonstoneClaim": "Hent månesteinen din",
+    "moonstoneKeep": "Logg inn for å beholde fremgangen"
   }
 }

@@ -49,6 +49,11 @@
       "newtTail": "İkinci Şans İksiri"
     },
     "gifButton": "Kendininkini kaynat",
-    "downloadGif": "Animasyonlu resmi indir"
+    "downloadGif": "Animasyonlu resmi indir",
+    "moonstoneProgress": "Bugün <b>{count}/{total}</b> iksir — bir ay taşı için {left} iksir daha",
+    "moonstoneEarned": "<b>+1 ay taşı!</b> Bir sonraki için yarın tekrar gel",
+    "moonstoneTaken": "Bugünün ay taşı senin — yarın tekrar gel",
+    "moonstoneClaim": "Ay taşını al",
+    "moonstoneKeep": "İlerlemeni kaydetmek için giriş yap"
   }
 }

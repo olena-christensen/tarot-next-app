@@ -49,6 +49,11 @@
       "newtTail": "Elixir of Second Chances"
     },
     "gifButton": "Brew yours",
-    "downloadGif": "Download the animated picture"
+    "downloadGif": "Download the animated picture",
+    "moonstoneProgress": "<b>{count} of {total}</b> potions today — {left, plural, one {one more} other {# more}} for a moonstone",
+    "moonstoneEarned": "<b>+1 moonstone!</b> Come back tomorrow for another",
+    "moonstoneTaken": "Today's moonstone is yours — come back tomorrow",
+    "moonstoneClaim": "Claim your moonstone",
+    "moonstoneKeep": "Sign in to keep your progress"
   }
 }

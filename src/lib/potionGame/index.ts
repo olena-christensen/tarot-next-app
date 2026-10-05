@@ -39,6 +39,8 @@ export type RecipeLine = { ingredient: IngredientId; count: number };
 export type Round = { recipe: RecipeLine[]; placements: Placement[] };
 
 export const RECIPE_SIZE = 3;
+/** Potions in one (Kyiv) day that earn a moonstone — see reward.ts. */
+export const POTIONS_PER_MOONSTONE = 3;
 const COUNTS = [1, 2, 3];
 
 export function spritePath(id: IngredientId): string {

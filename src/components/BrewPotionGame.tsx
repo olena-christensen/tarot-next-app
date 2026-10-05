@@ -4,9 +4,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { track } from "@vercel/analytics";
 import { useSession } from "next-auth/react";
-import { Link, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { ShareDialog } from "@/components/ShareDialog";
+import { useOpenLogin } from "@/components/LoginContext";
 import { makePotionGif } from "@/lib/potionGame/potionGif";
+import { saveClaim, takeClaim } from "@/lib/potionGame/claim";
+import type { PotionProgress } from "@/lib/potionGame/reward";
+import { notifyMoonstonesChanged } from "@/lib/moonstones";
+import Skull from "@/assets/svg/skull.svg";
+import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 import {
   CAULDRON,
   WORLD,
@@ -14,6 +20,7 @@ import {
   cleanBrewerName,
   encodeGift,
   hits,
+  POTIONS_PER_MOONSTONE,
   potionOf,
   spritePath,
   type Placement,
@@ -48,7 +55,8 @@ export const BrewPotionGame = () => {
   const t = useTranslations("game");
   const locale = useLocale();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status: authStatus } = useSession();
+  const openLogin = useOpenLogin();
 
   // A round is random, so it's created on the client only (no SSR mismatch).
   const [round, setRound] = useState<Round | null>(null);
@@ -66,6 +74,9 @@ export const BrewPotionGame = () => {
   const [fullScreen, setFullScreen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const finishedRef = useRef(false);
+  // Moonstones: the server times each round; null until it has answered.
+  const [moon, setMoon] = useState<PotionProgress | null>(null);
+  const roundIdRef = useRef<Promise<string | null>>(Promise.resolve(null));
 
   const stageRef = useRef<HTMLDivElement>(null);
   const fxRef = useRef<HTMLDivElement>(null);
@@ -87,7 +98,12 @@ export const BrewPotionGame = () => {
     setHintUsed(false);
     setHintTarget(null);
     setBlurredUntil(0);
+    setMoon(null);
     wrongTaps.current = [];
+    roundIdRef.current = fetch("/api/game/round", { method: "POST" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { roundId?: string } | null) => d?.roundId ?? null)
+      .catch(() => null); // offline: the game still plays, it just doesn't count
     const start = Date.now();
     setStartedAt(start);
     setNow(start);
@@ -298,11 +314,62 @@ export const BrewPotionGame = () => {
       cauldronBurst();
     }, FLY_MS);
     if (done) {
+      finishOnServer();
       later(() => {
         setFinishedAt(tappedAt);
         track("potion_finished", { seconds: Math.round((tappedAt - startedAt) / 1000) });
       }, FLY_MS + 700);
     }
+  };
+
+  // ---------- moonstones ----------
+  const applyProgress = (p: PotionProgress | undefined) => {
+    if (!p) return;
+    setMoon(p);
+    if (p.justRewarded) notifyMoonstonesChanged();
+  };
+
+  const finishOnServer = async () => {
+    const roundId = await roundIdRef.current;
+    if (!roundId) return;
+    try {
+      const res = await fetch("/api/game/round/finish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roundId }),
+      });
+      const data = (await res.json()) as { progress?: PotionProgress };
+      applyProgress(data.progress);
+    } catch {
+      // No progress box this time; the potion itself is unaffected.
+    }
+  };
+
+  // Signed in (here, or back from Google): bring back the end screen the claim
+  // was made from, and let the server move today's potions to the account.
+  useEffect(() => {
+    if (authStatus !== "authenticated") return;
+    const claim = takeClaim();
+    if (claim) {
+      timers.current.list.forEach(clearTimeout);
+      const all = new Set(claim.round.placements.map((_, i) => i));
+      setRound(claim.round);
+      setFound(all);
+      setLanded(all);
+      setStartedAt(claim.startedAt);
+      setFinishedAt(claim.finishedAt);
+      setNow(claim.finishedAt);
+    }
+    fetch("/api/game/progress", { method: "POST" })
+      .then((r) => r.json())
+      .then((d: { progress?: PotionProgress }) => applyProgress(d.progress))
+      .catch(() => {});
+  }, [authStatus]);
+
+  const signInToClaim = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (round && finishedAt) saveClaim({ round, startedAt, finishedAt });
+    openLogin();
   };
 
   // ---------- effects (Web Animations, in world coordinates) ----------
@@ -560,6 +627,9 @@ export const BrewPotionGame = () => {
 
           {finishedAt && (
             <div className="potion__done" onPointerDown={(e) => e.stopPropagation()}>
+              <button type="button" className="potion__home" onClick={leave} aria-label={t("close")} title={t("close")}>
+                <Skull aria-hidden="true" />
+              </button>
               <div className="potion__done-card">
                 <h2 className="potion__done-title">{t("doneTitle")}</h2>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -569,15 +639,13 @@ export const BrewPotionGame = () => {
                 <p className="potion__done-summary">
                   {t("doneSummary", { count: total, time: formatTime(elapsed) })}
                 </p>
+                {moon && <MoonstoneProgress progress={moon} onSignIn={signInToClaim} />}
                 <button type="button" className="potion__done-btn potion__done-btn--main" onClick={sendToFriend}>
                   {t("sendToFriend")}
                 </button>
                 <button type="button" className="potion__done-btn" onClick={startRound}>
                   {t("brewAgain")}
                 </button>
-                <Link href="/" className="potion__done-btn">
-                  {t("drawCards")}
-                </Link>
               </div>
             </div>
           )}
@@ -615,5 +683,52 @@ export const BrewPotionGame = () => {
         download={gif ? { href: gif.url, filename: "potion.gif", label: t("downloadGif") } : undefined}
       />
     </section>
+  );
+};
+
+/** Under the potion: today's three bottles → the moonstone. */
+const MoonstoneProgress = ({
+  progress,
+  onSignIn,
+}: {
+  progress: PotionProgress;
+  onSignIn: (e: React.MouseEvent) => void;
+}) => {
+  const t = useTranslations("game");
+  const done = Math.min(progress.today, POTIONS_PER_MOONSTONE);
+  const ready = done >= POTIONS_PER_MOONSTONE;
+  const b = (chunks: React.ReactNode) => <b>{chunks}</b>;
+
+  let line: React.ReactNode = null;
+  if (progress.signedIn && progress.justRewarded) line = t.rich("moonstoneEarned", { b });
+  else if (progress.signedIn && progress.rewarded) line = t("moonstoneTaken");
+  else if (!ready) {
+    line = t.rich("moonstoneProgress", { b, count: done, total: POTIONS_PER_MOONSTONE, left: POTIONS_PER_MOONSTONE - done });
+  }
+
+  return (
+    <div className="potion-moon">
+      <div className="potion-moon__row" aria-hidden="true">
+        {Array.from({ length: POTIONS_PER_MOONSTONE }, (_, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={i}
+            className={`potion-moon__bottle${i < done ? "" : " potion-moon__bottle--off"}`}
+            src="/game-art/potion/bottle.webp"
+            alt=""
+          />
+        ))}
+        <span className="potion-moon__arrow">→</span>
+        <MoonstoneIcon
+          className={`potion-moon__stone${ready ? "" : " potion-moon__stone--off"}${progress.justRewarded ? " potion-moon__stone--new" : ""}`}
+        />
+      </div>
+      {line && <p className="potion-moon__text">{line}</p>}
+      {!progress.signedIn && (
+        <a href="#" className="potion-moon__link" onClick={onSignIn}>
+          {ready ? t("moonstoneClaim") : t("moonstoneKeep")}
+        </a>
+      )}
+    </div>
   );
 };
