@@ -221,6 +221,26 @@ def main():
         b.thumbnail((600, 800), Image.LANCZOS)
         b.save(os.path.join(OUT, "bottle.webp"), quality=90, method=6)
         b.save(os.path.join(OUT, "bottle.png"), optimize=True)
+        # Link-preview picture for shared potions: only the bottle, centred, on
+        # the dark glow — words live in the link's title/description instead
+        # (Lena, 2026-10-06). Centred so Slack's small square crop is clean.
+        card = Image.new("RGB", (1200, 630), (11, 8, 16))
+        glow = Image.new("L", card.size, 0)
+        ImageDraw.Draw(glow).ellipse([600 - 330, 315 - 330, 600 + 330, 315 + 330], fill=150)
+        glow = glow.filter(ImageFilter.GaussianBlur(110))
+        card = Image.composite(Image.new("RGB", card.size, (110, 230, 70)), card, glow.point(lambda v: int(v * 0.45)))
+        bb = b.copy()
+        bb.thumbnail((360, 560), Image.LANCZOS)
+        halo = Image.new("L", (bb.width + 160, bb.height + 160), 0)
+        halo.paste(bb.getchannel("A"), (80, 80))
+        halo = halo.filter(ImageFilter.GaussianBlur(26)).point(lambda v: int(v * 0.6))
+        green = Image.new("RGBA", halo.size, (150, 255, 90, 0))
+        green.putalpha(halo)
+        card = card.convert("RGBA")
+        x, y = (1200 - bb.width) // 2, (630 - bb.height) // 2
+        card.alpha_composite(green, (x - 80, y - 80))
+        card.alpha_composite(bb, (x, y))
+        card.convert("RGB").save(os.path.join(OUT, "share-card.png"), optimize=True)
     else:
         print("note: game-art-source/potion-bottle.png missing — bottle not built")
 
