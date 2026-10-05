@@ -630,3 +630,97 @@ html.potion-locked body {
   }
 }
 
+
+// ---------- end screen: skull home button and the moonstone progress ----------
+.potion__home {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  padding: 6px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  filter: drop-shadow(0 0 6px rgba(250, 225, 163, 0.4));
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  &:hover {
+    color: var(--gold);
+  }
+}
+
+.potion--full .potion__home {
+  top: calc(12px + env(safe-area-inset-top));
+}
+
+.potion-moon {
+  margin: 14px 0 12px;
+
+  &__row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__bottle {
+    width: 26px;
+    height: 34px;
+    object-fit: contain;
+
+    &--off {
+      opacity: 0.22;
+      filter: grayscale(1);
+    }
+  }
+
+  &__arrow {
+    opacity: 0.6;
+  }
+
+  &__stone {
+    width: 28px;
+    height: 28px;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+
+    &--off {
+      opacity: 0.3;
+      filter: grayscale(1);
+    }
+
+    &--new {
+      animation: potionStone 1.2s ease-out;
+    }
+  }
+
+  .potion-moon__text {
+    margin: 8px 0 0 !important;
+    font-size: 0.9rem;
+
+    b {
+      color: var(--gold);
+      font-weight: inherit;
+    }
+  }
+
+  &__link {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--gold);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@keyframes potionStone {
+  0% { transform: scale(0.4); filter: drop-shadow(0 0 0 #fae1a3); }
+  50% { transform: scale(1.5); filter: drop-shadow(0 0 14px #fae1a3); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 4px #fae1a3); }
+}

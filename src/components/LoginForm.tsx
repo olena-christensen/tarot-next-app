@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { signIn } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
+import { claimReturnPath } from "@/lib/potionGame/claim";
 
 /**
  * Where the last-used address is kept when "remember me" is ticked. The EMAIL
@@ -186,7 +187,8 @@ export const LoginForm = ({ onSuccess, notice }: LoginFormProps) => {
       document.cookie = "tarot_terms_consent=1; path=/; max-age=600; samesite=lax";
       document.cookie = "tarot_age_consent=1; path=/; max-age=600; samesite=lax";
     }
-    signIn("google", { callbackUrl: "/" });
+    // Back to the game when signing in to claim a potion moonstone.
+    signIn("google", { callbackUrl: claimReturnPath() ?? "/" });
   };
 
   if (isForgot) {
