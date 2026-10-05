@@ -66,6 +66,8 @@ type ShareDialogProps = {
    * the link and shows this line telling the person to paste it into Slack.
    */
   slackHint?: string;
+  /** Optional file the person can save (the shared potion's animated picture). */
+  download?: { href: string; filename: string; label: string };
 };
 
 /**
@@ -88,6 +90,7 @@ export const ShareDialog = ({
   isBusy = false,
   onRevoke,
   slackHint,
+  download,
 }: ShareDialogProps) => {
   const t = useTranslations("history");
   const [copied, setCopied] = useState(false);
@@ -205,6 +208,11 @@ export const ShareDialog = ({
               <p className="reading-share__body" role="status">
                 {slackHint}
               </p>
+            )}
+            {download && (
+              <a className="reading-share__revoke" href={download.href} download={download.filename}>
+                {download.label}
+              </a>
             )}
             {onRevoke && (
               <button

@@ -26,7 +26,7 @@
     "doneSummary": "Alle {count} ingrediensene på {time}",
     "sendToFriend": "Send den til en venn",
     "shareTitle": "{potion} — brygget hos The Veil",
-    "shareText": "Jeg har brygget en trylledrikk til deg. Klarer du å brygge din egen?",
+    "shareText": "Jeg brygget {potion} til deg. Brygg din egen:",
     "slack": "Slack",
     "slackCopied": "Lenken er kopiert — lim den inn i Slack.",
     "giftFrom": "{name} brygget denne til deg",
@@ -47,6 +47,8 @@
       "spider": "Brygg av vevd skjebne",
       "toadstool": "Drikk for alvedrømmer",
       "newtTail": "Eliksir for nye sjanser"
-    }
+    },
+    "gifButton": "Brygg din egen",
+    "downloadGif": "Last ned det animerte bildet"
   }
 }

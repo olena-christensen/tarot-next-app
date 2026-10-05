@@ -26,7 +26,7 @@
     "doneSummary": "{count} malzemenin hepsi {time} içinde",
     "sendToFriend": "Bir arkadaşına gönder",
     "shareTitle": "{potion} — The Veil'de kaynatıldı",
-    "shareText": "Sana bir iksir kaynattım. Sen de kendininkini kaynatabilir misin?",
+    "shareText": "Sana {potion} kaynattım. Sen de kendininkini kaynat:",
     "slack": "Slack",
     "slackCopied": "Bağlantı kopyalandı — Slack'e yapıştır.",
     "giftFrom": "{name} bunu senin için kaynattı",
@@ -47,6 +47,8 @@
       "spider": "Örülmüş Kader Karışımı",
       "toadstool": "Peri Rüyaları Şerbeti",
       "newtTail": "İkinci Şans İksiri"
-    }
+    },
+    "gifButton": "Kendininkini kaynat",
+    "downloadGif": "Animasyonlu resmi indir"
   }
 }

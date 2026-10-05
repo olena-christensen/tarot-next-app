@@ -26,7 +26,7 @@
     "doneSummary": "All {count} ingredients in {time}",
     "sendToFriend": "Send it to a friend",
     "shareTitle": "{potion} — brewed at The Veil",
-    "shareText": "I brewed you a potion. Can you brew your own?",
+    "shareText": "I brewed you {potion}. Brew yours:",
     "slack": "Slack",
     "slackCopied": "Link copied — paste it into Slack.",
     "giftFrom": "{name} brewed this for you",
@@ -47,6 +47,8 @@
       "spider": "Brew of Woven Fate",
       "toadstool": "Draught of Fey Dreams",
       "newtTail": "Elixir of Second Chances"
-    }
+    },
+    "gifButton": "Brew yours",
+    "downloadGif": "Download the animated picture"
   }
 }
