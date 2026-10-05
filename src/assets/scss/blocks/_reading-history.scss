@@ -360,6 +360,20 @@
       height: 20px;
     }
 
+    // A network with no icon of ours (Slack): its name instead.
+    &--text {
+      width: auto;
+      padding: 0 12px;
+      font-family: var(--font-family);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+    }
+
+    &--text[data-active="true"] {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
     &:hover {
       color: var(--primary);
       border-color: var(--primary);

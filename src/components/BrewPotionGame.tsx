@@ -3,12 +3,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { track } from "@vercel/analytics";
-import { Link } from "@/i18n/navigation";
+import { useSession } from "next-auth/react";
+import { Link, useRouter } from "@/i18n/navigation";
+import { ShareDialog } from "@/components/ShareDialog";
 import {
   CAULDRON,
   WORLD,
   generateRound,
+  cleanBrewerName,
+  encodeGift,
   hits,
+  potionOf,
   spritePath,
   type Placement,
   type Round,
@@ -28,6 +33,8 @@ const WRONG_WINDOW_MS = 2000;
 const WRONG_LIMIT = 3;
 const BLUR_MS = 5000;
 const MAX_ZOOM = 3;
+/** Phones (portrait, or landscape with little height): the game takes the whole screen. */
+const FULL_SCREEN_QUERY = "(max-width: 48em), (max-height: 500px)";
 
 type View = { s: number; tx: number; ty: number; min: number };
 
@@ -39,6 +46,8 @@ function formatTime(ms: number): string {
 export const BrewPotionGame = () => {
   const t = useTranslations("game");
   const locale = useLocale();
+  const router = useRouter();
+  const { data: session } = useSession();
 
   // A round is random, so it's created on the client only (no SSR mismatch).
   const [round, setRound] = useState<Round | null>(null);
@@ -53,6 +62,9 @@ export const BrewPotionGame = () => {
   const [blurredUntil, setBlurredUntil] = useState(0);
   const [touched, setTouched] = useState(false);
   const [view, setView] = useState<View>({ s: 1, tx: 0, ty: 0, min: 1 });
+  const [fullScreen, setFullScreen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const finishedRef = useRef(false);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const fxRef = useRef<HTMLDivElement>(null);
@@ -127,7 +139,38 @@ export const BrewPotionGame = () => {
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
-  }, [fit]);
+  }, [fit, fullScreen]);
+
+  // ---------- phones: whole screen, no page scroll, no accidental exits ----------
+  useEffect(() => {
+    const mq = window.matchMedia(FULL_SCREEN_QUERY);
+    const update = () => setFullScreen(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    finishedRef.current = finishedAt !== null;
+  }, [finishedAt]);
+
+  useEffect(() => {
+    if (!fullScreen) return;
+    const root = document.documentElement;
+    root.classList.add("potion-locked");
+    // A swipe-back (or the back button) while playing lands on this extra
+    // entry and is put straight back — only the ✕ button leaves the game.
+    // Once the potion is brewed, back works normally.
+    window.history.pushState({ potionGuard: true }, "");
+    const onPop = () => {
+      if (!finishedRef.current) window.history.pushState({ potionGuard: true }, "");
+    };
+    window.addEventListener("popstate", onPop);
+    return () => {
+      root.classList.remove("potion-locked");
+      window.removeEventListener("popstate", onPop);
+    };
+  }, [fullScreen]);
 
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<{
@@ -381,26 +424,48 @@ export const BrewPotionGame = () => {
   const total = round?.placements.length ?? 0;
   const hintPlacement = hintTarget !== null && round ? round.placements[hintTarget] : null;
 
-  const pinUrl = useMemo(() => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://theveil.app";
-    const page = `${origin}/${locale}/game`;
-    return (
-      "https://www.pinterest.com/pin/create/button/?url=" +
-      encodeURIComponent(page) +
-      "&media=" +
-      encodeURIComponent(`${origin}/game-art/potion/room.webp`) +
-      "&description=" +
-      encodeURIComponent(t("pinDescription"))
-    );
-  }, [locale, t]);
+  // ---------- the brewed potion and sharing it ----------
+  const potion = round ? potionOf(round.recipe) : null;
+  const potionName = potion ? t(`potionNames.${potion}`) : "";
+
+  const giftUrl = useMemo(() => {
+    if (!potion || typeof window === "undefined") return "";
+    const code = encodeGift({ potion, from: cleanBrewerName(session?.user?.name) });
+    return `${window.location.origin}/${locale}/potion/${code}`;
+  }, [potion, session?.user?.name, locale]);
+
+  const sendToFriend = async () => {
+    if (!giftUrl) return;
+    track("potion_shared");
+    // Phones: the phone's own share menu (Messenger, WhatsApp, Slack, Instagram…).
+    // Computers: our dialog — Facebook, Slack (copy), Telegram, WhatsApp, copy link.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (coarse && navigator.share) {
+      try {
+        await navigator.share({ title: t("shareTitle", { potion: potionName }), text: t("shareText"), url: giftUrl });
+      } catch {
+        // Dismissed — not an error.
+      }
+      return;
+    }
+    setShareOpen(true);
+  };
+
+  const leave = () => {
+    finishedRef.current = true; // let the guard step aside
+    router.push("/");
+  };
 
   return (
-    <section className="potion">
+    <section className={`potion${fullScreen ? " potion--full" : ""}`}>
       <h1 className="potion__title title">{t("title")}</h1>
       <p className="potion__subtitle">{t("subtitle")}</p>
 
       <div className="potion__board">
         <div className="potion__hud">
+          <button type="button" className="potion__pill potion__close" onClick={leave} aria-label={t("close")} title={t("close")}>
+            ✕
+          </button>
           <span className="potion__pill" aria-label={t("timeLabel")}>
             ⏳ {formatTime(elapsed)}
           </span>
@@ -460,17 +525,22 @@ export const BrewPotionGame = () => {
             <div className="potion__done" onPointerDown={(e) => e.stopPropagation()}>
               <div className="potion__done-card">
                 <h2 className="potion__done-title">{t("doneTitle")}</h2>
-                <p>{t("doneFoundIn", { count: total })}</p>
-                <p className="potion__done-time">{formatTime(elapsed)}</p>
-                <Link href="/" className="potion__done-btn">
-                  {t("drawCards")}
-                </Link>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="potion__bottle" src="/game-art/potion/bottle.webp" alt="" />
+                <p className="potion__done-kicker">{t("youBrewed")}</p>
+                <p className="potion__done-name">{potionName}</p>
+                <p className="potion__done-summary">
+                  {t("doneSummary", { count: total, time: formatTime(elapsed) })}
+                </p>
+                <button type="button" className="potion__done-btn potion__done-btn--main" onClick={sendToFriend}>
+                  {t("sendToFriend")}
+                </button>
                 <button type="button" className="potion__done-btn" onClick={startRound}>
                   {t("brewAgain")}
                 </button>
-                <a className="potion__done-link" href={pinUrl} target="_blank" rel="noopener noreferrer">
-                  {t("pinIt")}
-                </a>
+                <Link href="/" className="potion__done-btn">
+                  {t("drawCards")}
+                </Link>
               </div>
             </div>
           )}
@@ -498,6 +568,14 @@ export const BrewPotionGame = () => {
           })}
         </div>
       </div>
+      <ShareDialog
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        url={giftUrl}
+        shareTitle={t("shareTitle", { potion: potionName })}
+        title={t("sendToFriend")}
+        slackHint={t("slackCopied")}
+      />
     </section>
   );
 };

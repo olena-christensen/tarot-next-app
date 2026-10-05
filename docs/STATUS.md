@@ -21,8 +21,8 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
    Shared readings offer Facebook, Telegram, WhatsApp and the phone's own share menu. There is no Pinterest, the one channel we are growing.
    Why 👥: every reading a visitor pins is a free pin pointing back to theveil.app.
 
-4. **Brew the Potion: moonstone reward and menu link** · 🎨 mockup first for the link · ~2 hours
-   The game is live at /game but nobody can find it and finishing it gives nothing yet.
+4. **Brew the Potion: moonstone reward** · ~2 hours
+   Finishing the game gives nothing yet.
    Why 🔁💶: a daily moonstone for finishing pulls players into readings, which is where moonstones are spent.
 
 5. **Pinterest** · 📣 · 10 min a day
@@ -65,6 +65,7 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
 
 ### 2026-10
 
+- 2026-10-06 · Brew the Potion on phones: full screen with no site header or page scroll, swipe-back caught, sideways layout. Potions get names and can be sent to a friend (phone share menu; Facebook, Slack, Telegram, WhatsApp, copy link on computers) as a picture card linking to a page with the bottle and "Brew your own". Main page way in: "A Halloween treat" pill above the footer.
 - 2026-10-05 · Built "Brew the Potion", a hidden-object game at /game: 7 ingredients, 16 hiding spots, a new recipe every round, pinch-to-zoom on phones, sounds and cauldron effects, in all 5 languages. Not in the menu yet; no moonstone reward yet. `docs/hidden-object-game.md`
 - 2026-10-04 · The full-screen reading window has a quiet "Back to the Sanctum" link under the title while the cards are turned; before, the only way out was to flip all three and wait.
 - 2026-10-04 · Moonstone balance chip in the header beside the avatar; opens the price list and refreshes after a purchase or a reading. `src/components/HeaderMoonstones.tsx`

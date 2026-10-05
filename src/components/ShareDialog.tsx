@@ -61,6 +61,11 @@ type ShareDialogProps = {
    * Supplied by the reading history, where the link is a minted credential.
    */
   onRevoke?: () => void;
+  /**
+   * Adds a "Slack" button. Slack has no share-intent URL, so the button copies
+   * the link and shows this line telling the person to paste it into Slack.
+   */
+  slackHint?: string;
 };
 
 /**
@@ -82,9 +87,11 @@ export const ShareDialog = ({
   compact = false,
   isBusy = false,
   onRevoke,
+  slackHint,
 }: ShareDialogProps) => {
   const t = useTranslations("history");
   const [copied, setCopied] = useState(false);
+  const [slackCopied, setSlackCopied] = useState(false);
   // Resolved after mount — navigator is undefined during SSR, and reading it in
   // render would desync server and client HTML.
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -94,7 +101,10 @@ export const ShareDialog = ({
   }, []);
 
   useEffect(() => {
-    if (!isOpen) setCopied(false);
+    if (!isOpen) {
+      setCopied(false);
+      setSlackCopied(false);
+    }
   }, [isOpen]);
 
   const handleCopy = async () => {
@@ -108,6 +118,15 @@ export const ShareDialog = ({
       // Clipboard can be blocked (insecure context, permissions) — the link is
       // selectable, so it is still obtainable by hand.
       setCopied(false);
+    }
+  };
+
+  const handleSlack = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setSlackCopied(true);
+    } catch {
+      setSlackCopied(false);
     }
   };
 
@@ -160,6 +179,16 @@ export const ShareDialog = ({
                   <Icon />
                 </a>
               ))}
+              {slackHint && (
+                <button
+                  type="button"
+                  className="reading-share__network reading-share__network--text"
+                  data-active={slackCopied ? "true" : undefined}
+                  onClick={handleSlack}
+                >
+                  Slack
+                </button>
+              )}
               {canNativeShare && (
                 <button
                   type="button"
@@ -172,6 +201,11 @@ export const ShareDialog = ({
                 </button>
               )}
             </div>
+            {slackHint && slackCopied && (
+              <p className="reading-share__body" role="status">
+                {slackHint}
+              </p>
+            )}
             {onRevoke && (
               <button
                 type="button"
