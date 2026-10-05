@@ -4,6 +4,7 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/PageShell";
 import { Link } from "@/i18n/navigation";
 import { decodeGift } from "@/lib/potionGame";
+import { absoluteUrl } from "@/lib/seo";
 
 type Props = {
   params: { locale: string; code: string };
@@ -20,11 +21,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const potion = t(`potionNames.${gift.potion}`);
   const title = t("giftMetaTitle", { potion });
   const description = t("giftMetaDescription");
+  // Its own canonical and og:url. Without them the layout's canonical (the main
+  // page) is inherited, and Messenger/Facebook follow it — showing the main
+  // page's card instead of the potion's. Deliberately WITHOUT a language: the
+  // shared link has none either, so whoever opens it is sent to their own
+  // language by the middleware (Lena, 2026-10-06).
+  const url = absoluteUrl(`/potion/${params.code}`);
   return {
     title,
     description,
     robots: { index: false, follow: false },
-    openGraph: { title, description },
+    alternates: { canonical: url },
+    openGraph: { type: "website", url, title, description, siteName: "The Veil" },
     twitter: { card: "summary_large_image", title, description },
   };
 }
