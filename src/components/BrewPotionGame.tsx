@@ -430,12 +430,12 @@ export const BrewPotionGame = () => {
   const potionName = potion ? t(`potionNames.${potion}`) : "";
 
   const giftUrl = useMemo(() => {
-    if (!potion || typeof window === "undefined") return "";
+    if (!potion || !round || typeof window === "undefined") return "";
     const code = encodeGift({ potion, from: cleanBrewerName(session?.user?.name) });
     // No language in the link: it opens in the friend's own language (their
     // saved preference, else their phone's), not the brewer's.
     return `${window.location.origin}/potion/${code}`;
-  }, [potion, session?.user?.name]);
+  }, [potion, round, session?.user?.name]); // round: a fresh link per brew
 
   // The animated picture — offered only as a download on computers. Phones
   // share the LINK alone: messengers turn it into a card whose picture IS the

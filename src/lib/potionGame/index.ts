@@ -145,7 +145,12 @@ function fromBase64Url(code: string): string {
  * clean up. The code is not a secret: it only says which potion and who brewed it.
  */
 export function encodeGift(gift: PotionGift): string {
-  return toBase64Url(JSON.stringify({ p: gift.potion, n: gift.from ?? "" }));
+  // `r` makes every brew's link unique. Without it the same potion from the
+  // same person is always the same address, and Slack/Messenger/Facebook keep
+  // showing whatever preview they cached for it first — even after we change
+  // the preview. decodeGift ignores it.
+  const r = Math.random().toString(36).slice(2, 7);
+  return toBase64Url(JSON.stringify({ p: gift.potion, n: gift.from ?? "", r }));
 }
 
 export function decodeGift(code: string): PotionGift | null {
