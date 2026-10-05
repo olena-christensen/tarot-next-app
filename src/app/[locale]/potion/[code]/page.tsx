@@ -6,6 +6,15 @@ import { Link } from "@/i18n/navigation";
 import { decodeGift } from "@/lib/potionGame";
 import { absoluteUrl } from "@/lib/seo";
 
+// Same picture for every potion: the glowing bottle alone, made by
+// scripts/build-potion-art.py. Centred so Slack's small square crop is clean.
+const SHARE_CARD = {
+  url: absoluteUrl("/game-art/potion/share-card.png"),
+  width: 1200,
+  height: 630,
+  alt: "",
+};
+
 type Props = {
   params: { locale: string; code: string };
 };
@@ -19,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale: params.locale, namespace: "game" });
   if (!gift) return { robots: { index: false, follow: false } };
   const potion = t(`potionNames.${gift.potion}`);
-  const title = t("giftMetaTitle", { potion });
+  // Who brewed what for whom lives in the words; the picture is only the bottle.
+  const title = `${gift.from ? t("giftCardFrom", { name: gift.from }) : t("giftCardAnon")} ${potion}`;
   const description = t("giftMetaDescription");
   // Its own canonical and og:url. Without them the layout's canonical (the main
   // page) is inherited, and Messenger/Facebook follow it — showing the main
@@ -32,8 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     robots: { index: false, follow: false },
     alternates: { canonical: url },
-    openGraph: { type: "website", url, title, description, siteName: "The Veil" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { type: "website", url, title, description, siteName: "The Veil", images: [SHARE_CARD] },
+    twitter: { card: "summary_large_image", title, description, images: [SHARE_CARD.url] },
   };
 }
 
