@@ -292,6 +292,11 @@
 
 // Share dialog — link + per-network intent links + revoke.
 .reading-share {
+  // Never wider than the modal: a long link (e.g. a shared potion) must
+  // shorten with "…" instead of stretching the dialog sideways.
+  width: 100%;
+  min-width: 0;
+
   // No heading, no body — the link and the networks close up.
   &--compact {
     .reading-share__networks {
@@ -311,6 +316,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    max-width: 100%;
+    min-width: 0;
   }
 
   // Reads as a link in the app's own voice, not a form control: the TEXT is
