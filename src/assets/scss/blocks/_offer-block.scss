@@ -429,3 +429,35 @@
     }
   }
 }
+
+// Short phone screens (small phones, Display Zoom, larger text): tighten the
+// reader block so it and the overlay footer don't run into each other.
+@media (max-height: 720px) and (max-width: 37.5em) {
+  .offer-block {
+    .offer-block__reader {
+      gap: 10px;
+    }
+
+    .offer-block__reader-portrait {
+      width: 72px;
+      height: 72px;
+    }
+
+    .offer-block__reader-name {
+      font-size: 1.3rem;
+    }
+
+    .offer-block__reader-bio {
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .offer-block__reader-actions {
+      gap: 0.6rem;
+    }
+
+    .offer-block__screen--cards .inner-wrap {
+      top: 24%;
+    }
+  }
+}

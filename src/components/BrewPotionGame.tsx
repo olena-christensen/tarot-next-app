@@ -437,9 +437,10 @@ export const BrewPotionGame = () => {
     return `${window.location.origin}/potion/${code}`;
   }, [potion, session?.user?.name]);
 
-  // The animated picture for direct messages, made as soon as the potion is
-  // brewed — the share must start within the tap (iOS refuses a share that
-  // waits on slow work), so it has to be ready before "Send it to a friend".
+  // The animated picture — offered only as a download on computers. Phones
+  // share the LINK alone: messengers turn it into a card whose picture IS the
+  // link (tap → the potion page). Sending the picture as a file made a tap
+  // open the picture instead (Lena, 2026-10-06).
   const brewerName = cleanBrewerName(session?.user?.name);
   const [gif, setGif] = useState<{ file: File; url: string } | null>(null);
   // Plain strings as dependencies (not `t`), so a re-render never restarts the work.
@@ -447,6 +448,7 @@ export const BrewPotionGame = () => {
   const gifButton = t("gifButton");
   useEffect(() => {
     if (!finishedAt || !potionName) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
     let cancelled = false;
     let url = "";
     makePotionGif({ from: gifFrom, potion: potionName, button: gifButton, site: "theveil.app" })
@@ -468,20 +470,16 @@ export const BrewPotionGame = () => {
   const sendToFriend = async () => {
     if (!giftUrl) return;
     track("potion_shared");
-    const message = `${t("shareText", { potion: potionName })} ${giftUrl}`;
     // Phones: the phone's own share menu (Messenger, WhatsApp, Slack, Instagram…).
     // Computers: our dialog — Facebook, Slack (copy), Telegram, WhatsApp, copy link.
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     if (coarse && navigator.share) {
       try {
-        // Picture + link in one message where the phone can share files;
-        // the link goes inside the text because some apps drop `url` when a
-        // file is attached. Otherwise the link alone.
-        if (gif && navigator.canShare?.({ files: [gif.file] })) {
-          await navigator.share({ files: [gif.file], text: message });
-        } else {
-          await navigator.share({ title: t("shareTitle", { potion: potionName }), text: message, url: giftUrl });
-        }
+        await navigator.share({
+          title: t("shareTitle", { potion: potionName }),
+          text: t("shareText", { potion: potionName }),
+          url: giftUrl,
+        });
       } catch {
         // Dismissed — not an error.
       }

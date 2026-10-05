@@ -578,37 +578,29 @@ html.potion-locked body {
 }
 
 // ---------- the way in, on the main page ----------
+// In the reader block's flow (under "Change your reader"), never floating.
 .game-entrance {
-  position: fixed;
-  left: 50%;
-  z-index: 49; // just under the overlay footer (50), over the main screen
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 18px 8px 10px;
+  margin-top: 4px;
+  padding: 6px 16px 6px 10px;
   border: 1px solid rgba(250, 225, 163, 0.55);
-  border-radius: 26px;
+  border-radius: 24px;
   background: rgba(20, 12, 24, 0.92);
-  box-shadow: 0 0 18px rgba(140, 255, 90, 0.25);
+  box-shadow: 0 0 16px rgba(140, 255, 90, 0.22);
   color: var(--text-color);
   text-decoration: none;
   white-space: nowrap;
-  transform: translateX(-50%);
-  opacity: 0;
-  animation: fadeIn 0.8s ease-out 9s forwards;
   transition: box-shadow 0.2s ease;
 
-  &--now {
-    animation-delay: 0s;
-  }
-
   &:hover {
-    box-shadow: 0 0 26px rgba(140, 255, 90, 0.45);
+    box-shadow: 0 0 24px rgba(140, 255, 90, 0.42);
   }
 
   &__bottle {
-    width: 30px;
-    height: 40px;
+    width: 24px;
+    height: 32px;
     object-fit: contain;
     animation: potionBob 2s ease-in-out infinite;
   }
@@ -621,14 +613,15 @@ html.potion-locked body {
   }
 
   &__kicker {
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-faint);
   }
 
   &__cta {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--gold);
   }
 }
+

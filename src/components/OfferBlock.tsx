@@ -20,6 +20,7 @@ import {Modal} from "@/components/Modal";
 import {MysticButton} from "@/components/MysticButton";
 import { Loader } from "@/components/Loader";
 import { useReadingGate } from "@/hooks/useReadingGate";
+import { GameEntrance } from "@/components/GameEntrance";
 
 type OfferBlockProps = {
     // Direct openers — used by the "change your reader" / reader-upgrade actions.
@@ -270,6 +271,9 @@ export const OfferBlock = ({
                                                 {t("changeYourReader")}
                                             </button>
                                         )}
+                                        {/* The way into the game sits in the reader block's own
+                                            flow, so it can never land on top of these buttons. */}
+                                        <GameEntrance />
                                     </div>
                                 </div>
                             </div>
