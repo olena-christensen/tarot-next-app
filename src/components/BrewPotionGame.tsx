@@ -432,8 +432,10 @@ export const BrewPotionGame = () => {
   const giftUrl = useMemo(() => {
     if (!potion || typeof window === "undefined") return "";
     const code = encodeGift({ potion, from: cleanBrewerName(session?.user?.name) });
-    return `${window.location.origin}/${locale}/potion/${code}`;
-  }, [potion, session?.user?.name, locale]);
+    // No language in the link: it opens in the friend's own language (their
+    // saved preference, else their phone's), not the brewer's.
+    return `${window.location.origin}/potion/${code}`;
+  }, [potion, session?.user?.name]);
 
   // The animated picture for direct messages, made as soon as the potion is
   // brewed — the share must start within the tap (iOS refuses a share that
