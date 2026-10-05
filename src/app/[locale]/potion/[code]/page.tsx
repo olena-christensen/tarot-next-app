@@ -4,6 +4,8 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/PageShell";
 import { Link } from "@/i18n/navigation";
 import { decodeGift } from "@/lib/potionGame";
+import { giftStatus, type GiftStatus } from "@/lib/potionGame/reward";
+import { PotionGiftTake } from "@/components/PotionGiftTake";
 import { absoluteUrl } from "@/lib/seo";
 
 // Same picture for every potion: the glowing bottle alone, made by
@@ -20,8 +22,10 @@ type Props = {
 };
 
 /**
- * A potion someone brewed in "Brew the Potion" and sent to a friend. Everything
- * is in the link (see encodeGift) — no database. Not indexed: these are personal.
+ * A potion someone brewed in "Brew the Potion" and sent to a friend. The link
+ * carries the potion, the brewer's first name and the round id (see encodeGift);
+ * the round says whether the potion can still be taken (see reward.ts). Old links
+ * without a round only show the bottle. Not indexed: these are personal.
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const gift = decodeGift(params.code);
@@ -52,16 +56,31 @@ export default async function PotionGiftPage({ params }: Props) {
   const gift = decodeGift(params.code);
   if (!gift) notFound();
   const t = await getTranslations({ locale: params.locale, namespace: "game" });
+  let status: GiftStatus = "gone";
+  if (gift.round) {
+    try {
+      status = await giftStatus(gift.round);
+    } catch {
+      status = "gone"; // database unreachable: show the bottle, offer nothing
+    }
+  }
+  const from =
+    status === "available"
+      ? gift.from
+        ? t("giftSentYou", { name: gift.from })
+        : t("giftSentYouAnon")
+      : gift.from
+        ? t("giftFrom", { name: gift.from })
+        : t("giftFromAnon");
 
   return (
     <PageShell>
       <section className="potion-gift">
+        <p className="potion-gift__from">{from}</p>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="potion-gift__bottle" src="/game-art/potion/bottle.webp" alt="" />
-        <p className="potion-gift__from">
-          {gift.from ? t("giftFrom", { name: gift.from }) : t("giftFromAnon")}
-        </p>
         <h1 className="potion-gift__name">{t(`potionNames.${gift.potion}`)}</h1>
+        <PotionGiftTake roundId={gift.round ?? ""} status={status} />
         <Link href="/game" className="potion-gift__cta">
           {t("brewYourOwn")}
         </Link>

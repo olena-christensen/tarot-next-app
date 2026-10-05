@@ -54,6 +54,15 @@
     "moonstoneEarned": "<b>+1 ay taşı!</b> Bir sonraki için yarın tekrar gel",
     "moonstoneTaken": "Bugünün ay taşı senin — yarın tekrar gel",
     "moonstoneClaim": "Ay taşını al",
-    "moonstoneKeep": "İlerlemeni kaydetmek için giriş yap"
+    "moonstoneKeep": "İlerlemeni kaydetmek için giriş yap",
+    "keepIt": "Sende kalsın",
+    "keepOrSend": "Ay taşın için sakla ya da bir arkadaşına gönder",
+    "sentDone": "<b>Gönderildi!</b> Bağlantıyı açtıklarında onların olacak",
+    "freeToGive": "Bugünün ay taşı senin — bu iksiri hediye edebilirsin",
+    "giftSentYou": "{name} sana bir iksir gönderdi",
+    "giftSentYouAnon": "Bir arkadaşın sana bir iksir gönderdi",
+    "takePotion": "İksiri al",
+    "takeHint": "Bir ay taşı için üç iksirden biri",
+    "giftTaken": "Bu iksir zaten alınmış"
   }
 }

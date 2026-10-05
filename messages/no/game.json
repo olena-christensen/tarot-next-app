@@ -54,6 +54,15 @@
     "moonstoneEarned": "<b>+1 månestein!</b> Kom tilbake i morgen for en ny",
     "moonstoneTaken": "Dagens månestein er din — kom tilbake i morgen",
     "moonstoneClaim": "Hent månesteinen din",
-    "moonstoneKeep": "Logg inn for å beholde fremgangen"
+    "moonstoneKeep": "Logg inn for å beholde fremgangen",
+    "keepIt": "Behold den",
+    "keepOrSend": "Behold den for månesteinen din, eller send den til en venn",
+    "sentDone": "<b>Sendt!</b> Den er deres når de åpner lenken",
+    "freeToGive": "Dagens månestein er din — denne kan du gi bort",
+    "giftSentYou": "{name} har sendt deg en trylledrikk",
+    "giftSentYouAnon": "En venn har sendt deg en trylledrikk",
+    "takePotion": "Ta imot trylledrikken",
+    "takeHint": "Én av tre trylledrikker til en månestein",
+    "giftTaken": "Denne trylledrikken er allerede tatt"
   }
 }

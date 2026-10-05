@@ -54,6 +54,15 @@
     "moonstoneEarned": "<b>+1 moonstone!</b> Come back tomorrow for another",
     "moonstoneTaken": "Today's moonstone is yours — come back tomorrow",
     "moonstoneClaim": "Claim your moonstone",
-    "moonstoneKeep": "Sign in to keep your progress"
+    "moonstoneKeep": "Sign in to keep your progress",
+    "keepIt": "Keep it",
+    "keepOrSend": "Keep it for your moonstone, or send it to a friend",
+    "sentDone": "<b>Sent!</b> It's theirs once they open the link",
+    "freeToGive": "Today's moonstone is yours — this one is free to give away",
+    "giftSentYou": "{name} sent you a potion",
+    "giftSentYouAnon": "A friend sent you a potion",
+    "takePotion": "Take the potion",
+    "takeHint": "One of three potions for a moonstone",
+    "giftTaken": "This potion has already been taken"
   }
 }

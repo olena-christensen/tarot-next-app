@@ -8,7 +8,14 @@ import type { Round } from "./index";
 const KEY = "theveil_potion_claim";
 const MAX_AGE_MS = 30 * 60 * 1000;
 
-export type SavedClaim = { round: Round; startedAt: number; finishedAt: number; path: string };
+export type SavedClaim = {
+  round: Round;
+  startedAt: number;
+  finishedAt: number;
+  path: string;
+  decision?: "kept" | "sent" | null;
+  roundId?: string | null;
+};
 
 export function saveClaim(claim: Omit<SavedClaim, "path">): void {
   try {
@@ -32,11 +39,28 @@ export function takeClaim(): SavedClaim | null {
   }
 }
 
-/** Where Google sign-in should come back to: the game, while a claim is pending. */
+const RETURN_KEY = "theveil_potion_return";
+
+/** A friend's gift page asks Google sign-in to come back to it. */
+export function rememberReturnPath(): void {
+  try {
+    sessionStorage.setItem(RETURN_KEY, window.location.pathname);
+  } catch {
+    // Private mode: sign-in lands on the main page; the link still works after.
+  }
+}
+
+/**
+ * Where Google sign-in should come back to: the game while a claim is pending,
+ * or the gift page a friend was taking a potion from.
+ */
 export function claimReturnPath(): string | null {
   try {
     const raw = sessionStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as SavedClaim).path : null;
+    if (raw) return (JSON.parse(raw) as SavedClaim).path;
+    const gift = sessionStorage.getItem(RETURN_KEY);
+    sessionStorage.removeItem(RETURN_KEY);
+    return gift;
   } catch {
     return null;
   }

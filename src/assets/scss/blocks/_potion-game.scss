@@ -546,13 +546,24 @@ html.potion-locked body {
     animation: potionBob 2.4s ease-in-out infinite;
   }
 
+  // The heading above the bottle: "Lena sent you a potion" (mockup 2026-10-07).
   &__from {
-    margin: 18px 0 4px;
+    margin: 0 0 14px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+
+  &__note {
+    margin: 0 0 20px;
     color: var(--text-faint);
   }
 
+  .potion-moon {
+    margin: 0 0 20px;
+  }
+
   &__name {
-    margin: 0 0 24px;
+    margin: 12px 0 18px;
     font-weight: var(--font-weight);
     font-size: 1.8rem;
     color: var(--gold);
@@ -723,4 +734,20 @@ html.potion-locked body {
   0% { transform: scale(0.4); filter: drop-shadow(0 0 0 #fae1a3); }
   50% { transform: scale(1.5); filter: drop-shadow(0 0 14px #fae1a3); }
   100% { transform: scale(1); filter: drop-shadow(0 0 4px #fae1a3); }
+}
+
+// A potion waiting for a choice (keep or send), or a gift waiting to be taken.
+.potion-moon__bottle--pending {
+  filter: drop-shadow(0 0 8px #b6ff6a);
+  animation: potionPending 1.2s ease-in-out infinite;
+}
+
+.potion-moon__sub {
+  margin: 4px 0 0 !important;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+@keyframes potionPending {
+  50% { transform: scale(1.15); opacity: 0.65; }
 }
