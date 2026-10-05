@@ -63,6 +63,13 @@ describe("brewed potion", () => {
     }
   });
 
+  it("gives every brew its own link, so no app shows a stale cached preview", () => {
+    const a = encodeGift({ potion: "spider", from: "Lena" });
+    const b = encodeGift({ potion: "spider", from: "Lena" });
+    expect(a).not.toBe(b);
+    expect(decodeGift(a)).toEqual(decodeGift(b));
+  });
+
   it("rejects tampered or junk codes", () => {
     expect(decodeGift("nonsense")).toBeNull();
     expect(decodeGift(encodeGift({ potion: "dragonTear", from: null }).slice(0, 5))).toBeNull();
