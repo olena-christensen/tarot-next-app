@@ -68,6 +68,8 @@ type ShareDialogProps = {
   slackHint?: string;
   /** Optional file the person can save (the shared potion's animated picture). */
   download?: { href: string; filename: string; label: string };
+  /** Called once the link has actually left: copied, a network opened, or the native sheet completed. */
+  onShared?: () => void;
 };
 
 /**
@@ -91,6 +93,7 @@ export const ShareDialog = ({
   onRevoke,
   slackHint,
   download,
+  onShared,
 }: ShareDialogProps) => {
   const t = useTranslations("history");
   const [copied, setCopied] = useState(false);
@@ -114,6 +117,7 @@ export const ShareDialog = ({
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
+      onShared?.();
       // Icon-only button, so "copied" is a transient highlight rather than a
       // label change — drop it back so the control doesn't look stuck.
       window.setTimeout(() => setCopied(false), 2000);
@@ -128,6 +132,7 @@ export const ShareDialog = ({
     try {
       await navigator.clipboard.writeText(url);
       setSlackCopied(true);
+      onShared?.();
     } catch {
       setSlackCopied(false);
     }
@@ -139,6 +144,7 @@ export const ShareDialog = ({
     if (!navigator.share) return;
     try {
       await navigator.share({ url, title: shareTitle });
+      onShared?.();
     } catch {
       // User dismissed the sheet — not an error.
     }
@@ -176,6 +182,7 @@ export const ShareDialog = ({
                   href={href(url)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => onShared?.()}
                   aria-label={t("shareOn", { network: label })}
                   title={t("shareOn", { network: label })}
                 >

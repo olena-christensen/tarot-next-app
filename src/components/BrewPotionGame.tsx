@@ -12,7 +12,7 @@ import { saveClaim, takeClaim } from "@/lib/potionGame/claim";
 import type { PotionProgress } from "@/lib/potionGame/reward";
 import { notifyMoonstonesChanged } from "@/lib/moonstones";
 import Skull from "@/assets/svg/skull.svg";
-import MoonstoneIcon from "@/assets/svg/moonstone.svg";
+import { MoonstoneProgress, PotionMoonRow } from "@/components/PotionMoonRow";
 import {
   CAULDRON,
   WORLD,
@@ -77,6 +77,9 @@ export const BrewPotionGame = () => {
   // Moonstones: the server times each round; null until it has answered.
   const [moon, setMoon] = useState<PotionProgress | null>(null);
   const roundIdRef = useRef<Promise<string | null>>(Promise.resolve(null));
+  const [roundId, setRoundId] = useState<string | null>(null);
+  // Keep it or send it (Lena, 2026-10-07): nothing counts until the player chooses.
+  const [decision, setDecision] = useState<"kept" | "sent" | null>(null);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const fxRef = useRef<HTMLDivElement>(null);
@@ -99,11 +102,17 @@ export const BrewPotionGame = () => {
     setHintTarget(null);
     setBlurredUntil(0);
     setMoon(null);
+    setDecision(null);
+    setRoundId(null);
     wrongTaps.current = [];
-    roundIdRef.current = fetch("/api/game/round", { method: "POST" })
+    const pending = fetch("/api/game/round", { method: "POST" })
       .then((r) => (r.ok ? r.json() : null))
       .then((d: { roundId?: string } | null) => d?.roundId ?? null)
       .catch(() => null); // offline: the game still plays, it just doesn't count
+    roundIdRef.current = pending;
+    pending.then((id) => {
+      if (roundIdRef.current === pending) setRoundId(id);
+    });
     const start = Date.now();
     setStartedAt(start);
     setNow(start);
@@ -359,6 +368,9 @@ export const BrewPotionGame = () => {
       setStartedAt(claim.startedAt);
       setFinishedAt(claim.finishedAt);
       setNow(claim.finishedAt);
+      setDecision(claim.decision ?? "kept");
+      setRoundId(claim.roundId ?? null);
+      roundIdRef.current = Promise.resolve(claim.roundId ?? null);
     }
     fetch("/api/game/progress", { method: "POST" })
       .then((r) => r.json())
@@ -368,8 +380,23 @@ export const BrewPotionGame = () => {
 
   const signInToClaim = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (round && finishedAt) saveClaim({ round, startedAt, finishedAt });
+    if (round && finishedAt) saveClaim({ round, startedAt, finishedAt, decision, roundId });
     openLogin();
+  };
+
+  const decide = (outcome: "kept" | "sent", opts: { keepalive?: boolean } = {}) => {
+    if (!roundId || decision) return;
+    setDecision(outcome);
+    if (outcome === "kept" && moon) setMoon({ ...moon, today: moon.today + 1 }); // the server confirms below
+    fetch("/api/game/round/decide", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ roundId, outcome }),
+      keepalive: opts.keepalive,
+    })
+      .then((r) => r.json())
+      .then((d: { progress?: PotionProgress }) => applyProgress(d.progress))
+      .catch(() => {});
   };
 
   // ---------- effects (Web Animations, in world coordinates) ----------
@@ -498,11 +525,11 @@ export const BrewPotionGame = () => {
 
   const giftUrl = useMemo(() => {
     if (!potion || !round || typeof window === "undefined") return "";
-    const code = encodeGift({ potion, from: cleanBrewerName(session?.user?.name) });
+    const code = encodeGift({ potion, from: cleanBrewerName(session?.user?.name), round: roundId });
     // No language in the link: it opens in the friend's own language (their
     // saved preference, else their phone's), not the brewer's.
     return `${window.location.origin}/potion/${code}`;
-  }, [potion, round, session?.user?.name]); // round: a fresh link per brew
+  }, [potion, round, roundId, session?.user?.name]); // round: a fresh link per brew
 
   // The animated picture — offered only as a download on computers. Phones
   // share the LINK alone: messengers turn it into a card whose picture IS the
@@ -547,6 +574,7 @@ export const BrewPotionGame = () => {
           text: t("shareText", { potion: potionName }),
           url: giftUrl,
         });
+        decide("sent");
       } catch {
         // Dismissed — not an error.
       }
@@ -556,8 +584,79 @@ export const BrewPotionGame = () => {
   };
 
   const leave = () => {
+    if (finishedAt) decide("kept", { keepalive: true }); // leaving without choosing = keeping
     finishedRef.current = true; // let the guard step aside
     router.push("/");
+  };
+
+  // ---------- end screen: keep it, send it, or both done ----------
+  const endActions = () => {
+    const sendBtn = (main: boolean) => (
+      <button
+        type="button"
+        className={`potion__done-btn${main ? " potion__done-btn--main" : ""}`}
+        onClick={sendToFriend}
+      >
+        {t("sendToFriend")}
+      </button>
+    );
+    const brewAgain = (
+      <button type="button" className="potion__done-btn" onClick={startRound}>
+        {t("brewAgain")}
+      </button>
+    );
+    const b = (chunks: React.ReactNode) => <b>{chunks}</b>;
+
+    // No server answer (offline, too fast): nothing counts — just share or play on.
+    if (!moon || !roundId) {
+      return (
+        <>
+          {sendBtn(true)}
+          {brewAgain}
+        </>
+      );
+    }
+    if (decision === "kept") {
+      return (
+        <>
+          <MoonstoneProgress progress={moon} onSignIn={signInToClaim} />
+          {brewAgain}
+        </>
+      );
+    }
+    if (decision === "sent") {
+      return (
+        <>
+          <PotionMoonRow lit={moon.today} ready={moon.today >= POTIONS_PER_MOONSTONE}>
+            <p className="potion-moon__text">{t.rich("sentDone", { b })}</p>
+          </PotionMoonRow>
+          {brewAgain}
+        </>
+      );
+    }
+    // Today's moonstone already earned: keeping would earn nothing.
+    if (moon.rewarded) {
+      return (
+        <>
+          <PotionMoonRow lit={POTIONS_PER_MOONSTONE} ready>
+            <p className="potion-moon__text">{t("freeToGive")}</p>
+          </PotionMoonRow>
+          {sendBtn(true)}
+          {brewAgain}
+        </>
+      );
+    }
+    return (
+      <>
+        <PotionMoonRow lit={moon.today} pending>
+          <p className="potion-moon__text">{t("keepOrSend")}</p>
+        </PotionMoonRow>
+        <button type="button" className="potion__done-btn potion__done-btn--main" onClick={() => decide("kept")}>
+          {t("keepIt")}
+        </button>
+        {sendBtn(false)}
+      </>
+    );
   };
 
   return (
@@ -639,13 +738,7 @@ export const BrewPotionGame = () => {
                 <p className="potion__done-summary">
                   {t("doneSummary", { count: total, time: formatTime(elapsed) })}
                 </p>
-                {moon && <MoonstoneProgress progress={moon} onSignIn={signInToClaim} />}
-                <button type="button" className="potion__done-btn potion__done-btn--main" onClick={sendToFriend}>
-                  {t("sendToFriend")}
-                </button>
-                <button type="button" className="potion__done-btn" onClick={startRound}>
-                  {t("brewAgain")}
-                </button>
+                {endActions()}
               </div>
             </div>
           )}
@@ -681,54 +774,8 @@ export const BrewPotionGame = () => {
         title={t("sendToFriend")}
         slackHint={t("slackCopied")}
         download={gif ? { href: gif.url, filename: "potion.gif", label: t("downloadGif") } : undefined}
+        onShared={() => decide("sent")}
       />
     </section>
-  );
-};
-
-/** Under the potion: today's three bottles → the moonstone. */
-const MoonstoneProgress = ({
-  progress,
-  onSignIn,
-}: {
-  progress: PotionProgress;
-  onSignIn: (e: React.MouseEvent) => void;
-}) => {
-  const t = useTranslations("game");
-  const done = Math.min(progress.today, POTIONS_PER_MOONSTONE);
-  const ready = done >= POTIONS_PER_MOONSTONE;
-  const b = (chunks: React.ReactNode) => <b>{chunks}</b>;
-
-  let line: React.ReactNode = null;
-  if (progress.signedIn && progress.justRewarded) line = t.rich("moonstoneEarned", { b });
-  else if (progress.signedIn && progress.rewarded) line = t("moonstoneTaken");
-  else if (!ready) {
-    line = t.rich("moonstoneProgress", { b, count: done, total: POTIONS_PER_MOONSTONE, left: POTIONS_PER_MOONSTONE - done });
-  }
-
-  return (
-    <div className="potion-moon">
-      <div className="potion-moon__row" aria-hidden="true">
-        {Array.from({ length: POTIONS_PER_MOONSTONE }, (_, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={i}
-            className={`potion-moon__bottle${i < done ? "" : " potion-moon__bottle--off"}`}
-            src="/game-art/potion/bottle.webp"
-            alt=""
-          />
-        ))}
-        <span className="potion-moon__arrow">→</span>
-        <MoonstoneIcon
-          className={`potion-moon__stone${ready ? "" : " potion-moon__stone--off"}${progress.justRewarded ? " potion-moon__stone--new" : ""}`}
-        />
-      </div>
-      {line && <p className="potion-moon__text">{line}</p>}
-      {!progress.signedIn && (
-        <a href="#" className="potion-moon__link" onClick={onSignIn}>
-          {ready ? t("moonstoneClaim") : t("moonstoneKeep")}
-        </a>
-      )}
-    </div>
   );
 };

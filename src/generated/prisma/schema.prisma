@@ -68,7 +68,8 @@ model User {
   payments           Payment[]
   passwordResets     PasswordResetToken[]
   emailVerifications EmailVerificationToken[]
-  potionRounds       PotionRound[]
+  potionRounds       PotionRound[]            @relation("PotionRoundsPlayed")
+  potionGiftsTaken   PotionRound[]            @relation("PotionGiftsTaken")
   potionRewards      PotionReward[]
 }
 
@@ -233,16 +234,27 @@ model Payment {
 model PotionRound {
   id         String    @id @default(cuid())
   userId     String?
-  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User?     @relation("PotionRoundsPlayed", fields: [userId], references: [id], onDelete: Cascade)
   anonId     String?
   startedAt  DateTime  @default(now())
   finishedAt DateTime?
   /// Kyiv calendar day (YYYY-MM-DD) the round finished on; null while playing.
   day        String?
+  /// What the player did with the potion: "kept" (counts toward their moonstone)
+  /// or "sent" (a gift to a friend). Null while the end screen is undecided.
+  outcome    String?
+  /// The friend who took the sent potion. The link carries this round's id; it
+  /// can be taken once, by someone other than the brewer, within 7 days.
+  takenById  String?
+  takenBy    User?     @relation("PotionGiftsTaken", fields: [takenById], references: [id], onDelete: SetNull)
+  /// Kyiv day the friend took it — the potion counts toward that day for them.
+  takenDay   String?
+  takenAt    DateTime?
 
   @@index([userId, day])
   @@index([anonId, day])
   @@index([startedAt])
+  @@index([takenById, takenDay])
 }
 
 /// The day's game moonstone. The composite key makes a second reward for the

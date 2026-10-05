@@ -59,8 +59,11 @@ describe("brewed potion", () => {
 
   it("gift links round-trip, including non-Latin names", () => {
     for (const from of ["Lena", "Олена", "Çağla", null]) {
-      expect(decodeGift(encodeGift({ potion: "dragonTear", from }))).toEqual({ potion: "dragonTear", from });
+      expect(decodeGift(encodeGift({ potion: "dragonTear", from }))).toEqual({ potion: "dragonTear", from, round: null });
     }
+    // A real gift carries its round; old links without one still open.
+    const round = "cmg1abcdef0000123456789xy";
+    expect(decodeGift(encodeGift({ potion: "spider", from: "Lena", round }))?.round).toBe(round);
   });
 
   it("gives every brew its own link, so no app shows a stale cached preview", () => {

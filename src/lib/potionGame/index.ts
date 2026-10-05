@@ -125,7 +125,8 @@ export function cleanBrewerName(raw: string | null | undefined): string | null {
   return safe || null;
 }
 
-export type PotionGift = { potion: IngredientId; from: string | null };
+/** `round`: the server round behind a real gift (see reward.ts); absent in old links. */
+export type PotionGift = { potion: IngredientId; from: string | null; round?: string | null };
 
 function toBase64Url(s: string): string {
   const b64 =
@@ -152,15 +153,18 @@ export function encodeGift(gift: PotionGift): string {
   // showing whatever preview they cached for it first — even after we change
   // the preview. decodeGift ignores it.
   const r = Math.random().toString(36).slice(2, 7);
-  return toBase64Url(JSON.stringify({ p: gift.potion, n: gift.from ?? "", r }));
+  return toBase64Url(
+    JSON.stringify({ p: gift.potion, n: gift.from ?? "", r, ...(gift.round ? { g: gift.round } : {}) }),
+  );
 }
 
 export function decodeGift(code: string): PotionGift | null {
   try {
-    if (code.length > 200) return null;
+    if (code.length > 300) return null;
     const raw = JSON.parse(fromBase64Url(code));
     if (!INGREDIENT_IDS.includes(raw?.p)) return null;
-    return { potion: raw.p, from: cleanBrewerName(typeof raw.n === "string" ? raw.n : null) };
+    const round = typeof raw.g === "string" && /^[a-z0-9]{10,40}$/.test(raw.g) ? raw.g : null;
+    return { potion: raw.p, from: cleanBrewerName(typeof raw.n === "string" ? raw.n : null), round };
   } catch {
     return null;
   }
