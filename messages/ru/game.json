@@ -10,11 +10,8 @@
     "recipeLine": "{name}: {got} из {count}",
     "pinchHint": "Разведи пальцы для масштаба · тяни, чтобы осмотреться",
     "doneTitle": "Зелье готово",
-    "doneFoundIn": "Все ингредиенты ({count}) найдены за",
     "drawCards": "Вытянуть карты",
     "brewAgain": "Сварить ещё",
-    "pinIt": "Сохранить в Pinterest",
-    "pinDescription": "Найдёшь все ингредиенты? Свари зелье — бесплатная игра на The Veil.",
     "ingredients": {
       "batEye": "Глаз летучей мыши",
       "frogTongue": "Лягушачий язык",
@@ -23,6 +20,33 @@
       "spider": "Паук",
       "toadstool": "Мухомор",
       "newtTail": "Хвост тритона"
+    },
+    "close": "Вернуться в The Veil",
+    "youBrewed": "Ты сварил(а)",
+    "doneSummary": "Все ингредиенты ({count}) за {time}",
+    "sendToFriend": "Отправить другу",
+    "shareTitle": "{potion} — сварено в The Veil",
+    "shareText": "Я сварил(а) тебе зелье. А ты сможешь сварить своё?",
+    "slack": "Slack",
+    "slackCopied": "Ссылка скопирована — вставь её в Slack.",
+    "giftFrom": "{name} сварил(а) это для тебя",
+    "giftFromAnon": "Друг сварил это для тебя",
+    "giftCardFrom": "{name} сварил(а) тебе",
+    "giftCardAnon": "Друг сварил тебе",
+    "brewYourOwn": "Сварить своё",
+    "giftMetaTitle": "{potion} — зелье, сваренное для тебя",
+    "giftMetaDescription": "Зелье, сваренное для тебя в The Veil. Найди спрятанные ингредиенты и свари своё.",
+    "entranceSeasonal": "Угощение к Хэллоуину",
+    "entranceDefault": "Маленькая игра",
+    "entranceCta": "Свари зелье",
+    "potionNames": {
+      "batEye": "Эликсир ночного зрения",
+      "frogTongue": "Отвар серебряного слова",
+      "dragonTear": "Зелье полуночной отваги",
+      "ravenFeather": "Настой вороньей мудрости",
+      "spider": "Варево сплетённой судьбы",
+      "toadstool": "Отвар волшебных снов",
+      "newtTail": "Эликсир второго шанса"
     }
   }
 }

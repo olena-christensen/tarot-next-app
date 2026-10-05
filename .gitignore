@@ -57,3 +57,6 @@ src/generated/prisma/wasm-worker-loader.mjs
 
 # Claude local settings (per machine)
 .claude/settings.local.json
+
+# Check sheet written by scripts/build-potion-art.py
+game-art-source/_contact.png

@@ -10,11 +10,8 @@
     "recipeLine": "{name}: {got} of {count}",
     "pinchHint": "Pinch to zoom · drag to look around",
     "doneTitle": "The potion is brewed",
-    "doneFoundIn": "All {count} ingredients found in",
     "drawCards": "Draw your cards",
     "brewAgain": "Brew again",
-    "pinIt": "Pin it on Pinterest",
-    "pinDescription": "Can you find every ingredient? Brew the Potion — a free hidden-object game at The Veil.",
     "ingredients": {
       "batEye": "Bat eye",
       "frogTongue": "Frog tongue",
@@ -23,6 +20,33 @@
       "spider": "Spider",
       "toadstool": "Toadstool",
       "newtTail": "Newt tail"
+    },
+    "close": "Back to The Veil",
+    "youBrewed": "You brewed",
+    "doneSummary": "All {count} ingredients in {time}",
+    "sendToFriend": "Send it to a friend",
+    "shareTitle": "{potion} — brewed at The Veil",
+    "shareText": "I brewed you a potion. Can you brew your own?",
+    "slack": "Slack",
+    "slackCopied": "Link copied — paste it into Slack.",
+    "giftFrom": "{name} brewed this for you",
+    "giftFromAnon": "A friend brewed this for you",
+    "giftCardFrom": "{name} brewed you",
+    "giftCardAnon": "A friend brewed you",
+    "brewYourOwn": "Brew your own",
+    "giftMetaTitle": "{potion} — a potion brewed for you",
+    "giftMetaDescription": "A potion brewed for you at The Veil. Find the hidden ingredients and brew your own.",
+    "entranceSeasonal": "A Halloween treat",
+    "entranceDefault": "A little game",
+    "entranceCta": "Brew the Potion",
+    "potionNames": {
+      "batEye": "Elixir of Night Sight",
+      "frogTongue": "Draught of Silver Words",
+      "dragonTear": "Philtre of Midnight Courage",
+      "ravenFeather": "Tonic of Raven Wisdom",
+      "spider": "Brew of Woven Fate",
+      "toadstool": "Draught of Fey Dreams",
+      "newtTail": "Elixir of Second Chances"
     }
   }
 }

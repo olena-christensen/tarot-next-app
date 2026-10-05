@@ -10,11 +10,8 @@
     "recipeLine": "{name}: {got} з {count}",
     "pinchHint": "Розведи пальці для масштабу · тягни, щоб роздивитися",
     "doneTitle": "Зілля готове",
-    "doneFoundIn": "Усі інгредієнти ({count}) знайдено за",
     "drawCards": "Витягнути карти",
     "brewAgain": "Зварити ще",
-    "pinIt": "Зберегти в Pinterest",
-    "pinDescription": "Знайдеш усі інгредієнти? Звари зілля — безкоштовна гра на The Veil.",
     "ingredients": {
       "batEye": "Око кажана",
       "frogTongue": "Жаб'ячий язик",
@@ -23,6 +20,33 @@
       "spider": "Павук",
       "toadstool": "Мухомор",
       "newtTail": "Хвіст тритона"
+    },
+    "close": "Повернутися до The Veil",
+    "youBrewed": "Ти зварив(ла)",
+    "doneSummary": "Усі інгредієнти ({count}) за {time}",
+    "sendToFriend": "Надіслати другові",
+    "shareTitle": "{potion} — зварено в The Veil",
+    "shareText": "Я зварив(ла) тобі зілля. А ти зможеш зварити своє?",
+    "slack": "Slack",
+    "slackCopied": "Посилання скопійовано — встав його в Slack.",
+    "giftFrom": "{name} зварив(ла) це для тебе",
+    "giftFromAnon": "Друг зварив це для тебе",
+    "giftCardFrom": "{name} зварив(ла) тобі",
+    "giftCardAnon": "Друг зварив тобі",
+    "brewYourOwn": "Зварити своє",
+    "giftMetaTitle": "{potion} — зілля, зварене для тебе",
+    "giftMetaDescription": "Зілля, зварене для тебе в The Veil. Знайди сховані інгредієнти й звари своє.",
+    "entranceSeasonal": "Частування до Гелловіну",
+    "entranceDefault": "Маленька гра",
+    "entranceCta": "Звари зілля",
+    "potionNames": {
+      "batEye": "Еліксир нічного зору",
+      "frogTongue": "Відвар срібного слова",
+      "dragonTear": "Зілля опівнічної відваги",
+      "ravenFeather": "Настій воронячої мудрості",
+      "spider": "Вариво сплетеної долі",
+      "toadstool": "Відвар чарівних снів",
+      "newtTail": "Еліксир другого шансу"
     }
   }
 }

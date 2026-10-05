@@ -43,3 +43,36 @@ describe("potion game rounds", () => {
     expect(hits(p, x - 20, y, 6)).toBe(false);
   });
 });
+
+import { cleanBrewerName, decodeGift, encodeGift, potionOf } from "./index";
+
+describe("brewed potion", () => {
+  it("is named after the ×3 ingredient", () => {
+    expect(
+      potionOf([
+        { ingredient: "spider", count: 2 },
+        { ingredient: "newtTail", count: 3 },
+        { ingredient: "batEye", count: 1 },
+      ]),
+    ).toBe("newtTail");
+  });
+
+  it("gift links round-trip, including non-Latin names", () => {
+    for (const from of ["Lena", "Олена", "Çağla", null]) {
+      expect(decodeGift(encodeGift({ potion: "dragonTear", from }))).toEqual({ potion: "dragonTear", from });
+    }
+  });
+
+  it("rejects tampered or junk codes", () => {
+    expect(decodeGift("nonsense")).toBeNull();
+    expect(decodeGift(encodeGift({ potion: "dragonTear", from: null }).slice(0, 5))).toBeNull();
+    expect(decodeGift(Buffer.from(JSON.stringify({ p: "unicorn", n: "x" })).toString("base64url"))).toBeNull();
+  });
+
+  it("keeps only a short, clean first name", () => {
+    expect(cleanBrewerName("  Lena Christensen ")).toBe("Lena");
+    expect(cleanBrewerName("<script>")).toBe("script");
+    expect(cleanBrewerName("")).toBeNull();
+    expect(cleanBrewerName("x".repeat(60))).toHaveLength(24);
+  });
+});

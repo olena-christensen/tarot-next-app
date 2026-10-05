@@ -105,3 +105,56 @@ export function hits(p: Placement, x: number, y: number, pad: number): boolean {
   const [hx, hy, hw, hh] = p.hit;
   return x >= hx - pad && x <= hx + hw + pad && y >= hy - pad && y <= hy + hh + pad;
 }
+
+// ---------- the brewed potion ----------
+
+/** The potion is named after the recipe's main ingredient (the ×3 line). */
+export function potionOf(recipe: RecipeLine[]): IngredientId {
+  return recipe.reduce((a, b) => (b.count > a.count ? b : a)).ingredient;
+}
+
+export const BREWER_NAME_MAX = 24;
+
+/** First name only, trimmed, no control characters — it travels in a public link. */
+export function cleanBrewerName(raw: string | null | undefined): string | null {
+  const first = (raw ?? "").trim().split(/\s+/)[0] ?? "";
+  // eslint-disable-next-line no-control-regex
+  const safe = first.replace(/[\u0000-\u001f\u007f<>]/g, "").slice(0, BREWER_NAME_MAX);
+  return safe || null;
+}
+
+export type PotionGift = { potion: IngredientId; from: string | null };
+
+function toBase64Url(s: string): string {
+  const b64 =
+    typeof window === "undefined"
+      ? Buffer.from(s, "utf8").toString("base64")
+      : btoa(String.fromCharCode(...Array.from(new TextEncoder().encode(s))));
+  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(code: string): string {
+  const b64 = code.replace(/-/g, "+").replace(/_/g, "/");
+  if (typeof window === "undefined") return Buffer.from(b64, "base64").toString("utf8");
+  const bin = atob(b64);
+  return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
+}
+
+/**
+ * A shared potion is encoded entirely in its link — no database row, nothing to
+ * clean up. The code is not a secret: it only says which potion and who brewed it.
+ */
+export function encodeGift(gift: PotionGift): string {
+  return toBase64Url(JSON.stringify({ p: gift.potion, n: gift.from ?? "" }));
+}
+
+export function decodeGift(code: string): PotionGift | null {
+  try {
+    if (code.length > 200) return null;
+    const raw = JSON.parse(fromBase64Url(code));
+    if (!INGREDIENT_IDS.includes(raw?.p)) return null;
+    return { potion: raw.p, from: cleanBrewerName(typeof raw.n === "string" ? raw.n : null) };
+  } catch {
+    return null;
+  }
+}

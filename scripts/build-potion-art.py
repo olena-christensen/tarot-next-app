@@ -212,6 +212,18 @@ def main():
         s.thumbnail((192, 192), Image.LANCZOS)
         s.save(os.path.join(OUT, "sprites", f"{ing}.webp"), quality=90, method=6)
 
+    # The finished potion: end screen, the friend's page, the main-page way in
+    # (webp), and the link-preview picture for Messenger/Facebook/Slack (png —
+    # the preview renderer can't read webp).
+    bottle_src = os.path.join(SRC, "potion-bottle.png")
+    if os.path.exists(bottle_src):
+        b = load("potion-bottle.png")
+        b.thumbnail((600, 800), Image.LANCZOS)
+        b.save(os.path.join(OUT, "bottle.webp"), quality=90, method=6)
+        b.save(os.path.join(OUT, "bottle.png"), optimize=True)
+    else:
+        print("note: game-art-source/potion-bottle.png missing — bottle not built")
+
     data = {"width": W, "height": H, "cauldron": {"x": 785, "y": 690}, "spots": {}}
     sheet = room.copy()
     sd = ImageDraw.Draw(sheet)

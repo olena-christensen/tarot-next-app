@@ -9,6 +9,7 @@ import { LoginForm } from "@/components/LoginForm";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { ReadingGateModal, type GateReason } from "@/components/ReadingGateModal";
 import { Header } from "@/components/Header";
+import { GameEntrance } from "@/components/GameEntrance";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { useAppContext } from "@/AppProvider";
@@ -19,7 +20,12 @@ import { useAppContext } from "@/AppProvider";
 function HomeFooter() {
   const { state } = useAppContext();
   if (state.isCardsModalOpen) return null;
-  return <Footer overlay />;
+  return (
+    <>
+      <GameEntrance />
+      <Footer overlay />
+    </>
+  );
 }
 
 export function HomePageClient() {

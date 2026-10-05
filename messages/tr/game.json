@@ -10,11 +10,8 @@
     "recipeLine": "{name}: {count} içinden {got}",
     "pinchHint": "Yakınlaştırmak için parmaklarını aç · etrafa bakmak için sürükle",
     "doneTitle": "İksir hazır",
-    "doneFoundIn": "{count} malzemenin hepsi bulundu, süre:",
     "drawCards": "Kartlarını çek",
     "brewAgain": "Yeniden kaynat",
-    "pinIt": "Pinterest'e kaydet",
-    "pinDescription": "Tüm malzemeleri bulabilir misin? İksiri Kaynat — The Veil'de ücretsiz bir oyun.",
     "ingredients": {
       "batEye": "Yarasa gözü",
       "frogTongue": "Kurbağa dili",
@@ -23,6 +20,33 @@
       "spider": "Örümcek",
       "toadstool": "Sinek mantarı",
       "newtTail": "Semender kuyruğu"
+    },
+    "close": "The Veil'e dön",
+    "youBrewed": "Kaynattığın iksir",
+    "doneSummary": "{count} malzemenin hepsi {time} içinde",
+    "sendToFriend": "Bir arkadaşına gönder",
+    "shareTitle": "{potion} — The Veil'de kaynatıldı",
+    "shareText": "Sana bir iksir kaynattım. Sen de kendininkini kaynatabilir misin?",
+    "slack": "Slack",
+    "slackCopied": "Bağlantı kopyalandı — Slack'e yapıştır.",
+    "giftFrom": "{name} bunu senin için kaynattı",
+    "giftFromAnon": "Bir arkadaşın bunu senin için kaynattı",
+    "giftCardFrom": "{name} sana kaynattı",
+    "giftCardAnon": "Bir arkadaşın sana kaynattı",
+    "brewYourOwn": "Kendininkini kaynat",
+    "giftMetaTitle": "{potion} — senin için kaynatılan bir iksir",
+    "giftMetaDescription": "The Veil'de senin için kaynatılan bir iksir. Saklı malzemeleri bul ve kendininkini kaynat.",
+    "entranceSeasonal": "Cadılar Bayramı ikramı",
+    "entranceDefault": "Küçük bir oyun",
+    "entranceCta": "İksiri Kaynat",
+    "potionNames": {
+      "batEye": "Gece Görüşü İksiri",
+      "frogTongue": "Gümüş Dil Şerbeti",
+      "dragonTear": "Gece Yarısı Cesareti İksiri",
+      "ravenFeather": "Kuzgun Bilgeliği Toniği",
+      "spider": "Örülmüş Kader Karışımı",
+      "toadstool": "Peri Rüyaları Şerbeti",
+      "newtTail": "İkinci Şans İksiri"
     }
   }
 }

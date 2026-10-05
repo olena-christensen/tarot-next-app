@@ -10,11 +10,8 @@
     "recipeLine": "{name}: {got} av {count}",
     "pinchHint": "Klyp for å zoome · dra for å se deg rundt",
     "doneTitle": "Trylledrikken er brygget",
-    "doneFoundIn": "Alle {count} ingrediensene funnet på",
     "drawCards": "Trekk kortene dine",
     "brewAgain": "Brygg igjen",
-    "pinIt": "Lagre på Pinterest",
-    "pinDescription": "Finner du alle ingrediensene? Brygg trylledrikken — et gratis spill hos The Veil.",
     "ingredients": {
       "batEye": "Flaggermusøye",
       "frogTongue": "Frosketunge",
@@ -23,6 +20,33 @@
       "spider": "Edderkopp",
       "toadstool": "Fluesopp",
       "newtTail": "Salamanderhale"
+    },
+    "close": "Tilbake til The Veil",
+    "youBrewed": "Du brygget",
+    "doneSummary": "Alle {count} ingrediensene på {time}",
+    "sendToFriend": "Send den til en venn",
+    "shareTitle": "{potion} — brygget hos The Veil",
+    "shareText": "Jeg har brygget en trylledrikk til deg. Klarer du å brygge din egen?",
+    "slack": "Slack",
+    "slackCopied": "Lenken er kopiert — lim den inn i Slack.",
+    "giftFrom": "{name} brygget denne til deg",
+    "giftFromAnon": "En venn brygget denne til deg",
+    "giftCardFrom": "{name} brygget til deg",
+    "giftCardAnon": "En venn brygget til deg",
+    "brewYourOwn": "Brygg din egen",
+    "giftMetaTitle": "{potion} — en trylledrikk brygget til deg",
+    "giftMetaDescription": "En trylledrikk brygget til deg hos The Veil. Finn de skjulte ingrediensene og brygg din egen.",
+    "entranceSeasonal": "En halloweengodbit",
+    "entranceDefault": "Et lite spill",
+    "entranceCta": "Brygg trylledrikken",
+    "potionNames": {
+      "batEye": "Eliksir for nattsyn",
+      "frogTongue": "Drikk for sølvtunge",
+      "dragonTear": "Trylledrikk for midnattsmot",
+      "ravenFeather": "Tonikum for ravnevisdom",
+      "spider": "Brygg av vevd skjebne",
+      "toadstool": "Drikk for alvedrømmer",
+      "newtTail": "Eliksir for nye sjanser"
     }
   }
 }
