@@ -49,6 +49,10 @@ export const authOptions: NextAuthOptions = {
       // account — otherwise a squatter who registered your Gmail first would
       // receive your Google sign-in.
       allowDangerousEmailAccountLinking: true,
+      // Always show Google's account chooser. Without it Google silently signs
+      // in with whichever account was used last on the device, so someone with
+      // several Google accounts can't pick another one (Lena, 2026-10-06).
+      authorization: { params: { prompt: "select_account" } },
     }),
     CredentialsProvider({
       name: "credentials",
