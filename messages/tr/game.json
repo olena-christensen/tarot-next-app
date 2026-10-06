@@ -19,7 +19,15 @@
       "ravenFeather": "Kuzgun tüyü",
       "spider": "Örümcek",
       "toadstool": "Sinek mantarı",
-      "newtTail": "Semender kuyruğu"
+      "newtTail": "Semender kuyruğu",
+      "magicFlower": "Sihirli çiçek",
+      "fairyDust": "Peri tozu",
+      "deadFinger": "Ölü parmak",
+      "creatureClaw": "Canavar pençesi",
+      "trollEar": "Trol kulağı",
+      "lizard": "Kertenkele",
+      "butterflyWing": "Kelebek kanadı",
+      "snowflake": "Kar tanesi"
     },
     "close": "The Veil'e dön",
     "youBrewed": "Kaynattığın iksir",
@@ -46,7 +54,15 @@
       "ravenFeather": "Kuzgun Bilgeliği Toniği",
       "spider": "Örülmüş Kader Karışımı",
       "toadstool": "Peri Rüyaları Şerbeti",
-      "newtTail": "İkinci Şans İksiri"
+      "newtTail": "İkinci Şans İksiri",
+      "magicFlower": "Çiçek Açan Büyü İksiri",
+      "fairyDust": "Peri Uçuşu Şerbeti",
+      "deadFinger": "Mezar Sırları Karışımı",
+      "creatureClaw": "Vahşi Güç Toniği",
+      "trollEar": "Keskin Kulak Şerbeti",
+      "lizard": "Hızlı Kaçış İksiri",
+      "butterflyWing": "Yumuşak Değişim Şerbeti",
+      "snowflake": "Kış Huzuru Toniği"
     },
     "gifButton": "Kendininkini kaynat",
     "downloadGif": "Animasyonlu resmi indir",

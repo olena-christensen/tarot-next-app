@@ -202,10 +202,17 @@
     font-size: 1.15rem;
     transition: opacity 0.4s ease;
 
+    // A light round plate behind each icon, so dark ingredients (spider,
+    // raven feather) stand out from the dark bar (approved Option A, 2026-10-06).
     img {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
+      padding: 4px;
+      box-sizing: border-box;
       object-fit: contain;
+      border-radius: 50%;
+      background: radial-gradient(circle, #b8a6c8 0%, #8c779f 55%, #5e4c70 100%);
+      box-shadow: 0 0 0 1px rgba(250, 225, 163, 0.25);
     }
 
     small {

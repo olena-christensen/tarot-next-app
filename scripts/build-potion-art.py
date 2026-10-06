@@ -48,6 +48,15 @@ SPRITES = {
     "spider": load("spider.png"),
     "toadstool": load("toadstool.png"),
     "newtTail": load("newt-tail.png"),
+    # Second batch (2026-10-06), made in Canva like the first.
+    "magicFlower": load("magic-flower.png"),
+    "fairyDust": load("fairy-dust.png"),
+    "deadFinger": load("dead-finger.png"),
+    "creatureClaw": load("creature-claw.png"),
+    "trollEar": load("troll-ear.png"),
+    "lizard": load("lizard.png"),
+    "butterflyWing": load("butterfly-wing.png"),
+    "snowflake": load("snowflake.png"),
 }
 
 # The round eyeball of the bat eye, without its wing — for the herb bunch and
@@ -87,6 +96,25 @@ OCC = {
     "bristles": color_mask(lambda r, g, b: (r > g) & (g > b) & ((r + g + b) > 170), (180, 694, 320, 770)),
     "garlic": color_mask(lambda r, g, b: (r + g + b) > 420, (330, 110, 420, 310)),
 }
+# Bottles on the three shelves: anything brighter than the dark wall behind
+# them is painted back, so an ingredient tucked between bottles only shows in
+# the gap. The middle shelf's mask also catches the cauldron's steam.
+OCC["shelf1"] = color_mask(lambda r, g, b: (r + g + b) > 150, (560, 150, 1280, 304))
+OCC["shelf2"] = color_mask(lambda r, g, b: (r + g + b) > 150, (560, 330, 1060, 458))
+# The green bottle on the left end of the table, and the big purple bottle on
+# the floor by the barrel.
+OCC["benchBottle"] = shape_mask(("ellipse", (339, 541, 393, 599)), ("rect", (350, 510, 383, 545)))
+OCC["bigBottle"] = shape_mask(("ellipse", (166, 800, 288, 916)), ("rect", (202, 740, 250, 810)))
+# The plant pot: its rim and body in front of whatever grows in the soil, and
+# the leaves in front of that.
+OCC["potSoil"] = ImageChops.lighter(
+    shape_mask(("rect", (12, 631, 142, 712))),
+    color_mask(lambda r, g, b: (g > r + 8) & (g > b + 12), (0, 470, 200, 640)),
+)
+# The stone mortar on the table: its bowl in front of what lies inside.
+OCC["mortar"] = shape_mask(("rect", (910, 560, 1004, 606)))
+# The leaves of the plant reach over the left end of the window sill.
+OCC["sillLeaves"] = color_mask(lambda r, g, b: (g > r + 8) & (g > b + 12), (0, 470, 160, 560))
 # The eye in the herbs keeps its pupil uncovered.
 _hole = shape_mask(("ellipse", (498 - 7, 232 - 12, 498 + 7, 232 + 12)))
 OCC["leavesEye"] = ImageChops.subtract(OCC["leaves"], _hole)
@@ -95,14 +123,43 @@ CLIP_SOCKET = ImageChops.multiply(
     shape_mask(("ellipse", (1068, 557, 1099, 589))),
     color_mask(lambda r, g, b: (r + g + b) < 330, (1060, 550, 1106, 596)),
 )
+CLIP_SOCKET_LEFT = ImageChops.multiply(
+    shape_mask(("ellipse", (1029, 553, 1053, 584))),
+    color_mask(lambda r, g, b: (r + g + b) < 330, (1024, 548, 1058, 590)),
+)
+CLIPS = {True: CLIP_SOCKET, "right": CLIP_SOCKET, "left": CLIP_SOCKET_LEFT}
 
 # ---------- hiding spots ----------
 # spot id -> {ingredient: (height px, rotation deg, brightness, cx, bottom, extras)}
-# extras: occ=<OCC key>, clip=True (skull), shadow=False, shade=(left,right) brightness ramp,
+# extras: occ=<OCC key>, clip=True|"left" (skull eye socket), shadow=False,
+#         contact=True (standing on a surface: oval shadow under it, no side shadow),
+#         shade=(left,right) brightness ramp,
 #         eyeball=True (use the round eye without its wing)
 SPOTS = {
     "herbs":        {"batEye": (34, 0, .80, 498, 249, dict(eyeball=True, occ="leavesEye", shadow=False))},
-    "skull":        {"batEye": (30, 0, .90, 1084, 588, dict(eyeball=True, clip=True, shadow=False))},
+    "skull":        {"batEye": (30, 0, .90, 1084, 588, dict(eyeball=True, clip=True, shadow=False)),
+                     "spider": (26, 0, .95, 1084, 590, dict(clip=True, shadow=False))},
+    "skullLeft":    {"batEye": (24, 0, .90, 1041, 581, dict(eyeball=True, clip="left", shadow=False)),
+                     "spider": (22, 0, .95, 1041, 584, dict(clip="left", shadow=False))},
+    "potSoil":      {"toadstool": (40, 0, .80, 92, 640, dict(occ="potSoil", contact=True)),
+                     "ravenFeather": (66, 18, .80, 100, 640, dict(occ="potSoil", shadow=False))},
+    "mortar":       {"frogTongue": (50, -30, .80, 936, 572, dict(occ="mortar", shadow=False)),
+                     "newtTail": (36, 0, .80, 936, 572, dict(occ="mortar", shadow=False)),
+                     "toadstool": (34, 0, .80, 936, 572, dict(occ="mortar", shadow=False))},
+    "shelf1Gap":    {"newtTail": (34, 0, .75, 790, 302, dict(occ="shelf1", contact=True)),
+                     "spider": (28, 0, .75, 790, 302, dict(occ="shelf1", contact=True)),
+                     "dragonTear": (40, 0, .75, 790, 302, dict(occ="shelf1", contact=True))},
+    "shelf2Left":   {"toadstool": (36, 0, .75, 695, 455, dict(occ="shelf2", contact=True)),
+                     "dragonTear": (44, 0, .75, 695, 455, dict(occ="shelf2", contact=True))},
+    "benchBottle":  {"toadstool": (40, 0, .78, 330, 600, dict(occ="benchBottle", contact=True)),
+                     "ravenFeather": (66, 12, .80, 328, 600, dict(occ="benchBottle", contact=True)),
+                     "spider": (32, 0, .78, 330, 600, dict(occ="benchBottle", contact=True))},
+    "floorBottle":  {"newtTail": (40, 0, .80, 292, 918, dict(occ="bigBottle", contact=True)),
+                     "frogTongue": (58, -78, .80, 296, 918, dict(occ="bigBottle", contact=True)),
+                     "batEye": (46, 10, .80, 290, 918, dict(occ="bigBottle", contact=True))},
+    "shelf2Right":  {"newtTail": (34, 0, .75, 897, 455, dict(occ="shelf2", contact=True)),
+                     "toadstool": (36, 0, .75, 897, 455, dict(occ="shelf2", contact=True)),
+                     "dragonTear": (44, 0, .75, 897, 455, dict(occ="shelf2", contact=True))},
     "benchFloor":   {"frogTongue": (64, -82, .80, 455, 796, dict(occ="benchLeg", shade=(.35, .6))),
                      "newtTail": (40, 0, .55, 440, 798, dict(occ="benchLeg")),
                      "spider": (38, 0, .55, 450, 798, dict(occ="benchLeg"))},
@@ -131,16 +188,71 @@ SPOTS = {
     "floorSack":    {"toadstool": (44, 0, .75, 1098, 905, {}),
                      "spider": (38, 0, .70, 1098, 905, {}),
                      "dragonTear": (58, 0, .75, 1098, 905, {})},
-    "books":        {"newtTail": (34, 0, .80, 1168, 384, {}),
-                     "ravenFeather": (70, -80, .80, 1175, 386, {}),
-                     "dragonTear": (46, 0, .80, 1200, 384, {})},
-    "sill":         {"batEye": (54, 20, .75, 118, 528, {}),
-                     "toadstool": (40, 0, .75, 118, 528, {}),
-                     "spider": (36, 0, .72, 118, 528, {}),
-                     "dragonTear": (50, 0, .75, 120, 528, {})},
+    "books":        {"newtTail": (34, 0, .80, 1168, 391, dict(contact=True)),
+                     "ravenFeather": (70, -80, .80, 1175, 391, dict(contact=True)),
+                     "dragonTear": (46, 0, .80, 1200, 391, dict(contact=True))},
+    "sill":         {"batEye": (48, 0, .75, 160, 516, dict(contact=True)),
+                     "toadstool": (40, 0, .75, 160, 516, dict(contact=True)),
+                     "spider": (34, 0, .72, 160, 516, dict(contact=True)),
+                     "dragonTear": (50, 0, .75, 162, 516, dict(contact=True))},
     "garlic":       {"batEye": (44, -8, .80, 368, 262, dict(occ="garlic")),
                      "spider": (36, 0, .80, 378, 340, dict(thread=34))},
 }
+
+
+# Where the second batch of ingredients hides, added to the spots above (same
+# spec format). Kept apart so the first batch's numbers stay untouched.
+MORE = {
+    "benchFloor":   {"lizard": (40, 0, .60, 448, 798, dict(occ="benchLeg")),
+                     "trollEar": (44, 0, .55, 448, 798, dict(occ="benchLeg"))},
+    "tableBottles": {"magicFlower": (48, 0, .75, 677, 598, dict(occ="tableBottles")),
+                     "snowflake": (40, 0, .75, 677, 596, dict(occ="tableBottles"))},
+    "topShelf":     {"butterflyWing": (50, -10, .75, 692, 306, dict(occ="topBottle")),
+                     "fairyDust": (40, 0, .75, 692, 306, dict(occ="topBottle"))},
+    "barrel":       {"lizard": (36, 0, .72, 132, 704, dict(occ="pot"))},
+    "candle":       {"fairyDust": (44, 0, .85, 1272, 640, {}),
+                     "snowflake": (38, 0, .85, 1272, 640, {}),
+                     "deadFinger": (60, -70, .85, 1274, 640, {})},
+    "web":          {"butterflyWing": (46, 15, .80, 128, 180, dict(shadow=False)),
+                     "snowflake": (40, 0, .85, 128, 176, dict(shadow=False))},
+    "lantern":      {"snowflake": (30, 0, .85, 1418, 366, {})},
+    "broom":        {"creatureClaw": (56, 20, .78, 250, 712, dict(occ="bristles")),
+                     "deadFinger": (62, 60, .78, 250, 712, dict(occ="bristles"))},
+    "crate":        {"trollEar": (52, 0, .78, 1300, 806, dict(occ="crateFront")),
+                     "lizard": (46, 0, .78, 1300, 806, dict(occ="crateFront")),
+                     "creatureClaw": (60, 0, .78, 1300, 808, dict(occ="crateFront"))},
+    "floorLeft":    {"lizard": (44, 0, .80, 488, 935, {}),
+                     "trollEar": (50, 0, .80, 488, 935, {}),
+                     "deadFinger": (64, -70, .80, 488, 935, {}),
+                     "creatureClaw": (58, 20, .80, 488, 935, {})},
+    "floorSack":    {"fairyDust": (50, 0, .75, 1098, 905, {}),
+                     "deadFinger": (60, -80, .75, 1098, 905, {}),
+                     "magicFlower": (52, 0, .75, 1098, 905, {})},
+    "books":        {"butterflyWing": (40, -20, .80, 1170, 391, dict(contact=True)),
+                     "deadFinger": (54, -80, .80, 1172, 391, dict(contact=True)),
+                     "creatureClaw": (48, -60, .80, 1172, 391, dict(contact=True))},
+    "sill":         {"magicFlower": (46, 0, .75, 160, 516, dict(contact=True)),
+                     "snowflake": (40, 0, .80, 160, 516, dict(contact=True)),
+                     "butterflyWing": (40, 0, .75, 160, 516, dict(contact=True))},
+    "garlic":       {"trollEar": (40, -8, .80, 368, 262, dict(occ="garlic"))},
+    "potSoil":      {"magicFlower": (54, 0, .80, 94, 642, dict(occ="potSoil", contact=True))},
+    "mortar":       {"fairyDust": (40, 0, .80, 936, 574, dict(occ="mortar", shadow=False)),
+                     "snowflake": (32, 0, .80, 936, 572, dict(occ="mortar", shadow=False)),
+                     "creatureClaw": (46, -30, .80, 936, 572, dict(occ="mortar", shadow=False))},
+    "shelf1Gap":    {"fairyDust": (36, 0, .75, 790, 302, dict(occ="shelf1", contact=True)),
+                     "trollEar": (36, 0, .75, 790, 302, dict(occ="shelf1", contact=True))},
+    "shelf2Left":   {"magicFlower": (44, 0, .75, 695, 455, dict(occ="shelf2", contact=True)),
+                     "creatureClaw": (44, -20, .75, 695, 455, dict(occ="shelf2", contact=True))},
+    "shelf2Right":  {"trollEar": (38, 0, .75, 897, 455, dict(occ="shelf2", contact=True)),
+                     "butterflyWing": (40, 0, .75, 897, 455, dict(occ="shelf2", contact=True))},
+    "benchBottle":  {"magicFlower": (48, 0, .78, 330, 600, dict(occ="benchBottle", contact=True)),
+                     "lizard": (36, 0, .78, 330, 600, dict(occ="benchBottle", contact=True)),
+                     "snowflake": (34, 0, .80, 330, 600, dict(occ="benchBottle", contact=True))},
+    "floorBottle":  {"trollEar": (44, 0, .80, 292, 918, dict(occ="bigBottle", contact=True)),
+                     "butterflyWing": (40, 0, .80, 292, 918, dict(occ="bigBottle", contact=True))},
+}
+for _spot, _ings in MORE.items():
+    SPOTS[_spot].update(_ings)
 
 
 def prep(im, h, rot, dark):
@@ -148,6 +260,9 @@ def prep(im, h, rot, dark):
     im = im.resize((w, h), Image.LANCZOS)
     if rot:
         im = im.rotate(rot, expand=True, resample=Image.BICUBIC)
+        # Rotating leaves empty corners; trim them so "bottom" is where the
+        # thing really touches the surface, not an invisible corner below it.
+        im = im.crop(im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
     a = im.getchannel("A")
     rgb = ImageEnhance.Brightness(im.convert("RGB")).enhance(dark)
     r, g, b = rgb.split()
@@ -177,9 +292,19 @@ def render(ing, spot, spec):
         ImageDraw.Draw(layer).line([cx, y - ex["thread"], cx, y + im.height // 3], fill=(205, 200, 225, 170), width=1)
     layer.alpha_composite(im, (x, y))
     if ex.get("clip"):
-        layer.putalpha(ImageChops.multiply(layer.getchannel("A"), CLIP_SOCKET))
+        layer.putalpha(ImageChops.multiply(layer.getchannel("A"), CLIPS[ex["clip"]]))
     canvas = room.copy()
-    if ex.get("shadow", True):
+    if ex.get("contact"):
+        # Standing on a surface: a soft dark oval right under the base, so the
+        # thing sits ON the ledge instead of hovering in front of it.
+        cw = int(im.width * 0.9)
+        sh = Image.new("L", (W, H), 0)
+        ImageDraw.Draw(sh).ellipse([cx - cw // 2, bottom - 4, cx + cw // 2, bottom + 4], fill=150)
+        sh = sh.filter(ImageFilter.GaussianBlur(3))
+        dark = Image.new("RGBA", (W, H), (10, 0, 15, 0))
+        dark.putalpha(sh)
+        canvas.alpha_composite(dark)
+    elif ex.get("shadow", True):
         sh = Image.new("RGBA", (W, H), (10, 0, 15, 0))
         sh.putalpha(layer.getchannel("A").point(lambda v: int(v * 0.5)))
         sh = ImageChops.offset(sh.filter(ImageFilter.GaussianBlur(4)), 4, 4)

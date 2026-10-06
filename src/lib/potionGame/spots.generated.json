@@ -34,18 +34,515 @@
      30,
      30
     ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--skull.webp",
+    "x": 1067,
+    "y": 563,
+    "w": 34,
+    "h": 27,
+    "hit": [
+     1068,
+     564,
+     32,
+     26
+    ]
+   }
+  },
+  "skullLeft": {
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--skullLeft.webp",
+    "x": 1029,
+    "y": 556,
+    "w": 25,
+    "h": 26,
+    "hit": [
+     1030,
+     557,
+     23,
+     24
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--skullLeft.webp",
+    "x": 1029,
+    "y": 561,
+    "w": 25,
+    "h": 24,
+    "hit": [
+     1030,
+     562,
+     23,
+     22
+    ]
+   }
+  },
+  "potSoil": {
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--potSoil.webp",
+    "x": 72,
+    "y": 599,
+    "w": 40,
+    "h": 35,
+    "hit": [
+     73,
+     600,
+     38,
+     31
+    ]
+   },
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--potSoil.webp",
+    "x": 83,
+    "y": 562,
+    "w": 33,
+    "h": 71,
+    "hit": [
+     84,
+     563,
+     31,
+     68
+    ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--potSoil.webp",
+    "x": 73,
+    "y": 587,
+    "w": 42,
+    "h": 47,
+    "hit": [
+     74,
+     588,
+     40,
+     43
+    ]
+   }
+  },
+  "mortar": {
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--mortar.webp",
+    "x": 915,
+    "y": 525,
+    "w": 42,
+    "h": 38,
+    "hit": [
+     917,
+     526,
+     38,
+     34
+    ]
+   },
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--mortar.webp",
+    "x": 920,
+    "y": 535,
+    "w": 32,
+    "h": 28,
+    "hit": [
+     921,
+     536,
+     30,
+     24
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--mortar.webp",
+    "x": 918,
+    "y": 537,
+    "w": 35,
+    "h": 26,
+    "hit": [
+     919,
+     538,
+     33,
+     22
+    ]
+   },
+   "fairyDust": {
+    "src": "/game-art/potion/patches/fairyDust--mortar.webp",
+    "x": 914,
+    "y": 533,
+    "w": 38,
+    "h": 30,
+    "hit": [
+     915,
+     534,
+     36,
+     26
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--mortar.webp",
+    "x": 922,
+    "y": 539,
+    "w": 28,
+    "h": 24,
+    "hit": [
+     923,
+     540,
+     26,
+     20
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--mortar.webp",
+    "x": 927,
+    "y": 529,
+    "w": 22,
+    "h": 34,
+    "hit": [
+     930,
+     530,
+     18,
+     30
+    ]
+   }
+  },
+  "shelf1Gap": {
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--shelf1Gap.webp",
+    "x": 774,
+    "y": 267,
+    "w": 35,
+    "h": 46,
+    "hit": [
+     776,
+     268,
+     28,
+     34
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--shelf1Gap.webp",
+    "x": 770,
+    "y": 273,
+    "w": 42,
+    "h": 41,
+    "hit": [
+     772,
+     274,
+     32,
+     28
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--shelf1Gap.webp",
+    "x": 776,
+    "y": 261,
+    "w": 31,
+    "h": 52,
+    "hit": [
+     778,
+     262,
+     23,
+     40
+    ]
+   },
+   "fairyDust": {
+    "src": "/game-art/potion/patches/fairyDust--shelf1Gap.webp",
+    "x": 770,
+    "y": 265,
+    "w": 42,
+    "h": 49,
+    "hit": [
+     771,
+     266,
+     32,
+     35
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--shelf1Gap.webp",
+    "x": 779,
+    "y": 265,
+    "w": 26,
+    "h": 48,
+    "hit": [
+     781,
+     266,
+     18,
+     36
+    ]
+   }
+  },
+  "shelf2Left": {
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--shelf2Left.webp",
+    "x": 675,
+    "y": 418,
+    "w": 39,
+    "h": 48,
+    "hit": [
+     677,
+     419,
+     35,
+     36
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--shelf2Left.webp",
+    "x": 679,
+    "y": 410,
+    "w": 31,
+    "h": 56,
+    "hit": [
+     682,
+     411,
+     24,
+     44
+    ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--shelf2Left.webp",
+    "x": 676,
+    "y": 410,
+    "w": 37,
+    "h": 56,
+    "hit": [
+     679,
+     411,
+     26,
+     44
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--shelf2Left.webp",
+    "x": 681,
+    "y": 411,
+    "w": 27,
+    "h": 55,
+    "hit": [
+     685,
+     412,
+     18,
+     43
+    ]
+   }
+  },
+  "benchBottle": {
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--benchBottle.webp",
+    "x": 308,
+    "y": 559,
+    "w": 45,
+    "h": 52,
+    "hit": [
+     311,
+     560,
+     33,
+     40
+    ]
+   },
+   "ravenFeather": {
+    "src": "/game-art/potion/patches/ravenFeather--benchBottle.webp",
+    "x": 307,
+    "y": 525,
+    "w": 43,
+    "h": 85,
+    "hit": [
+     310,
+     526,
+     35,
+     74
+    ]
+   },
+   "spider": {
+    "src": "/game-art/potion/patches/spider--benchBottle.webp",
+    "x": 307,
+    "y": 567,
+    "w": 47,
+    "h": 44,
+    "hit": [
+     309,
+     568,
+     36,
+     32
+    ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--benchBottle.webp",
+    "x": 309,
+    "y": 551,
+    "w": 43,
+    "h": 60,
+    "hit": [
+     312,
+     552,
+     31,
+     48
+    ]
+   },
+   "lizard": {
+    "src": "/game-art/potion/patches/lizard--benchBottle.webp",
+    "x": 315,
+    "y": 563,
+    "w": 30,
+    "h": 47,
+    "hit": [
+     320,
+     564,
+     20,
+     36
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--benchBottle.webp",
+    "x": 312,
+    "y": 565,
+    "w": 36,
+    "h": 45,
+    "hit": [
+     316,
+     566,
+     27,
+     34
+    ]
+   }
+  },
+  "floorBottle": {
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--floorBottle.webp",
+    "x": 274,
+    "y": 877,
+    "w": 38,
+    "h": 51,
+    "hit": [
+     275,
+     878,
+     33,
+     40
+    ]
+   },
+   "frogTongue": {
+    "src": "/game-art/potion/patches/frogTongue--floorBottle.webp",
+    "x": 265,
+    "y": 892,
+    "w": 62,
+    "h": 37,
+    "hit": [
+     266,
+     893,
+     59,
+     24
+    ]
+   },
+   "batEye": {
+    "src": "/game-art/potion/patches/batEye--floorBottle.webp",
+    "x": 268,
+    "y": 865,
+    "w": 46,
+    "h": 63,
+    "hit": [
+     269,
+     866,
+     41,
+     52
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--floorBottle.webp",
+    "x": 278,
+    "y": 873,
+    "w": 30,
+    "h": 55,
+    "hit": [
+     281,
+     874,
+     23,
+     44
+    ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--floorBottle.webp",
+    "x": 278,
+    "y": 877,
+    "w": 30,
+    "h": 51,
+    "hit": [
+     280,
+     878,
+     24,
+     40
+    ]
+   }
+  },
+  "shelf2Right": {
+   "newtTail": {
+    "src": "/game-art/potion/patches/newtTail--shelf2Right.webp",
+    "x": 881,
+    "y": 420,
+    "w": 34,
+    "h": 44,
+    "hit": [
+     883,
+     421,
+     28,
+     34
+    ]
+   },
+   "toadstool": {
+    "src": "/game-art/potion/patches/toadstool--shelf2Right.webp",
+    "x": 878,
+    "y": 418,
+    "w": 39,
+    "h": 46,
+    "hit": [
+     879,
+     419,
+     32,
+     36
+    ]
+   },
+   "dragonTear": {
+    "src": "/game-art/potion/patches/dragonTear--shelf2Right.webp",
+    "x": 882,
+    "y": 410,
+    "w": 32,
+    "h": 53,
+    "hit": [
+     884,
+     411,
+     25,
+     44
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--shelf2Right.webp",
+    "x": 885,
+    "y": 416,
+    "w": 27,
+    "h": 46,
+    "hit": [
+     887,
+     418,
+     20,
+     37
+    ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--shelf2Right.webp",
+    "x": 883,
+    "y": 414,
+    "w": 30,
+    "h": 49,
+    "hit": [
+     885,
+     416,
+     24,
+     39
+    ]
    }
   },
   "benchFloor": {
    "frogTongue": {
     "src": "/game-art/potion/patches/frogTongue--benchFloor.webp",
     "x": 421,
-    "y": 763,
-    "w": 67,
-    "h": 34,
+    "y": 769,
+    "w": 69,
+    "h": 35,
     "hit": [
      422,
-     764,
+     770,
      65,
      26
     ]
@@ -75,20 +572,46 @@
      49,
      38
     ]
+   },
+   "lizard": {
+    "src": "/game-art/potion/patches/lizard--benchFloor.webp",
+    "x": 436,
+    "y": 757,
+    "w": 24,
+    "h": 43,
+    "hit": [
+     437,
+     758,
+     22,
+     40
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--benchFloor.webp",
+    "x": 435,
+    "y": 753,
+    "w": 31,
+    "h": 53,
+    "hit": [
+     436,
+     754,
+     24,
+     44
+    ]
    }
   },
   "tableBottles": {
    "frogTongue": {
     "src": "/game-art/potion/patches/frogTongue--tableBottles.webp",
     "x": 662,
-    "y": 538,
-    "w": 35,
+    "y": 539,
+    "w": 36,
     "h": 70,
     "hit": [
      664,
-     539,
+     540,
      23,
-     58
+     57
     ]
    },
    "toadstool": {
@@ -103,18 +626,44 @@
      38,
      39
     ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--tableBottles.webp",
+    "x": 658,
+    "y": 549,
+    "w": 42,
+    "h": 57,
+    "hit": [
+     659,
+     550,
+     33,
+     46
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--tableBottles.webp",
+    "x": 660,
+    "y": 555,
+    "w": 40,
+    "h": 49,
+    "hit": [
+     661,
+     556,
+     32,
+     40
+    ]
    }
   },
   "topShelf": {
    "frogTongue": {
     "src": "/game-art/potion/patches/frogTongue--topShelf.webp",
-    "x": 661,
-    "y": 275,
-    "w": 73,
+    "x": 659,
+    "y": 280,
+    "w": 76,
     "h": 36,
     "hit": [
      662,
-     276,
+     281,
      63,
      25
     ]
@@ -122,13 +671,13 @@
    "ravenFeather": {
     "src": "/game-art/potion/patches/ravenFeather--topShelf.webp",
     "x": 648,
-    "y": 251,
-    "w": 83,
-    "h": 47,
+    "y": 268,
+    "w": 93,
+    "h": 48,
     "hit": [
      649,
-     254,
-     77,
+     272,
+     81,
      33
     ]
    },
@@ -144,18 +693,44 @@
      33,
      40
     ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--topShelf.webp",
+    "x": 673,
+    "y": 255,
+    "w": 48,
+    "h": 61,
+    "hit": [
+     674,
+     258,
+     36,
+     48
+    ]
+   },
+   "fairyDust": {
+    "src": "/game-art/potion/patches/fairyDust--topShelf.webp",
+    "x": 670,
+    "y": 263,
+    "w": 52,
+    "h": 52,
+    "hit": [
+     671,
+     266,
+     41,
+     39
+    ]
    }
   },
   "barrel": {
    "frogTongue": {
     "src": "/game-art/potion/patches/frogTongue--barrel.webp",
-    "x": 113,
+    "x": 112,
     "y": 679,
-    "w": 45,
-    "h": 33,
+    "w": 46,
+    "h": 35,
     "hit": [
      115,
-     681,
+     683,
      34,
      21
     ]
@@ -183,6 +758,19 @@
      111,
      668,
      46,
+     36
+    ]
+   },
+   "lizard": {
+    "src": "/game-art/potion/patches/lizard--barrel.webp",
+    "x": 121,
+    "y": 667,
+    "w": 30,
+    "h": 46,
+    "hit": [
+     122,
+     668,
+     20,
      36
     ]
    }
@@ -226,6 +814,45 @@
      32,
      38
     ]
+   },
+   "fairyDust": {
+    "src": "/game-art/potion/patches/fairyDust--candle.webp",
+    "x": 1246,
+    "y": 595,
+    "w": 58,
+    "h": 55,
+    "hit": [
+     1249,
+     596,
+     45,
+     43
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--candle.webp",
+    "x": 1254,
+    "y": 601,
+    "w": 42,
+    "h": 47,
+    "hit": [
+     1256,
+     602,
+     31,
+     38
+    ]
+   },
+   "deadFinger": {
+    "src": "/game-art/potion/patches/deadFinger--candle.webp",
+    "x": 1253,
+    "y": 567,
+    "w": 50,
+    "h": 83,
+    "hit": [
+     1254,
+     569,
+     40,
+     71
+    ]
    }
   },
   "web": {
@@ -240,6 +867,32 @@
      132,
      59,
      46
+    ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--web.webp",
+    "x": 114,
+    "y": 132,
+    "w": 27,
+    "h": 49,
+    "hit": [
+     116,
+     133,
+     24,
+     47
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--web.webp",
+    "x": 111,
+    "y": 135,
+    "w": 34,
+    "h": 42,
+    "hit": [
+     112,
+     136,
+     32,
+     40
     ]
    }
   },
@@ -256,20 +909,59 @@
      44,
      34
     ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--lantern.webp",
+    "x": 1405,
+    "y": 335,
+    "w": 34,
+    "h": 40,
+    "hit": [
+     1406,
+     336,
+     24,
+     30
+    ]
    }
   },
   "broom": {
    "ravenFeather": {
     "src": "/game-art/potion/patches/ravenFeather--broom.webp",
-    "x": 228,
-    "y": 626,
-    "w": 49,
+    "x": 230,
+    "y": 627,
+    "w": 47,
     "h": 94,
     "hit": [
-     231,
-     627,
+     232,
+     628,
      36,
      84
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--broom.webp",
+    "x": 228,
+    "y": 659,
+    "w": 50,
+    "h": 59,
+    "hit": [
+     230,
+     661,
+     38,
+     51
+    ]
+   },
+   "deadFinger": {
+    "src": "/game-art/potion/patches/deadFinger--broom.webp",
+    "x": 208,
+    "y": 677,
+    "w": 83,
+    "h": 44,
+    "hit": [
+     211,
+     679,
+     78,
+     33
     ]
    }
   },
@@ -289,15 +981,15 @@
    },
    "ravenFeather": {
     "src": "/game-art/potion/patches/ravenFeather--crate.webp",
-    "x": 1270,
-    "y": 728,
-    "w": 76,
-    "h": 68,
+    "x": 1271,
+    "y": 737,
+    "w": 75,
+    "h": 59,
     "hit": [
-     1271,
-     729,
+     1272,
+     739,
      66,
-     64
+     54
     ]
    },
    "newtTail": {
@@ -315,28 +1007,67 @@
    },
    "batEye": {
     "src": "/game-art/potion/patches/batEye--crate.webp",
-    "x": 1273,
-    "y": 742,
-    "w": 50,
-    "h": 54,
+    "x": 1275,
+    "y": 745,
+    "w": 51,
+    "h": 51,
     "hit": [
-     1274,
-     743,
+     1276,
+     746,
      44,
-     50
+     47
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--crate.webp",
+    "x": 1284,
+    "y": 753,
+    "w": 38,
+    "h": 43,
+    "hit": [
+     1286,
+     754,
+     28,
+     39
+    ]
+   },
+   "lizard": {
+    "src": "/game-art/potion/patches/lizard--crate.webp",
+    "x": 1286,
+    "y": 759,
+    "w": 32,
+    "h": 37,
+    "hit": [
+     1287,
+     760,
+     25,
+     33
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--crate.webp",
+    "x": 1280,
+    "y": 747,
+    "w": 45,
+    "h": 49,
+    "hit": [
+     1283,
+     748,
+     33,
+     45
     ]
    }
   },
   "floorLeft": {
    "frogTongue": {
     "src": "/game-art/potion/patches/frogTongue--floorLeft.webp",
-    "x": 472,
-    "y": 864,
+    "x": 470,
+    "y": 865,
     "w": 42,
-    "h": 81,
+    "h": 82,
     "hit": [
-     476,
-     867,
+     474,
+     869,
      27,
      66
     ]
@@ -379,6 +1110,58 @@
      35,
      60
     ]
+   },
+   "lizard": {
+    "src": "/game-art/potion/patches/lizard--floorLeft.webp",
+    "x": 474,
+    "y": 889,
+    "w": 36,
+    "h": 57,
+    "hit": [
+     476,
+     891,
+     24,
+     44
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--floorLeft.webp",
+    "x": 471,
+    "y": 883,
+    "w": 42,
+    "h": 63,
+    "hit": [
+     474,
+     885,
+     27,
+     50
+    ]
+   },
+   "deadFinger": {
+    "src": "/game-art/potion/patches/deadFinger--floorLeft.webp",
+    "x": 464,
+    "y": 855,
+    "w": 57,
+    "h": 91,
+    "hit": [
+     467,
+     858,
+     42,
+     77
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--floorLeft.webp",
+    "x": 465,
+    "y": 879,
+    "w": 55,
+    "h": 66,
+    "hit": [
+     468,
+     882,
+     39,
+     53
+    ]
    }
   },
   "floorSack": {
@@ -420,18 +1203,57 @@
      34,
      58
     ]
+   },
+   "fairyDust": {
+    "src": "/game-art/potion/patches/fairyDust--floorSack.webp",
+    "x": 1069,
+    "y": 853,
+    "w": 64,
+    "h": 63,
+    "hit": [
+     1072,
+     855,
+     51,
+     49
+    ]
+   },
+   "deadFinger": {
+    "src": "/game-art/potion/patches/deadFinger--floorSack.webp",
+    "x": 1071,
+    "y": 838,
+    "w": 61,
+    "h": 79,
+    "hit": [
+     1073,
+     839,
+     50,
+     66
+    ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--floorSack.webp",
+    "x": 1076,
+    "y": 852,
+    "w": 50,
+    "h": 63,
+    "hit": [
+     1078,
+     853,
+     39,
+     52
+    ]
    }
   },
   "books": {
    "newtTail": {
     "src": "/game-art/potion/patches/newtTail--books.webp",
-    "x": 1153,
-    "y": 349,
-    "w": 37,
+    "x": 1150,
+    "y": 356,
+    "w": 36,
     "h": 46,
     "hit": [
      1154,
-     350,
+     357,
      28,
      34
     ]
@@ -439,81 +1261,159 @@
    "ravenFeather": {
     "src": "/game-art/potion/patches/ravenFeather--books.webp",
     "x": 1135,
-    "y": 333,
-    "w": 88,
-    "h": 50,
+    "y": 350,
+    "w": 79,
+    "h": 52,
     "hit": [
      1136,
-     334,
+     351,
      77,
      40
     ]
    },
    "dragonTear": {
     "src": "/game-art/potion/patches/dragonTear--books.webp",
-    "x": 1184,
-    "y": 337,
-    "w": 39,
-    "h": 57,
+    "x": 1182,
+    "y": 344,
+    "w": 35,
+    "h": 58,
     "hit": [
      1186,
-     338,
+     345,
      27,
      46
+    ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--books.webp",
+    "x": 1150,
+    "y": 355,
+    "w": 40,
+    "h": 47,
+    "hit": [
+     1154,
+     356,
+     32,
+     35
+    ]
+   },
+   "deadFinger": {
+    "src": "/game-art/potion/patches/deadFinger--books.webp",
+    "x": 1147,
+    "y": 330,
+    "w": 49,
+    "h": 72,
+    "hit": [
+     1150,
+     331,
+     45,
+     59
+    ]
+   },
+   "creatureClaw": {
+    "src": "/game-art/potion/patches/creatureClaw--books.webp",
+    "x": 1149,
+    "y": 354,
+    "w": 45,
+    "h": 48,
+    "hit": [
+     1152,
+     355,
+     39,
+     36
     ]
    }
   },
   "sill": {
    "batEye": {
     "src": "/game-art/potion/patches/batEye--sill.webp",
-    "x": 91,
-    "y": 458,
-    "w": 54,
-    "h": 76,
+    "x": 134,
+    "y": 467,
+    "w": 53,
+    "h": 60,
     "hit": [
-     95,
-     459,
-     42,
-     64
+     136,
+     468,
+     47,
+     48
     ]
    },
    "toadstool": {
     "src": "/game-art/potion/patches/toadstool--sill.webp",
-    "x": 95,
-    "y": 486,
-    "w": 55,
-    "h": 54,
+    "x": 138,
+    "y": 475,
+    "w": 45,
+    "h": 52,
     "hit": [
-     99,
-     488,
+     141,
+     476,
      38,
      40
     ]
    },
    "spider": {
     "src": "/game-art/potion/patches/spider--sill.webp",
-    "x": 92,
-    "y": 490,
-    "w": 60,
+    "x": 135,
+    "y": 481,
+    "w": 50,
     "h": 46,
     "hit": [
-     95,
-     492,
-     46,
-     36
+     138,
+     482,
+     44,
+     34
     ]
    },
    "dragonTear": {
     "src": "/game-art/potion/patches/dragonTear--sill.webp",
-    "x": 101,
-    "y": 476,
-    "w": 46,
-    "h": 65,
+    "x": 143,
+    "y": 465,
+    "w": 39,
+    "h": 62,
     "hit": [
-     105,
-     478,
+     147,
+     466,
      29,
      50
+    ]
+   },
+   "magicFlower": {
+    "src": "/game-art/potion/patches/magicFlower--sill.webp",
+    "x": 139,
+    "y": 469,
+    "w": 43,
+    "h": 58,
+    "hit": [
+     143,
+     470,
+     34,
+     46
+    ]
+   },
+   "snowflake": {
+    "src": "/game-art/potion/patches/snowflake--sill.webp",
+    "x": 140,
+    "y": 475,
+    "w": 40,
+    "h": 52,
+    "hit": [
+     144,
+     476,
+     32,
+     40
+    ]
+   },
+   "butterflyWing": {
+    "src": "/game-art/potion/patches/butterflyWing--sill.webp",
+    "x": 144,
+    "y": 475,
+    "w": 33,
+    "h": 52,
+    "hit": [
+     148,
+     476,
+     24,
+     40
     ]
    }
   },
@@ -521,12 +1421,12 @@
    "batEye": {
     "src": "/game-art/potion/patches/batEye--garlic.webp",
     "x": 343,
-    "y": 214,
-    "w": 57,
+    "y": 218,
+    "w": 56,
     "h": 56,
     "hit": [
-     345,
-     217,
+     344,
+     221,
      47,
      41
     ]
@@ -542,6 +1442,19 @@
      270,
      46,
      70
+    ]
+   },
+   "trollEar": {
+    "src": "/game-art/potion/patches/trollEar--garlic.webp",
+    "x": 353,
+    "y": 222,
+    "w": 37,
+    "h": 48,
+    "hit": [
+     356,
+     224,
+     23,
+     37
     ]
    }
   }

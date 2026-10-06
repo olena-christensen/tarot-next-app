@@ -16,6 +16,14 @@ export const INGREDIENT_IDS = [
   "spider",
   "toadstool",
   "newtTail",
+  "magicFlower",
+  "fairyDust",
+  "deadFinger",
+  "creatureClaw",
+  "trollEar",
+  "lizard",
+  "butterflyWing",
+  "snowflake",
 ] as const;
 export type IngredientId = (typeof INGREDIENT_IDS)[number];
 

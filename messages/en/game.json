@@ -19,7 +19,15 @@
       "ravenFeather": "Raven feather",
       "spider": "Spider",
       "toadstool": "Toadstool",
-      "newtTail": "Newt tail"
+      "newtTail": "Newt tail",
+      "magicFlower": "Magic flower",
+      "fairyDust": "Fairy dust",
+      "deadFinger": "Dead finger",
+      "creatureClaw": "Beast claw",
+      "trollEar": "Troll ear",
+      "lizard": "Lizard",
+      "butterflyWing": "Butterfly wing",
+      "snowflake": "Snowflake"
     },
     "close": "Back to The Veil",
     "youBrewed": "You brewed",
@@ -46,7 +54,15 @@
       "ravenFeather": "Tonic of Raven Wisdom",
       "spider": "Brew of Woven Fate",
       "toadstool": "Draught of Fey Dreams",
-      "newtTail": "Elixir of Second Chances"
+      "newtTail": "Elixir of Second Chances",
+      "magicFlower": "Elixir of Blooming Magic",
+      "fairyDust": "Philtre of Fairy Flight",
+      "deadFinger": "Brew of Grave Secrets",
+      "creatureClaw": "Tonic of Wild Strength",
+      "trollEar": "Draught of Keen Hearing",
+      "lizard": "Elixir of Quick Escapes",
+      "butterflyWing": "Philtre of Gentle Change",
+      "snowflake": "Tonic of Winter Calm"
     },
     "gifButton": "Brew yours",
     "downloadGif": "Download the animated picture",
