@@ -16,6 +16,14 @@ export const INGREDIENT_IDS = [
   "spider",
   "toadstool",
   "newtTail",
+  "magicFlower",
+  "fairyDust",
+  "deadFinger",
+  "creatureClaw",
+  "trollEar",
+  "lizard",
+  "butterflyWing",
+  "snowflake",
 ] as const;
 export type IngredientId = (typeof INGREDIENT_IDS)[number];
 
@@ -39,6 +47,10 @@ export type RecipeLine = { ingredient: IngredientId; count: number };
 export type Round = { recipe: RecipeLine[]; placements: Placement[] };
 
 export const RECIPE_SIZE = 3;
+/** The sand clock: find everything before the potion boils over (Lena, 2026-10-06). */
+export const ROUND_TIME_MS = 90_000;
+/** The last stretch: the clock turns red and the cauldron bubbles harder. */
+export const ROUND_WARN_MS = 20_000;
 /** Potions in one (Kyiv) day that earn a moonstone — see reward.ts. */
 export const POTIONS_PER_MOONSTONE = 3;
 const COUNTS = [1, 2, 3];

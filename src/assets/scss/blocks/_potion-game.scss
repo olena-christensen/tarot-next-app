@@ -57,6 +57,13 @@
     font-size: 0.95rem;
     font-variant-numeric: tabular-nums;
 
+    // The last 20 seconds of the sand clock.
+    &--hot {
+      color: #ff7a5c;
+      border-color: rgba(255, 110, 80, 0.85);
+      animation: potionHot 1s ease-in-out infinite;
+    }
+
     &--btn {
       cursor: pointer;
 
@@ -91,6 +98,11 @@
 
     &--shake {
       animation: potionShake 0.35s ease-in-out;
+    }
+
+    // The potion boils over: the whole room rattles.
+    &--quake .potion__world {
+      animation: potionQuake 0.12s linear infinite;
     }
 
     &--blur .potion__world {
@@ -202,10 +214,16 @@
     font-size: 1.15rem;
     transition: opacity 0.4s ease;
 
+    // A round plate a couple of tones lighter than the bar, so dark
+    // ingredients (spider, raven feather) stand out (Lena, 2026-10-06).
     img {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
+      padding: 4px;
+      box-sizing: border-box;
       object-fit: contain;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
     }
 
     small {
@@ -251,6 +269,11 @@
     margin: 0 0 6px;
     font-weight: var(--font-weight);
     letter-spacing: 0.06em;
+
+    &--boiled {
+      margin-bottom: 10px;
+      color: #9dff6a;
+    }
   }
 
   &__done-time {
@@ -300,6 +323,7 @@
   pointer-events: none;
 
   &__ring,
+  &__foam,
   &__fly,
   &__flash,
   &__puff,
@@ -319,6 +343,13 @@
     z-index: 2;
   }
 
+  // Boil-over foam layers (painted by scripts/build-boil-foam.py, 2026-10-06).
+  &__foam {
+    z-index: 1;
+    transform-origin: 50% 40%;
+    filter: drop-shadow(0 0 14px rgba(170, 255, 40, 0.55));
+  }
+
   &__flash {
     border-radius: 50%;
     background: radial-gradient(ellipse, #d9ff7a 0%, rgba(150, 255, 60, 0.6) 40%, transparent 70%);
@@ -330,6 +361,11 @@
     background: radial-gradient(ellipse at 50% 70%, rgba(190, 255, 100, 0.95), rgba(120, 255, 80, 0.45) 50%, transparent 70%);
     filter: blur(10px);
     opacity: 0;
+  }
+
+  &__puff--steam {
+    background: radial-gradient(ellipse at 50% 60%, rgba(235, 255, 225, 0.9), rgba(200, 240, 200, 0.4) 50%, transparent 70%);
+    filter: blur(14px);
   }
 
   &__bubble {
@@ -352,6 +388,18 @@
   25% { transform: translateX(-6px); }
   50% { transform: translateX(5px); }
   75% { transform: translateX(-3px); }
+}
+
+@keyframes potionHot {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 90, 60, 0); }
+  50% { transform: scale(1.1); box-shadow: 0 0 14px rgba(255, 90, 60, 0.75); }
+}
+
+@keyframes potionQuake {
+  0%, 100% { translate: 0 0; }
+  25% { translate: -4px 2px; }
+  50% { translate: 3px -3px; }
+  75% { translate: -2px -1px; }
 }
 
 @keyframes potionPulse {

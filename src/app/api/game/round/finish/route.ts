@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     // The potion still shows; it just doesn't count. Progress is sent anyway.
     return NextResponse.json(
       { error: result.reason, progress: await getProgress(owner) },
-      { status: result.reason === "too-fast" ? 422 : 404 },
+      { status: result.reason === "not-found" ? 404 : 422 },
     );
   }
   return NextResponse.json({ progress: result.progress });

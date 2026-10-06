@@ -19,7 +19,15 @@
       "ravenFeather": "Ravnefjær",
       "spider": "Edderkopp",
       "toadstool": "Fluesopp",
-      "newtTail": "Salamanderhale"
+      "newtTail": "Salamanderhale",
+      "magicFlower": "Magisk blomst",
+      "fairyDust": "Alvestøv",
+      "deadFinger": "Død finger",
+      "creatureClaw": "Udyrklo",
+      "trollEar": "Trolløre",
+      "lizard": "Øgle",
+      "butterflyWing": "Sommerfuglvinge",
+      "snowflake": "Snøfnugg"
     },
     "close": "Tilbake til The Veil",
     "youBrewed": "Du brygget",
@@ -46,7 +54,15 @@
       "ravenFeather": "Tonikum for ravnevisdom",
       "spider": "Brygg av vevd skjebne",
       "toadstool": "Drikk for alvedrømmer",
-      "newtTail": "Eliksir for nye sjanser"
+      "newtTail": "Eliksir for nye sjanser",
+      "magicFlower": "Eliksir for blomstrende magi",
+      "fairyDust": "Trylledrikk for alveflukt",
+      "deadFinger": "Brygg av gravens hemmeligheter",
+      "creatureClaw": "Tonikum for vill styrke",
+      "trollEar": "Drikk for skarp hørsel",
+      "lizard": "Eliksir for raske flukter",
+      "butterflyWing": "Trylledrikk for mild forvandling",
+      "snowflake": "Tonikum for vinterro"
     },
     "gifButton": "Brygg din egen",
     "downloadGif": "Last ned det animerte bildet",
@@ -63,6 +79,8 @@
     "giftSentYouAnon": "En venn har sendt deg en trylledrikk",
     "takePotion": "Ta imot trylledrikken",
     "takeHint": "Én av tre trylledrikker til en månestein",
-    "giftTaken": "Denne trylledrikken er allerede tatt"
+    "giftTaken": "Denne trylledrikken er allerede tatt",
+    "boiledTitle": "Trylledrikken kokte over!",
+    "boiledSummary": "Du fant {got} av {total} ingredienser."
   }
 }

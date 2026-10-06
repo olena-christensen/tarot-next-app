@@ -21,6 +21,8 @@ import {
   encodeGift,
   hits,
   POTIONS_PER_MOONSTONE,
+  ROUND_TIME_MS,
+  ROUND_WARN_MS,
   potionOf,
   spritePath,
   type Placement,
@@ -37,6 +39,8 @@ import {
  */
 
 const FLY_MS = 900; // tap → lands in the cauldron
+/** Where the boil-over foam layers sit in the room (scripts/build-boil-foam.py). */
+const FOAM_BOX = { x: 560, y: 520, w: 450, h: 420 };
 const WRONG_WINDOW_MS = 2000;
 const WRONG_LIMIT = 3;
 const BLUR_MS = 5000;
@@ -80,12 +84,22 @@ export const BrewPotionGame = () => {
   const [roundId, setRoundId] = useState<string | null>(null);
   // Keep it or send it (Lena, 2026-10-07): nothing counts until the player chooses.
   const [decision, setDecision] = useState<"kept" | "sent" | null>(null);
+  // The sand clock ran out (Lena, 2026-10-06): the potion boils over, then the
+  // "boiled over" card. Nothing is sent to the server, so nothing counts.
+  const [boiledAt, setBoiledAt] = useState<number | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [quaking, setQuaking] = useState(false);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const fxRef = useRef<HTMLDivElement>(null);
   const wrongTaps = useRef<number[]>([]);
   const timers = useRef({ list: [] as number[] });
-  const sounds = useRef<{ found?: HTMLAudioElement; bubble?: HTMLAudioElement }>({});
+  const sounds = useRef<{
+    found?: HTMLAudioElement;
+    bubble?: HTMLAudioElement;
+    boil?: HTMLAudioElement;
+    laugh?: HTMLAudioElement;
+  }>({});
 
   const later = (fn: () => void, ms: number) => {
     timers.current.list.push(window.setTimeout(fn, ms));
@@ -104,6 +118,10 @@ export const BrewPotionGame = () => {
     setMoon(null);
     setDecision(null);
     setRoundId(null);
+    setBoiledAt(null);
+    setFailed(false);
+    setQuaking(false);
+    fxRef.current?.replaceChildren(); // the spilled foam from a boiled-over round
     wrongTaps.current = [];
     const pending = fetch("/api/game/round", { method: "POST" })
       .then((r) => (r.ok ? r.json() : null))
@@ -123,20 +141,24 @@ export const BrewPotionGame = () => {
     startRound();
     const found = new Audio("/sounds/magic-found.mp3");
     const bubble = new Audio("/sounds/cauldron-bubble.mp3");
-    found.preload = bubble.preload = "auto";
+    const boil = new Audio("/sounds/cauldron-boil-over.mp3");
+    const laugh = new Audio("/sounds/witch-laugh.mp3");
+    found.preload = bubble.preload = boil.preload = laugh.preload = "auto";
     found.volume = 0.7;
     bubble.volume = 0.6;
-    sounds.current = { found, bubble };
+    boil.volume = 0.8;
+    laugh.volume = 0.8;
+    sounds.current = { found, bubble, boil, laugh };
     const pending = timers.current;
     return () => pending.list.forEach(clearTimeout);
   }, [startRound]);
 
   // Timer ticks while playing.
   useEffect(() => {
-    if (!round || finishedAt) return;
+    if (!round || finishedAt || boiledAt) return;
     const id = window.setInterval(() => setNow(Date.now()), 250);
     return () => clearInterval(id);
-  }, [round, finishedAt]);
+  }, [round, finishedAt, boiledAt]);
 
   // ---------- viewport: fit, clamp, pinch, drag ----------
   const clamp = useCallback((v: View): View => {
@@ -177,8 +199,8 @@ export const BrewPotionGame = () => {
   }, []);
 
   useEffect(() => {
-    finishedRef.current = finishedAt !== null;
-  }, [finishedAt]);
+    finishedRef.current = finishedAt !== null || failed;
+  }, [finishedAt, failed]);
 
   useEffect(() => {
     if (!fullScreen) return;
@@ -229,7 +251,7 @@ export const BrewPotionGame = () => {
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
-    if (finishedAt) return; // the end card's buttons need their own clicks
+    if (finishedAt || boiledAt) return; // the end card's buttons need their own clicks
     stageRef.current?.setPointerCapture(e.pointerId);
     pointers.current.set(e.pointerId, localPoint(e));
     if (pointers.current.size === 1) gesture.current = null;
@@ -278,7 +300,7 @@ export const BrewPotionGame = () => {
 
   // ---------- taps ----------
   const handleTap = (sx: number, sy: number) => {
-    if (!round || finishedAt) return;
+    if (!round || finishedAt || boiledAt) return;
     if (Date.now() < blurredUntil) return;
     const wx = (sx - view.tx) / view.s;
     const wy = (sy - view.ty) / view.s;
@@ -482,9 +504,114 @@ export const BrewPotionGame = () => {
     }
   };
 
+  // ---------- the sand clock runs out: the potion boils over ----------
+  const spill = () => {
+    // Two painted layers (scripts/build-boil-foam.py, approved 2026-10-06):
+    // the foam heaping up over the rim, then the drips running down the pot.
+    const layer = (name: string) => {
+      const img = document.createElement("img");
+      img.src = `/game-art/potion/${name}.webp`;
+      img.alt = "";
+      img.className = "potion-fx__foam";
+      img.style.cssText = `left:${FOAM_BOX.x}px;top:${FOAM_BOX.y}px;width:${FOAM_BOX.w}px;height:${FOAM_BOX.h}px`;
+      fxRef.current?.appendChild(img);
+      return img;
+    };
+    const drips = layer("foam-drips");
+    const heap = layer("foam-heap");
+    heap.animate(
+      [
+        { opacity: 0, transform: "translateY(40px) scale(.9, .2)" },
+        { opacity: 1, transform: "translateY(-6px) scale(1.03, 1.1)", offset: 0.7 },
+        { opacity: 1, transform: "translateY(0) scale(1, 1)" },
+      ],
+      { duration: 1600, delay: 500, easing: "cubic-bezier(.3,.7,.4,1)", fill: "both" },
+    ).onfinish = () => {
+      // Still seething while the card comes up.
+      heap.animate([{ transform: "scale(1, 1)" }, { transform: "scale(1.015, 1.04)" }, { transform: "scale(1, 1)" }], {
+        duration: 900,
+        iterations: Infinity,
+        easing: "ease-in-out",
+      });
+    };
+    drips.animate(
+      [
+        { opacity: 0, clipPath: "inset(0 0 72% 0)" },
+        { opacity: 1, clipPath: "inset(0 0 70% 0)", offset: 0.08 },
+        { opacity: 1, clipPath: "inset(0 0 0 0)" },
+      ],
+      { duration: 2200, delay: 1500, easing: "cubic-bezier(.5,0,.6,1)", fill: "both" },
+    );
+    // Steam keeps bursting out.
+    const { x, y } = CAULDRON;
+    for (let i = 0; i < 9; i++) {
+      const w = 220 + Math.random() * 180;
+      const puff = spawn("potion-fx__puff potion-fx__puff--steam", x - w / 2 + ((i % 5) - 2) * 80, y - 340, w, w);
+      puff.animate(
+        [
+          { opacity: 0, transform: "translateY(120px) scale(.4)" },
+          { opacity: 0.9, offset: 0.3 },
+          { opacity: 0, transform: `translateY(-240px) scale(${1.8 + Math.random()})` },
+        ],
+        { duration: 2400, delay: 600 + i * 320, easing: "ease-out", fill: "both" },
+      ).onfinish = () => puff.remove();
+    }
+    // Violent bubbling for the first four seconds.
+    for (let k = 0; k < 17; k++) later(() => simmer(6, true), k * 250);
+  };
+
+  // Bubbles popping out of the cauldron; more of them = harder boiling.
+  const simmer = (count: number, big = false) => {
+    const { x, y } = CAULDRON;
+    for (let i = 0; i < count; i++) {
+      const sz = (big ? 12 : 8) + Math.random() * (big ? 26 : 18);
+      const b = spawn("potion-fx__bubble", x - 150 + Math.random() * 300, y - 20, sz, sz);
+      const rise = 60 + Math.random() * (big ? 240 : 150);
+      b.animate(
+        [
+          { opacity: 0, transform: "translateY(0) scale(.3)" },
+          { opacity: 1, transform: `translateY(${-rise * 0.3}px) scale(1)`, offset: 0.2 },
+          { opacity: 0, transform: `translateY(${-rise}px) scale(1.2)` },
+        ],
+        { duration: 900, delay: Math.random() * 400, easing: "ease-out", fill: "both" },
+      ).onfinish = () => b.remove();
+    }
+  };
+
+  const boilOver = () => {
+    if (!round) return;
+    setBoiledAt(Date.now());
+    setHintTarget(null);
+    track("potion_boiled_over", { found: found.size });
+    play(sounds.current.boil); // 5.5 s
+    later(() => play(sounds.current.laugh), 1500); // 6 s, runs on under the card
+    setQuaking(true);
+    later(() => setQuaking(false), 3600);
+    spill();
+    later(() => setFailed(true), 5000);
+  };
+
+  const timeLeft = Math.max(0, ROUND_TIME_MS - ((boiledAt ?? now) - startedAt));
+  const playing = !!round && !finishedAt && !boiledAt;
+  const hot = playing && timeLeft <= ROUND_WARN_MS;
+
+  // Time's up with things still to find (the last tap still flying is fine).
+  useEffect(() => {
+    if (playing && startedAt && timeLeft <= 0 && found.size < (round?.placements.length ?? 0)) boilOver();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, timeLeft]);
+
+  // The last stretch: the cauldron bubbles harder.
+  useEffect(() => {
+    if (!hot) return;
+    const id = window.setInterval(() => simmer(4), 600);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hot]);
+
   // ---------- hint ----------
   const takeHint = () => {
-    if (!round || hintUsed || finishedAt) return;
+    if (!round || hintUsed || finishedAt || boiledAt) return;
     const left = round.placements.map((_, i) => i).filter((i) => !found.has(i));
     if (!left.length) return;
     const idx = left[Math.floor(Math.random() * left.length)];
@@ -669,14 +796,14 @@ export const BrewPotionGame = () => {
           <button type="button" className="potion__pill potion__close" onClick={leave} aria-label={t("close")} title={t("close")}>
             ✕
           </button>
-          <span className="potion__pill" aria-label={t("timeLabel")}>
-            ⏳ {formatTime(elapsed)}
+          <span className={`potion__pill${hot ? " potion__pill--hot" : ""}`} aria-label={t("timeLabel")}>
+            ⏳ {formatTime(finishedAt ? elapsed : timeLeft + 999)}
           </span>
           <button
             type="button"
             className="potion__pill potion__pill--btn"
             onClick={takeHint}
-            disabled={hintUsed || !!finishedAt}
+            disabled={hintUsed || !!finishedAt || !!boiledAt}
           >
             ✦ {t("hint", { count: hintUsed ? 0 : 1 })}
           </button>
@@ -684,7 +811,7 @@ export const BrewPotionGame = () => {
 
         <div
           ref={stageRef}
-          className={`potion__stage${shaking ? " potion__stage--shake" : ""}${blurred ? " potion__stage--blur" : ""}`}
+          className={`potion__stage${shaking ? " potion__stage--shake" : ""}${blurred ? " potion__stage--blur" : ""}${quaking ? " potion__stage--quake" : ""}`}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -723,6 +850,21 @@ export const BrewPotionGame = () => {
             <div ref={fxRef} className="potion-fx" />
           </div>
           {!touched && <span className="potion__pinch">{t("pinchHint")}</span>}
+
+          {failed && (
+            <div className="potion__done" onPointerDown={(e) => e.stopPropagation()}>
+              <button type="button" className="potion__home" onClick={leave} aria-label={t("close")} title={t("close")}>
+                <Skull aria-hidden="true" />
+              </button>
+              <div className="potion__done-card">
+                <h2 className="potion__done-title potion__done-title--boiled">{t("boiledTitle")}</h2>
+                <p className="potion__done-summary">{t("boiledSummary", { got: landed.size, total })}</p>
+                <button type="button" className="potion__done-btn potion__done-btn--main" onClick={startRound}>
+                  {t("brewAgain")}
+                </button>
+              </div>
+            </div>
+          )}
 
           {finishedAt && (
             <div className="potion__done" onPointerDown={(e) => e.stopPropagation()}>

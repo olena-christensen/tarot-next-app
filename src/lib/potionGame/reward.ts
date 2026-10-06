@@ -18,11 +18,13 @@
  */
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma";
-import { POTIONS_PER_MOONSTONE } from "./index";
+import { POTIONS_PER_MOONSTONE, ROUND_TIME_MS } from "./index";
 
 export { POTIONS_PER_MOONSTONE };
 /** A round faster than this is not a real round. */
 export const MIN_ROUND_MS = 10_000;
+/** The sand clock plus room for the last item's flight and a slow network. */
+export const MAX_ROUND_MS = ROUND_TIME_MS + 15_000;
 /** How long a friend has to take a sent potion. */
 export const GIFT_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 export const ANON_COOKIE = "potion_anon";
@@ -55,7 +57,7 @@ export type PotionProgress = {
 
 export type FinishResult =
   | { ok: true; progress: PotionProgress }
-  | { ok: false; reason: "not-found" | "too-fast" };
+  | { ok: false; reason: "not-found" | "too-fast" | "too-slow" };
 
 export type GiftStatus = "available" | "taken" | "gone";
 
@@ -105,6 +107,9 @@ export async function finishRound(
   if (!round || !ownsRound(round, owner) || round.finishedAt) return { ok: false, reason: "not-found" };
   if (now.getTime() - round.startedAt.getTime() < MIN_ROUND_MS) {
     return { ok: false, reason: "too-fast" };
+  }
+  if (now.getTime() - round.startedAt.getTime() > MAX_ROUND_MS) {
+    return { ok: false, reason: "too-slow" }; // it boiled over
   }
   // Only a round still unfinished is updated, so a double submit counts once.
   await prisma.potionRound.updateMany({
