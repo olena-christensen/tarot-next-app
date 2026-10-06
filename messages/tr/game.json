@@ -79,6 +79,8 @@
     "giftSentYouAnon": "Bir arkadaşın sana bir iksir gönderdi",
     "takePotion": "İksiri al",
     "takeHint": "Bir ay taşı için üç iksirden biri",
-    "giftTaken": "Bu iksir zaten alınmış"
+    "giftTaken": "Bu iksir zaten alınmış",
+    "boiledTitle": "İksir taştı!",
+    "boiledSummary": "{total} malzemeden {got} tanesini buldun."
   }
 }

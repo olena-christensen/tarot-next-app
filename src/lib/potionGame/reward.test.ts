@@ -77,6 +77,7 @@ vi.mock("@/lib/prisma", async () => {
 import {
   GIFT_TTL_MS,
   MIN_ROUND_MS,
+  MAX_ROUND_MS,
   decideRound,
   finishRound,
   gameDay,
@@ -135,6 +136,15 @@ describe("potion moonstones", () => {
     const id = await startRound(me, T0);
     expect(await finishRound(id, me, later(MIN_ROUND_MS - 1))).toEqual({ ok: false, reason: "too-fast" });
     expect((await getProgress(me, later(MIN_ROUND_MS))).today).toBe(0);
+  });
+
+  it("a round that boiled over (past the sand clock) does not count", async () => {
+    const me = { userId: "u1", anonId: null };
+    const id = await startRound(me, T0);
+    expect(await finishRound(id, me, later(MAX_ROUND_MS + 1))).toEqual({ ok: false, reason: "too-slow" });
+    expect((await getProgress(me, later(MAX_ROUND_MS + 2))).today).toBe(0);
+    const ok = await startRound(me, T0);
+    expect((await finishRound(ok, me, later(MAX_ROUND_MS))).ok).toBe(true);
   });
 
   it("a round can be finished once, and only by its player", async () => {

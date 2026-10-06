@@ -79,6 +79,8 @@
     "giftSentYouAnon": "A friend sent you a potion",
     "takePotion": "Take the potion",
     "takeHint": "One of three potions for a moonstone",
-    "giftTaken": "This potion has already been taken"
+    "giftTaken": "This potion has already been taken",
+    "boiledTitle": "The potion boiled over!",
+    "boiledSummary": "You found {got} of {total} ingredients."
   }
 }
