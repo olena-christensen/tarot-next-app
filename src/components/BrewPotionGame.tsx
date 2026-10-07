@@ -13,6 +13,7 @@ import { PotionSound, readMuted } from "@/lib/potionGame/sound";
 import type { PotionProgress } from "@/lib/potionGame/reward";
 import { notifyMoonstonesChanged } from "@/lib/moonstones";
 import Skull from "@/assets/svg/skull.svg";
+import Ouroboros from "@/assets/svg/ouroboros.svg";
 import { MoonstoneProgress, PotionMoonRow } from "@/components/PotionMoonRow";
 import {
   CAULDRON,
@@ -40,8 +41,11 @@ import {
  */
 
 const FLY_MS = 900; // tap → lands in the cauldron
-/** Where the boil-over foam layers sit in the room (scripts/build-boil-foam.py). */
-const FOAM_BOX = { x: 560, y: 520, w: 450, h: 420 };
+/** Where the boil-over spill sits in the room (scripts/build-boil-steam.py, SPILL_BOX). */
+const SPILL_BOX = { x: 590, y: 640, w: 410, h: 320 };
+const STEAM_WISPS = 4;
+/** Longest the game waits for its sounds before starting without them. */
+const SOUND_WAIT_MS = 4000;
 const WRONG_WINDOW_MS = 2000;
 const WRONG_LIMIT = 3;
 const BLUR_MS = 5000;
@@ -98,6 +102,7 @@ export const BrewPotionGame = () => {
   // Boiling in the background, found sounds, boil-over — all blended (sound.ts).
   const sound = useRef<PotionSound | null>(null);
   const [muted, setMuted] = useState(false);
+  const [ready, setReady] = useState(false);
 
   const later = (fn: () => void, ms: number) => {
     timers.current.list.push(window.setTimeout(fn, ms));
@@ -120,7 +125,7 @@ export const BrewPotionGame = () => {
     setBoiledAt(null);
     setFailed(false);
     setQuaking(false);
-    fxRef.current?.replaceChildren(); // the spilled foam from a boiled-over round
+    fxRef.current?.replaceChildren(); // the boil-over effects from the last round
     wrongTaps.current = [];
     const pending = fetch("/api/game/round", { method: "POST" })
       .then((r) => (r.ok ? r.json() : null))
@@ -141,9 +146,27 @@ export const BrewPotionGame = () => {
     setMuted(m);
     const engine = new PotionSound(m);
     sound.current = engine;
-    startRound();
+    engine.unlock(); // allowed straight away when the player came through the site's own link
+    // The ouroboros spins until the room picture (and, briefly, the sounds) are
+    // in; only then does the clock start and the boiling begin (Lena, 2026-10-07).
+    let cancelled = false;
+    const room = new Image();
+    const roomReady = new Promise<void>((resolve) => {
+      room.onload = room.onerror = () => resolve();
+      room.src = "/game-art/potion/room.webp";
+    });
+    const soundsReady = Promise.race([
+      engine.whenLoaded(),
+      new Promise<void>((resolve) => window.setTimeout(resolve, SOUND_WAIT_MS)),
+    ]);
+    Promise.all([roomReady, soundsReady]).then(() => {
+      if (cancelled) return;
+      setReady(true);
+      startRound();
+    });
     const pending = timers.current;
     return () => {
+      cancelled = true;
       pending.list.forEach(clearTimeout);
       engine.dispose();
       sound.current = null;
@@ -503,55 +526,63 @@ export const BrewPotionGame = () => {
 
   // ---------- the sand clock runs out: the potion boils over ----------
   const spill = () => {
-    // Two painted layers (scripts/build-boil-foam.py, approved 2026-10-06):
-    // the foam heaping up over the rim, then the drips running down the pot.
-    const layer = (name: string) => {
-      const img = document.createElement("img");
-      img.src = `/game-art/potion/${name}.webp`;
-      img.alt = "";
-      img.className = "potion-fx__foam";
-      img.style.cssText = `left:${FOAM_BOX.x}px;top:${FOAM_BOX.y}px;width:${FOAM_BOX.w}px;height:${FOAM_BOX.h}px`;
-      fxRef.current?.appendChild(img);
-      return img;
-    };
-    const drips = layer("foam-drips");
-    const heap = layer("foam-heap");
-    heap.animate(
+    // No foam (Lena, 2026-10-07): green light overflows the rim and runs down
+    // the pot, the surface flares, and steam ribbons like the room's own surge
+    // up. Art: scripts/build-boil-steam.py.
+    const { x, y } = CAULDRON;
+    const flare = spawn("potion-fx__flash potion-fx__flash--boil", x - 230, y - 70, 460, 150);
+    flare.animate(
       [
-        { opacity: 0, transform: "translateY(40px) scale(.9, .2)" },
-        { opacity: 1, transform: "translateY(-6px) scale(1.03, 1.1)", offset: 0.7 },
-        { opacity: 1, transform: "translateY(0) scale(1, 1)" },
+        { opacity: 0, transform: "scale(.7)" },
+        { opacity: 1, transform: "scale(1.05)", offset: 0.15 },
+        { opacity: 0.6, transform: "scale(.95)", offset: 0.35 },
+        { opacity: 1, transform: "scale(1.1)", offset: 0.55 },
+        { opacity: 0.7, offset: 0.8 },
+        { opacity: 0.5, transform: "scale(1)" },
       ],
-      { duration: 1600, delay: 500, easing: "cubic-bezier(.3,.7,.4,1)", fill: "both" },
+      { duration: 4500, easing: "ease-in-out", fill: "forwards" },
+    );
+
+    const runDown = document.createElement("img");
+    runDown.src = "/game-art/potion/cauldron-spill.webp";
+    runDown.alt = "";
+    runDown.className = "potion-fx__spill";
+    runDown.style.cssText = `left:${SPILL_BOX.x}px;top:${SPILL_BOX.y}px;width:${SPILL_BOX.w}px;height:${SPILL_BOX.h}px`;
+    fxRef.current?.appendChild(runDown);
+    runDown.animate(
+      [
+        { opacity: 0, clipPath: "inset(0 0 88% 0)" },
+        { opacity: 1, clipPath: "inset(0 0 80% 0)", offset: 0.12 },
+        { opacity: 1, clipPath: "inset(0 0 0 0)" },
+      ],
+      { duration: 2600, delay: 700, easing: "cubic-bezier(.5,0,.6,1)", fill: "both" },
     ).onfinish = () => {
-      // Still seething while the card comes up.
-      heap.animate([{ transform: "scale(1, 1)" }, { transform: "scale(1.015, 1.04)" }, { transform: "scale(1, 1)" }], {
-        duration: 900,
+      // Still shimmering while the card comes up.
+      runDown.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
+        duration: 1100,
         iterations: Infinity,
         easing: "ease-in-out",
       });
     };
-    drips.animate(
-      [
-        { opacity: 0, clipPath: "inset(0 0 72% 0)" },
-        { opacity: 1, clipPath: "inset(0 0 70% 0)", offset: 0.08 },
-        { opacity: 1, clipPath: "inset(0 0 0 0)" },
-      ],
-      { duration: 2200, delay: 1500, easing: "cubic-bezier(.5,0,.6,1)", fill: "both" },
-    );
-    // Steam keeps bursting out.
-    const { x, y } = CAULDRON;
-    for (let i = 0; i < 9; i++) {
-      const w = 220 + Math.random() * 180;
-      const puff = spawn("potion-fx__puff potion-fx__puff--steam", x - w / 2 + ((i % 5) - 2) * 80, y - 340, w, w);
-      puff.animate(
+
+    for (let i = 0; i < 12; i++) {
+      const wisp = document.createElement("img");
+      wisp.src = `/game-art/potion/steam-wisp-${(i % STEAM_WISPS) + 1}.webp`;
+      wisp.alt = "";
+      wisp.className = "potion-fx__wisp";
+      wisp.style.cssText = `left:${x - 110 + (Math.random() - 0.5) * 300}px;top:${y - 500}px;width:220px;height:520px`;
+      fxRef.current?.appendChild(wisp);
+      const flip = Math.random() < 0.5 ? -1 : 1;
+      const sway = (Math.random() - 0.5) * 24;
+      const sz = 0.7 + Math.random() * 0.6;
+      wisp.animate(
         [
-          { opacity: 0, transform: "translateY(120px) scale(.4)" },
-          { opacity: 0.9, offset: 0.3 },
-          { opacity: 0, transform: `translateY(-240px) scale(${1.8 + Math.random()})` },
+          { opacity: 0, transform: `translateY(80px) scale(${flip * sz * 0.6}, ${sz * 0.4}) rotate(0deg)` },
+          { opacity: 1, transform: `translateY(0) scale(${flip * sz}, ${sz}) rotate(${sway / 2}deg)`, offset: 0.35 },
+          { opacity: 0, transform: `translateY(-260px) scale(${flip * sz * 1.15}, ${sz * 1.3}) rotate(${sway}deg)` },
         ],
-        { duration: 2400, delay: 600 + i * 320, easing: "ease-out", fill: "both" },
-      ).onfinish = () => puff.remove();
+        { duration: 2600 + Math.random() * 900, delay: 300 + i * 330, easing: "ease-out", fill: "both" },
+      ).onfinish = () => wisp.remove();
     }
     // Violent bubbling for the first four seconds.
     for (let k = 0; k < 17; k++) later(() => simmer(6, true), k * 250);
@@ -869,7 +900,12 @@ export const BrewPotionGame = () => {
             )}
             <div ref={fxRef} className="potion-fx" />
           </div>
-          {!touched && <span className="potion__pinch">{t("pinchHint")}</span>}
+          {!touched && ready && <span className="potion__pinch">{t("pinchHint")}</span>}
+          {!ready && (
+            <div className="potion__loader" aria-hidden="true">
+              <Ouroboros />
+            </div>
+          )}
 
           {failed && (
             <div className="potion__done" onPointerDown={(e) => e.stopPropagation()}>
