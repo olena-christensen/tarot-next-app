@@ -64,8 +64,27 @@ export const HomeAbout = () => {
   useEffect(() => {
     window.dispatchEvent(new CustomEvent(STATE_EVENT, { detail: open }));
     document.documentElement.classList.toggle("home-about-open", open);
-    if (open) ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    return () => document.documentElement.classList.remove("home-about-open");
+    if (!open) return () => document.documentElement.classList.remove("home-about-open");
+
+    // The first screen is a full screen tall and its content ends well above
+    // its bottom, so the opened text is pulled up to start right under the
+    // toggle instead of after an empty band.
+    const section = ref.current;
+    const pullUp = () => {
+      const toggle = document.querySelector<HTMLElement>(".home-about-toggle");
+      const block = document.querySelector<HTMLElement>(".offer-block");
+      if (!section || !toggle || !block) return;
+      const empty = block.getBoundingClientRect().bottom - toggle.getBoundingClientRect().bottom;
+      section.style.marginTop = `${-Math.max(0, Math.round(empty))}px`;
+    };
+    pullUp();
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.addEventListener("resize", pullUp);
+    return () => {
+      window.removeEventListener("resize", pullUp);
+      if (section) section.style.marginTop = "";
+      document.documentElement.classList.remove("home-about-open");
+    };
   }, [open]);
 
   // The fixed footer's height (its text, not its transparent top padding) —

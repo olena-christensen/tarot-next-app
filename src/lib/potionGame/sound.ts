@@ -9,8 +9,10 @@
  *     rumble layer rate 0.70, low-passed        ┘                 ├─ master (mute) ─ speakers
  *   found / bubble / boil-over / laugh ───────────────────────────┘
  *
- * Browsers only start audio after a tap, so `unlock()` is called on the first
- * pointer-down; a bed asked for earlier starts then.
+ * `unlock()` runs when the game opens: arriving from the site's own "Brew the
+ * Potion" link counts as a tap, so the boiling starts with the room. Arriving
+ * straight from a shared link, the browser holds sound back until the first
+ * tap, which calls `unlock()` again.
  */
 
 const FILES = {
@@ -87,6 +89,11 @@ export class PotionSound {
     }
     if (this.ctx.state === "suspended") void this.ctx.resume();
     if (this.wantBed && !this.bed) void this.loading?.then(() => this.wantBed && !this.bed && this.startBedNow());
+  }
+
+  /** Resolves when the sound files are decoded (or failed) — the game waits for it, briefly. */
+  whenLoaded(): Promise<void> {
+    return this.loading ?? Promise.resolve();
   }
 
   private async load() {

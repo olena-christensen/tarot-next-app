@@ -462,13 +462,23 @@
   }
 }
 
-// The reader block hangs from the footer, not from the top: its last line
-// (the "What lies beyond the Veil?" toggle) always sits one --veil-gap above
-// the footer text, whatever the screen height. --home-footer-h is measured in
-// HomeAbout.tsx.
+// The reader block starts 40px under the title; spare screen height goes
+// between the toggle and the footer (never less than one --veil-gap). On short
+// screens it keeps the footer distance and moves up instead. Title bottom:
+// 15% + 31px on phones, 235 / 203 / 189px on desktop. --home-footer-h is
+// measured in HomeAbout.tsx.
 .offer-block .offer-block__screen--cards .inner-wrap--reader {
-  top: auto;
+  top: calc(15% + 71px);
   bottom: calc(var(--home-footer-h, 92px) + var(--veil-gap));
+  flex-direction: column;
+  justify-content: flex-end;
+
+  @media (min-width: 56.25em) { top: 275px; }
+  @media (min-width: 56.25em) and (max-height: 820px) { top: 243px; }
+  @media (min-width: 56.25em) and (max-height: 740px) { top: 229px; }
+
+  .offer-block__reader { flex: 0 0 auto; }
+  &::after { content: ""; flex: 1 1 0; }
 }
 
 // Laptop screens without much height: shrink the title and portrait so the
