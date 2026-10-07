@@ -112,8 +112,9 @@ export const OfferBlock = ({
         }
     }, [session]);
 
+    // Opening the reading hides the deck again (setting false twice is a no-op).
     useEffect(() => {
-        if (state.isCardsModalOpen && isDeckRevealed) {
+        if (state.isCardsModalOpen) {
             setIsDeckRevealed(false);
         }
     }, [state.isCardsModalOpen]);

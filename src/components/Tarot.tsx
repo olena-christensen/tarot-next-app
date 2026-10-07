@@ -129,7 +129,7 @@ export const Tarot = ({ onBlockedAnon, onBlockedFree }: TarotProps) => {
                 }));
             }, 5000);
         }
-    }, [allFlipped]);
+    }, [allFlipped, setState]);
 
     useEffect(() => {
         if (state.isCardsModalOpen) {

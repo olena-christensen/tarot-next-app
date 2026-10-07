@@ -7,6 +7,7 @@ export const SmokeAnimation = () => {
     const mountRef = useRef<HTMLDivElement | null>(null); // Create a ref to attach the Three.js renderer
 
     useEffect(() => {
+        const mount = mountRef.current; // the same node for the cleanup below
         let camera: THREE.Object3D<THREE.Object3DEventMap>, scene: THREE.Scene, renderer: THREE.WebGLRenderer, clock: THREE.Clock;
         let light;
         let smokeParticles: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshLambertMaterial, THREE.Object3DEventMap>[] = [];
@@ -17,8 +18,8 @@ export const SmokeAnimation = () => {
             // Create renderer and attach it to the ref's current element
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            if (mountRef.current) {
-                mountRef.current.appendChild(renderer.domElement); // Attach renderer to div
+            if (mount) {
+                mount.appendChild(renderer.domElement); // Attach renderer to div
             }
 
             scene = new THREE.Scene();
@@ -68,8 +69,8 @@ export const SmokeAnimation = () => {
 
         // Clean up on unmount
         return () => {
-            if (mountRef.current) {
-                mountRef.current.removeChild(renderer.domElement); // Remove renderer from div
+            if (mount) {
+                mount.removeChild(renderer.domElement); // Remove renderer from div
             }
         };
     }, []);
