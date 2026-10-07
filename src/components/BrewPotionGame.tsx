@@ -44,6 +44,19 @@ const FLY_MS = 900; // tap → lands in the cauldron
 /** Where the boil-over spill sits in the room (scripts/build-boil-steam.py, SPILL_BOX). */
 const SPILL_BOX = { x: 590, y: 640, w: 410, h: 320 };
 const STEAM_WISPS = 4;
+/**
+ * Candle flames that flicker (Lena, 2026-10-07): [x, y, w, h] in room pixels,
+ * printed by scripts/build-candle-flames.py. Each has a still "cover" (the
+ * painted flame removed) and the live flame on top; plus the lantern's glow.
+ */
+const CANDLES: [number, number, number, number][] = [
+  [807, 196, 46, 56],
+  [415, 438, 48, 58],
+  [475, 504, 36, 40],
+  [1311, 552, 38, 44],
+  [117, 768, 46, 56],
+];
+const LANTERN = { x: 1416, y: 480 };
 /** Longest the game waits for its sounds before starting without them. */
 const SOUND_WAIT_MS = 4000;
 const WRONG_WINDOW_MS = 2000;
@@ -891,6 +904,27 @@ export const BrewPotionGame = () => {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="potion__room" src="/game-art/potion/room.webp" alt="" draggable={false} />
+            {CANDLES.map(([x, y, w, h], i) => (
+              <span key={`candle-${i}`} className="potion__candle" style={{ left: x, top: y, width: w, height: h }}>
+                <span
+                  className="potion__candle-glow"
+                  style={{ animationDuration: `${2 + (i % 3) * 0.35}s`, animationDelay: `${-i * 0.7}s` }}
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/game-art/potion/candle-cover-${i + 1}.webp`} alt="" draggable={false} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="potion__candle-flame"
+                  src={`/game-art/potion/candle-flame-${i + 1}.webp`}
+                  alt=""
+                  draggable={false}
+                  style={{ animationDuration: `${1.5 + (i % 4) * 0.2}s`, animationDelay: `${-i * 0.45}s` }}
+                />
+              </span>
+            ))}
+            <span className="potion__candle" style={{ left: LANTERN.x, top: LANTERN.y, width: 0, height: 0 }}>
+              <span className="potion__candle-glow potion__candle-glow--lantern" />
+            </span>
             {round?.placements.map((p, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
