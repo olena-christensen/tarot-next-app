@@ -42,8 +42,6 @@ export default function AnimatedCard({
     const [isFlipped, setIsFlipped] = useState(false);
 
     useEffect(() => {
-        console.log(state.resetFlipped + " resetFlipped");
-        console.log(isFlipped + " isFlipped");
         if (state.resetFlipped) {
             setIsFlipped(false);
             setState(prevState => ({
@@ -51,7 +49,7 @@ export default function AnimatedCard({
                 resetFlipped: false, // Reset the flag after flipping the cards
             }));
         }
-    }, [state.resetFlipped]);
+    }, [state.resetFlipped, setState]);
 
     const handleClick = () => {
         setIsAnimating(true);

@@ -20,6 +20,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ...(await import(`../../messages/${locale}/history.json`)).default,
     ...(await import(`../../messages/${locale}/cardMeanings.json`)).default,
     ...(await import(`../../messages/${locale}/game.json`)).default,
+    ...(await import(`../../messages/${locale}/homeAbout.json`)).default,
   };
 
   return { locale, messages };

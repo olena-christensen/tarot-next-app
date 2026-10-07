@@ -20,6 +20,7 @@ import {Modal} from "@/components/Modal";
 import {MysticButton} from "@/components/MysticButton";
 import { Loader } from "@/components/Loader";
 import { useReadingGate } from "@/hooks/useReadingGate";
+import { HomeAboutToggle } from "@/components/HomeAbout";
 import { GameEntrance } from "@/components/GameEntrance";
 
 type OfferBlockProps = {
@@ -111,8 +112,9 @@ export const OfferBlock = ({
         }
     }, [session]);
 
+    // Opening the reading hides the deck again (setting false twice is a no-op).
     useEffect(() => {
-        if (state.isCardsModalOpen && isDeckRevealed) {
+        if (state.isCardsModalOpen) {
             setIsDeckRevealed(false);
         }
     }, [state.isCardsModalOpen]);
@@ -274,6 +276,7 @@ export const OfferBlock = ({
                                         {/* The way into the game sits in the reader block's own
                                             flow, so it can never land on top of these buttons. */}
                                         <GameEntrance />
+                                        <HomeAboutToggle />
                                     </div>
                                 </div>
                             </div>
