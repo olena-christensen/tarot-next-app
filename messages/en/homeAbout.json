@@ -1,0 +1,25 @@
+{
+  "homeAbout": {
+    "toggle": "What lies beyond the Veil?",
+    "title": "Free Tarot Reading Online",
+    "intro": "Ask your question, choose your reader and draw three cards — past, present and future. Every reading at The Veil follows the meanings of Papus's <i>The Tarot of the Bohemians</i> (1889): an old, exacting system, not generic fortune-cookie lines. Your first reading of the day is free, no account needed.",
+    "howTitle": "How a reading works",
+    "howText": "Choose the reader whose voice suits your question. Shuffle the deck and draw three cards. Each card speaks to its own position, and your reader weaves the three into one story — what brought you here, what is at work now, and what is gathering ahead.",
+    "positionsTitle": "The three positions",
+    "positionsText": "<b>The past</b> — the root of the matter, what set it in motion. <b>The present</b> — the forces at work right now, often the card to read most closely. <b>The future</b> — not a verdict but a direction: where things lean if nothing changes.",
+    "readersTitle": "Your readers",
+    "faqTitle": "Questions",
+    "faqFreeQ": "Is the reading really free?",
+    "faqFreeA": "Yes. One reading a day without an account, and three a day once you sign in — all free. Beyond that, readings cost moonstones, The Veil's own currency.",
+    "faqDecksQ": "Which decks can I use?",
+    "faqDecksA": "The classic Rider-Waite, a golden Klimt deck and a Gothic Vintage deck. Sign in to choose yours.",
+    "faqFutureQ": "Can tarot predict the future?",
+    "faqFutureA": "Tarot shows tendencies, not a fixed fate. The Veil is for reflection and entertainment — never a substitute for medical, legal, financial or psychological advice.",
+    "faqCardsQ": "What does each card mean?",
+    "faqCardsA": "All 78 cards, upright and reversed, are explained after Papus in the card meanings.",
+    "cardsLink": "All 78 card meanings",
+    "readerVespera": "three generations of mediums, unhurried and tender",
+    "readerCrow": "no introductions, no softening",
+    "readerReginald": "you'll get the truth, phrased with exasperation"
+  }
+}

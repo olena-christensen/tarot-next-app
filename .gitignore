@@ -60,3 +60,6 @@ src/generated/prisma/wasm-worker-loader.mjs
 
 # Check sheet written by scripts/build-potion-art.py
 game-art-source/_contact.png
+
+# Working files from Claude (pictures, mockups, drafts) — not part of the app
+/Claude outputs/

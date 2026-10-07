@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { OfferBlock } from "@/components/OfferBlock";
+import { HomeAbout } from "@/components/HomeAbout";
 import { Tarot } from "@/components/Tarot";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
@@ -63,6 +64,7 @@ export function HomePageClient() {
           onBlockedFree={() => setGateReason("free")}
         />
       </main>
+      <HomeAbout />
       <Tarot
         onBlockedAnon={() => setGateReason("anon")}
         onBlockedFree={() => setGateReason("free")}

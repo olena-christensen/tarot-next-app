@@ -642,13 +642,8 @@ html.potion-locked body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 28px; // breathing room under "Change your reader"
+  margin-top: calc(var(--veil-gap) - 12px); // one --veil-gap under "Change your reader" (see _home-about.scss)
   padding: 6px 16px 6px 10px;
-
-  // Short phone screens: less room to spare, so less space above.
-  @media (max-height: 720px) and (max-width: 37.5em) {
-    margin-top: 14px;
-  }
   border: 1px solid rgba(250, 225, 163, 0.55);
   border-radius: 24px;
   background: rgba(20, 12, 24, 0.92);

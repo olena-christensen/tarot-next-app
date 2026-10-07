@@ -1,0 +1,25 @@
+{
+  "homeAbout": {
+    "toggle": "Hva skjuler seg bak sløret?",
+    "title": "Gratis tarotlesning på nett",
+    "intro": "Still spørsmålet ditt, velg leseren din og trekk tre kort — fortid, nåtid og fremtid. Hver lesning hos The Veil følger betydningene i Papus' <i>Bohemenes tarot</i> (1889): et gammelt, nøyaktig system, ikke generiske lykkekake-fraser. Dagens første lesning er gratis, uten konto.",
+    "howTitle": "Slik foregår en lesning",
+    "howText": "Velg leseren som har den rette stemmen for spørsmålet ditt. Stokk kortstokken og trekk tre kort. Hvert kort taler for sin egen plass, og leseren vever de tre sammen til én fortelling — hva som førte deg hit, hva som virker nå, og hva som samler seg foran deg.",
+    "positionsTitle": "De tre posisjonene",
+    "positionsText": "<b>Fortiden</b> — roten til saken, det som satte den i gang. <b>Nåtiden</b> — kreftene som virker akkurat nå, ofte kortet du bør lese nøyest. <b>Fremtiden</b> — ingen dom, men en retning: hvor ting heller hvis ingenting endres.",
+    "readersTitle": "Leserne dine",
+    "faqTitle": "Spørsmål",
+    "faqFreeQ": "Er lesningen virkelig gratis?",
+    "faqFreeA": "Ja. Én lesning om dagen uten konto, og tre om dagen når du logger inn — alt gratis. Utover det koster lesninger månesteiner, The Veils egen valuta.",
+    "faqDecksQ": "Hvilke kortstokker kan jeg bruke?",
+    "faqDecksA": "Den klassiske Rider-Waite, en gyllen Klimt-stokk og en Gothic Vintage-stokk. Logg inn for å velge din.",
+    "faqFutureQ": "Kan tarot forutsi fremtiden?",
+    "faqFutureA": "Tarot viser tendenser, ikke en fastlagt skjebne. The Veil er for ettertanke og underholdning — aldri en erstatning for medisinsk, juridisk, økonomisk eller psykologisk rådgivning.",
+    "faqCardsQ": "Hva betyr hvert kort?",
+    "faqCardsA": "Alle 78 kort, oppreist og omvendt, er forklart etter Papus i kortbetydningene.",
+    "cardsLink": "Alle 78 kortbetydninger",
+    "readerVespera": "tre generasjoner medier, rolig og øm",
+    "readerCrow": "ingen innledning, ingen forsiktighet",
+    "readerReginald": "du får sannheten, sagt med oppgitthet"
+  }
+}

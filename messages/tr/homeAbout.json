@@ -1,0 +1,25 @@
+{
+  "homeAbout": {
+    "toggle": "Perdenin ardında ne var?",
+    "title": "Ücretsiz Online Tarot Falı",
+    "intro": "Sorunu sor, falcını seç ve üç kart çek: geçmiş, şimdi ve gelecek. The Veil'deki her açılım, Papus'un <i>Bohemyalıların Tarotu</i> (1889) kitabındaki anlamlara dayanır: kalıp fal kurabiyesi cümleleri değil, eski ve titiz bir sistem. Günün ilk açılımı ücretsizdir, hesap gerekmez.",
+    "howTitle": "Açılım nasıl yapılır",
+    "howText": "Sesi sorunuza uyan falcıyı seçin. Desteyi karıştırın ve üç kart çekin. Her kart kendi konumunu anlatır; falcınız üçünü tek bir hikâyede birleştirir: sizi buraya ne getirdi, şu an ne iş başında ve önünüzde ne birikiyor.",
+    "positionsTitle": "Üç konum",
+    "positionsText": "<b>Geçmiş</b> — meselenin kökü, onu harekete geçiren şey. <b>Şimdi</b> — tam şu anda iş başında olan güçler; çoğu zaman en dikkatle okunması gereken kart. <b>Gelecek</b> — bir hüküm değil, bir yön: hiçbir şey değişmezse işlerin nereye eğildiği.",
+    "readersTitle": "Falcılarınız",
+    "faqTitle": "Sorular",
+    "faqFreeQ": "Açılım gerçekten ücretsiz mi?",
+    "faqFreeA": "Evet. Hesapsız günde bir açılım, giriş yapınca günde üç açılım — hepsi ücretsiz. Sonrasında açılımlar The Veil'in kendi parası olan ay taşlarıyla yapılır.",
+    "faqDecksQ": "Hangi desteleri kullanabilirim?",
+    "faqDecksA": "Klasik Rider-Waite, altın Klimt destesi ve Gothic Vintage destesi. Kendi destenizi seçmek için giriş yapın.",
+    "faqFutureQ": "Tarot geleceği tahmin edebilir mi?",
+    "faqFutureA": "Tarot değişmez bir kader değil, eğilimler gösterir. The Veil düşünmek ve eğlenmek içindir; asla tıbbi, hukuki, mali ya da psikolojik danışmanlığın yerini tutmaz.",
+    "faqCardsQ": "Her kart ne anlama geliyor?",
+    "faqCardsA": "78 kartın tamamı, düz ve ters konumda, kart anlamları bölümünde Papus'a göre açıklanmıştır.",
+    "cardsLink": "78 kartın tüm anlamları",
+    "readerVespera": "üç kuşaktır medyum, acelesiz ve şefkatli",
+    "readerCrow": "giriş yok, yumuşatma yok",
+    "readerReginald": "gerçeği duyarsınız, bıkkın bir dille"
+  }
+}
