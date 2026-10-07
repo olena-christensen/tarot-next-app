@@ -48,7 +48,7 @@ export type Round = { recipe: RecipeLine[]; placements: Placement[] };
 
 export const RECIPE_SIZE = 3;
 /** The sand clock: find everything before the potion boils over (Lena, 2026-10-06). */
-export const ROUND_TIME_MS = 90_000;
+export const ROUND_TIME_MS = 80_000; // 1:20 (was 1:30 until 2026-10-07)
 /** The last stretch: the clock turns red and the cauldron bubbles harder. */
 export const ROUND_WARN_MS = 20_000;
 /** Potions in one (Kyiv) day that earn a moonstone — see reward.ts. */

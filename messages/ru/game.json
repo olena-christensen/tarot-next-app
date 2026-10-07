@@ -81,6 +81,8 @@
     "takeHint": "Одно из трёх зелий до лунного камня",
     "giftTaken": "Это зелье уже забрали",
     "boiledTitle": "Зелье убежало!",
-    "boiledSummary": "Найдено {got} из {total} ингредиентов."
+    "boiledSummary": "Найдено {got} из {total} ингредиентов.",
+    "soundOff": "Выключить звук",
+    "soundOn": "Включить звук"
   }
 }

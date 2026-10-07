@@ -81,6 +81,8 @@
     "takeHint": "Одне з трьох зіль до місячного каменя",
     "giftTaken": "Це зілля вже забрали",
     "boiledTitle": "Зілля втекло!",
-    "boiledSummary": "Знайдено {got} з {total} інгредієнтів."
+    "boiledSummary": "Знайдено {got} з {total} інгредієнтів.",
+    "soundOff": "Вимкнути звук",
+    "soundOn": "Увімкнути звук"
   }
 }

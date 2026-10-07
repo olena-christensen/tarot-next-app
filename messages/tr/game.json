@@ -81,6 +81,8 @@
     "takeHint": "Bir ay taşı için üç iksirden biri",
     "giftTaken": "Bu iksir zaten alınmış",
     "boiledTitle": "İksir taştı!",
-    "boiledSummary": "{total} malzemeden {got} tanesini buldun."
+    "boiledSummary": "{total} malzemeden {got} tanesini buldun.",
+    "soundOff": "Sesi kapat",
+    "soundOn": "Sesi aç"
   }
 }
