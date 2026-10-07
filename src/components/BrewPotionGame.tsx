@@ -9,6 +9,7 @@ import { ShareDialog } from "@/components/ShareDialog";
 import { useOpenLogin } from "@/components/LoginContext";
 import { makePotionGif } from "@/lib/potionGame/potionGif";
 import { saveClaim, takeClaim } from "@/lib/potionGame/claim";
+import { PotionSound, readMuted } from "@/lib/potionGame/sound";
 import type { PotionProgress } from "@/lib/potionGame/reward";
 import { notifyMoonstonesChanged } from "@/lib/moonstones";
 import Skull from "@/assets/svg/skull.svg";
@@ -94,12 +95,9 @@ export const BrewPotionGame = () => {
   const fxRef = useRef<HTMLDivElement>(null);
   const wrongTaps = useRef<number[]>([]);
   const timers = useRef({ list: [] as number[] });
-  const sounds = useRef<{
-    found?: HTMLAudioElement;
-    bubble?: HTMLAudioElement;
-    boil?: HTMLAudioElement;
-    laugh?: HTMLAudioElement;
-  }>({});
+  // Boiling in the background, found sounds, boil-over — all blended (sound.ts).
+  const sound = useRef<PotionSound | null>(null);
+  const [muted, setMuted] = useState(false);
 
   const later = (fn: () => void, ms: number) => {
     timers.current.list.push(window.setTimeout(fn, ms));
@@ -109,6 +107,7 @@ export const BrewPotionGame = () => {
     timers.current.list.forEach(clearTimeout);
     timers.current.list = [];
     setRound(generateRound());
+    sound.current?.startBed();
     setFound(new Set());
     setLanded(new Set());
     setFinishedAt(null);
@@ -138,19 +137,17 @@ export const BrewPotionGame = () => {
   }, []);
 
   useEffect(() => {
+    const m = readMuted();
+    setMuted(m);
+    const engine = new PotionSound(m);
+    sound.current = engine;
     startRound();
-    const found = new Audio("/sounds/magic-found.mp3");
-    const bubble = new Audio("/sounds/cauldron-bubble.mp3");
-    const boil = new Audio("/sounds/cauldron-boil-over.mp3");
-    const laugh = new Audio("/sounds/witch-laugh.mp3");
-    found.preload = bubble.preload = boil.preload = laugh.preload = "auto";
-    found.volume = 0.7;
-    bubble.volume = 0.6;
-    boil.volume = 0.8;
-    laugh.volume = 0.8;
-    sounds.current = { found, bubble, boil, laugh };
     const pending = timers.current;
-    return () => pending.list.forEach(clearTimeout);
+    return () => {
+      pending.list.forEach(clearTimeout);
+      engine.dispose();
+      sound.current = null;
+    };
   }, [startRound]);
 
   // Timer ticks while playing.
@@ -322,10 +319,10 @@ export const BrewPotionGame = () => {
     }
   };
 
-  const play = (a?: HTMLAudioElement) => {
-    if (!a) return;
-    a.currentTime = 0;
-    a.play().catch(() => {});
+  const toggleSound = () => {
+    const next = !muted;
+    setMuted(next);
+    sound.current?.setMuted(next);
   };
 
   const collect = (idx: number, tapX: number, tapY: number) => {
@@ -334,17 +331,17 @@ export const BrewPotionGame = () => {
     const next = new Set(found).add(idx);
     setFound(next);
     if (hintTarget === idx) setHintTarget(null);
-    play(sounds.current.found);
+    sound.current?.found(); // twinkle now, bubbling as it lands
     animateCollect(p, tapX, tapY);
 
     const done = next.size === round.placements.length;
     const tappedAt = Date.now();
     later(() => {
       setLanded((prev) => new Set(prev).add(idx));
-      play(sounds.current.bubble);
       cauldronBurst();
     }, FLY_MS);
     if (done) {
+      sound.current?.stopBed(1.2 + FLY_MS / 1000);
       finishOnServer();
       later(() => {
         setFinishedAt(tappedAt);
@@ -583,8 +580,7 @@ export const BrewPotionGame = () => {
     setBoiledAt(Date.now());
     setHintTarget(null);
     track("potion_boiled_over", { found: found.size });
-    play(sounds.current.boil); // 5.5 s
-    later(() => play(sounds.current.laugh), 1500); // 6 s, runs on under the card
+    sound.current?.boilOver(); // the boiling swells into the boil-over, then the laugh
     setQuaking(true);
     later(() => setQuaking(false), 3600);
     spill();
@@ -601,8 +597,9 @@ export const BrewPotionGame = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, timeLeft]);
 
-  // The last stretch: the cauldron bubbles harder.
+  // The last stretch: the cauldron bubbles harder — and sounds it.
   useEffect(() => {
+    sound.current?.setHot(hot);
     if (!hot) return;
     const id = window.setInterval(() => simmer(4), 600);
     return () => clearInterval(id);
@@ -787,7 +784,8 @@ export const BrewPotionGame = () => {
   };
 
   return (
-    <section className={`potion${fullScreen ? " potion--full" : ""}`}>
+    // Browsers allow sound only after a tap: the first tap anywhere unlocks it.
+    <section className={`potion${fullScreen ? " potion--full" : ""}`} onPointerDownCapture={() => sound.current?.unlock()}>
       <h1 className="potion__title title">{t("title")}</h1>
       <p className="potion__subtitle">{t("subtitle")}</p>
 
@@ -799,14 +797,36 @@ export const BrewPotionGame = () => {
           <span className={`potion__pill${hot ? " potion__pill--hot" : ""}`} aria-label={t("timeLabel")}>
             ⏳ {formatTime(finishedAt ? elapsed : timeLeft + 999)}
           </span>
-          <button
-            type="button"
-            className="potion__pill potion__pill--btn"
-            onClick={takeHint}
-            disabled={hintUsed || !!finishedAt || !!boiledAt}
-          >
-            ✦ {t("hint", { count: hintUsed ? 0 : 1 })}
-          </button>
+          <span className="potion__hud-group">
+            <button
+              type="button"
+              className={`potion__pill potion__pill--btn potion__sound${muted ? " potion__sound--off" : ""}`}
+              onClick={toggleSound}
+              aria-label={t(muted ? "soundOn" : "soundOff")}
+              title={t(muted ? "soundOn" : "soundOff")}
+              aria-pressed={!muted}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 9h4l5-4v14l-5-4H4z" />
+                {muted ? (
+                  <path d="M17 9l5 6M22 9l-5 6" />
+                ) : (
+                  <>
+                    <path d="M16.5 8.5a5 5 0 0 1 0 7" />
+                    <path d="M19 6a8.5 8.5 0 0 1 0 12" />
+                  </>
+                )}
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="potion__pill potion__pill--btn"
+              onClick={takeHint}
+              disabled={hintUsed || !!finishedAt || !!boiledAt}
+            >
+              ✦ {t("hint", { count: hintUsed ? 0 : 1 })}
+            </button>
+          </span>
         </div>
 
         <div

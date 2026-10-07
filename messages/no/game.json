@@ -81,6 +81,8 @@
     "takeHint": "Én av tre trylledrikker til en månestein",
     "giftTaken": "Denne trylledrikken er allerede tatt",
     "boiledTitle": "Trylledrikken kokte over!",
-    "boiledSummary": "Du fant {got} av {total} ingredienser."
+    "boiledSummary": "Du fant {got} av {total} ingredienser.",
+    "soundOff": "Slå av lyden",
+    "soundOn": "Slå på lyden"
   }
 }
