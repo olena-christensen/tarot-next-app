@@ -628,14 +628,27 @@ export const BrewPotionGame = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, timeLeft]);
 
-  // The last stretch: the cauldron bubbles harder — and sounds it.
+  // The last stretch sounds harder.
   useEffect(() => {
     sound.current?.setHot(hot);
-    if (!hot) return;
-    const id = window.setInterval(() => simmer(4), 600);
-    return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hot]);
+
+  // The cauldron bubbles the whole round (Lena, 2026-10-07): gentle at the
+  // start, building up, and at full strength in the last 20 seconds.
+  const boilLevel = useRef(0);
+  boilLevel.current = hot ? 1 : Math.min(0.75, (0.75 * (ROUND_TIME_MS - timeLeft)) / (ROUND_TIME_MS - ROUND_WARN_MS));
+  useEffect(() => {
+    if (!playing) return;
+    let id = 0;
+    const tick = () => {
+      const level = boilLevel.current;
+      simmer(Math.max(1, Math.round(1 + level * 3)), level > 0.75);
+      id = window.setTimeout(tick, 900 - level * 300);
+    };
+    tick();
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing]);
 
   // ---------- hint ----------
   const takeHint = () => {
