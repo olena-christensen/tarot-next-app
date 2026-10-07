@@ -22,6 +22,7 @@
     "backToIndex": "Alle syttiåtte kort",
     "previousCard": "Forrige",
     "nextCard": "Neste",
-    "englishOnly": "Kortbetydningene finnes foreløpig kun på engelsk."
+    "englishOnly": "Kortbetydningene finnes foreløpig kun på engelsk.",
+    "cardMetaTitle": "{name} — tarotkortets betydning"
   }
 }
