@@ -24,7 +24,7 @@ export const GLOBAL_ROUTES = ["/privacy", "/terms"] as const;
  * locale so middleware never 404s, but only these are indexed, sitemapped or
  * pointed at by an hreflang. Add a locale here the day its translations land.
  */
-export const CARD_CONTENT_LOCALES = ["en", "uk", "ru", "tr"] as const;
+export const CARD_CONTENT_LOCALES = ["en", "uk", "ru", "tr", "no"] as const;
 
 export function isCardContentLocale(locale: string): boolean {
   return (CARD_CONTENT_LOCALES as readonly string[]).includes(locale);
