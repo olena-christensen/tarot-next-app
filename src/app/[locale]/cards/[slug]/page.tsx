@@ -22,6 +22,7 @@ import {
   localizedPath,
 } from "@/lib/seo";
 import { CardShareButton } from "./CardShareButton";
+import { cardTextFor } from "@/lib/cardTranslations";
 
 type Props = {
   params: { locale: string; slug: string };
@@ -51,8 +52,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = `/cards/${card.slug}`;
   const url = absoluteUrl(localizedPath(locale, path));
   const image = absoluteUrl(getCardImagePath(DEFAULT_DECK, CARD_IMAGES[card.id]));
-  const title = `${card.title} — Tarot Card Meaning`;
-  const description = firstSentence(card.upright);
+  const t = await getTranslations({ locale, namespace: "cardMeanings" });
+  const tCards = await getTranslations({ locale, namespace: "cards" });
+  const name = locale === "en" ? card.title : tCards(card.id);
+  const title = t("cardMetaTitle", { name });
+  const description = firstSentence((cardTextFor(card, locale) ?? card).upright);
   const indexed = isCardContentLocale(locale);
 
   return {
@@ -67,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url,
-      images: [{ url: image, width: 600, height: 1050, alt: card.title }],
+      images: [{ url: image, width: 600, height: 1050, alt: name }],
     },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
@@ -79,6 +83,11 @@ export default async function CardPage({ params }: Props) {
 
   unstable_setRequestLocale(params.locale);
   const t = await getTranslations({ locale: params.locale, namespace: "cardMeanings" });
+  const tCards = await getTranslations({ locale: params.locale, namespace: "cards" });
+  // The reading in this language when it's translated, else the English one.
+  const text = cardTextFor(card, params.locale) ?? card;
+  const name = (c: { id: string; title: string }) =>
+    params.locale === "en" ? c.title : tCards(c.id);
 
   const { previous, next } = getAdjacentCards(card.slug);
   const path = `/cards/${card.slug}`;
@@ -90,11 +99,11 @@ export default async function CardPage({ params }: Props) {
     "@graph": [
       {
         "@type": "Article",
-        headline: `${card.title} — Tarot Card Meaning`,
-        description: firstSentence(card.upright),
+        headline: t("cardMetaTitle", { name: name(card) }),
+        description: firstSentence(text.upright),
         url,
         image: absoluteUrl(image),
-        inLanguage: HREFLANG_MAP.en,
+        inLanguage: HREFLANG_MAP[cardTextFor(card, params.locale) ? params.locale : "en"],
         isBasedOn: {
           "@type": "Book",
           name: PAPUS_SOURCE.title,
@@ -118,7 +127,7 @@ export default async function CardPage({ params }: Props) {
             name: t("indexTitle"),
             item: absoluteUrl(localizedPath(params.locale, "/cards")),
           },
-          { "@type": "ListItem", position: 3, name: card.title, item: url },
+          { "@type": "ListItem", position: 3, name: name(card), item: url },
         ],
       },
     ],
@@ -137,7 +146,7 @@ export default async function CardPage({ params }: Props) {
             <Image
               className="card-page__img"
               src={image}
-              alt={card.title}
+              alt={name(card)}
               // Intrinsic ratio of the source art (854×1500). Rendered at 180px
               // (240 from `md`), so a DPR-3 phone needs ~540px — `sizes` is what
               // lets the browser ask for that instead of the 256px candidate a
@@ -149,7 +158,7 @@ export default async function CardPage({ params }: Props) {
               priority
             />
             <div className="card-page__heading">
-              <h1 className="card-page__title title">{card.title}</h1>
+              <h1 className="card-page__title title">{name(card)}</h1>
               <p className="card-page__kicker">
                 {card.arcanum === "major"
                   ? t("groupMajor")
@@ -163,31 +172,31 @@ export default async function CardPage({ params }: Props) {
                             : "groupPentacles"
                     )}
               </p>
-              <CardShareButton url={url} cardTitle={card.title} />
+              <CardShareButton url={url} cardTitle={name(card)} />
             </div>
           </header>
 
-          {card.derivation && (
+          {text.derivation && (
             <section className="card-page__section card-page__section--derivation">
               <h2 className="card-page__section-title">{t("derivation")}</h2>
-              <p className="card-page__text">{card.derivation}</p>
+              <p className="card-page__text">{text.derivation}</p>
             </section>
           )}
 
           <section className="card-page__section">
             <h2 className="card-page__section-title">{t("upright")}</h2>
-            <p className="card-page__text">{card.upright}</p>
+            <p className="card-page__text">{text.upright}</p>
           </section>
 
           <section className="card-page__section">
             <h2 className="card-page__section-title">{t("reversed")}</h2>
-            <p className="card-page__text">{card.reversed}</p>
+            <p className="card-page__text">{text.reversed}</p>
           </section>
 
           <section className="card-page__section">
             <h2 className="card-page__section-title">{t("correspondences")}</h2>
             <dl className="card-page__correspondences">
-              {card.correspondences.map((row) => (
+              {text.correspondences.map((row) => (
                 <div className="card-page__correspondence" key={row.label}>
                   <dt className="card-page__correspondence-label">{row.label}</dt>
                   <dd className="card-page__correspondence-value">{row.value}</dd>
@@ -198,7 +207,7 @@ export default async function CardPage({ params }: Props) {
 
           <section className="card-page__section">
             <h2 className="card-page__section-title">{t("inSpread")}</h2>
-            <p className="card-page__text">{card.inSpread}</p>
+            <p className="card-page__text">{text.inSpread}</p>
           </section>
 
           <aside className="card-page__source">
@@ -212,7 +221,7 @@ export default async function CardPage({ params }: Props) {
           {previous ? (
             <Link className="card-page__pager-link" href={`/cards/${previous.slug}`}>
               <span className="card-page__pager-label">{t("previousCard")}</span>
-              <span className="card-page__pager-name">{previous.title}</span>
+              <span className="card-page__pager-name">{name(previous)}</span>
             </Link>
           ) : (
             // Placeholder so the middle link stays centred on the first and
@@ -230,7 +239,7 @@ export default async function CardPage({ params }: Props) {
               href={`/cards/${next.slug}`}
             >
               <span className="card-page__pager-label">{t("nextCard")}</span>
-              <span className="card-page__pager-name">{next.title}</span>
+              <span className="card-page__pager-name">{name(next)}</span>
             </Link>
           ) : (
             <span />

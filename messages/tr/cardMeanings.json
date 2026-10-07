@@ -22,6 +22,7 @@
     "backToIndex": "Yetmiş Sekiz Kartın Tamamı",
     "previousCard": "Önceki",
     "nextCard": "Sonraki",
-    "englishOnly": "Kart anlamları şu anda yalnızca İngilizce olarak yazılmıştır."
+    "englishOnly": "Kart anlamları şu anda yalnızca İngilizce olarak yazılmıştır.",
+    "cardMetaTitle": "{name} — Tarot Kartı Anlamı"
   }
 }

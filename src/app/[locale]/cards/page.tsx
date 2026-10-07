@@ -6,7 +6,7 @@ import { PageShell } from "@/components/PageShell";
 import { routing } from "@/i18n/routing";
 import { tarots } from "@/data";
 import { DEFAULT_DECK, getCardImagePath } from "@/lib/decks";
-import { CARD_GROUPS, PAPUS_SOURCE, buildCardSearchIndex } from "@/lib/cardMeanings";
+import { CARD_GROUPS, PAPUS_SOURCE, buildCardSearchIndex, normalize } from "@/lib/cardMeanings";
 import { CardSearch } from "@/components/CardSearch";
 import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 import {
@@ -73,13 +73,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CardsIndexPage({ params }: Props) {
   unstable_setRequestLocale(params.locale);
   const t = await getTranslations({ locale: params.locale, namespace: "cardMeanings" });
+  const tCards = await getTranslations({ locale: params.locale, namespace: "cards" });
+  // Card names in the visitor's language (the English titles in English).
+  const nameOf = (id: string, english: string) =>
+    params.locale === "en" ? english : tCards(id);
 
   // Built here so the client gets slugs, titles and search words — not the four
   // paragraphs of prose each card carries.
-  const searchIndex = buildCardSearchIndex().map((entry) => ({
-    ...entry,
-    image: getCardImagePath(DEFAULT_DECK, CARD_IMAGES[entry.id]),
-  }));
+  const searchIndex = buildCardSearchIndex().map((entry) => {
+    const local = nameOf(entry.id, entry.title);
+    return {
+      ...entry,
+      title: local,
+      // English words stay searchable everywhere; the local name is added.
+      terms: local === entry.title ? entry.terms : `${entry.terms} ${normalize(local)}`,
+      image: getCardImagePath(DEFAULT_DECK, CARD_IMAGES[entry.id]),
+    };
+  });
 
   return (
     <PageShell>
@@ -119,7 +129,7 @@ export default async function CardsIndexPage({ params }: Props) {
                       sizes="(min-width: 900px) 16vw, (min-width: 768px) 23vw, (min-width: 600px) 31vw, 46vw"
                       quality={85}
                     />
-                    <span className="cards-index__name">{card.title}</span>
+                    <span className="cards-index__name">{nameOf(card.id, card.title)}</span>
                   </Link>
                 </li>
               ))}

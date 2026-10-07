@@ -1634,9 +1634,12 @@ const RANK_SEARCH_TERMS: Record<string, string> = {
   king: "king",
 };
 
-/** Lowercase, and everything that isn't a letter or digit becomes a space. */
-function normalize(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+/**
+ * Lowercase, and everything that isn't a letter or digit becomes a space.
+ * Any alphabet, so a search in Ukrainian or Turkish card names works too.
+ */
+export function normalize(value: string): string {
+  return value.toLowerCase().replace(new RegExp("[^\\p{L}\\p{N}]+", "gu"), " ").trim();
 }
 
 export type CardSearchEntry = {
