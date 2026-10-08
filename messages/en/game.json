@@ -34,7 +34,6 @@
     "doneSummary": "All {count} ingredients in {time}",
     "sendToFriend": "Send it to a friend",
     "shareTitle": "{potion} — brewed at The Veil",
-    "shareText": "I brewed you {potion}. Brew yours:",
     "slack": "Slack",
     "slackCopied": "Link copied — paste it into Slack.",
     "giftFrom": "{name} brewed this for you",

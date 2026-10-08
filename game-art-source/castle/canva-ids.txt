@@ -1,0 +1,60 @@
+chandelier-antler MAHXXJPIehw
+chandelier-crystal MAHXXC2ykS8
+candelabra-silver MAHXXKMlpl8
+candelabra-blackwax MAHXXEqT6yA
+candelabra-skull MAHXXOPHNCc
+vase-blackroses MAHXXN2Cnxo
+vase-lavender MAHXXDwtu7s
+vase-lilies MAHXXMm_OdU
+vase-ravenroses MAHXXKlIf5A
+mirror-ghost MAHXXGzgwOk
+painting-raven MAHXXCtr5TE
+painting-sea MAHXXIijIZ0
+painting-lady MAHXXF4j4f8
+painting-castle MAHXXHiroAc
+painting-ancestor MAHXXEoTNow
+gramophone MAHXXNFgfh8
+cloth-white MAHXXLkJ4AY
+cloth-blacklace MAHXXCybouI
+cloth-redvelvet MAHXXPCrjRE
+mirror-gilt MAHXXHx9Kms
+setting-pewter MAHXXCvQmYM
+setting-silver MAHXXA9NSkw
+setting-crystal MAHXXMOwzKw
+treat-pie MAHXXFFTOac
+treat-apples MAHXXFv14fE
+treat-cupcakes MAHXXBDS_8s
+treat-cookies MAHXXPsygM4
+treat-cakepops MAHXXKIT_xA
+treat-cake MAHXXCN7mP4
+setting-pewter-side MAHXXFsnqFs
+setting-silver-side MAHXXC5mmJU
+setting-crystal-side MAHXXLtZJp8
+plate-pewter-top MAHXZeNqwWQ
+plate-silver-top MAHXZbuTErQ
+plate-crystal-top MAHXZQYflJY
+goblet-pewter MAHXZUdN93o
+goblet-black MAHXZRRTbME
+goblet-crystal MAHXZd5KlFQ
+fire MAHXZVGUXFg
+firewood MAHXZQn8Wrs
+treat-pie MAHXZXhguFQ (lower angle, replaces MAHXXFFTOac)
+treat-apples MAHXZRxv_XE (lower angle, replaces MAHXXFv14fE)
+treat-cupcakes MAHXZVOgh5I (lower angle)
+treat-cookies MAHXZZO23uA (lower angle)
+treat-cakepops MAHXZSr2aVk (lower angle)
+treat-cake MAHXZaB7GXo (lower angle)
+candelabra-silver-side MAHXZnZRd3Q
+candelabra-blackwax-side MAHXZpNtyoM
+candelabra-skull-side MAHXZgx99UE
+candelabra-skull-side MAHXZj99NCM (profile, crown on top; replaces MAHXZgx99UE)
+candelabra-silver-side MAHXZty_oOw (replaces MAHXZnZRd3Q)
+candles-ivory MAHXZlPPX2M
+candles-black MAHXZmFsERY
+candles-bottles MAHXZp9AEuQ
+candles-skull MAHXZtdge_E
+grand-silver3 MAHXZvrczlc (catalog: candelabraSilver)
+grand-black5 MAHXZqYjy4Q (catalog: candelabraBlackWax)
+grand-skulls MAHXZkBV4Ds (catalog: candelabraSkull)
+grand-silver5 MAHXZno_mTA (catalog: candelabraSilverFive)
+candles-skull MAHXZl4MQO8 (faces left; replaces MAHXZtdge_E)

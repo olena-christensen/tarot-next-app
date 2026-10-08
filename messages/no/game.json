@@ -34,7 +34,6 @@
     "doneSummary": "Alle {count} ingrediensene på {time}",
     "sendToFriend": "Send den til en venn",
     "shareTitle": "{potion} — brygget hos The Veil",
-    "shareText": "Jeg brygget {potion} til deg. Brygg din egen:",
     "slack": "Slack",
     "slackCopied": "Lenken er kopiert — lim den inn i Slack.",
     "giftFrom": "{name} brygget denne til deg",

@@ -750,11 +750,10 @@ export const BrewPotionGame = () => {
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     if (coarse && navigator.share) {
       try {
-        await navigator.share({
-          title: t("shareTitle", { potion: potionName }),
-          text: t("shareText", { potion: potionName }),
-          url: giftUrl,
-        });
+        // The link alone (Lena, 2026-10-07): a message text arrived in
+        // Messenger right above the link card saying the same thing as the
+        // card's own title. The card already says who brewed what.
+        await navigator.share({ url: giftUrl });
         decide("sent");
       } catch {
         // Dismissed — not an error.
