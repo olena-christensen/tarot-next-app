@@ -811,6 +811,7 @@ export const CastleGame = () => {
         url={share?.url ?? ""}
         shareTitle={share?.name ?? ""}
         compact
+        sendToPerson
         onShared={() => setSentNote(true)}
       />
       <SubscriptionModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />

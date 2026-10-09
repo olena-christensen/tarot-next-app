@@ -9,6 +9,8 @@ import XIcon from "@/assets/svg/x.svg";
 import FacebookIcon from "@/assets/svg/facebook.svg";
 import TelegramIcon from "@/assets/svg/telegram.svg";
 import WhatsAppIcon from "@/assets/svg/whatsapp.svg";
+import MessengerIcon from "@/assets/svg/messenger.svg";
+import { messengerSendUrl } from "@/lib/facebook";
 
 // Plain intent URLs — no third-party SDKs, so no trackers load and nothing
 // needs cookie consent. Each pre-fills the link in the network's own composer;
@@ -70,6 +72,11 @@ type ShareDialogProps = {
   download?: { href: string; filename: string; label: string };
   /** Called once the link has actually left: copied, a network opened, or the native sheet completed. */
   onShared?: () => void;
+  /**
+   * A gift goes to one person: Messenger ("send to…") instead of Facebook, which
+   * can only post to the sender's own feed (Lena, 2026-10-10).
+   */
+  sendToPerson?: boolean;
 };
 
 /**
@@ -94,6 +101,7 @@ export const ShareDialog = ({
   slackHint,
   download,
   onShared,
+  sendToPerson = false,
 }: ShareDialogProps) => {
   const t = useTranslations("history");
   const [copied, setCopied] = useState(false);
@@ -101,10 +109,20 @@ export const ShareDialog = ({
   // Resolved after mount — navigator is undefined during SSR, and reading it in
   // render would desync server and client HTML.
   const [canNativeShare, setCanNativeShare] = useState(false);
+  const [touch, setTouch] = useState(false);
 
   useEffect(() => {
     setCanNativeShare(typeof navigator !== "undefined" && Boolean(navigator.share));
+    setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
+
+  const networks = sendToPerson
+    ? SHARE_NETWORKS.map((n) =>
+        n.id === "facebook"
+          ? { id: "messenger", label: "Messenger", Icon: MessengerIcon, href: (u: string) => messengerSendUrl(u, touch) }
+          : n,
+      )
+    : SHARE_NETWORKS;
 
   useEffect(() => {
     if (!isOpen) {
@@ -175,7 +193,7 @@ export const ShareDialog = ({
               </button>
             </div>
             <div className="reading-share__networks">
-              {SHARE_NETWORKS.map(({ id, label, Icon, href }) => (
+              {networks.map(({ id, label, Icon, href }) => (
                 <a
                   key={id}
                   className="reading-share__network"
