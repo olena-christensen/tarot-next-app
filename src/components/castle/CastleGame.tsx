@@ -184,6 +184,9 @@ export const CastleGame = () => {
   worldRef.current = WORLD;
   const [scale, setScale] = useState(0.5);
   const [scroll, setScroll] = useState({ left: 0, width: 0 });
+  // Full screen: the room fills the screen and is centred; what does not fit is
+  // trimmed, never scrolled (Lena, 2026-10-09).
+  const [view, setView] = useState({ x: 0, y: 0, h: 0 });
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
@@ -200,6 +203,11 @@ export const CastleGame = () => {
           ? w / world.w
           : h / world.h;
       setScale(s);
+      setView(
+        immersiveRef.current
+          ? { x: (w - world.w * s) / 2, y: (h - world.h * s) / 2, h }
+          : { x: 0, y: 0, h: world.h * s },
+      );
       setScroll({ left: stage.scrollLeft, width: w });
     };
     fit();
@@ -372,8 +380,9 @@ export const CastleGame = () => {
   // ---------- room ----------
   // only the places this room shows (the tall room has no side walls)
   const ringPlaces = placing ? (catalogItem(placing.itemId)?.places ?? []).filter((p) => PLACE_BOX[p]) : [];
-  const offLeft = ringPlaces.filter((p) => (PLACE_BOX[p]!.x + PLACE_BOX[p]!.w) * scale < scroll.left).length;
-  const offRight = ringPlaces.filter((p) => PLACE_BOX[p]!.x * scale > scroll.left + scroll.width).length;
+  // (full screen never scrolls, so there is nothing to point at off the edges)
+  const offLeft = immersive ? 0 : ringPlaces.filter((p) => (PLACE_BOX[p]!.x + PLACE_BOX[p]!.w) * scale < scroll.left).length;
+  const offRight = immersive ? 0 : ringPlaces.filter((p) => PLACE_BOX[p]!.x * scale > scroll.left + scroll.width).length;
 
   const lights = ORDER.flatMap((place) => {
     const row = placedAt.get(place);
@@ -417,7 +426,10 @@ export const CastleGame = () => {
 
       <div className="castle__board">
         <div className="castle__stage" ref={stageRef} onScroll={onScroll}>
-          <div className="castle__extent" style={{ width: WORLD.w * scale, height: WORLD.h * scale }}>
+          <div
+            className="castle__extent"
+            style={{ width: WORLD.w * scale, height: WORLD.h * scale, left: view.x, top: view.y }}
+          >
             <div className="castle__world" style={{ width: WORLD.w, height: WORLD.h, transform: `scale(${scale})` }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="castle__room" src={`${room.art}/room.webp`} alt="" draggable={false} />
@@ -509,8 +521,8 @@ export const CastleGame = () => {
           <div
             className="castle__menu"
             style={{
-              left: Math.min(Math.max(8, menuPatch.x * scale - scroll.left), scroll.width - 228),
-              top: Math.min((menuPatch.y + menuPatch.h) * scale + 10, WORLD.h * scale - 40),
+              left: Math.min(Math.max(8, menuPatch.x * scale + view.x - scroll.left), scroll.width - 228),
+              top: Math.min((menuPatch.y + menuPatch.h) * scale + view.y + 10, view.h - (immersive ? 230 : 40)),
             }}
           >
             <p className="castle__menu-title">{t(`items.${menu.itemId}`)}</p>
@@ -534,6 +546,7 @@ export const CastleGame = () => {
         )}
       </div>
 
+      <div className="castle__dock">
       <div className="castle__bar">
         <button type="button" className="castle__btn castle__btn--main" onClick={() => (needSignIn() ? undefined : setCatalogOpen(true))}>
           {t("catalog")}
@@ -567,6 +580,7 @@ export const CastleGame = () => {
           <b>{t("sentTitle")}</b> {t("sentBody")}
         </p>
       )}
+      </div>
 
       {/* ---------- catalog ---------- */}
       <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide>

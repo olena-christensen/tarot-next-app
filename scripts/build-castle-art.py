@@ -114,19 +114,9 @@ SUFFIX = "-phone" if PHONE else ""
 
 
 def phone_room():
-    """The tall room, its outer edges gently squeezed so the whole hall (window
-    on the left, fireplace on the right) fits a phone screen without sideways
-    scrolling. The middle third keeps its true proportions."""
-    src = Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
-    a = np.asarray(src).astype(float)
-    sw, sh = src.size
-    tw = round(sh * 390 / 844)                 # a classic phone screen's shape
-    half, src_half = tw / 2, (sw - 1) / 2
-    u = np.arange(tw) - (tw - 1) / 2
-    b = (src_half - half) / half
-    x = np.clip(src_half + u + b * np.sign(u) * np.abs(u / half) ** 4 * half, 0, sw - 1)
-    x0 = np.floor(x).astype(int); x1 = np.minimum(x0 + 1, sw - 1); f = (x - x0)[None, :, None]
-    return Image.fromarray((a[:, x0] * (1 - f) + a[:, x1] * f).astype(np.uint8))
+    """The tall room as drawn (944 x 1680). It is close to the shape of a phone
+    browser's visible area, so filling the screen trims only a sliver."""
+    return Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
 
 
 room = phone_room() if PHONE else Image.open(os.path.join(SRC, "castle-room.png")).convert("RGB")
@@ -889,14 +879,14 @@ def build(item, place):
 
 # ---------------------------------------------------------------- the phone room
 if PHONE:
-    # Measured on the squeezed tall room (776 x 1680). Its vanishing point,
-    # where the table's sides meet, is (381, 734).
-    VANISH = (381, 734)
-    CHAIN_END = (377, 178)              # the chain is cut here; the rest and the hook are painted out
-    HOOK_CUT = (178, 382, 350, 408, 62)
+    # Measured on room-portrait.jpg (944 x 1680). The table's sides meet at
+    # (465, 734).
+    VANISH = (465, 734)
+    CHAIN_END = (461, 178)              # the chain is cut here; the rest and the hook are painted out
+    HOOK_CUT = (178, 382, 432, 494, 66)
     CHANDELIER_SCALE = 0.95
-    TABLE = [(290, 875), (468, 875), (700, 1251), (48, 1251)]
-    TABLE_POOL = (380, 1040, 260)
+    TABLE = [(374, 875), (552, 875), (819, 1251), (83, 1251)]
+    TABLE_POOL = (464, 1040, 280)
     # A long banquet table: about five widths deep (from its perspective), six
     # chairs a side. Things stand down its middle, the centre piece furthest back.
     TABLE_LEN = 4.9
@@ -907,34 +897,32 @@ if PHONE:
     TABLE_H = homography([(0, 0), (1, 0), (1, TABLE_LEN), (0, TABLE_LEN)],
                          [TABLE[3], TABLE[2], TABLE[1], TABLE[0]])
     WALLS = {   # the inside of the three pointed frames on the back wall
-        "wallBackLeft": [(176, 506), (244, 506), (244, 736), (176, 736)],
-        "wallBackCentre": [(298, 458), (444, 458), (444, 736), (298, 736)],
-        "wallBackRight": [(500, 506), (578, 506), (578, 736), (500, 736)],
+        "wallBackLeft": [(254, 506), (325, 506), (325, 736), (254, 736)],
+        "wallBackCentre": [(382, 458), (527, 458), (527, 736), (382, 736)],
+        "wallBackRight": [(585, 506), (666, 506), (666, 736), (585, 736)],
     }
     STANDS = {"tableCentre": (0, 0, 0, 0.66)}
     CLOTH = {
-        "top": [(284, 870), (474, 870), (712, 1254), (36, 1254)],
-        "drop": (36, 1252, 676, 118),
+        "top": [(368, 870), (558, 870), (837, 1254), (64, 1254)],
+        "drop": (64, 1252, 773, 118),
         "rows": (866, 1256),
-        "ref": (900, 1240, 250, 520),
+        "ref": (900, 1240, 333, 605),
     }
-    GRAMOPHONE = (726, 1404, 215)       # on the little round side table
-    # The niche shelf and the mantel run along the right wall. The squeezed
-    # edge of the picture makes them slope more steeply than the vanishing
-    # point says, so both lines are measured on the picture itself. Both are
-    # above eye level, so feet hide behind the edge.
+    GRAMOPHONE = (868, 1408, 215)       # on the little round side table
+    # The niche shelf and the mantel run along the right wall, both above eye
+    # level, so feet hide behind their front edge (measured lines).
 
     def shelf_edge(x):
-        return 586 - 0.60 * (np.asarray(x, float) - 657)
+        return 591 - 0.507 * (np.asarray(x, float) - 760)
 
     def mantel_edge(x):
-        return 631 - 0.55 * (np.asarray(x, float) - 673)
+        return 630 - 0.34 * (np.asarray(x, float) - 780)
 
-    LEDGES = {"shelf": (680, shelf_edge, 62, 0.55), "mantel": (728, mantel_edge, 118, 0.60)}
+    LEDGES = {"shelf": (791, shelf_edge, 62, 0.55), "mantel": (862, mantel_edge, 118, 0.60)}
     LEDGE_GLOW = {"shelf": 90, "mantel": 130}
-    FIRE = (772, 988, 104)
+    FIRE = (920, 992, 110)
     FIRE_SPILL = 160
-    FIRE_OPENING = [(738, 992), (738, 760), (748, 738), (764, 726), (776, 722), (776, 992)]
+    FIRE_OPENING = [(870, 996), (870, 760), (880, 735), (900, 718), (944, 712), (944, 996)]
     ANDIRONS = []
     for _w in ("wallLeft", "wallRight"):
         PLACES.pop(_w, None)
