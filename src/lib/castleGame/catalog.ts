@@ -38,6 +38,8 @@ export type CatalogItem = {
   light?: boolean;
   /** A record: with a gramophone in the room, there is music. */
   record?: boolean;
+  /** A record's 30-second sample to listen to before buying (public/sounds/castle/). */
+  sample?: string;
   /** The wheel's rare prize pool. */
   rare?: boolean;
 };
@@ -86,9 +88,9 @@ export const CATALOG: CatalogItem[] = [
   // Fire & music
   { id: "firewood", tab: "fireMusic", price: 2, places: ["fireplace"], autoPlace: "fireplace", light: true },
   { id: "gramophone", tab: "fireMusic", price: 1, places: ["corner"] },
-  { id: "recordWaltz", tab: "fireMusic", price: 1, places: [], record: true },
-  { id: "recordOrgan", tab: "fireMusic", price: 1, places: [], record: true },
-  { id: "recordLullaby", tab: "fireMusic", price: 1, places: [], record: true },
+  { id: "recordWaltz", tab: "fireMusic", price: 1, places: [], record: true, sample: "waltz" },
+  { id: "recordOrgan", tab: "fireMusic", price: 1, places: [], record: true, sample: "organ" },
+  { id: "recordLullaby", tab: "fireMusic", price: 1, places: [], record: true, sample: "lullaby" },
 ];
 
 export const TABS: TabId[] = ["lights", "walls", "table", "treats", "fireMusic"];
