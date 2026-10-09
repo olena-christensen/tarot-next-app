@@ -1017,6 +1017,7 @@ export const BrewPotionGame = () => {
         shareTitle={t("shareTitle", { potion: potionName })}
         title={t("sendToFriend")}
         slackHint={t("slackCopied")}
+        sendToPerson
         download={gif ? { href: gif.url, filename: "potion.gif", label: t("downloadGif") } : undefined}
         onShared={() => decide("sent")}
       />

@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import "../assets/scss/style.scss";
 import { getSiteUrl } from "@/lib/seo";
+import { FACEBOOK_APP_ID } from "@/lib/facebook";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
+  // Facebook reads fb:app_id on shared links (its debugger warns without it).
+  other: { "fb:app_id": FACEBOOK_APP_ID },
   title: "Tarot",
   description: "Unveil the mysteries of your future with our mystical tarot reading app.",
   // Google Search Console ownership, added 2026-08-08. Lives in the ROOT layout
