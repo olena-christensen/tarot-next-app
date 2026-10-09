@@ -254,13 +254,25 @@
   &__bar {
     display: flex;
     gap: 8px;
+    width: 100%; // the full-screen layer is a flex column: without this the row shrinks to its text
     max-width: 640px;
     margin: 12px auto 0;
     padding: 0 12px;
+    box-sizing: border-box;
+
+    & + & {
+      margin-top: 8px;
+    }
   }
 
   &__btn {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap; // a button keeps its shape: never wraps onto a second line
     padding: 13px 6px;
     background: transparent;
     border: 1px dashed rgba(250, 225, 163, 0.35);
@@ -271,6 +283,10 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
+
+    @include respond-below(sm) {
+      letter-spacing: 0.06em;
+    }
 
     &--main {
       border-color: rgba(250, 225, 163, 0.65);
@@ -300,8 +316,8 @@
 
   &__count {
     display: inline-block;
+    flex: none;
     min-width: 1.6em;
-    margin-left: 8px;
     padding: 1px 6px;
     border: 1px solid rgba(250, 225, 163, 0.45);
     border-radius: 10px;
@@ -362,10 +378,73 @@ html.castle-locked body {
     flex: 1;
     height: auto;
     max-height: none;
+    aspect-ratio: auto;
+    overflow: auto;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
   }
 
   .castle__note {
     margin-top: 6px;
+  }
+}
+
+// Room only: nothing but the hall, edge to edge.
+.castle--bare {
+  padding: 0;
+
+  .castle__hud,
+  .castle__bar,
+  .castle__note,
+  .castle__banner,
+  .castle__edge,
+  .castle__menu {
+    display: none;
+  }
+
+  .castle__board {
+    max-width: none;
+  }
+
+  .castle__stage {
+    border: 0;
+  }
+}
+
+.castle__eye,
+.castle__unbare {
+  display: flex;
+  padding: 6px;
+  background: rgba(9, 9, 9, 0.75);
+  border: 1px solid rgba(250, 225, 163, 0.35);
+  border-radius: 50%;
+  color: var(--text-color);
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+}
+
+.castle__eye {
+  margin-left: 8px;
+}
+
+.castle__unbare {
+  position: absolute;
+  top: calc(10px + env(safe-area-inset-top));
+  right: 10px;
+  z-index: 3;
+  opacity: 0.55;
+
+  &:hover {
+    opacity: 1;
   }
 }
 

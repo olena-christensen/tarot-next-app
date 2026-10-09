@@ -117,6 +117,8 @@
     "inHall": "In the hall",
     "inStorage": "In your items",
     "yoursNow": "Yours now",
-    "sendShort": "Send"
+    "sendShort": "Send",
+    "roomOnly": "Room only",
+    "showButtons": "Show buttons"
   }
 }

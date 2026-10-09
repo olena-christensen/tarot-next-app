@@ -20,6 +20,13 @@ game-art-source/castle/ and writes:
 Run from the repository root:  python3 scripts/build-castle-art.py
 Needs Pillow and numpy only.
 
+The phone room (Lena, 2026-10-09) is a second, tall picture of the same hall:
+    python3 scripts/build-castle-art.py --phone
+reads game-art-source/castle/room-portrait.jpg and writes the same kinds of
+files to public/game-art/castle/phone/ and src/lib/castleGame/places.phone.generated.json
+(no icons: those are shared). The phone room shows only the three back-wall
+frames; whatever hangs on the side walls is seen on a computer only.
+
 Item pictures come from Canva's image generator on a white background; the
 script cuts them out (cut_out below), so they can be dropped in as downloaded.
 """
@@ -95,13 +102,34 @@ class ndimage:
         return d
 
 
-ROOT = sys.argv[1] if len(sys.argv) > 1 else "."
+PHONE = "--phone" in sys.argv
+_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+ROOT = _args[0] if _args else "."
 SRC = os.path.join(ROOT, "game-art-source")
 ITEMS_DIR = os.path.join(SRC, "castle")
-OUT = os.path.join(ROOT, "public", "game-art", "castle")
-JSON_OUT = os.path.join(ROOT, "src", "lib", "castleGame", "places.generated.json")
+OUT = os.path.join(ROOT, "public", "game-art", "castle", *(["phone"] if PHONE else []))
+JSON_OUT = os.path.join(ROOT, "src", "lib", "castleGame",
+                        "places.phone.generated.json" if PHONE else "places.generated.json")
+SUFFIX = "-phone" if PHONE else ""
 
-room = Image.open(os.path.join(SRC, "castle-room.png")).convert("RGB")
+
+def phone_room():
+    """The tall room, its outer edges gently squeezed so the whole hall (window
+    on the left, fireplace on the right) fits a phone screen without sideways
+    scrolling. The middle third keeps its true proportions."""
+    src = Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
+    a = np.asarray(src).astype(float)
+    sw, sh = src.size
+    tw = round(sh * 390 / 844)                 # a classic phone screen's shape
+    half, src_half = tw / 2, (sw - 1) / 2
+    u = np.arange(tw) - (tw - 1) / 2
+    b = (src_half - half) / half
+    x = np.clip(src_half + u + b * np.sign(u) * np.abs(u / half) ** 4 * half, 0, sw - 1)
+    x0 = np.floor(x).astype(int); x1 = np.minimum(x0 + 1, sw - 1); f = (x - x0)[None, :, None]
+    return Image.fromarray((a[:, x0] * (1 - f) + a[:, x1] * f).astype(np.uint8))
+
+
+room = phone_room() if PHONE else Image.open(os.path.join(SRC, "castle-room.png")).convert("RGB")
 W, H = room.size
 RA = np.asarray(room).astype(float)
 
@@ -349,6 +377,7 @@ STANDS = {  # base centre x, base y, item height, light level
 # back edge, the near one about a third of a width from the front.
 TABLE_LEN = 1.45
 SEATS_V = [1.20, 0.75, 0.30]          # the three chairs each side, far to near
+PLATE_W = 0.40                         # plate width in table-widths
 # Down the middle of the table, clear of the plates. The centre piece stands
 # furthest back so the two treats in front of it never hide it.
 CENTRE_PIECE = (0.50, 0.95, 0.62)      # u, v, height in table-widths
@@ -376,7 +405,9 @@ def mantel_edge(x):
 LEDGE_SIDE_FILE = {k: ITEMS[k][0] for k in ("candelabraSilver", "candelabraBlackWax",
                                             "candelabraSkull", "candelabraSilverFive")}
 LEDGES = {"shelf": (1262, shelf_edge, 125, 0.55), "mantel": (1440, mantel_edge, 180, 0.60)}
+LEDGE_GLOW = {"shelf": 150, "mantel": 180}
 FIRE = (1463, 683, 116)                # centre x, base y, width: middle of the fireplace
+FIRE_SPILL = 100                       # the warm spill on the floor lies this far to the left
 
 PLACES = {
     "ceiling": ["chandelierIron", "chandelierAntler", "chandelierCrystal"],
@@ -404,25 +435,32 @@ ORDER = ["wallLeft", "wallBackLeft", "wallBackCentre", "wallBackRight", "wallRig
 
 
 # ---------------------------------------------------------------- builders
+HOOK_CUT = (60, 198, 774, 822, 48)    # rows, columns of the hook, and how far to shift the wall
+CHANDELIER_SCALE = 1.0
+TABLE_POOL = (792, 600, 230)           # where the chandelier's light pools on the table
+
+
 def hook_cover():
     """The room's own wall, shifted sideways, painted over the hook."""
-    cut = np.zeros((H, W)); cut[60:198, 774:822] = 1
+    y0, y1, x0, x1, shift = HOOK_CUT
+    cut = np.zeros((H, W)); cut[y0:y1, x0:x1] = 1
     cut = ndimage.gaussian_filter(cut, 3)
-    src = np.roll(RA, 48, axis=1)
+    src = np.roll(RA, shift, axis=1)
     return Image.fromarray(np.dstack([src, cut * 255]).astype(np.uint8), "RGBA")
 
 
 def build_chandelier(item):
     sp = cut_out(ITEMS[item][0])
-    width = {"chandelierIron": 300, "chandelierAntler": 300, "chandelierCrystal": 250}[item]
+    width = {"chandelierIron": 300, "chandelierAntler": 300, "chandelierCrystal": 250}[item] * CHANDELIER_SCALE
     sp = moonlight(resize_w(sp, width), 0.70, True)
     L = Layer()
     L.im = Image.alpha_composite(L.im, hook_cover())
     x0, y0 = CHAIN_END[0] - sp.width / 2, CHAIN_END[1] - 4
     L.paste(sp, x0, y0)
     halo, c = flame_halos(sp, x0, y0, 14, 0.30)
+    px, py, pr = TABLE_POOL
     I = halo + glow(c[0], c[1], 300, 0.42) + glow(c[0], c[1], 110, 0.20) \
-        + glow(792, 600, 230, 0.22, 0.45)          # pool of light on the table
+        + glow(px, py, pr, 0.22, 0.45)          # pool of light on the table
     return L, I
 
 
@@ -455,7 +493,14 @@ def build_wall(item, place):
     left = (q[0][0] + q[3][0]) / 2; right = (q[1][0] + q[2][0]) / 2
     pw = right - left
     flat = place in ("wallBackLeft", "wallBackCentre", "wallBackRight")
-    if flat:
+    if PHONE:
+        # narrow pointed frames: the picture fits inside, never wider than the frame
+        k = min(pw * 0.96 / sp.width, ph * 0.94 / sp.height)
+        w, h2 = sp.width * k, sp.height * k
+        cx = (left + right) / 2; cy = (top + bot) / 2
+        quad = [(cx - w / 2, cy - h2 / 2), (cx + w / 2, cy - h2 / 2),
+                (cx + w / 2, cy + h2 / 2), (cx - w / 2, cy + h2 / 2)]
+    elif flat:
         natural = ph * sp.width / sp.height
         w = min(max(natural, pw * 1.04), natural * 1.18)   # stretch at most 18%
         cx = (left + right) / 2; cy = (top + bot) / 2
@@ -475,35 +520,48 @@ def build_wall(item, place):
     return L, None
 
 
+CLOTH = {   # table top quad (hangs a little over the edges), front drop x, y, width, height,
+            # rows of the table top, and a box on the bare table for its usual brightness
+    "top": [(650, 503), (932, 503), (1180, 744), (402, 744)],
+    "drop": (401, 742, 780, 125),
+    "rows": (500, 745),
+    "ref": (520, 740, 600, 980),
+}
+
+
 def build_cloth(item):
     tex = Image.open(os.path.join(ITEMS_DIR, ITEMS[item][0])).convert("RGB")
     tex = tex.resize((800, 800), Image.LANCZOS)
     t = np.asarray(tex).astype(float)
     # table top: the cloth hangs a little over the edges
-    top_q = [(650, 503), (932, 503), (1180, 744), (402, 744)]
-    top = tex.resize((800, 1100))
+    top_q = CLOTH["top"]
     L = Layer()
+    if PHONE:
+        # the tall table is long: repeat the cloth along it so the weave keeps its size
+        t = np.concatenate([t, t[::-1], t], axis=0)
     L.im = Image.alpha_composite(L.im, warp_to_quad(Image.fromarray(t.astype(np.uint8)).convert("RGBA"), top_q))
     # front drop with a wavy hem
+    dx, dy, dw, dh = CLOTH["drop"]
     drop = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    strip = tex.crop((0, 0, 800, 200)).resize((780, 125)).convert("RGBA")
+    strip = tex.crop((0, 0, 800, 200)).resize((dw, dh)).convert("RGBA")
     sa = np.asarray(strip).astype(float)
     # folds: darker bands
     xs = np.arange(sa.shape[1])
-    fold = 0.78 + 0.22 * np.cos(xs / 780 * np.pi * 14) ** 2
+    fold = 0.78 + 0.22 * np.cos(xs / dw * np.pi * 14) ** 2
     sa[..., :3] *= fold[None, :, None] * 0.55   # the drop faces us, away from the light
-    hem = 112 + 9 * np.sin(xs / 780 * np.pi * 14)
+    hem = (dh - 13) + 9 * dh / 125 * np.sin(xs / dw * np.pi * 14)
     rows = np.arange(sa.shape[0])[:, None]
     sa[..., 3] = np.where(rows < hem[None, :], 255, 0)
-    drop.paste(Image.fromarray(sa.astype(np.uint8), "RGBA"), (401, 742))
+    drop.paste(Image.fromarray(sa.astype(np.uint8), "RGBA"), (dx, dy))
     L.im = Image.alpha_composite(L.im, drop)
     L.im = moonlight(L.im, 0.55)
     # the table's own shading (light pool, edges) shows through the cloth
     shade = RA.mean(2)
     tm = np.asarray(L.im).astype(float)
-    ref = np.percentile(shade[520:740, 600:980], 60)
+    ry0, ry1, rx0, rx1 = CLOTH["ref"]
+    ref = np.percentile(shade[ry0:ry1, rx0:rx1], 60)
     k = np.clip(shade / max(ref, 1), 0.55, 1.35)[..., None]
-    region = np.zeros((H, W), bool); region[500:745, :] = True
+    region = np.zeros((H, W), bool); region[CLOTH["rows"][0]:CLOTH["rows"][1], :] = True
     tm[..., :3] = np.where(region[..., None], np.clip(tm[..., :3] * (0.55 + 0.45 * k), 0, 255), tm[..., :3])
     L.im = Image.fromarray(tm.astype(np.uint8), "RGBA")
     return L, None
@@ -560,15 +618,99 @@ def lay_flat(sp, u0, v0, width, facing):
     return warp_to_quad(sp, corners)
 
 
+def split_pieces(sp):
+    """A setting picture holds fork, plate and knife side by side: separate them
+    (left to right), each on a canvas the size of the whole picture."""
+    a = np.asarray(sp)
+    lab, n = ndimage.label(a[..., 3] > 60)
+    sizes = np.bincount(lab.ravel())[1:]
+    keep = [i + 1 for i in np.argsort(sizes)[::-1][:3]]
+    keep.sort(key=lambda i: np.nonzero(lab == i)[1].mean())
+    out = []
+    for i in keep:
+        m = np.asarray(Image.fromarray(((lab == i) * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(5))) > 0
+        b = a.copy()
+        b[..., 3] = np.where(m, b[..., 3], 0)
+        out.append(Image.fromarray(b, "RGBA"))
+    return out          # fork, plate, knife
+
+
+def relief(piece, kind):
+    """Light from above the middle of the table, which is the top of the
+    picture (the diner's forward). A plate is a dish: high rim, sunken well, so
+    the well's far wall falls in shadow and its near wall catches the light.
+    Cutlery is rounded: lit along its top edge, darker along the bottom."""
+    a = np.asarray(piece).astype(float)
+    al = a[..., 3] / 255
+    ys, xs = np.nonzero(al > 0.5)
+    if kind == "plate":
+        cx, cy = xs.mean(), ys.mean()
+        R = (xs.max() - xs.min() + ys.max() - ys.min()) / 4
+        yy_, xx_ = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+        r = np.sqrt((xx_ - cx) ** 2 + (yy_ - cy) ** 2) / R
+        t = np.clip((r - 0.60) / 0.12, 0, 1)
+        h = t * t * (3 - 2 * t) * R * 0.10          # the rim stands above the well
+        strength, tilt = 7.0, (0.9 + 0.2 * np.clip((cy - yy_) / R, -1, 1))
+    else:
+        h = ndimage.gaussian_filter(al, 2.0) * 3.0
+        strength, tilt = 2.2, 1.0
+    gy = np.gradient(h, axis=0)
+    shade = np.clip(1 + strength * gy / max(1.0, a.shape[0] / 150), 0.55, 1.45) * tilt
+    a[..., :3] = np.clip(a[..., :3] * shade[..., None], 0, 255)
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
+
+
+def lifted(warped, k, thick, lift, away):
+    """Shadow on the cloth and the edge's thickness under a piece lying on the
+    table. k: pixels per table-width there; away: +1 if the light comes from
+    the right (the shadow falls left)."""
+    A = np.asarray(warped.getchannel("A")).astype(float)
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    # soft shadow, pushed towards the viewer and away from the light
+    off_y, off_x = lift * k, -away * lift * k * 0.6
+    sh = Image.fromarray(A.astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(1.0, lift * k * 0.9)))
+    shadow = Image.new("RGBA", (W, H), (3, 2, 8, 0))
+    shadow.putalpha(sh.point(lambda v: int(v * 0.62)))
+    tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0)); tmp.paste(shadow, (round(off_x), round(off_y)))
+    out = Image.alpha_composite(out, tmp)
+    # the edge: the same outline a little lower, dark (it faces away from the light)
+    t = max(1, round(thick * k))
+    edge = np.asarray(warped).astype(float).copy()
+    solid = edge[..., 3] > 128
+    tone = edge[..., :3][solid].mean(0) * 0.42 if solid.any() else np.zeros(3)
+    edge[..., :3] = tone          # one plain dark tone: a metal edge in shadow, no pattern
+    for dy in range(t, 0, -1):
+        tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        tmp.paste(Image.fromarray(edge.astype(np.uint8), "RGBA"), (0, dy))
+        out = Image.alpha_composite(out, tmp)
+    return out
+
+
 def build_settings(item):
     plate_f, goblet_f = ITEMS[item][0]
-    plate = moonlight(cut_out(plate_f), 0.66)
+    pieces = split_pieces(cut_out(plate_f))
+    kinds = ["cutlery", "plate", "cutlery"]
+    pieces = [moonlight(relief(pc, kd), 0.70) for pc, kd in zip(pieces, kinds)]
     goblet = cut_out(goblet_f)
     L = Layer()
     goblets = []
+    far = max(SEATS_V)
     for v in SEATS_V:
         for u0, facing in ((0.16, 1), (0.84, -1)):
-            L.im = Image.alpha_composite(L.im, lay_flat(plate, u0, v, 0.40, facing))
+            k = float(px_per_unit(u0, v))
+            # further away: a little darker and softer, like the rest of the room
+            dim = 1 - 0.16 * (v / far)
+            for pc, kd in zip(pieces, kinds):
+                w = lay_flat(pc, u0, v, PLATE_W, facing)
+                wa = np.asarray(w).astype(float)
+                wa[..., :3] *= dim
+                w = Image.fromarray(wa.astype(np.uint8), "RGBA")
+                if v / far > 0.6:
+                    w = w.filter(ImageFilter.GaussianBlur(0.5))
+                under = lifted(w, k, 0.010 if kd == "plate" else 0.004,
+                               0.012 if kd == "plate" else 0.007, facing)
+                L.im = Image.alpha_composite(L.im, under)
+                L.im = Image.alpha_composite(L.im, w)
             gu = u0 + 0.19 * facing
             gv = v - 0.10 * facing
             goblets.append((gv, gu))
@@ -656,7 +798,7 @@ def build_ledge(item, place):
     if lit:
         halo, c = flame_halos(L.im, 0, 0, 8, 0.22)
         # light sits above the candles so the body below stays in its own shadow
-        I = halo + glow(c[0], c[1] - 10, {"shelf": 150, "mantel": 180}[place], 0.17)
+        I = halo + glow(c[0], c[1] - 10, LEDGE_GLOW[place], 0.17)
         # the glow lights the wall, not the holder's own metal: keeps silver
         # silver and iron black instead of washing them gold
         body = np.asarray(L.im)[..., 3] / 255.0
@@ -694,23 +836,31 @@ def build_fire():
     alpha = np.maximum(solid, flame * 0.88)
     tmp = Image.fromarray(np.dstack([logs, alpha * 255]).astype(np.uint8), "RGBA")
     L.paste(tmp, x0, y0)
+    if PHONE:
+        # only the part inside the fireplace's opening shows
+        clip = Image.new("L", (W, H), 0)
+        ImageDraw.Draw(clip).polygon(FIRE_OPENING, fill=255)
+        clip = clip.filter(ImageFilter.GaussianBlur(1.5))
+        L.im.putalpha(Image.fromarray((np.asarray(L.im.getchannel("A")) * (np.asarray(clip) / 255)).astype(np.uint8)))
     # andirons in front, taken from the room itself
     m = Image.new("L", (W, H), 0); d = ImageDraw.Draw(m)
     for kind, geo in ANDIRONS:
         {"ellipse": d.ellipse, "rect": d.rectangle, "poly": d.polygon}[kind](geo, fill=255)
     m = m.filter(ImageFilter.GaussianBlur(0.7))
-    andiron = room.convert("RGBA"); andiron.putalpha(m)
-    L.im = Image.alpha_composite(L.im, andiron)
+    if ANDIRONS:
+        andiron = room.convert("RGBA"); andiron.putalpha(m)
+        L.im = Image.alpha_composite(L.im, andiron)
     # light: the flames themselves (soft, see-through), the glowing inside of
     # the fireplace, and the warm spill into the room
     F = np.zeros((H, W))
-    F[y0:y0 + im.height, x0:x0 + im.width] = flame * (mx / 255)
+    fh, fw = im.height, min(im.width, W - x0)       # the phone room cuts the fire at its edge
+    F[y0:y0 + fh, x0:x0 + fw] = (flame * (mx / 255))[:, :fw]
     F = F * 0.25 + ndimage.gaussian_filter(F, 12) * 0.9
     inside = Image.new("L", (W, H), 0)
     ImageDraw.Draw(inside).polygon(FIRE_OPENING, fill=255)
     inside = np.asarray(inside.filter(ImageFilter.GaussianBlur(8))) / 255
     I = F + inside * glow(cx, by - 30, 110, 0.40, 1.2) \
-        + glow(cx, by - 40, 300, 0.20, 0.9) + glow(cx - 100, by + 70, 230, 0.14, 0.4)
+        + glow(cx, by - 40, 300, 0.20, 0.9) + glow(cx - FIRE_SPILL, by + 70, 230, 0.14, 0.4)
     return L, I
 
 
@@ -737,6 +887,61 @@ def build(item, place):
     raise ValueError((item, place, kind))
 
 
+# ---------------------------------------------------------------- the phone room
+if PHONE:
+    # Measured on the squeezed tall room (776 x 1680). Its vanishing point,
+    # where the table's sides meet, is (381, 734).
+    VANISH = (381, 734)
+    CHAIN_END = (377, 178)              # the chain is cut here; the rest and the hook are painted out
+    HOOK_CUT = (178, 382, 350, 408, 62)
+    CHANDELIER_SCALE = 0.95
+    TABLE = [(290, 875), (468, 875), (700, 1251), (48, 1251)]
+    TABLE_POOL = (380, 1040, 260)
+    # A long banquet table: about five widths deep (from its perspective), six
+    # chairs a side. Things stand down its middle, the centre piece furthest back.
+    TABLE_LEN = 4.9
+    SEATS_V = [4.15, 3.40, 2.65, 1.90, 1.15, 0.40]
+    PLATE_W = 0.34
+    CENTRE_PIECE = (0.50, 4.4, 0.66)
+    TREATS = {"treatFront": (0.50, 0.35, 0.24), "treatMiddle": (0.50, 1.10, 0.24)}
+    TABLE_H = homography([(0, 0), (1, 0), (1, TABLE_LEN), (0, TABLE_LEN)],
+                         [TABLE[3], TABLE[2], TABLE[1], TABLE[0]])
+    WALLS = {   # the inside of the three pointed frames on the back wall
+        "wallBackLeft": [(176, 506), (244, 506), (244, 736), (176, 736)],
+        "wallBackCentre": [(298, 458), (444, 458), (444, 736), (298, 736)],
+        "wallBackRight": [(500, 506), (578, 506), (578, 736), (500, 736)],
+    }
+    STANDS = {"tableCentre": (0, 0, 0, 0.66)}
+    CLOTH = {
+        "top": [(284, 870), (474, 870), (712, 1254), (36, 1254)],
+        "drop": (36, 1252, 676, 118),
+        "rows": (866, 1256),
+        "ref": (900, 1240, 250, 520),
+    }
+    GRAMOPHONE = (726, 1404, 215)       # on the little round side table
+    # The niche shelf and the mantel run along the right wall. The squeezed
+    # edge of the picture makes them slope more steeply than the vanishing
+    # point says, so both lines are measured on the picture itself. Both are
+    # above eye level, so feet hide behind the edge.
+
+    def shelf_edge(x):
+        return 586 - 0.60 * (np.asarray(x, float) - 657)
+
+    def mantel_edge(x):
+        return 631 - 0.55 * (np.asarray(x, float) - 673)
+
+    LEDGES = {"shelf": (680, shelf_edge, 62, 0.55), "mantel": (728, mantel_edge, 118, 0.60)}
+    LEDGE_GLOW = {"shelf": 90, "mantel": 130}
+    FIRE = (772, 988, 104)
+    FIRE_SPILL = 160
+    FIRE_OPENING = [(738, 992), (738, 760), (748, 738), (764, 726), (776, 722), (776, 992)]
+    ANDIRONS = []
+    for _w in ("wallLeft", "wallRight"):
+        PLACES.pop(_w, None)
+    # the little side table stands nearer than the dining table: the gramophone goes on top
+    ORDER = [p for p in ORDER if p not in ("wallLeft", "wallRight", "corner")] + ["corner"]
+
+
 # ---------------------------------------------------------------- run
 def main(preview_choice=None):
     os.makedirs(os.path.join(OUT, "patches"), exist_ok=True)
@@ -746,6 +951,8 @@ def main(preview_choice=None):
     room.save(os.path.join(OUT, "room.webp"), quality=86)
 
     for item, (f, kind, _) in ITEMS.items():
+        if PHONE:
+            break                      # icons are shared with the computer room
         if item in ICON_FILE:
             ic = cut_out(ICON_FILE[item])
             ic.thumbnail((256, 256), Image.LANCZOS)
@@ -800,7 +1007,7 @@ def main(preview_choice=None):
         if I is not None:
             light = light + I
     final = screen(img.convert("RGB"), light_layer(light))
-    final.save(os.path.join(SRC, "_castle-preview.png"))
+    final.save(os.path.join(SRC, f"_castle{SUFFIX}-preview.png"))
 
     # contact sheet: every item in every place, cropped around the place
     tiles = []
@@ -823,7 +1030,7 @@ def main(preview_choice=None):
     sheet = Image.new("RGB", (cols * 250, rows * 270), (8, 6, 14))
     for i, t in enumerate(tiles):
         sheet.paste(t, ((i % cols) * 250, (i // cols) * 270))
-    sheet.save(os.path.join(SRC, "_castle-contact.png"))
+    sheet.save(os.path.join(SRC, f"_castle{SUFFIX}-contact.png"))
     print(len(tiles), "patches")
 
 

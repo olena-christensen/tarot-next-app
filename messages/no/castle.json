@@ -117,6 +117,8 @@
     "inHall": "I salen",
     "inStorage": "Blant tingene dine",
     "yoursNow": "Din nå",
-    "sendShort": "Send"
+    "sendShort": "Send",
+    "roomOnly": "Bare salen",
+    "showButtons": "Vis knappene"
   }
 }
