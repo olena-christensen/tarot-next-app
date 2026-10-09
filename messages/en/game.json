@@ -43,9 +43,9 @@
     "brewYourOwn": "Brew your own",
     "giftMetaTitle": "{potion} — a potion brewed for you",
     "giftMetaDescription": "A potion brewed for you at The Veil. Find the hidden ingredients and brew your own.",
-    "entranceSeasonal": "A Halloween treat",
-    "entranceDefault": "A little game",
-    "entranceCta": "Brew the Potion",
+    "entranceSeasonal": "Halloween is coming",
+    "entranceDefault": "Witchy games",
+    "entranceCta": "Enter if you dare",
     "potionNames": {
       "batEye": "Elixir of Night Sight",
       "frogTongue": "Draught of Silver Words",
@@ -82,6 +82,15 @@
     "boiledTitle": "The potion boiled over!",
     "boiledSummary": "You found {got} of {total} ingredients.",
     "soundOff": "Mute sound",
-    "soundOn": "Turn sound on"
+    "soundOn": "Turn sound on",
+    "choiceTitleSeasonal": "Halloween games",
+    "choiceTitle": "Witchy games",
+    "choiceSub": "Pick your night.",
+    "choicePotion": "Find the ingredients before it boils over",
+    "choiceCastle": "Dress the castle hall for the party",
+    "choicePlay": "Play",
+    "choiceEnter": "Enter",
+    "choiceNew": "New",
+    "castleTitle": "They Arrive at Midnight"
   }
 }

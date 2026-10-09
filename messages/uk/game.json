@@ -43,9 +43,9 @@
     "brewYourOwn": "Зварити своє",
     "giftMetaTitle": "{potion} — зілля, зварене для тебе",
     "giftMetaDescription": "Зілля, зварене для тебе в The Veil. Знайди сховані інгредієнти й звари своє.",
-    "entranceSeasonal": "Частування до Гелловіну",
-    "entranceDefault": "Маленька гра",
-    "entranceCta": "Звари зілля",
+    "entranceSeasonal": "Гелловін наближається",
+    "entranceDefault": "Відьомські ігри",
+    "entranceCta": "Увійди, якщо наважишся",
     "potionNames": {
       "batEye": "Еліксир нічного зору",
       "frogTongue": "Відвар срібного слова",
@@ -82,6 +82,15 @@
     "boiledTitle": "Зілля втекло!",
     "boiledSummary": "Знайдено {got} з {total} інгредієнтів.",
     "soundOff": "Вимкнути звук",
-    "soundOn": "Увімкнути звук"
+    "soundOn": "Увімкнути звук",
+    "choiceTitleSeasonal": "Ігри на Гелловін",
+    "choiceTitle": "Відьомські ігри",
+    "choiceSub": "Обери свою ніч.",
+    "choicePotion": "Знайди інгредієнти, доки зілля не закипіло",
+    "choiceCastle": "Прикрась залу замку до вечірки",
+    "choicePlay": "Грати",
+    "choiceEnter": "Увійти",
+    "choiceNew": "Нове",
+    "castleTitle": "Вони прийдуть опівночі"
   }
 }

@@ -43,9 +43,9 @@
     "brewYourOwn": "Сварить своё",
     "giftMetaTitle": "{potion} — зелье, сваренное для тебя",
     "giftMetaDescription": "Зелье, сваренное для тебя в The Veil. Найди спрятанные ингредиенты и свари своё.",
-    "entranceSeasonal": "Угощение к Хэллоуину",
-    "entranceDefault": "Маленькая игра",
-    "entranceCta": "Свари зелье",
+    "entranceSeasonal": "Хэллоуин близко",
+    "entranceDefault": "Ведьминские игры",
+    "entranceCta": "Войди, если осмелишься",
     "potionNames": {
       "batEye": "Эликсир ночного зрения",
       "frogTongue": "Отвар серебряного слова",
@@ -82,6 +82,15 @@
     "boiledTitle": "Зелье убежало!",
     "boiledSummary": "Найдено {got} из {total} ингредиентов.",
     "soundOff": "Выключить звук",
-    "soundOn": "Включить звук"
+    "soundOn": "Включить звук",
+    "choiceTitleSeasonal": "Игры на Хэллоуин",
+    "choiceTitle": "Ведьминские игры",
+    "choiceSub": "Выбери свою ночь.",
+    "choicePotion": "Найди ингредиенты, пока зелье не закипело",
+    "choiceCastle": "Укрась зал замка к вечеринке",
+    "choicePlay": "Играть",
+    "choiceEnter": "Войти",
+    "choiceNew": "Новое",
+    "castleTitle": "Они придут в полночь"
   }
 }

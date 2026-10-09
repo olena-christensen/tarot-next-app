@@ -43,9 +43,9 @@
     "brewYourOwn": "Brygg din egen",
     "giftMetaTitle": "{potion} — en trylledrikk brygget til deg",
     "giftMetaDescription": "En trylledrikk brygget til deg hos The Veil. Finn de skjulte ingrediensene og brygg din egen.",
-    "entranceSeasonal": "En halloweengodbit",
-    "entranceDefault": "Et lite spill",
-    "entranceCta": "Brygg trylledrikken",
+    "entranceSeasonal": "Halloween nærmer seg",
+    "entranceDefault": "Heksespill",
+    "entranceCta": "Gå inn om du tør",
     "potionNames": {
       "batEye": "Eliksir for nattsyn",
       "frogTongue": "Drikk for sølvtunge",
@@ -82,6 +82,15 @@
     "boiledTitle": "Trylledrikken kokte over!",
     "boiledSummary": "Du fant {got} av {total} ingredienser.",
     "soundOff": "Slå av lyden",
-    "soundOn": "Slå på lyden"
+    "soundOn": "Slå på lyden",
+    "choiceTitleSeasonal": "Halloweenspill",
+    "choiceTitle": "Heksespill",
+    "choiceSub": "Velg din natt.",
+    "choicePotion": "Finn ingrediensene før det koker over",
+    "choiceCastle": "Pynt slottssalen til festen",
+    "choicePlay": "Spill",
+    "choiceEnter": "Gå inn",
+    "choiceNew": "Ny",
+    "castleTitle": "De kommer ved midnatt"
   }
 }
