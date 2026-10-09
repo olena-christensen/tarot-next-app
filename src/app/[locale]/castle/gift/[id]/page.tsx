@@ -34,14 +34,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = gift.from ? t("giftCardFrom", { name: gift.from, item }) : t("giftCardAnon", { item });
   const description = t("giftMetaDescription");
   const url = absoluteUrl(`/castle/gift/${params.id}`);
-  const image = gift.itemId ? absoluteUrl(`/game-art/castle/icons/${gift.itemId}.webp`) : absoluteUrl("/game-art/castle/share-card.jpg");
   return {
     title,
     description,
     robots: { index: false, follow: false },
     alternates: { canonical: url },
-    openGraph: { type: "website", url, title, description, siteName: "The Veil", images: [image] },
-    twitter: { card: "summary_large_image", title, description, images: [image] },
+    // The picture comes from opengraph-image.tsx next to this page: the item, the
+    // sender and the hall, as a PNG that Facebook and others can show.
+    openGraph: { type: "website", url, title, description, siteName: "The Veil" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
