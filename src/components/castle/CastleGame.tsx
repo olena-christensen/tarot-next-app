@@ -25,39 +25,55 @@ import {
 } from "@/lib/castleGame/catalog";
 import type { CastleState } from "@/lib/castleGame/server";
 import ART from "@/lib/castleGame/places.generated.json";
+import PHONE_ART from "@/lib/castleGame/places.phone.generated.json";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 import { CastleWheel } from "./CastleWheel";
 
 /**
  * "They Arrive at Midnight": dress an abandoned castle's dining hall.
  *
- * The room is a 1600×899 world. On wide screens it fits the width; on phones it
- * fits the height and scrolls sideways (the browser's own scrolling, so taps and
- * swipes just work). Every item in every place is a pre-rendered patch
+ * The room is a 1600×899 world. On wide screens it fits the width. Phones held
+ * upright get their own tall room (776×1680, Lena 2026-10-09) that fills the
+ * screen; it shows only the three back-wall frames, so whatever hangs on the
+ * side walls is seen on a computer only. Every item in every place is a pre-rendered patch
  * (scripts/build-castle-art.py); lit items add a warm light layer on top,
  * blended with "screen" so it brightens the room like real light.
  */
 
 type Box = { x: number; y: number; w: number; h: number };
 type Patch = Box & { light?: Box };
-const WORLD = { w: ART.width, h: ART.height };
-const ORDER = ART.order as PlaceId[];
-const PATCHES = ART.places as unknown as Record<PlaceId, Record<string, Patch>>;
+type Layout = {
+  world: { w: number; h: number };
+  order: PlaceId[];
+  patches: Record<PlaceId, Record<string, Patch>>;
+  /** The glowing outline for a place: all its possible items together. */
+  placeBox: Partial<Record<PlaceId, Box>>;
+  /** Where its room, patches and lights live. */
+  art: string;
+};
+
+function layout(data: typeof ART | typeof PHONE_ART, art: string): Layout {
+  const patches = data.places as unknown as Record<PlaceId, Record<string, Patch>>;
+  const placeBox = Object.fromEntries(
+    Object.entries(patches).map(([place, items]) => {
+      const boxes = Object.values(items);
+      const x0 = Math.min(...boxes.map((b) => b.x));
+      const y0 = Math.min(...boxes.map((b) => b.y));
+      const x1 = Math.max(...boxes.map((b) => b.x + b.w));
+      const y1 = Math.max(...boxes.map((b) => b.y + b.h));
+      return [place, { x: x0, y: y0, w: x1 - x0, h: y1 - y0 }];
+    }),
+  );
+  return { world: { w: data.width, h: data.height }, order: data.order as PlaceId[], patches, placeBox, art };
+}
+
+const WIDE_ROOM = layout(ART, "/game-art/castle");
+const TALL_ROOM = layout(PHONE_ART, "/game-art/castle/phone");
 const ICON = (id: string) => `/game-art/castle/icons/${id}.webp`;
 /** Phones (portrait, or landscape with little height): the hall takes the whole screen, no site header (Lena, 2026-10-09). */
 const FULL_SCREEN_QUERY = "(max-width: 48em), (max-height: 500px)";
-
-/** The glowing outline for a place: all its possible items together. */
-const PLACE_BOX: Record<string, Box> = Object.fromEntries(
-  Object.entries(PATCHES).map(([place, items]) => {
-    const boxes = Object.values(items);
-    const x0 = Math.min(...boxes.map((b) => b.x));
-    const y0 = Math.min(...boxes.map((b) => b.y));
-    const x1 = Math.max(...boxes.map((b) => b.x + b.w));
-    const y1 = Math.max(...boxes.map((b) => b.y + b.h));
-    return [place, { x: x0, y: y0, w: x1 - x0, h: y1 - y0 }];
-  }),
-);
+/** Phones held upright get the tall room. */
+const TALL_ROOM_QUERY = "(max-width: 48em) and (orientation: portrait)";
 
 type SpinOutcome = {
   pane: number;
@@ -133,20 +149,39 @@ export const CastleGame = () => {
 
   // ---------- viewport ----------
   const [fullScreen, setFullScreen] = useState(false);
+  const [tall, setTall] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia(FULL_SCREEN_QUERY);
-    const sync = () => setFullScreen(mq.matches);
+    const full = window.matchMedia(FULL_SCREEN_QUERY);
+    const upright = window.matchMedia(TALL_ROOM_QUERY);
+    const sync = () => {
+      setFullScreen(full.matches);
+      setTall(upright.matches);
+    };
     sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
+    full.addEventListener("change", sync);
+    upright.addEventListener("change", sync);
+    return () => {
+      full.removeEventListener("change", sync);
+      upright.removeEventListener("change", sync);
+    };
   }, []);
+  const room = tall ? TALL_ROOM : WIDE_ROOM;
+  const { world: WORLD, order: ORDER, patches: PATCHES, placeBox: PLACE_BOX } = room;
+
+  // "Room only" (Lena, 2026-10-09): every button and line hides, the hall fills the screen.
+  const [bare, setBare] = useState(false);
+  const immersive = fullScreen || bare;
   useEffect(() => {
-    document.documentElement.classList.toggle("castle-locked", fullScreen);
+    document.documentElement.classList.toggle("castle-locked", immersive);
     return () => document.documentElement.classList.remove("castle-locked");
-  }, [fullScreen]);
+  }, [immersive]);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const centred = useRef(false);
+  const immersiveRef = useRef(immersive);
+  immersiveRef.current = immersive;
+  const worldRef = useRef(WORLD);
+  worldRef.current = WORLD;
   const [scale, setScale] = useState(0.5);
   const [scroll, setScroll] = useState({ left: 0, width: 0 });
 
@@ -155,26 +190,44 @@ export const CastleGame = () => {
     if (!stage) return;
     const fit = () => {
       const { clientWidth: w, clientHeight: h } = stage;
+      const world = worldRef.current;
       // Wide screens: the whole room fits the width. Phones: fit the height and scroll.
-      const s = w / h >= WORLD.w / WORLD.h ? w / WORLD.w : h / WORLD.h;
+      const wide = w / h >= world.w / world.h;
+      // Full screen fills it ("cover"); the page view shows the whole room ("contain").
+      const s = immersiveRef.current
+        ? Math.max(w / world.w, h / world.h)
+        : wide
+          ? w / world.w
+          : h / world.h;
       setScale(s);
       setScroll({ left: stage.scrollLeft, width: w });
     };
     fit();
+    window.addEventListener("castle:refit", fit);
     const ro = new ResizeObserver(fit);
     ro.observe(stage);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("castle:refit", fit);
+    };
   }, []);
+
+  useEffect(() => {
+    centred.current = false; // re-centre for the new size
+    window.dispatchEvent(new Event("castle:refit"));
+  }, [immersive, tall]);
 
   // Phones open on the middle of the room (the table) — once the room has its
   // real size, so the middle is the real middle.
   useLayoutEffect(() => {
     const stage = stageRef.current;
-    if (!stage || centred.current || stage.scrollWidth <= stage.clientWidth) return;
+    if (!stage || centred.current) return;
+    if (stage.scrollWidth <= stage.clientWidth && stage.scrollHeight <= stage.clientHeight) return;
     stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
+    stage.scrollTop = (stage.scrollHeight - stage.clientHeight) / 2;
     setScroll({ left: stage.scrollLeft, width: stage.clientWidth });
     centred.current = true;
-  }, [scale, fullScreen]);
+  }, [scale, immersive, tall]);
 
   const onScroll = () => {
     const stage = stageRef.current;
@@ -317,9 +370,10 @@ export const CastleGame = () => {
   };
 
   // ---------- room ----------
-  const ringPlaces = placing ? (catalogItem(placing.itemId)?.places ?? []) : [];
-  const offLeft = ringPlaces.filter((p) => (PLACE_BOX[p].x + PLACE_BOX[p].w) * scale < scroll.left).length;
-  const offRight = ringPlaces.filter((p) => PLACE_BOX[p].x * scale > scroll.left + scroll.width).length;
+  // only the places this room shows (the tall room has no side walls)
+  const ringPlaces = placing ? (catalogItem(placing.itemId)?.places ?? []).filter((p) => PLACE_BOX[p]) : [];
+  const offLeft = ringPlaces.filter((p) => (PLACE_BOX[p]!.x + PLACE_BOX[p]!.w) * scale < scroll.left).length;
+  const offRight = ringPlaces.filter((p) => PLACE_BOX[p]!.x * scale > scroll.left + scroll.width).length;
 
   const lights = ORDER.flatMap((place) => {
     const row = placedAt.get(place);
@@ -336,7 +390,7 @@ export const CastleGame = () => {
   const menuPatch = menu?.place ? PATCHES[menu.place]?.[menu.itemId] : null;
 
   return (
-    <section className={`castle${fullScreen ? " castle--full" : ""}`}>
+    <section className={`castle${immersive ? " castle--full" : ""}${bare ? " castle--bare" : ""}`}>
       <h1 className="castle__title">{t("title")}</h1>
       <p className="castle__subtitle">{t("subtitle")}</p>
 
@@ -347,6 +401,12 @@ export const CastleGame = () => {
           onClick={() => (needSignIn() ? undefined : setWheelOpen(true))}
         >
           ✦ {canFree ? t("wheelFree") : t("wheelButton")}
+        </button>
+        <button type="button" className="castle__eye" onClick={() => setBare(true)} aria-label={t("roomOnly")} title={t("roomOnly")}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
         </button>
         {fullScreen && (
           <Link href="/" className="castle__home" aria-label={t("close")}>
@@ -360,7 +420,7 @@ export const CastleGame = () => {
           <div className="castle__extent" style={{ width: WORLD.w * scale, height: WORLD.h * scale }}>
             <div className="castle__world" style={{ width: WORLD.w, height: WORLD.h, transform: `scale(${scale})` }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="castle__room" src="/game-art/castle/room.webp" alt="" draggable={false} />
+              <img className="castle__room" src={`${room.art}/room.webp`} alt="" draggable={false} />
               {ORDER.map((place) => {
                 const row = placedAt.get(place);
                 const patch = row ? PATCHES[place]?.[row.itemId] : undefined;
@@ -370,7 +430,7 @@ export const CastleGame = () => {
                   <img
                     key={place}
                     className="castle__patch"
-                    src={`/game-art/castle/patches/${row.itemId}--${place}.webp`}
+                    src={`${room.art}/patches/${row.itemId}--${place}.webp`}
                     style={{ left: patch.x, top: patch.y, width: patch.w, height: patch.h }}
                     alt=""
                     draggable={false}
@@ -382,7 +442,7 @@ export const CastleGame = () => {
                 <img
                   key={`l-${place}`}
                   className={`castle__light${place === "fireplace" ? " castle__light--fire" : ""}`}
-                  src={`/game-art/castle/lights/${itemId}--${place}.webp`}
+                  src={`${room.art}/lights/${itemId}--${place}.webp`}
                   style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
                   alt=""
                   draggable={false}
@@ -407,7 +467,7 @@ export const CastleGame = () => {
                 })}
               {placing &&
                 ringPlaces.map((place) => {
-                  const b = PLACE_BOX[place];
+                  const b = PLACE_BOX[place]!;
                   return (
                     <button
                       key={`r-${place}`}
@@ -423,6 +483,15 @@ export const CastleGame = () => {
           </div>
         </div>
 
+        {bare && (
+          <button type="button" className="castle__unbare" onClick={() => setBare(false)} aria-label={t("showButtons")} title={t("showButtons")}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M4 4l16 16" />
+            </svg>
+          </button>
+        )}
         {placing && (
           <div className="castle__banner">
             {/* eslint-disable-next-line @next/next/no-img-element */}

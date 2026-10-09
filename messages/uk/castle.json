@@ -117,6 +117,8 @@
     "inHall": "У залі",
     "inStorage": "У твоїх речах",
     "yoursNow": "Тепер твоє",
-    "sendShort": "Надіслати"
+    "sendShort": "Надіслати",
+    "roomOnly": "Лише зала",
+    "showButtons": "Показати кнопки"
   }
 }

@@ -117,6 +117,8 @@
     "inHall": "Salonda",
     "inStorage": "Eşyalarında",
     "yoursNow": "Artık senin",
-    "sendShort": "Gönder"
+    "sendShort": "Gönder",
+    "roomOnly": "Sadece salon",
+    "showButtons": "Düğmeleri göster"
   }
 }
