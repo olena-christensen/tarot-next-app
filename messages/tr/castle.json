@@ -119,6 +119,8 @@
     "yoursNow": "Artık senin",
     "sendShort": "Gönder",
     "roomOnly": "Sadece salon",
-    "showButtons": "Düğmeleri göster"
+    "showButtons": "Düğmeleri göster",
+    "listen": "Dinle",
+    "stopListening": "Durdur"
   }
 }

@@ -570,6 +570,7 @@ html.castle-locked body {
   }
 
   &__pic {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -581,6 +582,36 @@ html.castle-locked body {
       max-width: 86%;
       max-height: 100px;
       object-fit: contain;
+    }
+  }
+
+  // Listen to a record before buying it (Lena, 2026-10-09).
+  &__listen {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    background: rgba(9, 9, 9, 0.85);
+    border: 1px solid rgba(250, 225, 163, 0.6);
+    border-radius: 50%;
+    color: var(--text-soft);
+    cursor: pointer;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    &--on {
+      border-color: rgba(250, 225, 163, 0.95);
+      box-shadow: 0 0 14px rgba(250, 225, 163, 0.45);
+      animation: castleGlow 2.4s ease-in-out infinite alternate;
     }
   }
 

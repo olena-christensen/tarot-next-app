@@ -119,6 +119,8 @@
     "yoursNow": "Din nå",
     "sendShort": "Send",
     "roomOnly": "Bare salen",
-    "showButtons": "Vis knappene"
+    "showButtons": "Vis knappene",
+    "listen": "Lytt",
+    "stopListening": "Stopp"
   }
 }

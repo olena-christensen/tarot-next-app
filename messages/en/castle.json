@@ -119,6 +119,8 @@
     "yoursNow": "Yours now",
     "sendShort": "Send",
     "roomOnly": "Room only",
-    "showButtons": "Show buttons"
+    "showButtons": "Show buttons",
+    "listen": "Listen",
+    "stopListening": "Stop"
   }
 }

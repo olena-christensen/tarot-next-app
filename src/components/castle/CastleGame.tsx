@@ -109,6 +109,51 @@ export const CastleGame = () => {
   const [share, setShare] = useState<{ url: string; name: string } | null>(null);
   const [sentNote, setSentNote] = useState(false);
   const [storageOpen, setStorageOpen] = useState(false);
+
+  // ---------- listening to records (Lena, 2026-10-09) ----------
+  // One sample at a time; closing the window stops it.
+  const [listening, setListening] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const stopListening = useCallback(() => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    setListening(null);
+  }, []);
+  const listen = (item: CatalogItem) => {
+    if (!item.sample) return;
+    const same = listening === item.id;
+    stopListening();
+    if (same) return;
+    const audio = new Audio(`/sounds/castle/${item.sample}-sample.mp3`);
+    audio.addEventListener("ended", () => {
+      if (audioRef.current === audio) stopListening();
+    });
+    audioRef.current = audio;
+    setListening(item.id);
+    audio.play().catch(() => {
+      if (audioRef.current === audio) stopListening();
+    });
+    track("castle_listen", { item: item.id });
+  };
+  useEffect(() => {
+    if (!catalogOpen && !storageOpen) stopListening();
+  }, [catalogOpen, storageOpen, stopListening]);
+  useEffect(() => stopListening, [stopListening]);
+  const listenButton = (item: CatalogItem) =>
+    item.sample ? (
+      <button
+        type="button"
+        className={`castle-card__listen${listening === item.id ? " castle-card__listen--on" : ""}`}
+        onClick={() => listen(item)}
+        aria-label={t(listening === item.id ? "stopListening" : "listen")}
+        title={t(listening === item.id ? "stopListening" : "listen")}
+        aria-pressed={listening === item.id}
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          {listening === item.id ? <rect x="3" y="3" width="10" height="10" rx="1" /> : <path d="M4 2.5v11l9.5-5.5z" />}
+        </svg>
+      </button>
+    ) : null;
   // Just bought: place it, keep it or give it away (Lena, 2026-10-09).
   const [got, setGot] = useState<OwnedItem | null>(null);
 
@@ -613,6 +658,7 @@ export const CastleGame = () => {
                   <div className="castle-card__pic">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={ICON(item.id)} alt="" loading="lazy" />
+                    {listenButton(item)}
                   </div>
                   <p className="castle-card__name">{t(`items.${item.id}`)}</p>
                   {owned > 0 && <p className="castle-card__owned">✓ {t("ownedCount", { count: owned })}</p>}
@@ -664,6 +710,7 @@ export const CastleGame = () => {
                     <div className="castle-card__pic">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={ICON(row.itemId)} alt="" loading="lazy" />
+                      {listenButton(item)}
                     </div>
                     <p className="castle-card__name">{t(`items.${row.itemId}`)}</p>
                     <p className="castle-card__owned">{statusOf(row)}</p>

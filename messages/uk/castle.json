@@ -119,6 +119,8 @@
     "yoursNow": "Тепер твоє",
     "sendShort": "Надіслати",
     "roomOnly": "Лише зала",
-    "showButtons": "Показати кнопки"
+    "showButtons": "Показати кнопки",
+    "listen": "Послухати",
+    "stopListening": "Зупинити"
   }
 }
