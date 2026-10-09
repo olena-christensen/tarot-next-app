@@ -71,6 +71,8 @@ model User {
   potionRounds       PotionRound[]            @relation("PotionRoundsPlayed")
   potionGiftsTaken   PotionRound[]            @relation("PotionGiftsTaken")
   potionRewards      PotionReward[]
+  castleItems        CastleItem[]
+  castleSpins        CastleSpin[]
 }
 
 /// Heartbeat: one row per scheduled job, stamped when that job finishes a run.
@@ -267,4 +269,39 @@ model PotionReward {
   createdAt DateTime @default(now())
 
   @@id([userId, day])
+}
+
+/// "They Arrive at Midnight": one row per item a player owns. `place` is where
+/// it stands in their castle room (null = in their items). `sentAt` set = sent
+/// to a friend and waiting (hidden from the sender; back home after 7 days).
+model CastleItem {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Catalog id, see src/lib/castleGame/catalog.ts.
+  itemId    String
+  place     String?
+  /// "bought", "wheel" or "gift".
+  source    String
+  createdAt DateTime  @default(now())
+  sentAt    DateTime?
+  takenAt   DateTime?
+
+  @@unique([userId, place])
+  @@index([userId])
+}
+
+/// One free and one paid wheel spin per player per Kyiv day.
+model CastleSpin {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Kyiv calendar day (YYYY-MM-DD).
+  day       String
+  /// "free" or "paid".
+  kind      String
+  /// What it gave: a catalog item id, or the prize kind (stone1/2/3).
+  prize     String
+  createdAt DateTime @default(now())
+
+  @@id([userId, day, kind])
 }

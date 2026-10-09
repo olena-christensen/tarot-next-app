@@ -34,7 +34,6 @@
     "doneSummary": "Усі інгредієнти ({count}) за {time}",
     "sendToFriend": "Надіслати другові",
     "shareTitle": "{potion} — зварено в The Veil",
-    "shareText": "Я зварив(ла) тобі «{potion}». Звари своє:",
     "slack": "Slack",
     "slackCopied": "Посилання скопійовано — встав його в Slack.",
     "giftFrom": "{name} зварив(ла) це для тебе",

@@ -1,0 +1,629 @@
+{
+ "width": 1600,
+ "height": 899,
+ "order": [
+  "wallLeft",
+  "wallBackLeft",
+  "wallBackCentre",
+  "wallBackRight",
+  "wallRight",
+  "shelf",
+  "fireplace",
+  "mantel",
+  "ceiling",
+  "corner",
+  "cloth",
+  "settings",
+  "tableCentre",
+  "treatMiddle",
+  "treatFront"
+ ],
+ "places": {
+  "wallLeft": {
+   "mirrorGilt": {
+    "x": 17,
+    "y": 107,
+    "w": 137,
+    "h": 357
+   },
+   "mirrorGhost": {
+    "x": 18,
+    "y": 107,
+    "w": 135,
+    "h": 356
+   },
+   "paintingRaven": {
+    "x": 16,
+    "y": 94,
+    "w": 139,
+    "h": 376
+   },
+   "paintingSea": {
+    "x": 16,
+    "y": 96,
+    "w": 139,
+    "h": 373
+   },
+   "paintingLady": {
+    "x": 16,
+    "y": 95,
+    "w": 139,
+    "h": 374
+   },
+   "paintingCastle": {
+    "x": 16,
+    "y": 93,
+    "w": 139,
+    "h": 378
+   },
+   "paintingAncestor": {
+    "x": 16,
+    "y": 96,
+    "w": 139,
+    "h": 372
+   }
+  },
+  "wallBackLeft": {
+   "mirrorGilt": {
+    "x": 525,
+    "y": 205,
+    "w": 140,
+    "h": 219
+   },
+   "mirrorGhost": {
+    "x": 531,
+    "y": 206,
+    "w": 128,
+    "h": 217
+   },
+   "paintingRaven": {
+    "x": 508,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingSea": {
+    "x": 508,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingLady": {
+    "x": 508,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingCastle": {
+    "x": 508,
+    "y": 203,
+    "w": 174,
+    "h": 223
+   },
+   "paintingAncestor": {
+    "x": 508,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   }
+  },
+  "wallBackCentre": {
+   "mirrorGilt": {
+    "x": 709,
+    "y": 184,
+    "w": 182,
+    "h": 249
+   },
+   "mirrorGhost": {
+    "x": 719,
+    "y": 185,
+    "w": 162,
+    "h": 247
+   },
+   "paintingRaven": {
+    "x": 687,
+    "y": 183,
+    "w": 226,
+    "h": 251
+   },
+   "paintingSea": {
+    "x": 686,
+    "y": 183,
+    "w": 227,
+    "h": 251
+   },
+   "paintingLady": {
+    "x": 687,
+    "y": 183,
+    "w": 226,
+    "h": 251
+   },
+   "paintingCastle": {
+    "x": 687,
+    "y": 182,
+    "w": 226,
+    "h": 253
+   },
+   "paintingAncestor": {
+    "x": 687,
+    "y": 183,
+    "w": 226,
+    "h": 251
+   }
+  },
+  "wallBackRight": {
+   "mirrorGilt": {
+    "x": 935,
+    "y": 205,
+    "w": 140,
+    "h": 219
+   },
+   "mirrorGhost": {
+    "x": 942,
+    "y": 206,
+    "w": 126,
+    "h": 217
+   },
+   "paintingRaven": {
+    "x": 918,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingSea": {
+    "x": 918,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingLady": {
+    "x": 918,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   },
+   "paintingCastle": {
+    "x": 918,
+    "y": 203,
+    "w": 174,
+    "h": 223
+   },
+   "paintingAncestor": {
+    "x": 918,
+    "y": 204,
+    "w": 174,
+    "h": 221
+   }
+  },
+  "wallRight": {
+   "mirrorGilt": {
+    "x": 1108,
+    "y": 197,
+    "w": 84,
+    "h": 230
+   },
+   "mirrorGhost": {
+    "x": 1108,
+    "y": 196,
+    "w": 83,
+    "h": 230
+   },
+   "paintingRaven": {
+    "x": 1108,
+    "y": 187,
+    "w": 84,
+    "h": 246
+   },
+   "paintingSea": {
+    "x": 1108,
+    "y": 188,
+    "w": 84,
+    "h": 244
+   },
+   "paintingLady": {
+    "x": 1108,
+    "y": 188,
+    "w": 84,
+    "h": 244
+   },
+   "paintingCastle": {
+    "x": 1108,
+    "y": 186,
+    "w": 84,
+    "h": 247
+   },
+   "paintingAncestor": {
+    "x": 1108,
+    "y": 188,
+    "w": 84,
+    "h": 243
+   }
+  },
+  "shelf": {
+   "candelabraSilver": {
+    "x": 1218,
+    "y": 151,
+    "w": 79,
+    "h": 128,
+    "light": {
+     "x": 972,
+     "y": 0,
+     "w": 583,
+     "h": 405
+    }
+   },
+   "candelabraBlackWax": {
+    "x": 1224,
+    "y": 148,
+    "w": 67,
+    "h": 127,
+    "light": {
+     "x": 971,
+     "y": 0,
+     "w": 582,
+     "h": 406
+    }
+   },
+   "candelabraSkull": {
+    "x": 1223,
+    "y": 148,
+    "w": 69,
+    "h": 127,
+    "light": {
+     "x": 977,
+     "y": 0,
+     "w": 583,
+     "h": 404
+    }
+   },
+   "candelabraSilverFive": {
+    "x": 1227,
+    "y": 148,
+    "w": 61,
+    "h": 127,
+    "light": {
+     "x": 972,
+     "y": 0,
+     "w": 582,
+     "h": 404
+    }
+   },
+   "candlesSkull": {
+    "x": 1230,
+    "y": 166,
+    "w": 64,
+    "h": 105,
+    "light": {
+     "x": 969,
+     "y": 0,
+     "w": 583,
+     "h": 458
+    }
+   },
+   "vaseBlackRoses": {
+    "x": 1222,
+    "y": 147,
+    "w": 79,
+    "h": 132
+   },
+   "vaseLavender": {
+    "x": 1219,
+    "y": 142,
+    "w": 86,
+    "h": 129
+   },
+   "vaseLilies": {
+    "x": 1222,
+    "y": 141,
+    "w": 80,
+    "h": 129
+   },
+   "vaseRavenRoses": {
+    "x": 1214,
+    "y": 146,
+    "w": 96,
+    "h": 132
+   }
+  },
+  "fireplace": {
+   "firewood": {
+    "x": 1364,
+    "y": 548,
+    "w": 157,
+    "h": 151,
+    "light": {
+     "x": 855,
+     "y": 108,
+     "w": 745,
+     "h": 791
+    }
+   }
+  },
+  "mantel": {
+   "candelabraSilver": {
+    "x": 1381,
+    "y": 121,
+    "w": 109,
+    "h": 182,
+    "light": {
+     "x": 1090,
+     "y": 0,
+     "w": 510,
+     "h": 433
+    }
+   },
+   "candelabraBlackWax": {
+    "x": 1390,
+    "y": 118,
+    "w": 91,
+    "h": 182,
+    "light": {
+     "x": 1092,
+     "y": 0,
+     "w": 508,
+     "h": 433
+    }
+   },
+   "candelabraSkull": {
+    "x": 1388,
+    "y": 118,
+    "w": 95,
+    "h": 181,
+    "light": {
+     "x": 1100,
+     "y": 0,
+     "w": 500,
+     "h": 432
+    }
+   },
+   "candelabraSilverFive": {
+    "x": 1394,
+    "y": 118,
+    "w": 83,
+    "h": 182,
+    "light": {
+     "x": 1091,
+     "y": 0,
+     "w": 509,
+     "h": 431
+    }
+   },
+   "candlesSkull": {
+    "x": 1394,
+    "y": 145,
+    "w": 92,
+    "h": 151,
+    "light": {
+     "x": 1089,
+     "y": 0,
+     "w": 511,
+     "h": 511
+    }
+   },
+   "vaseBlackRoses": {
+    "x": 1384,
+    "y": 114,
+    "w": 113,
+    "h": 189
+   },
+   "vaseLavender": {
+    "x": 1378,
+    "y": 109,
+    "w": 124,
+    "h": 188
+   },
+   "vaseLilies": {
+    "x": 1382,
+    "y": 109,
+    "w": 115,
+    "h": 186
+   },
+   "vaseRavenRoses": {
+    "x": 1370,
+    "y": 114,
+    "w": 139,
+    "h": 188
+   }
+  },
+  "ceiling": {
+   "chandelierIron": {
+    "x": 647,
+    "y": 52,
+    "w": 300,
+    "h": 287,
+    "light": {
+     "x": 148,
+     "y": 0,
+     "w": 1298,
+     "h": 816
+    }
+   },
+   "chandelierAntler": {
+    "x": 647,
+    "y": 52,
+    "w": 300,
+    "h": 274,
+    "light": {
+     "x": 146,
+     "y": 0,
+     "w": 1297,
+     "h": 816
+    }
+   },
+   "chandelierCrystal": {
+    "x": 672,
+    "y": 52,
+    "w": 250,
+    "h": 335,
+    "light": {
+     "x": 150,
+     "y": 0,
+     "w": 1297,
+     "h": 812
+    }
+   }
+  },
+  "corner": {
+   "gramophone": {
+    "x": 37,
+    "y": 430,
+    "w": 126,
+    "h": 169
+   }
+  },
+  "cloth": {
+   "clothWhite": {
+    "x": 401,
+    "y": 503,
+    "w": 780,
+    "h": 360
+   },
+   "clothBlackLace": {
+    "x": 401,
+    "y": 503,
+    "w": 780,
+    "h": 360
+   },
+   "clothRedVelvet": {
+    "x": 401,
+    "y": 503,
+    "w": 780,
+    "h": 360
+   }
+  },
+  "settings": {
+   "settingPewter": {
+    "x": 473,
+    "y": 472,
+    "w": 633,
+    "h": 229
+   },
+   "settingSilver": {
+    "x": 476,
+    "y": 472,
+    "w": 629,
+    "h": 229
+   },
+   "settingCrystal": {
+    "x": 473,
+    "y": 472,
+    "w": 635,
+    "h": 229
+   }
+  },
+  "tableCentre": {
+   "vaseBlackRoses": {
+    "x": 717,
+    "y": 329,
+    "w": 148,
+    "h": 239
+   },
+   "vaseLavender": {
+    "x": 710,
+    "y": 329,
+    "w": 162,
+    "h": 242
+   },
+   "vaseLilies": {
+    "x": 716,
+    "y": 329,
+    "w": 150,
+    "h": 239
+   },
+   "vaseRavenRoses": {
+    "x": 701,
+    "y": 329,
+    "w": 180,
+    "h": 245
+   }
+  },
+  "treatMiddle": {
+   "treatPie": {
+    "x": 737,
+    "y": 506,
+    "w": 108,
+    "h": 104
+   },
+   "treatApples": {
+    "x": 737,
+    "y": 507,
+    "w": 108,
+    "h": 103
+   },
+   "treatCupcakes": {
+    "x": 737,
+    "y": 467,
+    "w": 108,
+    "h": 143
+   },
+   "treatCookies": {
+    "x": 737,
+    "y": 523,
+    "w": 108,
+    "h": 87
+   },
+   "treatCakePops": {
+    "x": 737,
+    "y": 464,
+    "w": 108,
+    "h": 146
+   },
+   "treatCake": {
+    "x": 737,
+    "y": 432,
+    "w": 108,
+    "h": 178,
+    "light": {
+     "x": 620,
+     "y": 296,
+     "w": 343,
+     "h": 292
+    }
+   }
+  },
+  "treatFront": {
+   "treatPie": {
+    "x": 713,
+    "y": 559,
+    "w": 156,
+    "h": 150
+   },
+   "treatApples": {
+    "x": 713,
+    "y": 560,
+    "w": 156,
+    "h": 149
+   },
+   "treatCupcakes": {
+    "x": 713,
+    "y": 503,
+    "w": 156,
+    "h": 206
+   },
+   "treatCookies": {
+    "x": 713,
+    "y": 583,
+    "w": 156,
+    "h": 126
+   },
+   "treatCakePops": {
+    "x": 713,
+    "y": 498,
+    "w": 156,
+    "h": 211
+   },
+   "treatCake": {
+    "x": 713,
+    "y": 453,
+    "w": 156,
+    "h": 256,
+    "light": {
+     "x": 619,
+     "y": 322,
+     "w": 344,
+     "h": 292
+    }
+   }
+  }
+ }
+}

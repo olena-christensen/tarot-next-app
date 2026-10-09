@@ -1,0 +1,759 @@
+// "They Arrive at Midnight" — the castle hall (approved mockups 2026-10-08).
+// Mobile first: the room fits the height and scrolls sideways; from md up it
+// fits the width. Black and gold only — no other colours (Lena, 2026-10-08).
+
+.castle {
+  padding: 128px 0 40px;
+  text-align: center;
+
+  @include respond-above(md) {
+    padding: 150px 16px 48px;
+  }
+
+  &__title {
+    margin: 0 0 0.25rem;
+  }
+
+  &__subtitle {
+    margin: 0 auto 1rem;
+    max-width: 52ch;
+    padding: 0 16px;
+    color: var(--text-faint);
+  }
+
+  &__hud {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 12px 8px;
+  }
+
+  &__pill {
+    padding: 6px 14px;
+    background: rgba(9, 9, 9, 0.75);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 18px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    // Today's free spin is waiting.
+    &--glow {
+      color: var(--text-soft);
+      border-color: rgba(250, 225, 163, 0.8);
+      box-shadow: 0 0 14px rgba(250, 225, 163, 0.35);
+      animation: castleGlow 2.4s ease-in-out infinite alternate;
+    }
+  }
+
+  &__board {
+    position: relative;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  &__stage {
+    position: relative;
+    height: 62vh;
+    max-height: 560px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: #0b0810;
+    border-top: 1px solid rgba(250, 225, 163, 0.25);
+    border-bottom: 1px solid rgba(250, 225, 163, 0.25);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include respond-above(md) {
+      height: auto;
+      max-height: none;
+      aspect-ratio: 1600 / 899;
+      overflow: hidden;
+      border: 1px solid rgba(250, 225, 163, 0.25);
+      border-radius: 10px;
+    }
+  }
+
+  &__extent {
+    position: relative;
+  }
+
+  &__world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+  }
+
+  &__room,
+  &__patch,
+  &__light {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__room {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__patch {
+    animation: castleAppear 0.5s ease-out;
+  }
+
+  // Warm light from candles and fire, blended like real light; it breathes.
+  &__light {
+    mix-blend-mode: screen;
+    animation: castleBreathe 2.6s ease-in-out infinite alternate;
+
+    &--fire {
+      animation: castleFire 0.9s ease-in-out infinite alternate;
+    }
+  }
+
+  &__hit {
+    position: absolute;
+    padding: 0;
+    background: transparent;
+    border: 0 solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+
+    &--on {
+      border-style: solid;
+      border-color: rgba(255, 233, 168, 0.95);
+      box-shadow: 0 0 16px rgba(255, 233, 168, 0.55);
+    }
+  }
+
+  &__ring {
+    position: absolute;
+    padding: 0;
+    background: rgba(255, 233, 168, 0.06);
+    border: 0 dashed rgba(255, 233, 168, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 0 16px rgba(255, 233, 168, 0.55), inset 0 0 16px rgba(255, 233, 168, 0.25);
+    cursor: pointer;
+    animation: castleRing 1.2s ease-in-out infinite alternate;
+
+    // Something already stands there: placing swaps it back to your items.
+    &--busy {
+      border-style: solid;
+      border-color: rgba(255, 233, 168, 0.5);
+    }
+  }
+
+  &__banner {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: rgba(9, 9, 9, 0.85);
+    border: 1px solid rgba(250, 225, 163, 0.5);
+    border-radius: 14px;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    text-align: left;
+
+    img {
+      width: 38px;
+      height: 38px;
+      padding: 3px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  &__banner-x {
+    margin-left: auto;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 12px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  &__edge {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+    padding: 6px 9px;
+    background: rgba(9, 9, 9, 0.8);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 14px;
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    pointer-events: none;
+
+    &--left {
+      left: 6px;
+    }
+
+    &--right {
+      right: 6px;
+    }
+  }
+
+  &__menu {
+    position: absolute;
+    z-index: 4;
+    width: 220px;
+    padding: 10px;
+    background: rgba(9, 9, 9, 0.92);
+    border: 1px solid rgba(250, 225, 163, 0.55);
+    border-radius: 14px;
+    text-align: left;
+  }
+
+  &__menu-title {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  &__menu-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 9px;
+    background: transparent;
+    border: 1px dashed rgba(250, 225, 163, 0.35);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba(250, 225, 163, 0.65);
+      color: var(--text-soft);
+    }
+  }
+
+  &__bar {
+    display: flex;
+    gap: 8px;
+    max-width: 640px;
+    margin: 12px auto 0;
+    padding: 0 12px;
+  }
+
+  &__btn {
+    flex: 1;
+    padding: 13px 6px;
+    background: transparent;
+    border: 1px dashed rgba(250, 225, 163, 0.35);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &--main {
+      border-color: rgba(250, 225, 163, 0.65);
+      color: var(--text-soft);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+  }
+
+  &__note {
+    margin: 8px 16px 0;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+
+    a {
+      color: var(--text-soft);
+    }
+
+    &--sent b {
+      color: var(--gold);
+      font-weight: 400;
+    }
+  }
+
+  &__count {
+    display: inline-block;
+    min-width: 1.6em;
+    margin-left: 8px;
+    padding: 1px 6px;
+    border: 1px solid rgba(250, 225, 163, 0.45);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  &__stones {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.95rem;
+    color: var(--text-soft);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// ---------- dialogs: catalog, my items, swap, wheel (inside the site's Modal) ----------
+.castle-dialog {
+  width: 100%;
+  text-align: left;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    // clear the Modal's skull close button
+    padding-right: 52px;
+    margin-bottom: 14px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 200;
+    font-size: 1.6rem;
+    color: var(--text-soft);
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+
+  &__tab {
+    white-space: nowrap;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid rgba(250, 225, 163, 0.25);
+    border-radius: 16px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &--on {
+      border-color: rgba(250, 225, 163, 0.75);
+      color: var(--text-soft);
+      background: rgba(250, 225, 163, 0.08);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    @include respond-above(sm) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include respond-above(lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+.castle-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(250, 225, 163, 0.25);
+  border-radius: 12px;
+  color: inherit;
+  font-family: var(--font-family);
+  text-align: left;
+
+  &--pick {
+    cursor: pointer;
+  }
+
+  &__pic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 112px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.07);
+
+    img {
+      max-width: 86%;
+      max-height: 100px;
+      object-fit: contain;
+    }
+  }
+
+  &__tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1;
+    padding: 2px 8px;
+    background: rgba(9, 9, 9, 0.85);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 10px;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    min-height: 2.5em;
+    margin: 8px 0 4px;
+    font-size: 0.85rem;
+    line-height: 1.25;
+    color: var(--text-soft);
+  }
+
+  &__owned {
+    margin: 0 0 6px;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: auto;
+
+    &--two .castle-card__buy {
+      flex: 1;
+      margin-left: 0;
+      padding-inline: 6px;
+    }
+  }
+
+  &__buy {
+    margin-left: auto;
+    padding: 5px 14px;
+    background: transparent;
+    border: 1px dashed rgba(250, 225, 163, 0.6);
+    border-radius: 8px;
+    color: var(--text-soft);
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.45;
+    }
+  }
+
+  &__wheel {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  &__short {
+    margin: 6px 0 0;
+    font-size: 0.7rem;
+    color: var(--text-faint);
+
+    a {
+      color: var(--text-soft);
+    }
+  }
+}
+
+// ---------- the wheel ----------
+.castle-wheel-panel {
+  position: relative;
+  text-align: center;
+
+  &__title {
+    margin: 8px 0 2px;
+    font-weight: 200;
+    color: var(--text-soft);
+  }
+
+  &__spin {
+    display: block;
+    width: calc(100% - 24px);
+    max-width: 420px;
+    margin: 14px auto 0;
+  }
+
+  &__odds {
+    margin: 12px 16px 0;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-faint);
+  }
+}
+
+.castle-wheel {
+  position: relative;
+  width: min(340px, 86vw);
+  aspect-ratio: 1;
+  margin: 30px auto 0;
+
+  &__pointer {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    z-index: 2;
+    width: 96px;
+    height: 62px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 6px rgba(250, 225, 163, 0.55));
+  }
+
+  &__disc {
+    width: 100%;
+    height: 100%;
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.12, 0.7, 0.12, 1);
+    font-family: var(--font-family);
+  }
+
+  &__hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8%;
+    height: 8%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.castle-prize {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.72);
+  border-radius: var(--border-radius);
+
+  &__card {
+    width: 300px;
+    padding: 22px 18px;
+    background: #0d0a10;
+    border: 1px solid rgba(250, 225, 163, 0.55);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(250, 225, 163, 0.15);
+    text-align: center;
+    animation: castleAppear 0.4s ease-out;
+
+    h3 {
+      margin: 0 0 4px;
+      font-weight: 200;
+      font-size: 1.3rem;
+      color: var(--text-soft);
+    }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 0.8rem;
+      color: var(--text-faint);
+    }
+
+    .castle__btn {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+
+  &__kicker {
+    font-size: 0.7rem !important;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  &__pic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    margin: 6px auto 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(250, 225, 163, 0.25), rgba(250, 225, 163, 0.04) 65%, transparent 70%);
+
+    img {
+      max-width: 110px;
+      max-height: 120px;
+      object-fit: contain;
+    }
+  }
+
+  &__stones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0;
+    font-size: 2rem;
+    color: var(--gold);
+
+    svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+}
+
+// ---------- a friend's gift page ----------
+.castle-gift {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 16px 120px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 42%, rgba(250, 225, 163, 0.12), transparent 50%);
+
+  &__from {
+    margin: 0 0 14px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+  }
+
+  &__pic {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 22px rgba(250, 225, 163, 0.35));
+  }
+
+  &__name {
+    margin: 12px 0 18px;
+    font-weight: var(--font-weight);
+    font-size: 1.8rem;
+    color: var(--gold);
+  }
+
+  &__take {
+    margin: 0 0 20px;
+  }
+
+  &__take-link {
+    color: var(--gold);
+    font-size: 1.1rem;
+  }
+
+  &__note {
+    margin: 6px 0 20px;
+    color: var(--text-faint);
+  }
+
+  &__cta {
+    display: inline-block;
+    min-width: 260px;
+    padding: 14px 24px;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    background: rgba(250, 225, 163, 0.1);
+    color: var(--gold);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba(250, 225, 163, 0.18);
+    }
+  }
+}
+
+@keyframes castleGlow {
+  from {
+    box-shadow: 0 0 8px rgba(250, 225, 163, 0.25);
+  }
+  to {
+    box-shadow: 0 0 18px rgba(250, 225, 163, 0.5);
+  }
+}
+
+@keyframes castleBreathe {
+  from {
+    opacity: 0.82;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes castleFire {
+  0% {
+    opacity: 0.78;
+  }
+  40% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.88;
+  }
+  100% {
+    opacity: 0.97;
+  }
+}
+
+@keyframes castleRing {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes castleAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .castle__light,
+  .castle__pill--glow,
+  .castle__ring {
+    animation: none;
+  }
+}
