@@ -43,9 +43,9 @@
     "brewYourOwn": "Kendininkini kaynat",
     "giftMetaTitle": "{potion} — senin için kaynatılan bir iksir",
     "giftMetaDescription": "The Veil'de senin için kaynatılan bir iksir. Saklı malzemeleri bul ve kendininkini kaynat.",
-    "entranceSeasonal": "Cadılar Bayramı ikramı",
-    "entranceDefault": "Küçük bir oyun",
-    "entranceCta": "İksiri Kaynat",
+    "entranceSeasonal": "Cadılar Bayramı geliyor",
+    "entranceDefault": "Cadı oyunları",
+    "entranceCta": "Cesaretin varsa gir",
     "potionNames": {
       "batEye": "Gece Görüşü İksiri",
       "frogTongue": "Gümüş Dil Şerbeti",
@@ -82,6 +82,15 @@
     "boiledTitle": "İksir taştı!",
     "boiledSummary": "{total} malzemeden {got} tanesini buldun.",
     "soundOff": "Sesi kapat",
-    "soundOn": "Sesi aç"
+    "soundOn": "Sesi aç",
+    "choiceTitleSeasonal": "Cadılar Bayramı oyunları",
+    "choiceTitle": "Cadı oyunları",
+    "choiceSub": "Geceni seç.",
+    "choicePotion": "İksir taşmadan malzemeleri bul",
+    "choiceCastle": "Şato salonunu partiye hazırla",
+    "choicePlay": "Oyna",
+    "choiceEnter": "Gir",
+    "choiceNew": "Yeni",
+    "castleTitle": "Gece Yarısı Gelecekler"
   }
 }

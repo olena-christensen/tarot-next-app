@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { track } from "@vercel/analytics";
 import { useOpenLogin } from "@/components/LoginContext";
+import { Link } from "@/i18n/navigation";
+import Skull from "@/assets/svg/skull.svg";
 import { Modal } from "@/components/Modal";
 import { ShareDialog } from "@/components/ShareDialog";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
@@ -42,6 +44,8 @@ const WORLD = { w: ART.width, h: ART.height };
 const ORDER = ART.order as PlaceId[];
 const PATCHES = ART.places as unknown as Record<PlaceId, Record<string, Patch>>;
 const ICON = (id: string) => `/game-art/castle/icons/${id}.webp`;
+/** Phones (portrait, or landscape with little height): the hall takes the whole screen, no site header (Lena, 2026-10-09). */
+const FULL_SCREEN_QUERY = "(max-width: 48em), (max-height: 500px)";
 
 /** The glowing outline for a place: all its possible items together. */
 const PLACE_BOX: Record<string, Box> = Object.fromEntries(
@@ -128,7 +132,21 @@ export const CastleGame = () => {
   const needs = partyNeeds(items);
 
   // ---------- viewport ----------
+  const [fullScreen, setFullScreen] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(FULL_SCREEN_QUERY);
+    const sync = () => setFullScreen(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("castle-locked", fullScreen);
+    return () => document.documentElement.classList.remove("castle-locked");
+  }, [fullScreen]);
+
   const stageRef = useRef<HTMLDivElement>(null);
+  const centred = useRef(false);
   const [scale, setScale] = useState(0.5);
   const [scroll, setScroll] = useState({ left: 0, width: 0 });
 
@@ -143,12 +161,20 @@ export const CastleGame = () => {
       setScroll({ left: stage.scrollLeft, width: w });
     };
     fit();
-    // Phones open on the middle of the room (the table).
-    stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
     const ro = new ResizeObserver(fit);
     ro.observe(stage);
     return () => ro.disconnect();
   }, []);
+
+  // Phones open on the middle of the room (the table) — once the room has its
+  // real size, so the middle is the real middle.
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || centred.current || stage.scrollWidth <= stage.clientWidth) return;
+    stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
+    setScroll({ left: stage.scrollLeft, width: stage.clientWidth });
+    centred.current = true;
+  }, [scale, fullScreen]);
 
   const onScroll = () => {
     const stage = stageRef.current;
@@ -310,7 +336,7 @@ export const CastleGame = () => {
   const menuPatch = menu?.place ? PATCHES[menu.place]?.[menu.itemId] : null;
 
   return (
-    <section className="castle">
+    <section className={`castle${fullScreen ? " castle--full" : ""}`}>
       <h1 className="castle__title">{t("title")}</h1>
       <p className="castle__subtitle">{t("subtitle")}</p>
 
@@ -322,6 +348,11 @@ export const CastleGame = () => {
         >
           ✦ {canFree ? t("wheelFree") : t("wheelButton")}
         </button>
+        {fullScreen && (
+          <Link href="/" className="castle__home" aria-label={t("close")}>
+            <Skull aria-hidden="true" />
+          </Link>
+        )}
       </div>
 
       <div className="castle__board">

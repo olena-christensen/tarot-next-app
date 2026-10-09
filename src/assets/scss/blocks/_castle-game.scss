@@ -323,6 +323,65 @@
   }
 }
 
+// ---------- phones: the hall takes the whole screen (Lena, 2026-10-09) ----------
+html.castle-locked,
+html.castle-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.castle--full {
+  position: fixed;
+  inset: 0;
+  z-index: 90; // over header (30), footer (50), cookie banner (60); under modals (100)
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) 0 calc(10px + env(safe-area-inset-bottom));
+  background: #090909;
+
+  .castle__title,
+  .castle__subtitle {
+    display: none;
+  }
+
+  .castle__hud {
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  .castle__board {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .castle__stage {
+    flex: 1;
+    height: auto;
+    max-height: none;
+  }
+
+  .castle__note {
+    margin-top: 6px;
+  }
+}
+
+.castle__home {
+  display: flex;
+  margin-left: auto;
+  padding: 4px;
+  color: var(--primary);
+  filter: drop-shadow(0 0 6px rgba(250, 225, 163, 0.4));
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
 // ---------- dialogs: catalog, my items, swap, wheel (inside the site's Modal) ----------
 .castle-dialog {
   width: 100%;

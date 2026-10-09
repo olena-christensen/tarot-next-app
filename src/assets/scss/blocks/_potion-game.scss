@@ -756,29 +756,33 @@ html.potion-locked body {
 // ---------- the way in, on the main page ----------
 // In the reader block's flow (under "Change your reader"), never floating.
 .game-entrance {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: calc(var(--veil-gap) - 12px); // one --veil-gap under "Change your reader" (see _home-about.scss)
-  padding: 6px 16px 6px 10px;
-  border: 1px solid rgba(250, 225, 163, 0.55);
-  border-radius: 24px;
-  background: rgba(20, 12, 24, 0.92);
-  box-shadow: 0 0 16px rgba(140, 255, 90, 0.22);
+  gap: 12px;
+  margin-top: calc(var(--veil-gap) + 6px); // under "Change your reader" (see _home-about.scss); room for the hat
+  padding: 9px 22px 9px 66px;
+  border: 1px solid rgba(250, 225, 163, 0.6);
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(40, 24, 14, 0.95), rgba(14, 10, 12, 0.95));
+  box-shadow: 0 0 18px rgba(255, 150, 60, 0.28), inset 0 0 12px rgba(255, 150, 60, 0.08);
   color: var(--text-color);
-  text-decoration: none;
+  font-family: var(--font-family);
   white-space: nowrap;
+  cursor: pointer;
   transition: box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: 0 0 24px rgba(140, 255, 90, 0.42);
+    box-shadow: 0 0 26px rgba(255, 150, 60, 0.45), inset 0 0 12px rgba(255, 150, 60, 0.12);
   }
 
-  &__bottle {
-    width: 24px;
-    height: 32px;
-    object-fit: contain;
-    animation: potionBob 2s ease-in-out infinite;
+  &__pumpkin {
+    position: absolute;
+    left: -4px;
+    bottom: -4px;
+    width: 64px;
+    filter: drop-shadow(0 0 10px rgba(255, 140, 40, 0.55));
+    animation: entranceFlicker 2.2s ease-in-out infinite alternate;
   }
 
   &__text {
@@ -790,17 +794,127 @@ html.potion-locked body {
 
   &__kicker {
     font-size: 0.6rem;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--text-faint);
   }
 
   &__cta {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     color: var(--gold);
   }
 }
 
+@keyframes entranceFlicker {
+  from {
+    filter: drop-shadow(0 0 8px rgba(255, 140, 40, 0.45));
+  }
+  to {
+    filter: drop-shadow(0 0 14px rgba(255, 140, 40, 0.75));
+  }
+}
+
+// The choice of games (approved mockup 2026-10-09), inside the site's Modal.
+.game-choice {
+  width: 100%;
+  max-width: 560px;
+  text-align: left;
+
+  &__title {
+    margin: 0 0 4px;
+    padding-right: 52px; // clear the Modal's skull
+    font-weight: 200;
+    font-size: 1.6rem;
+    color: var(--text-soft);
+  }
+
+  &__sub {
+    margin: 0 0 18px;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+  }
+
+  &__card {
+    position: relative;
+    display: block;
+    height: 200px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(250, 225, 163, 0.45);
+    border-radius: 12px;
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+
+    @include respond-above(md) {
+      height: 240px;
+    }
+
+    &:hover {
+      border-color: rgba(250, 225, 163, 0.8);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 35%, rgba(5, 4, 8, 0.92));
+  }
+
+  &__text {
+    position: absolute;
+    left: 14px;
+    right: 90px;
+    bottom: 12px;
+
+    b {
+      display: block;
+      font-weight: 300;
+      font-size: 1.25rem;
+      color: var(--gold);
+    }
+
+    span {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+  }
+
+  &__go {
+    position: absolute;
+    right: 12px;
+    bottom: 14px;
+    padding: 6px 12px;
+    background: rgba(9, 9, 9, 0.5);
+    border: 1px dashed rgba(250, 225, 163, 0.6);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+
+  &__new {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    padding: 3px 9px;
+    background: rgba(9, 9, 9, 0.85);
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 10px;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-color);
+  }
+}
 
 // ---------- end screen: skull home button and the moonstone progress ----------
 .potion__home {
