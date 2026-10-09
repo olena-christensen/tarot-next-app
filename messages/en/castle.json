@@ -111,6 +111,12 @@
     "giftTakenYou": "It's yours! Find it in your catalog.",
     "giftTaken": "This gift has already been taken.",
     "giftOwn": "This is your own gift — send the link to a friend.",
-    "openCastle": "Open your castle"
+    "openCastle": "Open your castle",
+    "myItems": "My items",
+    "storageEmpty": "Nothing here yet. Find things in the catalog or win them on the wheel.",
+    "inHall": "In the hall",
+    "inStorage": "In your items",
+    "yoursNow": "Yours now",
+    "sendShort": "Send"
   }
 }

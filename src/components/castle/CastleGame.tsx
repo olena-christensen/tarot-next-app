@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { track } from "@vercel/analytics";
 import { useOpenLogin } from "@/components/LoginContext";
+import { Modal } from "@/components/Modal";
 import { ShareDialog } from "@/components/ShareDialog";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { notifyMoonstonesChanged } from "@/lib/moonstones";
@@ -23,7 +24,6 @@ import {
 import type { CastleState } from "@/lib/castleGame/server";
 import ART from "@/lib/castleGame/places.generated.json";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
-import Skull from "@/assets/svg/skull.svg";
 import { CastleWheel } from "./CastleWheel";
 
 /**
@@ -88,6 +88,9 @@ export const CastleGame = () => {
   const [plansOpen, setPlansOpen] = useState(false);
   const [share, setShare] = useState<{ url: string; name: string } | null>(null);
   const [sentNote, setSentNote] = useState(false);
+  const [storageOpen, setStorageOpen] = useState(false);
+  // Just bought: place it, keep it or give it away (Lena, 2026-10-09).
+  const [got, setGot] = useState<OwnedItem | null>(null);
 
   const [wheelOpen, setWheelOpen] = useState(false);
   const [spinKey, setSpinKey] = useState(0);
@@ -174,20 +177,28 @@ export const CastleGame = () => {
       if (data.error === "no-moonstones") setShort(item.id);
       if (data.rowId) {
         track("castle_bought", { item: item.id });
-        // Things that stand somewhere: choose the spot right away.
-        if (item.places.length && !item.autoPlace) {
-          setCatalogOpen(false);
-          setPlacing({ id: data.rowId, itemId: item.id, place: null });
-        }
+        setCatalogOpen(false);
+        setGot({ id: data.rowId, itemId: item.id, place: item.autoPlace ?? null });
       }
     } finally {
       setBusy(false);
     }
   };
 
-  const startPlacing = (row: OwnedItem) => {
+  /** Puts an item in the room. One possible place: straight there. Several: the spots glow. */
+  const placeRow = async (row: OwnedItem) => {
     setCatalogOpen(false);
+    setStorageOpen(false);
     setMenu(null);
+    setGot(null);
+    const places = catalogItem(row.itemId)?.places ?? [];
+    if (places.length === 0) return;
+    if (places.length === 1) {
+      const data = await post("/api/castle/place", { rowId: row.id, place: places[0] });
+      apply(data.state);
+      track("castle_placed", { item: row.itemId, place: places[0] });
+      return;
+    }
     setPlacing(row);
   };
 
@@ -218,6 +229,8 @@ export const CastleGame = () => {
 
   const send = async (row: OwnedItem) => {
     setMenu(null);
+    setGot(null);
+    setStorageOpen(false);
     if (needSignIn()) return;
     const data = await post<{ giftId?: string }>("/api/castle/send", { rowId: row.id });
     apply(data.state);
@@ -425,6 +438,12 @@ export const CastleGame = () => {
         <button type="button" className="castle__btn castle__btn--main" onClick={() => (needSignIn() ? undefined : setCatalogOpen(true))}>
           {t("catalog")}
         </button>
+        <button type="button" className="castle__btn castle__btn--main" onClick={() => (needSignIn() ? undefined : setStorageOpen(true))}>
+          {t("myItems")}
+          {items.length > 0 && <span className="castle__count">{items.length}</span>}
+        </button>
+      </div>
+      <div className="castle__bar">
         <button type="button" className="castle__btn" disabled>
           {t("throwParty")}
         </button>
@@ -450,202 +469,180 @@ export const CastleGame = () => {
       )}
 
       {/* ---------- catalog ---------- */}
-      {catalogOpen && (
-        <div className="castle-sheet" role="dialog" aria-label={t("catalog")}>
-          <div className="castle-sheet__dim" onClick={() => setCatalogOpen(false)} />
-          <div className="castle-sheet__panel">
-            <div className="castle-sheet__head">
-              <b>{t("catalog")}</b>
-              <span className="castle__stones">
-                <MoonstoneIcon aria-hidden="true" />
-                {state?.balance ?? 0}
-              </span>
-              <button type="button" className="castle-sheet__close" onClick={() => setCatalogOpen(false)} aria-label={t("close")}>
-                <Skull aria-hidden="true" />
+      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide>
+        <div className="castle-dialog">
+          <div className="castle-dialog__head">
+            <h2 className="castle-dialog__title">{t("catalog")}</h2>
+            <span className="castle__stones">
+              <MoonstoneIcon aria-hidden="true" />
+              {state?.balance ?? 0}
+            </span>
+          </div>
+          <div className="castle-dialog__tabs">
+            {TABS.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={`castle-dialog__tab${tab === id ? " castle-dialog__tab--on" : ""}`}
+                onClick={() => setTab(id)}
+              >
+                {t(`tabs.${id}`)}
               </button>
-            </div>
-            <div className="castle-sheet__tabs">
-              {TABS.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`castle-sheet__tab${tab === id ? " castle-sheet__tab--on" : ""}`}
-                  onClick={() => setTab(id)}
-                >
-                  {t(`tabs.${id}`)}
-                </button>
-              ))}
-            </div>
-            <div className="castle-sheet__grid">
-              {CATALOG.filter((c) => c.tab === tab).map((item) => {
-                const owned = ownedOf(item.id);
-                const spare = owned.find((o) => !o.place);
-                const placed = owned.some((o) => o.place);
+            ))}
+          </div>
+          <div className="castle-dialog__grid">
+            {CATALOG.filter((c) => c.tab === tab).map((item) => {
+              const owned = ownedOf(item.id).length;
+              return (
+                <div key={item.id} className="castle-card">
+                  {item.price === null && <span className="castle-card__tag">{t("wheelOnly")}</span>}
+                  <div className="castle-card__pic">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={ICON(item.id)} alt="" loading="lazy" />
+                  </div>
+                  <p className="castle-card__name">{t(`items.${item.id}`)}</p>
+                  {owned > 0 && <p className="castle-card__owned">✓ {t("ownedCount", { count: owned })}</p>}
+                  <div className="castle-card__row">
+                    {item.price === null ? (
+                      <span className="castle-card__wheel">{t("winOnWheel")}</span>
+                    ) : (
+                      <>
+                        <span className="castle__stones">
+                          <MoonstoneIcon aria-hidden="true" />
+                          {item.price}
+                        </span>
+                        <button type="button" className="castle-card__buy" disabled={busy} onClick={() => buy(item)}>
+                          {t("buy")}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  {short === item.id && (
+                    <p className="castle-card__short">
+                      {t("notEnough")} ·{" "}
+                      <a href="#" onClick={(e) => (e.preventDefault(), setPlansOpen(true))}>
+                        {t("getMoonstones")}
+                      </a>
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Modal>
+
+      {/* ---------- my items ---------- */}
+      <Modal isOpen={storageOpen} onClose={() => setStorageOpen(false)} wide>
+        <div className="castle-dialog">
+          <div className="castle-dialog__head">
+            <h2 className="castle-dialog__title">{t("myItems")}</h2>
+          </div>
+          {items.length === 0 ? (
+            <p className="castle__note">{t("storageEmpty")}</p>
+          ) : (
+            <div className="castle-dialog__grid">
+              {items.map((row) => {
+                const item = catalogItem(row.itemId);
+                if (!item) return null;
                 return (
-                  <div key={item.id} className="castle-card">
-                    {item.price === null && <span className="castle-card__tag">{t("wheelOnly")}</span>}
+                  <div key={row.id} className="castle-card">
                     <div className="castle-card__pic">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={ICON(item.id)} alt="" loading="lazy" />
+                      <img src={ICON(row.itemId)} alt="" loading="lazy" />
                     </div>
-                    <p className="castle-card__name">{t(`items.${item.id}`)}</p>
-                    {owned.length > 0 && (
-                      <p className="castle-card__owned">
-                        ✓{" "}
-                        {item.record
-                          ? t("inMusic")
-                          : item.autoPlace && placed
-                            ? t("fireLit")
-                            : placed && !spare
-                              ? t("ownedPlaced")
-                              : owned.length > 1
-                                ? t("ownedCount", { count: owned.length })
-                                : t("owned")}
-                      </p>
-                    )}
-                    <div className="castle-card__row">
-                      {spare && item.places.length > 0 && !item.autoPlace ? (
-                        <button type="button" className="castle-card__buy" onClick={() => startPlacing(spare)}>
+                    <p className="castle-card__name">{t(`items.${row.itemId}`)}</p>
+                    <p className="castle-card__owned">{statusOf(row)}</p>
+                    <div className="castle-card__row castle-card__row--two">
+                      {!row.place && item.places.length > 0 && (
+                        <button type="button" className="castle-card__buy" onClick={() => placeRow(row)}>
                           {t("place")}
                         </button>
-                      ) : item.price === null ? (
-                        <span className="castle-card__wheel">{t("winOnWheel")}</span>
-                      ) : (
-                        <>
-                          <span className="castle__stones">
-                            <MoonstoneIcon aria-hidden="true" />
-                            {item.price}
-                          </span>
-                          <button type="button" className="castle-card__buy" disabled={busy} onClick={() => buy(item)}>
-                            {t("buy")}
-                          </button>
-                        </>
                       )}
+                      <button type="button" className="castle-card__buy" onClick={() => send(row)}>
+                        {t("sendShort")}
+                      </button>
                     </div>
-                    {short === item.id && (
-                      <p className="castle-card__short">
-                        {t("notEnough")} ·{" "}
-                        <a href="#" onClick={(e) => (e.preventDefault(), setPlansOpen(true))}>
-                          {t("getMoonstones")}
-                        </a>
-                      </p>
-                    )}
                   </div>
                 );
               })}
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </Modal>
+
+      {/* ---------- just bought ---------- */}
+      <Modal isOpen={Boolean(got)} onClose={() => setGot(null)} narrow>
+        {got && gotCard({ row: got, kicker: t("yoursNow") })}
+      </Modal>
 
       {/* ---------- swap ---------- */}
-      {swapFor && (
-        <div className="castle-sheet" role="dialog" aria-label={t("swapTitle")}>
-          <div className="castle-sheet__dim" onClick={() => setSwapFor(null)} />
-          <div className="castle-sheet__panel castle-sheet__panel--short">
-            <div className="castle-sheet__head">
-              <b>{t("swapTitle")}</b>
-              <button type="button" className="castle-sheet__close" onClick={() => setSwapFor(null)} aria-label={t("close")}>
-                <Skull aria-hidden="true" />
-              </button>
-            </div>
-            {swapChoices.length === 0 ? (
-              <p className="castle__note">{t("nothingToSwap")}</p>
-            ) : (
-              <div className="castle-sheet__grid">
-                {swapChoices.map((row) => (
-                  <button key={row.id} type="button" className="castle-card castle-card--pick" onClick={() => swapTo(row, swapFor.place!)}>
-                    <div className="castle-card__pic">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={ICON(row.itemId)} alt="" />
-                    </div>
-                    <p className="castle-card__name">{t(`items.${row.itemId}`)}</p>
-                  </button>
-                ))}
-              </div>
-            )}
+      <Modal isOpen={Boolean(swapFor)} onClose={() => setSwapFor(null)} wide>
+        <div className="castle-dialog">
+          <div className="castle-dialog__head">
+            <h2 className="castle-dialog__title">{t("swapTitle")}</h2>
           </div>
+          {swapChoices.length === 0 ? (
+            <p className="castle__note">{t("nothingToSwap")}</p>
+          ) : (
+            <div className="castle-dialog__grid">
+              {swapChoices.map((row) => (
+                <button key={row.id} type="button" className="castle-card castle-card--pick" onClick={() => swapTo(row, swapFor!.place!)}>
+                  <div className="castle-card__pic">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={ICON(row.itemId)} alt="" />
+                  </div>
+                  <p className="castle-card__name">{t(`items.${row.itemId}`)}</p>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </Modal>
 
       {/* ---------- wheel ---------- */}
-      {wheelOpen && (
-        <div className="castle-sheet castle-sheet--wheel" role="dialog" aria-label={t("wheelTitle")}>
-          <div className="castle-sheet__dim" onClick={() => !spinning && setWheelOpen(false)} />
-          <div className="castle-sheet__panel castle-wheel-panel">
-            <button type="button" className="castle-sheet__close castle-wheel-panel__close" onClick={() => !spinning && setWheelOpen(false)} aria-label={t("close")}>
-              <Skull aria-hidden="true" />
+      <Modal isOpen={wheelOpen} onClose={() => setWheelOpen(false)} dismissible={!spinning} narrow>
+        <div className="castle-dialog castle-wheel-panel">
+          <h2 className="castle-wheel-panel__title">{t("wheelTitle")}</h2>
+          <p className="castle__subtitle">{t("wheelSub")}</p>
+          <CastleWheel target={spinTarget} spinKey={spinKey} onStopped={onSpinStopped} />
+          {canFree || canPaid ? (
+            <button type="button" className="castle__btn castle__btn--main castle-wheel-panel__spin" disabled={spinning} onClick={spin}>
+              {spinning ? t("spinning") : canFree ? t("spinFree") : t("spinPaid")}
             </button>
-            <h2 className="castle-wheel-panel__title">{t("wheelTitle")}</h2>
-            <p className="castle__subtitle">{t("wheelSub")}</p>
-            <CastleWheel target={spinTarget} spinKey={spinKey} onStopped={onSpinStopped} />
-            {canFree || canPaid ? (
-              <button type="button" className="castle__btn castle__btn--main castle-wheel-panel__spin" disabled={spinning} onClick={spin}>
-                {spinning ? t("spinning") : canFree ? t("spinFree") : t("spinPaid")}
-              </button>
-            ) : (
-              <p className="castle__note">{spinning ? t("spinning") : t("spinTomorrow")}</p>
-            )}
-            <p className="castle-wheel-panel__odds">{t("odds")}</p>
+          ) : (
+            <p className="castle__note">{spinning ? t("spinning") : t("spinTomorrow")}</p>
+          )}
+          <p className="castle-wheel-panel__odds">{t("odds")}</p>
 
-            {prize && !spinning && (
-              <div className="castle-prize">
+          {prize && !spinning && (
+            <div className="castle-prize">
+              {prize.itemId && prize.rowId ? (
+                gotCard({
+                  row: { id: prize.rowId, itemId: prize.itemId, place: null },
+                  kicker: prize.kind === "rare" ? t("rareItem") : t("youWon"),
+                  onKeep: () => setPrize(null),
+                  onLeave: () => {
+                    setPrize(null);
+                    setWheelOpen(false);
+                  },
+                })
+              ) : (
                 <div className="castle-prize__card">
-                  {prize.kind === "rare" && <p className="castle-prize__kicker">{t("rareItem")}</p>}
-                  {prize.itemId ? (
-                    <>
-                      <div className="castle-prize__pic">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={ICON(prize.itemId)} alt="" />
-                      </div>
-                      <h3>{t(`items.${prize.itemId}`)}</h3>
-                      {catalogItem(prize.itemId)?.price === null && <p>{t("wheelOnlyNote")}</p>}
-                      <button
-                        type="button"
-                        className="castle__btn castle__btn--main"
-                        onClick={() => {
-                          const row = items.find((i) => i.id === prize.rowId);
-                          setPrize(null);
-                          setWheelOpen(false);
-                          if (row) startPlacing(row);
-                        }}
-                      >
-                        {t("hangNow")}
-                      </button>
-                      <button type="button" className="castle__btn" onClick={() => setPrize(null)}>
-                        {t("keepLater")}
-                      </button>
-                      <button
-                        type="button"
-                        className="castle__btn"
-                        onClick={() => {
-                          const row = items.find((i) => i.id === prize.rowId);
-                          setPrize(null);
-                          setWheelOpen(false);
-                          if (row) void send(row);
-                        }}
-                      >
-                        {t("send")}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <p className="castle-prize__kicker">{t("youWon")}</p>
-                      <div className="castle-prize__stones">
-                        +{prize.stones} <MoonstoneIcon aria-hidden="true" />
-                      </div>
-                      <h3>{t("moonstonesWon", { count: prize.stones })}</h3>
-                      <button type="button" className="castle__btn castle__btn--main" onClick={() => setPrize(null)}>
-                        {t("close")}
-                      </button>
-                    </>
-                  )}
+                  <p className="castle-prize__kicker">{t("youWon")}</p>
+                  <div className="castle-prize__stones">
+                    +{prize.stones} <MoonstoneIcon aria-hidden="true" />
+                  </div>
+                  <h3>{t("moonstonesWon", { count: prize.stones })}</h3>
+                  <button type="button" className="castle__btn castle__btn--main" onClick={() => setPrize(null)}>
+                    {t("close")}
+                  </button>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
-      )}
+      </Modal>
 
       <ShareDialog
         isOpen={Boolean(share)}
@@ -658,4 +655,67 @@ export const CastleGame = () => {
       <SubscriptionModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />
     </section>
   );
+
+  /** Where an owned item is, in words. */
+  function statusOf(row: OwnedItem): string {
+    const item = catalogItem(row.itemId);
+    if (item?.record) return t("inMusic");
+    if (row.place === "fireplace") return t("fireLit");
+    return row.place ? t("inHall") : t("inStorage");
+  }
+
+  /** "Yours now" — after buying or winning: place it, keep it, or give it away. */
+  function gotCard({
+    row,
+    kicker,
+    onKeep = () => setGot(null),
+    onLeave = () => setGot(null),
+  }: {
+    row: OwnedItem;
+    kicker: string;
+    onKeep?: () => void;
+    onLeave?: () => void;
+  }) {
+    const item = catalogItem(row.itemId);
+    const live = items.find((i) => i.id === row.id) ?? row;
+    const canPlace = Boolean(item && item.places.length > 0 && !item.autoPlace && !live.place);
+    return (
+      <div className="castle-prize__card">
+        <p className="castle-prize__kicker">{kicker}</p>
+        <div className="castle-prize__pic">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={ICON(row.itemId)} alt="" />
+        </div>
+        <h3>{t(`items.${row.itemId}`)}</h3>
+        {item?.price === null && <p>{t("wheelOnlyNote")}</p>}
+        {item?.record && <p>{t("inMusic")}</p>}
+        {live.place === "fireplace" && <p>{t("fireLit")}</p>}
+        {canPlace && (
+          <button
+            type="button"
+            className="castle__btn castle__btn--main"
+            onClick={() => {
+              onLeave();
+              void placeRow(live);
+            }}
+          >
+            {t("hangNow")}
+          </button>
+        )}
+        <button type="button" className="castle__btn" onClick={onKeep}>
+          {t("keepLater")}
+        </button>
+        <button
+          type="button"
+          className="castle__btn"
+          onClick={() => {
+            onLeave();
+            void send(live);
+          }}
+        >
+          {t("send")}
+        </button>
+      </div>
+    );
+  }
 };

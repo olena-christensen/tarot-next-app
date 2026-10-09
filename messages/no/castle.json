@@ -111,6 +111,12 @@
     "giftTakenYou": "Den er din! Finn den i katalogen.",
     "giftTaken": "Denne gaven er allerede tatt.",
     "giftOwn": "Dette er din egen gave — send lenken til en venn.",
-    "openCastle": "Åpne slottet ditt"
+    "openCastle": "Åpne slottet ditt",
+    "myItems": "Mine ting",
+    "storageEmpty": "Ingenting her ennå. Finn ting i katalogen eller vinn dem på hjulet.",
+    "inHall": "I salen",
+    "inStorage": "Blant tingene dine",
+    "yoursNow": "Din nå",
+    "sendShort": "Send"
   }
 }
