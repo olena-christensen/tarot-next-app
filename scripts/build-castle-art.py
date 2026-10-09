@@ -318,6 +318,10 @@ ITEMS = {
     "treatCake": ("treat-cake.png", "treat", True),
     "gramophone": ("gramophone.png", "gramophone", False),
     "firewood": ("fire.png", "fire", True),      # catalog picture: firewood.png
+    # records: owned, never placed — catalog pictures only
+    "recordWaltz": ("record-waltz.png", "record", False),
+    "recordOrgan": ("record-organ.png", "record", False),
+    "recordLullaby": ("record-lullaby.png", "record", False),
 }
 ICON_FILE = {"firewood": "firewood.png",
              "settingPewter": "setting-pewter.png", "settingSilver": "setting-silver.png",

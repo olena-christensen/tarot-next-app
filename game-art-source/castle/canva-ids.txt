@@ -58,3 +58,6 @@ grand-black5 MAHXZqYjy4Q (catalog: candelabraBlackWax)
 grand-skulls MAHXZkBV4Ds (catalog: candelabraSkull)
 grand-silver5 MAHXZno_mTA (catalog: candelabraSilverFive)
 candles-skull MAHXZl4MQO8 (faces left; replaces MAHXZtdge_E)
+record-waltz MAHXgyEV2gU
+record-organ MAHXg7FU-j0
+record-lullaby MAHXg7VNnkw
