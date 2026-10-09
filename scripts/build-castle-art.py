@@ -618,15 +618,99 @@ def lay_flat(sp, u0, v0, width, facing):
     return warp_to_quad(sp, corners)
 
 
+def split_pieces(sp):
+    """A setting picture holds fork, plate and knife side by side: separate them
+    (left to right), each on a canvas the size of the whole picture."""
+    a = np.asarray(sp)
+    lab, n = ndimage.label(a[..., 3] > 60)
+    sizes = np.bincount(lab.ravel())[1:]
+    keep = [i + 1 for i in np.argsort(sizes)[::-1][:3]]
+    keep.sort(key=lambda i: np.nonzero(lab == i)[1].mean())
+    out = []
+    for i in keep:
+        m = np.asarray(Image.fromarray(((lab == i) * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(5))) > 0
+        b = a.copy()
+        b[..., 3] = np.where(m, b[..., 3], 0)
+        out.append(Image.fromarray(b, "RGBA"))
+    return out          # fork, plate, knife
+
+
+def relief(piece, kind):
+    """Light from above the middle of the table, which is the top of the
+    picture (the diner's forward). A plate is a dish: high rim, sunken well, so
+    the well's far wall falls in shadow and its near wall catches the light.
+    Cutlery is rounded: lit along its top edge, darker along the bottom."""
+    a = np.asarray(piece).astype(float)
+    al = a[..., 3] / 255
+    ys, xs = np.nonzero(al > 0.5)
+    if kind == "plate":
+        cx, cy = xs.mean(), ys.mean()
+        R = (xs.max() - xs.min() + ys.max() - ys.min()) / 4
+        yy_, xx_ = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+        r = np.sqrt((xx_ - cx) ** 2 + (yy_ - cy) ** 2) / R
+        t = np.clip((r - 0.60) / 0.12, 0, 1)
+        h = t * t * (3 - 2 * t) * R * 0.10          # the rim stands above the well
+        strength, tilt = 7.0, (0.9 + 0.2 * np.clip((cy - yy_) / R, -1, 1))
+    else:
+        h = ndimage.gaussian_filter(al, 2.0) * 3.0
+        strength, tilt = 2.2, 1.0
+    gy = np.gradient(h, axis=0)
+    shade = np.clip(1 + strength * gy / max(1.0, a.shape[0] / 150), 0.55, 1.45) * tilt
+    a[..., :3] = np.clip(a[..., :3] * shade[..., None], 0, 255)
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
+
+
+def lifted(warped, k, thick, lift, away):
+    """Shadow on the cloth and the edge's thickness under a piece lying on the
+    table. k: pixels per table-width there; away: +1 if the light comes from
+    the right (the shadow falls left)."""
+    A = np.asarray(warped.getchannel("A")).astype(float)
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    # soft shadow, pushed towards the viewer and away from the light
+    off_y, off_x = lift * k, -away * lift * k * 0.6
+    sh = Image.fromarray(A.astype(np.uint8)).filter(ImageFilter.GaussianBlur(max(1.0, lift * k * 0.9)))
+    shadow = Image.new("RGBA", (W, H), (3, 2, 8, 0))
+    shadow.putalpha(sh.point(lambda v: int(v * 0.62)))
+    tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0)); tmp.paste(shadow, (round(off_x), round(off_y)))
+    out = Image.alpha_composite(out, tmp)
+    # the edge: the same outline a little lower, dark (it faces away from the light)
+    t = max(1, round(thick * k))
+    edge = np.asarray(warped).astype(float).copy()
+    solid = edge[..., 3] > 128
+    tone = edge[..., :3][solid].mean(0) * 0.42 if solid.any() else np.zeros(3)
+    edge[..., :3] = tone          # one plain dark tone: a metal edge in shadow, no pattern
+    for dy in range(t, 0, -1):
+        tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        tmp.paste(Image.fromarray(edge.astype(np.uint8), "RGBA"), (0, dy))
+        out = Image.alpha_composite(out, tmp)
+    return out
+
+
 def build_settings(item):
     plate_f, goblet_f = ITEMS[item][0]
-    plate = moonlight(cut_out(plate_f), 0.66)
+    pieces = split_pieces(cut_out(plate_f))
+    kinds = ["cutlery", "plate", "cutlery"]
+    pieces = [moonlight(relief(pc, kd), 0.70) for pc, kd in zip(pieces, kinds)]
     goblet = cut_out(goblet_f)
     L = Layer()
     goblets = []
+    far = max(SEATS_V)
     for v in SEATS_V:
         for u0, facing in ((0.16, 1), (0.84, -1)):
-            L.im = Image.alpha_composite(L.im, lay_flat(plate, u0, v, PLATE_W, facing))
+            k = float(px_per_unit(u0, v))
+            # further away: a little darker and softer, like the rest of the room
+            dim = 1 - 0.16 * (v / far)
+            for pc, kd in zip(pieces, kinds):
+                w = lay_flat(pc, u0, v, PLATE_W, facing)
+                wa = np.asarray(w).astype(float)
+                wa[..., :3] *= dim
+                w = Image.fromarray(wa.astype(np.uint8), "RGBA")
+                if v / far > 0.6:
+                    w = w.filter(ImageFilter.GaussianBlur(0.5))
+                under = lifted(w, k, 0.010 if kd == "plate" else 0.004,
+                               0.012 if kd == "plate" else 0.007, facing)
+                L.im = Image.alpha_composite(L.im, under)
+                L.im = Image.alpha_composite(L.im, w)
             gu = u0 + 0.19 * facing
             gv = v - 0.10 * facing
             goblets.append((gv, gu))
