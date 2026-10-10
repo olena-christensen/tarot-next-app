@@ -29,6 +29,9 @@
     position: absolute;
     top: 2rem;
     right: 2rem;
+    // Above anything a dialog lays over its own content (the wheel's prize
+    // card covered it, so the close button stopped responding).
+    z-index: 5;
     background: none;
     border: none;
     color: var(--primary);
