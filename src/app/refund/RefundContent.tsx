@@ -3,7 +3,7 @@
 import { PageShell } from "@/components/PageShell";
 
 const REFUND_HTML_RAW = `
-  <div>
+<div>
     <h1>REFUND POLICY</h1>
     <p><strong>Last updated June 24, 2026</strong></p>
 
@@ -34,7 +34,8 @@ const REFUND_HTML_RAW = `
 
 const REFUND_HTML = REFUND_HTML_RAW
   .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-  .replace(/\s*style="[^"]*"/g, "");
+  .replace(/\s*style="[^"]*"/g, "")
+  .trim();
 
 const HTML_PROP = ["dangerously", "SetInnerHTML"].join("") as "dangerouslySetInnerHTML";
 

@@ -1,20 +1,10 @@
 import { Raleway } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { CookieBanner } from "@/components/CookieBanner";
-import enUi from "../../../messages/en/ui.json";
-import enPlans from "../../../messages/en/plans.json";
-import enReadings from "../../../messages/en/readings.json";
-import enDisclaimers from "../../../messages/en/disclaimers.json";
+import { englishMessages as messages } from "@/i18n/englishMessages";
 import { Analytics } from "@vercel/analytics/next";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
-
-const messages = {
-  ...enUi,
-  ...enPlans,
-  ...enReadings,
-  ...enDisclaimers,
-};
 
 export default function RefundLayout({
   children,
