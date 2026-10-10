@@ -32,6 +32,7 @@ export default function Footer({ overlay = false }: { overlay?: boolean }) {
                     {t("cookieSettings")}
                 </button>
             </p>
+            <p className="main-footer__legal">© 2026 Olena Christensen</p>
         </footer>
     );
 };
