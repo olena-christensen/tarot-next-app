@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     // re-checks and unclaims the site if the tag disappears.
     other: {
       "p:domain_verify": "86e5dcbbdac79f946b53c778a2f847cb",
+      // Meta (Facebook) domain claim for the business portfolio, added 2026-10-10.
+      // Do not remove — Meta re-checks it.
+      "facebook-domain-verification": "5qwx26gymygownmzy6sy3vbh96qzd4",
     },
   },
 };
