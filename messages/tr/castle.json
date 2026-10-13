@@ -17,6 +17,20 @@
       "music": "müzik"
     },
     "partySoon": "Salon hazır. Parti gecesi yakında açılıyor.",
+    "partyReady": "Salon hazır. Konuklar bekliyor.",
+    "party": {
+      "pickRecord": "Bu gece hangi plak çalsın?",
+      "start": "Partiyi başlat",
+      "survived": "Partiden sağ çıktın.",
+      "rated": "Konukların salonuna verdiği puan",
+      "batsLabel": "{max} yarasadan {count}",
+      "newBest": "Yeni rekor! +{count} ay taşı",
+      "toNext": "Sonraki yarasa için {count} yer daha doldur.",
+      "perfect": "Kusursuz bir salon.",
+      "moreGames": "Yeni oyunlar seni almaya geliyor…",
+      "watchAgain": "Tekrar izle",
+      "backToHall": "Salona dön"
+    },
     "signInToPlay": "Salonunu süslemek için giriş yap",
     "tabs": {
       "lights": "Işıklar",

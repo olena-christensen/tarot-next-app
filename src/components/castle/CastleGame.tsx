@@ -28,6 +28,7 @@ import ART from "@/lib/castleGame/places.generated.json";
 import PHONE_ART from "@/lib/castleGame/places.phone.generated.json";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 import { CastleWheel } from "./CastleWheel";
+import { CastleParty, type PartyOutcome } from "./CastleParty";
 
 /**
  * "They Arrive at Midnight": dress an abandoned castle's dining hall.
@@ -191,6 +192,11 @@ export const CastleGame = () => {
     return map;
   }, [items]);
   const needs = partyNeeds(items);
+  /** Records the player owns, one per kind, in catalog order. */
+  const records = useMemo(
+    () => CATALOG.filter((c) => c.record && c.sample && items.some((i) => i.itemId === c.id)),
+    [items],
+  );
 
   // ---------- viewport ----------
   const [fullScreen, setFullScreen] = useState(false);
@@ -294,6 +300,43 @@ export const CastleGame = () => {
       return true;
     }
     return false;
+  };
+
+  // ---------- party night (Lena, 2026-10-13) ----------
+  const [recordPick, setRecordPick] = useState<string | null>(null); // open: the chosen record id
+  const [party, setParty] = useState<{ record: string; run: number } | null>(null);
+  const [partyOutcome, setPartyOutcome] = useState<PartyOutcome | null>(null);
+  const bareBefore = useRef(false);
+
+  const startParty = async (recordId: string) => {
+    const sample = catalogItem(recordId)?.sample;
+    if (!sample) return;
+    setRecordPick(null);
+    bareBefore.current = bare;
+    setBare(true); // the real hall fills the screen under the film
+    setPartyOutcome(null);
+    setParty({ record: sample, run: 1 });
+    track("castle_party", { record: recordId });
+    try {
+      const data = await post<Partial<PartyOutcome>>("/api/castle/party");
+      apply(data.state);
+      if (typeof data.bats === "number") {
+        setPartyOutcome({ bats: data.bats, best: data.best ?? data.bats, stones: data.stones ?? 0, toNext: data.toNext ?? null });
+      }
+    } catch {
+      // the film still plays; the rating just doesn't show
+    }
+  };
+
+  const throwParty = () => {
+    if (needSignIn() || needs.length || !records.length) return;
+    if (records.length === 1) void startParty(records[0].id);
+    else setRecordPick(records[0].id);
+  };
+
+  const closeParty = () => {
+    setParty(null);
+    setBare(bareBefore.current);
   };
 
   const buy = async (item: CatalogItem) => {
@@ -602,7 +645,12 @@ export const CastleGame = () => {
         </button>
       </div>
       <div className="castle__bar">
-        <button type="button" className="castle__btn" disabled>
+        <button
+          type="button"
+          className={`castle__btn${state?.signedIn && !needs.length ? " castle__btn--main" : ""}`}
+          disabled={!state?.signedIn || needs.length > 0}
+          onClick={throwParty}
+        >
           {t("throwParty")}
         </button>
       </div>
@@ -617,7 +665,7 @@ export const CastleGame = () => {
         <p className="castle__note">
           {needs.length
             ? t("missing", { list: needs.map((n) => t(`needs.${n}`)).join(", ") })
-            : t("partySoon")}
+            : t("partyReady")}
         </p>
       )}
       {sentNote && (
@@ -626,6 +674,40 @@ export const CastleGame = () => {
         </p>
       )}
       </div>
+
+      {/* ---------- party night ---------- */}
+      <Modal isOpen={recordPick !== null} onClose={() => setRecordPick(null)} narrow>
+        <div className="castle-dialog castle-dialog--records">
+          <h2 className="castle-dialog__title">{t("party.pickRecord")}</h2>
+          <div className="castle-records" role="radiogroup" aria-label={t("party.pickRecord")}>
+            {records.map((r) => (
+              <button
+                key={r.id}
+                type="button"
+                role="radio"
+                aria-checked={recordPick === r.id}
+                className={`castle-records__item${recordPick === r.id ? " castle-records__item--on" : ""}`}
+                onClick={() => setRecordPick(r.id)}
+              >
+                <span className="castle-records__dot" aria-hidden="true" />
+                {t(`items.${r.id}`)}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="castle-records__start" onClick={() => recordPick && void startParty(recordPick)}>
+            {t("party.start")}
+          </button>
+        </div>
+      </Modal>
+      {party && (
+        <CastleParty
+          record={party.record}
+          run={party.run}
+          outcome={partyOutcome}
+          onReplay={() => setParty((p) => (p ? { ...p, run: p.run + 1 } : p))}
+          onClose={closeParty}
+        />
+      )}
 
       {/* ---------- catalog ---------- */}
       <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide>

@@ -17,6 +17,20 @@
       "music": "music"
     },
     "partySoon": "The hall is ready. Party night opens soon.",
+    "partyReady": "The hall is ready. The guests are waiting.",
+    "party": {
+      "pickRecord": "Which record plays tonight?",
+      "start": "Start the party",
+      "survived": "You survived the party.",
+      "rated": "The guests rated your hall",
+      "batsLabel": "{count} of {max} bats",
+      "newBest": "New best! +{count} moonstones",
+      "toNext": "{count, plural, one {Fill # more spot for the next bat.} other {Fill # more spots for the next bat.}}",
+      "perfect": "A perfect hall.",
+      "moreGames": "More games are coming for you…",
+      "watchAgain": "Watch again",
+      "backToHall": "Back to the hall"
+    },
     "signInToPlay": "Sign in to decorate your hall",
     "tabs": {
       "lights": "Lights",

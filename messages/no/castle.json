@@ -17,6 +17,20 @@
       "music": "musikk"
     },
     "partySoon": "Salen er klar. Festkvelden åpner snart.",
+    "partyReady": "Salen er klar. Gjestene venter.",
+    "party": {
+      "pickRecord": "Hvilken plate skal spilles i kveld?",
+      "start": "Start festen",
+      "survived": "Du overlevde festen.",
+      "rated": "Gjestenes vurdering av salen din",
+      "batsLabel": "{count} av {max} flaggermus",
+      "newBest": "Ny rekord! +{count} månesteiner",
+      "toNext": "{count, plural, one {Fyll # plass til for neste flaggermus.} other {Fyll # plasser til for neste flaggermus.}}",
+      "perfect": "En perfekt sal.",
+      "moreGames": "Flere spill kommer for deg…",
+      "watchAgain": "Se igjen",
+      "backToHall": "Tilbake til salen"
+    },
     "signInToPlay": "Logg inn for å pynte salen din",
     "tabs": {
       "lights": "Lys",

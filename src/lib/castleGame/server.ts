@@ -18,14 +18,22 @@ import {
   PAID_SPIN_PRICE,
   RARE_POOL,
   STONES,
+  STONES_PER_BAT,
   canGo,
   catalogItem,
+  partyRating,
   pickFrom,
   rollPrize,
   type OwnedItem,
   type PlaceId,
   type PrizeKind,
 } from "./catalog";
+
+/**
+ * Party rewards are kept as CastleSpin rows with this day and kind "bat1".."bat5":
+ * the (userId, day, kind) key pays every bat once, however often the party is thrown.
+ */
+const PARTY_DAY = "party";
 
 export const GIFT_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -35,6 +43,8 @@ export type CastleState = {
   items: OwnedItem[];
   freeSpin: boolean;
   paidSpin: boolean;
+  /** Best guests' rating so far, 0 before the first party. */
+  bestBats: number;
 };
 
 export type Fail = { ok: false; reason: string };
@@ -63,14 +73,14 @@ async function addStones(tx: Prisma.TransactionClient, userId: string, n: number
 }
 
 export async function getState(userId: string | null, now: Date = new Date()): Promise<CastleState> {
-  if (!userId) return { signedIn: false, balance: 0, items: [], freeSpin: false, paidSpin: false };
+  if (!userId) return { signedIn: false, balance: 0, items: [], freeSpin: false, paidSpin: false, bestBats: 0 };
   // Sent items nobody took within 7 days come home.
   await prisma.castleItem.updateMany({
     where: { userId, sentAt: { lt: new Date(now.getTime() - GIFT_TTL_MS) } },
     data: { sentAt: null },
   });
   const day = gameDay(now);
-  const [rows, spins, balance] = await Promise.all([
+  const [rows, spins, balance, bats] = await Promise.all([
     prisma.castleItem.findMany({
       where: { userId, sentAt: null },
       orderBy: { createdAt: "asc" },
@@ -78,6 +88,7 @@ export async function getState(userId: string | null, now: Date = new Date()): P
     }),
     prisma.castleSpin.findMany({ where: { userId, day }, select: { kind: true } }),
     balanceOf(userId),
+    prisma.castleSpin.count({ where: { userId, day: PARTY_DAY } }),
   ]);
   const spun = new Set(spins.map((s: { kind: string }) => s.kind));
   return {
@@ -86,6 +97,7 @@ export async function getState(userId: string | null, now: Date = new Date()): P
     items: rows.map((r: { id: string; itemId: string; place: string | null }) => ({ id: r.id, itemId: r.itemId, place: (r.place as PlaceId | null) ?? null })),
     freeSpin: !spun.has("free"),
     paidSpin: spun.has("free") && !spun.has("paid"),
+    bestBats: bats,
   };
 }
 
@@ -221,4 +233,29 @@ export async function takeGift(giftId: string, userId: string, now: Date = new D
     data: { userId, sentAt: null, place: null, source: "gift", takenAt: now },
   });
   return count ? { ok: true, itemId: row.itemId } : { ok: false, reason: "taken" };
+}
+
+export type PartyResult = { ok: true; bats: number; best: number; stones: number; toNext: number | null } | Fail;
+
+/** Party night: rates the hall and pays for every bat beyond the player's best. */
+export async function throwParty(userId: string): Promise<PartyResult> {
+  const rows = await prisma.castleItem.findMany({
+    where: { userId, sentAt: null },
+    select: { id: true, itemId: true, place: true },
+  });
+  const rating = partyRating(
+    rows.map((r: { id: string; itemId: string; place: string | null }) => ({ id: r.id, itemId: r.itemId, place: (r.place as PlaceId | null) ?? null })),
+  );
+  if (rating.bats === 0) return { ok: false, reason: "not-ready" };
+  const earned = Array.from({ length: rating.bats }, (_, i) => `bat${i + 1}`);
+  const stones = await prisma.$transaction(async (tx) => {
+    const { count } = await tx.castleSpin.createMany({
+      data: earned.map((kind) => ({ userId, day: PARTY_DAY, kind, prize: String(STONES_PER_BAT) })),
+      skipDuplicates: true,
+    });
+    if (count) await addStones(tx, userId, count * STONES_PER_BAT);
+    return count * STONES_PER_BAT;
+  });
+  const best = await prisma.castleSpin.count({ where: { userId, day: PARTY_DAY } });
+  return { ok: true, bats: rating.bats, best, stones, toNext: rating.toNext };
 }
