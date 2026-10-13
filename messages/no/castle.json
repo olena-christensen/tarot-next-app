@@ -31,6 +31,18 @@
       "watchAgain": "Se igjen",
       "backToHall": "Tilbake til salen"
     },
+    "hints": {
+      "cloth": "En duk ville vært nydelig her",
+      "settings": "Gjestene trenger tallerkener og glass",
+      "tableCentre": "En vase med blomster hører hjemme her",
+      "treat": "Gjestene vil ha noe godt",
+      "ceiling": "En lysekrone ville lyst opp salen",
+      "ledge": "Lys eller blomster ville passet her",
+      "wall": "Et maleri eller et speil ville passet her",
+      "fireplace": "Litt ved ville tent ilden",
+      "corner": "En grammofon ville gitt musikk"
+    },
+    "hintLink": "Finn noe i katalogen ›",
     "signInToPlay": "Logg inn for å pynte salen din",
     "tabs": {
       "lights": "Lys",

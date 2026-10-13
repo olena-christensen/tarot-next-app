@@ -31,6 +31,18 @@
       "watchAgain": "Watch again",
       "backToHall": "Back to the hall"
     },
+    "hints": {
+      "cloth": "A tablecloth would look lovely here",
+      "settings": "The guests need plates and glasses",
+      "tableCentre": "A vase of flowers belongs here",
+      "treat": "The guests will want a treat",
+      "ceiling": "A chandelier would light up the hall",
+      "ledge": "Candles or flowers would look good here",
+      "wall": "A painting or a mirror would fit here",
+      "fireplace": "Some firewood would light the fire",
+      "corner": "A gramophone would bring music"
+    },
+    "hintLink": "Find one in the catalog ›",
     "signInToPlay": "Sign in to decorate your hall",
     "tabs": {
       "lights": "Lights",

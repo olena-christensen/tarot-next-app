@@ -31,6 +31,18 @@
       "watchAgain": "Tekrar izle",
       "backToHall": "Salona dön"
     },
+    "hints": {
+      "cloth": "Buraya bir masa örtüsü çok yakışırdı",
+      "settings": "Konukların tabak ve kadehe ihtiyacı var",
+      "tableCentre": "Buraya bir vazo çiçek yakışır",
+      "treat": "Konuklar bir ikram isteyecek",
+      "ceiling": "Bir avize salonu aydınlatırdı",
+      "ledge": "Buraya mum ya da çiçek yakışırdı",
+      "wall": "Buraya bir tablo ya da ayna olurdu",
+      "fireplace": "Biraz odun ateşi yakardı",
+      "corner": "Bir gramofon müzik getirirdi"
+    },
+    "hintLink": "Katalogda bul ›",
     "signInToPlay": "Salonunu süslemek için giriş yap",
     "tabs": {
       "lights": "Işıklar",
