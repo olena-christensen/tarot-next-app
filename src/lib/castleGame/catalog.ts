@@ -128,6 +128,28 @@ export function partyNeeds(items: OwnedItem[]): PartyNeed[] {
   return needs;
 }
 
+// ---------------------------------------------------------------- party night
+
+/**
+ * The guests' rating in bats (Lena, 2026-10-13): 1 bat for a ready hall, then
+ * one more at 7, 9, 11 and 13 filled spots. A phone shows 13 spots, so five
+ * bats can be reached there too.
+ */
+export const BAT_SPOTS = [7, 9, 11, 13];
+export const MAX_BATS = 1 + BAT_SPOTS.length;
+/** Moonstones for each bat beyond the player's best, paid once per bat. */
+export const STONES_PER_BAT = 2;
+
+export type PartyRating = { bats: number; filled: number; toNext: number | null };
+
+export function partyRating(items: OwnedItem[]): PartyRating {
+  const filled = new Set(items.filter((i) => i.place).map((i) => i.place)).size;
+  if (partyNeeds(items).length) return { bats: 0, filled, toNext: null };
+  const bats = 1 + BAT_SPOTS.filter((n) => filled >= n).length;
+  const next = BAT_SPOTS.find((n) => filled < n);
+  return { bats, filled, toNext: next === undefined ? null : next - filled };
+}
+
 // ---------------------------------------------------------------- the wheel
 
 export type PrizeKind = "stone1" | "stone2" | "stone3" | "item" | "rare";
