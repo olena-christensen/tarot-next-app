@@ -213,6 +213,73 @@
     }
   }
 
+  // Empty spots: a soft glow on hover (or tap) and a hint of what would fit.
+  &__empty {
+    position: absolute;
+    padding: 0;
+    background: transparent;
+    border: 0 dashed transparent;
+    border-radius: 12px;
+    cursor: help;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &--on,
+    &:focus-visible {
+      border-style: dashed;
+      border-color: rgba(250, 225, 163, 0.75);
+      background: rgba(250, 225, 163, 0.08);
+      box-shadow: 0 0 18px rgba(250, 225, 163, 0.35);
+      outline: none;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border-style: dashed;
+        border-color: rgba(250, 225, 163, 0.75);
+        background: rgba(250, 225, 163, 0.08);
+        box-shadow: 0 0 18px rgba(250, 225, 163, 0.35);
+      }
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    z-index: 4;
+    width: 280px;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background: rgba(9, 9, 9, 0.92);
+    border: 1px solid rgba(250, 225, 163, 0.6);
+    border-radius: 12px;
+    text-align: left;
+    animation: castleAppear 0.2s ease-out;
+  }
+
+  &__hint-text {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    color: var(--text-soft);
+  }
+
+  &__hint-link {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: rgba(250, 225, 163, 0.8);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--gold);
+    }
+  }
+
+  // the sound button sits between the wheel and the eye
+  &__sound--off svg {
+    opacity: 0.55;
+  }
+
   &__menu {
     position: absolute;
     z-index: 4;
@@ -569,6 +636,31 @@ html.castle-locked body {
     cursor: pointer;
   }
 
+  // Standing in the hall: a gold edge and a badge on the picture (Lena, 2026-10-13).
+  &--in-hall {
+    border-color: rgba(250, 225, 163, 0.6);
+  }
+
+  // two buttons side by side never wrap ("Take down" in a narrow card)
+  &__row--two &__buy {
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+    padding: 3px 10px;
+    background: rgba(9, 9, 9, 0.85);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    color: var(--gold);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
   &__pic {
     position: relative;
     display: flex;
@@ -757,11 +849,13 @@ html.castle-locked body {
 .castle-prize {
   position: absolute;
   inset: 0;
+  z-index: 3; // over the wheel and its pointer, so nothing shows through
+
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(9, 9, 9, 0.94);
   border-radius: var(--border-radius);
 
   &__card {

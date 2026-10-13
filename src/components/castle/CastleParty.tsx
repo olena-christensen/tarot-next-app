@@ -30,15 +30,22 @@ type Props = {
   outcome: PartyOutcome | null;
   /** Changes on every "Watch again" so the film restarts. */
   run: number;
+  /** The game's sound button is off. */
+  muted: boolean;
   onReplay: () => void;
   onClose: () => void;
 };
 
-export const CastleParty = ({ record, outcome, run, onReplay, onClose }: Props) => {
+export const CastleParty = ({ record, outcome, run, muted, onReplay, onClose }: Props) => {
   const t = useTranslations("castle.party");
   const videoRef = useRef<HTMLVideoElement>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const [ended, setEnded] = useState(false);
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
+  useEffect(() => {
+    if (musicRef.current) musicRef.current.muted = muted;
+  }, [muted]);
 
   // Start film and record together, from the beginning, on every run.
   useEffect(() => {
@@ -47,6 +54,7 @@ export const CastleParty = ({ record, outcome, run, onReplay, onClose }: Props) 
     if (!video) return;
     const music = new Audio(`/sounds/castle/${record}-sample.mp3`);
     music.volume = MUSIC_VOLUME;
+    music.muted = mutedRef.current;
     musicRef.current = music;
     video.currentTime = 0;
     void video.play().catch(() => undefined);
@@ -87,6 +95,7 @@ export const CastleParty = ({ record, outcome, run, onReplay, onClose }: Props) 
         className="castle-party__film"
         src={FILM}
         playsInline
+        muted={muted}
         preload="auto"
         onTimeUpdate={onTime}
         onEnded={() => setEnded(true)}

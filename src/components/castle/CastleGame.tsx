@@ -93,6 +93,28 @@ async function post<T>(url: string, body?: unknown): Promise<T & { error?: strin
   return res.json();
 }
 
+/** What would fit an empty spot, and where the catalog sells it (Lena, 2026-10-13). */
+const SPOT_HINT: Record<PlaceId, { hint: string; tab: TabId }> = {
+  cloth: { hint: "cloth", tab: "table" },
+  settings: { hint: "settings", tab: "table" },
+  tableCentre: { hint: "tableCentre", tab: "table" },
+  treatMiddle: { hint: "treat", tab: "treats" },
+  treatFront: { hint: "treat", tab: "treats" },
+  ceiling: { hint: "ceiling", tab: "lights" },
+  shelf: { hint: "ledge", tab: "lights" },
+  mantel: { hint: "ledge", tab: "lights" },
+  wallLeft: { hint: "wall", tab: "walls" },
+  wallBackLeft: { hint: "wall", tab: "walls" },
+  wallBackCentre: { hint: "wall", tab: "walls" },
+  wallBackRight: { hint: "wall", tab: "walls" },
+  wallRight: { hint: "wall", tab: "walls" },
+  fireplace: { hint: "fireplace", tab: "fireMusic" },
+  corner: { hint: "corner", tab: "fireMusic" },
+};
+/** On the bare table only the cloth is offered; the rest stands on it. */
+const ON_THE_CLOTH: PlaceId[] = ["settings", "tableCentre", "treatMiddle", "treatFront"];
+const SOUND_KEY = "castle-sound";
+
 export const CastleGame = () => {
   const t = useTranslations("castle");
   const { status: authStatus } = useSession();
@@ -192,6 +214,63 @@ export const CastleGame = () => {
     return map;
   }, [items]);
   const needs = partyNeeds(items);
+  // ---------- sound (Lena, 2026-10-13) ----------
+  // Wind blows through the empty hall until the fire is lit; then the fire
+  // crackles. Browsers allow sound only after a first tap, so it starts then.
+  const [soundOn, setSoundOn] = useState(true);
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(SOUND_KEY) === "off") setSoundOn(false);
+    } catch {
+      // storage blocked: sound stays on
+    }
+  }, []);
+  const toggleSound = () => {
+    setSoundOn((on) => {
+      try {
+        localStorage.setItem(SOUND_KEY, on ? "off" : "on");
+      } catch {
+        // not remembered, still switched
+      }
+      return !on;
+    });
+  };
+  const fireLit = placedAt.has("fireplace");
+  const ambienceRef = useRef<HTMLAudioElement | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
+  useEffect(() => {
+    const unlock = () => setUnlocked(true);
+    window.addEventListener("pointerdown", unlock, { once: true });
+    window.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
+
+  // ---------- hints on empty spots ----------
+  const [hint, setHint] = useState<PlaceId | null>(null);
+  const hintTimer = useRef<number | null>(null);
+  const keepHint = () => {
+    if (hintTimer.current) window.clearTimeout(hintTimer.current);
+    hintTimer.current = null;
+  };
+  const dropHint = () => {
+    keepHint();
+    hintTimer.current = window.setTimeout(() => setHint(null), 250);
+  };
+
+  // A tap anywhere else closes the hint (phones have no "mouse leaves").
+  useEffect(() => {
+    if (!hint) return;
+    const away = (e: PointerEvent) => {
+      const el = e.target as Element | null;
+      if (!el?.closest(".castle__hint, .castle__empty")) setHint(null);
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [hint]);
+
   /** Records the player owns, one per kind, in catalog order. */
   const records = useMemo(
     () => CATALOG.filter((c) => c.record && c.sample && items.some((i) => i.itemId === c.id)),
@@ -289,6 +368,7 @@ export const CastleGame = () => {
   }, [scale, immersive, tall]);
 
   const onScroll = () => {
+    setHint(null);
     const stage = stageRef.current;
     if (stage) setScroll({ left: stage.scrollLeft, width: stage.clientWidth });
   };
@@ -338,6 +418,37 @@ export const CastleGame = () => {
     setParty(null);
     setBare(bareBefore.current);
   };
+
+  // The hall's own sound: wind until the fire is lit, then the fire. Quiet while
+  // a record sample or the party film plays, and when the page is hidden.
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const sync = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", sync);
+    return () => document.removeEventListener("visibilitychange", sync);
+  }, []);
+  const ambience = fireLit ? "fire" : "wind";
+  const ambienceOn = soundOn && unlocked && !hidden && !party && !listening;
+  useEffect(() => {
+    if (!ambienceOn) return;
+    const audio = new Audio(`/sounds/castle/${ambience}-loop.mp3`);
+    audio.loop = true;
+    audio.volume = 0;
+    ambienceRef.current = audio;
+    void audio.play().catch(() => undefined);
+    // fade in, so it never starts with a jolt
+    let v = 0;
+    const fade = window.setInterval(() => {
+      v = Math.min(v + 0.03, ambience === "fire" ? 0.45 : 0.35);
+      audio.volume = v;
+      if (v >= 0.35) window.clearInterval(fade);
+    }, 80);
+    return () => {
+      window.clearInterval(fade);
+      audio.pause();
+      if (ambienceRef.current === audio) ambienceRef.current = null;
+    };
+  }, [ambienceOn, ambience]);
 
   const buy = async (item: CatalogItem) => {
     if (needSignIn() || busy || item.price === null) return;
@@ -483,6 +594,11 @@ export const CastleGame = () => {
     ? items.filter((i) => !i.place && i.id !== swapFor.id && catalogItem(i.itemId)?.places.includes(swapFor.place!))
     : [];
 
+  const emptySpots = ORDER.filter(
+    (place) => PLACE_BOX[place] && !placedAt.has(place) && !(ON_THE_CLOTH.includes(place) && !placedAt.has("cloth")),
+  );
+  const hintBox = hint && !placing && !placedAt.has(hint) ? PLACE_BOX[hint] : null;
+
   const menuBox = menu?.place ? PLACE_BOX[menu.place] : null;
   const menuPatch = menu?.place ? PATCHES[menu.place]?.[menu.itemId] : null;
 
@@ -498,6 +614,26 @@ export const CastleGame = () => {
           onClick={() => (needSignIn() ? undefined : setWheelOpen(true))}
         >
           ✦ {canFree ? t("wheelFree") : t("wheelButton")}
+        </button>
+        <button
+          type="button"
+          className={`castle__eye castle__sound${soundOn ? "" : " castle__sound--off"}`}
+          onClick={toggleSound}
+          aria-label={t("sound")}
+          title={t("sound")}
+          aria-pressed={soundOn}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+            {soundOn ? (
+              <>
+                <path d="M15.5 9a4 4 0 0 1 0 6" />
+                <path d="M18 6.5a7.5 7.5 0 0 1 0 11" />
+              </>
+            ) : (
+              <path d="M16 9.5l5 5M21 9.5l-5 5" />
+            )}
+          </svg>
         </button>
         <button type="button" className="castle__eye" onClick={() => setBare(true)} aria-label={t("roomOnly")} title={t("roomOnly")}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -565,6 +701,31 @@ export const CastleGame = () => {
                     />
                   );
                 })}
+              {/* Empty spots: a hint of what would fit (Lena, 2026-10-13). */}
+              {!placing &&
+                emptySpots.map((place) => {
+                  const b = PLACE_BOX[place]!;
+                  return (
+                    <button
+                      key={`e-${place}`}
+                      type="button"
+                      className={`castle__empty${hint === place ? " castle__empty--on" : ""}`}
+                      style={{ left: b.x, top: b.y, width: b.w, height: b.h, borderWidth: 2 / scale }}
+                      aria-label={t(`hints.${SPOT_HINT[place].hint}`)}
+                      onPointerEnter={(e) => {
+                        if (e.pointerType !== "mouse") return;
+                        keepHint();
+                        setHint(place);
+                      }}
+                      onPointerLeave={(e) => e.pointerType === "mouse" && dropHint()}
+                      onClick={() => {
+                        keepHint();
+                        setMenu(null);
+                        setHint(place);
+                      }}
+                    />
+                  );
+                })}
               {placing &&
                 ringPlaces.map((place) => {
                   const b = PLACE_BOX[place]!;
@@ -605,6 +766,34 @@ export const CastleGame = () => {
         {placing && offLeft > 0 && <span className="castle__edge castle__edge--left">{t("moreLeft", { count: offLeft })}</span>}
         {placing && offRight > 0 && <span className="castle__edge castle__edge--right">{t("moreRight", { count: offRight })}</span>}
 
+        {hint && hintBox && (
+          <div
+            className="castle__hint"
+            onMouseEnter={keepHint}
+            onMouseLeave={dropHint}
+            style={{
+              left: Math.min(Math.max(8, (hintBox.x + hintBox.w / 2) * scale + view.x - scroll.left - 140), scroll.width - 288),
+              top:
+                hintBox.y * scale + view.y > 110
+                  ? hintBox.y * scale + view.y - 92
+                  : Math.min((hintBox.y + hintBox.h) * scale + view.y + 10, view.h - 100),
+            }}
+          >
+            <p className="castle__hint-text">{t(`hints.${SPOT_HINT[hint].hint}`)}</p>
+            <button
+              type="button"
+              className="castle__hint-link"
+              onClick={() => {
+                setHint(null);
+                if (needSignIn()) return;
+                setTab(SPOT_HINT[hint].tab);
+                setCatalogOpen(true);
+              }}
+            >
+              {t("hintLink")}
+            </button>
+          </div>
+        )}
         {menu && menuBox && menuPatch && (
           <div
             className="castle__menu"
@@ -704,6 +893,7 @@ export const CastleGame = () => {
           record={party.record}
           run={party.run}
           outcome={partyOutcome}
+          muted={!soundOn}
           onReplay={() => setParty((p) => (p ? { ...p, run: p.run + 1 } : p))}
           onClose={closeParty}
         />
@@ -784,12 +974,15 @@ export const CastleGame = () => {
             <p className="castle__note">{t("storageEmpty")}</p>
           ) : (
             <div className="castle-dialog__grid">
-              {items.map((row) => {
+              {[...items]
+                .sort((a, b) => Number(Boolean(b.place)) - Number(Boolean(a.place)))
+                .map((row) => {
                 const item = catalogItem(row.itemId);
                 if (!item) return null;
                 return (
-                  <div key={row.id} className="castle-card">
+                  <div key={row.id} className={`castle-card${row.place ? " castle-card--in-hall" : ""}`}>
                     <div className="castle-card__pic">
+                      {row.place && <span className="castle-card__badge">{statusOf(row)}</span>}
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={ICON(row.itemId)} alt="" loading="lazy" />
                       {listenButton(item)}
@@ -800,6 +993,11 @@ export const CastleGame = () => {
                       {!row.place && item.places.length > 0 && (
                         <button type="button" className="castle-card__buy" onClick={() => placeRow(row)}>
                           {t("place")}
+                        </button>
+                      )}
+                      {row.place && row.place !== "fireplace" && (
+                        <button type="button" className="castle-card__buy" onClick={() => takeDown(row)}>
+                          {t("takeDown")}
                         </button>
                       )}
                       <button type="button" className="castle-card__buy" onClick={() => send(row)}>
