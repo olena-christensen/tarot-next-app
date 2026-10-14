@@ -916,9 +916,11 @@ if PHONE:
     TREATS = {"treatFront": (0.50, 0.32, 0.22), "treatMiddle": (0.50, 1.12, 0.22)}
     TABLE_H = homography([(0, 0), (1, 0), (1, TABLE_LEN), (0, TABLE_LEN)],
                          [TABLE[3], TABLE[2], TABLE[1], TABLE[0]])
-    WALLS = {   # the two empty stone panels on each side of the fireplace
+    WALLS = {   # the empty stone panels on each side of the fireplace, and one on the right wall
         "wallBackLeft": [(177, 809), (286, 809), (286, 1023), (177, 1023)],
         "wallBackRight": [(662, 809), (782, 809), (782, 1023), (662, 1023)],
+        # the panel on the right side wall, seen at an angle (Lena, 2026-10-14)
+        "wallRight": [(869, 822), (934, 792), (934, 1097), (869, 1085)],
     }
     STANDS = {"tableCentre": (0, 0, 0, 0.66)}
     CLOTH = {
@@ -947,7 +949,7 @@ if PHONE:
         ("ellipse", (528, 1217, 539, 1231)), ("rect", (530, 1229, 536, 1284)),
         ("poly", [(529, 1280), (537, 1280), (553, 1302), (547, 1303), (533, 1288), (519, 1303), (513, 1302)]),
     ]
-    for _p in ("wallLeft", "wallRight", "wallBackCentre", "shelf"):
+    for _p in ("wallLeft", "wallBackCentre", "shelf"):
         PLACES.pop(_p, None)
     ORDER = [p for p in ORDER if p in PLACES]
 

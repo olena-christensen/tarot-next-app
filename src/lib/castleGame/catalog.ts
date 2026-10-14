@@ -133,7 +133,7 @@ export function partyNeeds(items: OwnedItem[]): PartyNeed[] {
 /**
  * The guests' rating in bats (Lena, 2026-10-13): 1 bat for a ready hall, then
  * one more at 6, 8, 10 and 11 filled spots (lowered 2026-10-14). A phone
- * shows 11 spots, so five bats can be reached there too.
+ * shows 12 spots, so five bats can be reached there too.
  */
 export const BAT_SPOTS = [6, 8, 10, 11];
 export const MAX_BATS = 1 + BAT_SPOTS.length;

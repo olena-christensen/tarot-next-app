@@ -4,6 +4,7 @@
  "order": [
   "wallBackLeft",
   "wallBackRight",
+  "wallRight",
   "fireplace",
   "mantel",
   "ceiling",
@@ -101,6 +102,50 @@
     "y": 833,
     "w": 142,
     "h": 180
+   }
+  },
+  "wallRight": {
+   "mirrorGilt": {
+    "x": 863,
+    "y": 891,
+    "w": 81,
+    "h": 130
+   },
+   "mirrorGhost": {
+    "x": 863,
+    "y": 886,
+    "w": 81,
+    "h": 140
+   },
+   "paintingRaven": {
+    "x": 862,
+    "y": 901,
+    "w": 82,
+    "h": 110
+   },
+   "paintingSea": {
+    "x": 862,
+    "y": 901,
+    "w": 82,
+    "h": 110
+   },
+   "paintingLady": {
+    "x": 862,
+    "y": 901,
+    "w": 82,
+    "h": 110
+   },
+   "paintingCastle": {
+    "x": 862,
+    "y": 901,
+    "w": 82,
+    "h": 110
+   },
+   "paintingAncestor": {
+    "x": 862,
+    "y": 901,
+    "w": 82,
+    "h": 110
    }
   },
   "fireplace": {
