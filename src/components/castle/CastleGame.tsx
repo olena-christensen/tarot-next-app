@@ -265,6 +265,26 @@ export const CastleGame = () => {
     hintTimer.current = window.setTimeout(() => setHint(null), 250);
   };
 
+  // A click on a glowing empty spot opens the Emporium on the spot's tab
+  // (Lena, 2026-10-14). With a mouse the spot already glows on hover; on a
+  // phone the first tap shows the hint and a second tap on it opens the shop.
+  const lastPointer = useRef<string>("mouse");
+  const notePointer = (e: { pointerType: string }) => {
+    lastPointer.current = e.pointerType;
+  };
+  const openShopFor = (place: PlaceId) => {
+    setHint(null);
+    if (needSignIn()) return;
+    setTab(SPOT_HINT[place].tab);
+    setCatalogOpen(true);
+  };
+  const tapEmpty = (place: PlaceId) => {
+    keepHint();
+    setMenu(null);
+    if (lastPointer.current === "mouse" || hint === place) return openShopFor(place);
+    setHint(place);
+  };
+
   // A tap outside the item menu closes it (Lena, 2026-10-14).
   useEffect(() => {
     if (!menu) return;
@@ -797,11 +817,8 @@ export const CastleGame = () => {
                         setHint(place);
                       }}
                       onPointerLeave={(e) => e.pointerType === "mouse" && dropHint()}
-                      onClick={() => {
-                        keepHint();
-                        setMenu(null);
-                        setHint(place);
-                      }}
+                      onPointerDown={notePointer}
+                      onClick={() => tapEmpty(place)}
                     />
                   );
                 })}
@@ -827,9 +844,7 @@ export const CastleGame = () => {
                   const ring = Boolean(placing);
                   const choose = () => {
                     if (ring) return void putAt(place);
-                    keepHint();
-                    setMenu(null);
-                    setHint(place);
+                    tapEmpty(place);
                   };
                   return (
                     <g
@@ -846,6 +861,7 @@ export const CastleGame = () => {
                         setHint(place);
                       }}
                       onPointerLeave={(e) => !ring && e.pointerType === "mouse" && dropHint()}
+                      onPointerDown={notePointer}
                     >
                       {shapes.map((pts, i) => (
                         <polygon key={i} points={pts.map((p) => p.join(",")).join(" ")} />
@@ -897,12 +913,7 @@ export const CastleGame = () => {
             <button
               type="button"
               className="castle__hint-link"
-              onClick={() => {
-                setHint(null);
-                if (needSignIn()) return;
-                setTab(SPOT_HINT[hint].tab);
-                setCatalogOpen(true);
-              }}
+              onClick={() => openShopFor(hint)}
             >
               {t("hintLink")}
             </button>
