@@ -5360,6 +5360,51 @@ html.potion-locked body {
   border-style: solid;
   border-color: rgba(255, 233, 168, 0.5);
 }
+.castle__spots {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.castle__spot {
+  pointer-events: visiblePainted;
+  cursor: help;
+  outline: none;
+}
+.castle__spot polygon {
+  fill: rgba(250, 225, 163, 0.001);
+  stroke: transparent;
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+.castle__spot--on polygon, .castle__spot:focus-visible polygon {
+  fill: rgba(250, 225, 163, 0.1);
+  stroke: rgba(250, 225, 163, 0.8);
+  stroke-dasharray: 6 5;
+}
+@media (hover: hover) {
+  .castle__spot:hover polygon {
+    fill: rgba(250, 225, 163, 0.1);
+    stroke: rgba(250, 225, 163, 0.8);
+    stroke-dasharray: 6 5;
+  }
+}
+.castle__spot--ring {
+  cursor: pointer;
+  filter: drop-shadow(0 0 6px rgba(255, 233, 168, 0.6));
+  animation: castleRing 1.2s ease-in-out infinite alternate;
+}
+.castle__spot--ring polygon {
+  fill: rgba(255, 233, 168, 0.12);
+  stroke: rgba(255, 233, 168, 0.95);
+  stroke-width: 2.5px;
+  stroke-dasharray: 7 5;
+}
+.castle__spot--busy polygon {
+  stroke: rgba(255, 233, 168, 0.55);
+  stroke-dasharray: none;
+}
 .castle__banner {
   position: absolute;
   left: 10px;
@@ -6218,9 +6263,6 @@ html.castle-locked body {
   height: 100%;
   object-fit: contain;
   transition: opacity 0.6s ease;
-}
-.castle-party__film--tall {
-  object-fit: cover;
 }
 .castle-party--end {
   background: rgba(9, 9, 9, 0.7);
