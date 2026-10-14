@@ -11,7 +11,7 @@
     "throwParty": "Throw the party",
     "missing": "Missing for the party: {list}.",
     "needs": {
-      "cloth": "a table cloth",
+      "cloth": "a tablecloth",
       "light": "a light",
       "treat": "a treat",
       "music": "music"
@@ -80,6 +80,7 @@
     "spinFree": "Spin · free today",
     "spinPaid": "Spin again · 1 moonstone",
     "spinTomorrow": "Come back tomorrow for another spin",
+    "nextFree": "Next free spin in {hours} h {minutes} min",
     "spinning": "Spinning…",
     "odds": "1 moonstone 35% · an item 35% · 2 moonstones 15% · a rare item 10% · 3 moonstones 5%",
     "paneItem": "Item",

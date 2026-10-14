@@ -483,10 +483,14 @@
   &__note {
     margin: 8px 16px 0;
     font-size: 0.8rem;
+    line-height: 1.7;
     color: var(--text-faint);
 
     a {
       color: var(--text-soft);
+      // the line stays clear of the letters, also on a phone (Lena, 2026-10-14)
+      text-underline-offset: 0.3em;
+      text-decoration-thickness: 1px;
     }
 
     &--sent b {
@@ -1478,4 +1482,11 @@ html.castle-locked body {
     background: transparent;
     border-color: rgba(250, 225, 163, 0.5);
   }
+}
+
+// The wheel shows the player's moonstones (Lena, 2026-10-14).
+.castle-wheel-panel__balance {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 8px;
 }

@@ -45,7 +45,19 @@ export type CastleState = {
   paidSpin: boolean;
   /** Best guests' rating so far, 0 before the first party. */
   bestBats: number;
+  /** When the next game day starts (a new free spin), as milliseconds since 1970. */
+  nextSpinAt: number;
 };
+
+/** The moment the game day changes after `now` (midnight in the game's time zone). */
+function nextGameDay(now: Date): number {
+  const today = gameDay(now);
+  let t = now.getTime();
+  // hour steps until the day changes, then back up in minute steps
+  while (gameDay(new Date(t)) === today) t += 60 * 60 * 1000;
+  while (gameDay(new Date(t - 60 * 1000)) !== today) t -= 60 * 1000;
+  return t - (t % (60 * 1000));
+}
 
 export type Fail = { ok: false; reason: string };
 
@@ -73,7 +85,7 @@ async function addStones(tx: Prisma.TransactionClient, userId: string, n: number
 }
 
 export async function getState(userId: string | null, now: Date = new Date()): Promise<CastleState> {
-  if (!userId) return { signedIn: false, balance: 0, items: [], freeSpin: false, paidSpin: false, bestBats: 0 };
+  if (!userId) return { signedIn: false, balance: 0, items: [], freeSpin: false, paidSpin: false, bestBats: 0, nextSpinAt: 0 };
   // Sent items nobody took within 7 days come home.
   await prisma.castleItem.updateMany({
     where: { userId, sentAt: { lt: new Date(now.getTime() - GIFT_TTL_MS) } },
@@ -98,6 +110,7 @@ export async function getState(userId: string | null, now: Date = new Date()): P
     freeSpin: !spun.has("free"),
     paidSpin: spun.has("free") && !spun.has("paid"),
     bestBats: bats,
+    nextSpinAt: nextGameDay(now),
   };
 }
 
