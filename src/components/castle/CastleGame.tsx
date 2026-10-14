@@ -337,6 +337,33 @@ export const CastleGame = () => {
   // "Room only" (Lena, 2026-10-09): every button and line hides, the hall fills the screen.
   const [bare, setBare] = useState(false);
   const immersive = fullScreen || bare;
+  // The full-screen button (classic corners icon, Lena 2026-10-14): the hall
+  // alone, and the browser's own full screen where it exists. Leaving the
+  // browser's full screen (Esc) brings the buttons back too.
+  const browserFull = useRef(false);
+  const enterFull = () => {
+    setBare(true);
+    const req = document.documentElement.requestFullscreen?.();
+    if (req) {
+      browserFull.current = true;
+      void req.catch(() => (browserFull.current = false));
+    }
+  };
+  const leaveFull = () => {
+    setBare(false);
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+    browserFull.current = false;
+  };
+  useEffect(() => {
+    const onChange = () => {
+      if (!document.fullscreenElement && browserFull.current) {
+        browserFull.current = false;
+        setBare(false);
+      }
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("castle-locked", immersive);
     return () => document.documentElement.classList.remove("castle-locked");
@@ -734,10 +761,9 @@ export const CastleGame = () => {
             )}
           </svg>
         </button>
-        <button type="button" className="castle__eye" onClick={() => setBare(true)} aria-label={t("roomOnly")} title={t("roomOnly")}>
+        <button type="button" className="castle__eye" onClick={() => enterFull()} aria-label={t("fullScreen")} title={t("fullScreen")}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
-            <circle cx="12" cy="12" r="3" />
+            <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
           </svg>
         </button>
         {fullScreen && (
@@ -875,11 +901,9 @@ export const CastleGame = () => {
         </div>
 
         {bare && (
-          <button type="button" className="castle__unbare" onClick={() => setBare(false)} aria-label={t("showButtons")} title={t("showButtons")}>
+          <button type="button" className="castle__unbare" onClick={() => leaveFull()} aria-label={t("exitFullScreen")} title={t("exitFullScreen")}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
-              <circle cx="12" cy="12" r="3" />
-              <path d="M4 4l16 16" />
+              <path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5" />
             </svg>
           </button>
         )}

@@ -83,6 +83,8 @@
     "boiledSummary": "Du fant {got} av {total} ingredienser.",
     "soundOff": "Slå av lyden",
     "soundOn": "Slå på lyden",
+    "fullScreen": "Fullskjerm",
+    "exitFullScreen": "Avslutt fullskjerm",
     "choiceTitleSeasonal": "Halloweenspill",
     "choiceTitle": "Heksespill",
     "choiceSub": "Velg din natt.",

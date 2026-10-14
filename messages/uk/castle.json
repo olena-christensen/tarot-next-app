@@ -151,6 +151,8 @@
     "sendShort": "Надіслати",
     "roomOnly": "Лише зала",
     "showButtons": "Показати кнопки",
+    "fullScreen": "На весь екран",
+    "exitFullScreen": "Вийти з повноекранного режиму",
     "listen": "Послухати",
     "stopListening": "Зупинити",
     "clearHall": "Очистити залу",

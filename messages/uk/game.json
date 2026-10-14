@@ -83,6 +83,8 @@
     "boiledSummary": "Знайдено {got} з {total} інгредієнтів.",
     "soundOff": "Вимкнути звук",
     "soundOn": "Увімкнути звук",
+    "fullScreen": "На весь екран",
+    "exitFullScreen": "Вийти з повноекранного режиму",
     "choiceTitleSeasonal": "Ігри на Гелловін",
     "choiceTitle": "Відьомські ігри",
     "choiceSub": "Обери свою ніч.",
