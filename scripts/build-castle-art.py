@@ -490,7 +490,23 @@ def build_wall(item, place):
     left = (q[0][0] + q[3][0]) / 2; right = (q[1][0] + q[2][0]) / 2
     pw = right - left
     flat = place in ("wallBackLeft", "wallBackCentre", "wallBackRight")
-    if PHONE:
+    if PHONE and not flat:
+        # the side wall is seen at an angle: the picture lies in the wall's own
+        # perspective (Lena, 2026-10-14). Fitted in the panel as if seen face on
+        # (panel about half as wide as tall), then carried onto the slanted panel.
+        Hq = homography([(0, 0), (1, 0), (1, 1), (0, 1)], q)
+        a = sp.width / sp.height
+        hv = 0.92; wu = a * hv / 0.52
+        if wu > 0.94:
+            hv *= 0.94 / wu; wu = 0.94
+        u0, v0 = (1 - wu) / 2, (1 - hv) / 2
+
+        def on_wall(u, v):
+            pt = Hq @ np.array([u, v, 1.0])
+            return (pt[0] / pt[2], pt[1] / pt[2])
+
+        quad = [on_wall(u0, v0), on_wall(u0 + wu, v0), on_wall(u0 + wu, v0 + hv), on_wall(u0, v0 + hv)]
+    elif PHONE:
         # narrow pointed frames: the picture fits inside, never wider than the frame
         k = min(pw * 0.96 / sp.width, ph * 0.94 / sp.height)
         w, h2 = sp.width * k, sp.height * k
