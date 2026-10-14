@@ -771,6 +771,7 @@ html.potion-locked body {
   font-family: var(--font-family);
   white-space: nowrap;
   cursor: pointer;
+  text-decoration: none; // a link now (to the games page), still a button to the eye
   transition: box-shadow 0.2s ease;
 
   &:hover {
@@ -1035,4 +1036,21 @@ html.potion-locked body {
   align-self: center;
   width: auto;
   max-width: 100%;
+}
+
+
+// The games page /game (Lena, 2026-10-14): the same cards as the pop-up.
+.games-page {
+  display: flex;
+  justify-content: center;
+  padding: 150px 16px 64px; // below the site header, as on the game pages
+
+  @include respond-below(md) {
+    padding: 128px 16px 48px;
+  }
+}
+
+.game-choice--page .game-choice__title {
+  padding-right: 0; // no close button to clear here
+  font-size: 2rem;
 }

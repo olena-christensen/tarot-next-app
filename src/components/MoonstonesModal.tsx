@@ -44,7 +44,7 @@ export const MoreMoonstonesModal = ({ isOpen, onClose, onRequestLogin }: Props) 
     <>
       <Modal title={t("moreMoonstones")} isOpen={isOpen} onClose={onClose} narrow>
         <div className="moon-choice">
-          <Link href="/game" className="moon-choice__opt" onClick={onClose}>
+          <Link href="/potion" className="moon-choice__opt" onClick={onClose}>
             <span className="moon-choice__free">{t("free")}</span>
             <span className="moon-choice__name">{t("brewPotions")}</span>
             <span className="moon-choice__text">{t("brewPotionsText")}</span>
