@@ -209,6 +209,18 @@ export async function send(userId: string, rowId: string, now: Date = new Date()
   return { ok: true, giftId: rowId };
 }
 
+/**
+ * The share window was closed without sending (Lena, 2026-10-14): the item
+ * goes back to the vault. Only while no friend has taken it.
+ */
+export async function unsend(userId: string, rowId: string): Promise<{ ok: true } | Fail> {
+  const { count } = await prisma.castleItem.updateMany({
+    where: { id: rowId, userId, sentAt: { not: null } },
+    data: { sentAt: null },
+  });
+  return count ? { ok: true } : { ok: false, reason: "not-found" };
+}
+
 export type GiftView = {
   status: "available" | "taken" | "gone";
   itemId: string | null;

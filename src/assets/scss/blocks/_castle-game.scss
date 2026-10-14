@@ -613,8 +613,7 @@ html.castle-locked body {
   .castle__bar,
   .castle__note,
   .castle__banner,
-  .castle__edge,
-  .castle__menu {
+  .castle__edge {
     display: none;
   }
 
@@ -725,15 +724,17 @@ html.castle-locked body {
 
   &__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    // minmax(0, …): a long button or name never makes a column wider than
+    // the screen (Lena, 2026-10-14: the vault scrolled sideways on a phone)
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
 
     @include respond-above(sm) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     @include respond-above(lg) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 }
@@ -742,6 +743,8 @@ html.castle-locked body {
   position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: 10px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(250, 225, 163, 0.25);
@@ -862,8 +865,15 @@ html.castle-locked body {
     gap: 6px;
     margin-top: auto;
 
+    // two buttons share the row; in a narrow card they stack instead of
+    // pushing the card wider
+    &--two {
+      flex-wrap: wrap;
+    }
+
     &--two .castle-card__buy {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       margin-left: 0;
       padding-inline: 6px;
     }
@@ -1430,6 +1440,26 @@ html.castle-locked body {
 
   .castle-dialog__head {
     flex-wrap: wrap;
+    row-gap: 10px;
+
+    // phone: the buttons go to their own line under the title, lined up on
+    // the left with it (Lena, 2026-10-14)
+    @include respond-below(sm) {
+      .castle-dialog__clear {
+        margin-left: 0;
+      }
+    }
+  }
+
+  // Tabs scroll sideways on a phone; the right edge fades so it shows there
+  // are more (Lena, 2026-10-14).
+  .castle-dialog__tabs {
+    margin-inline: -2px;
+    padding: 2px 24px 2px 2px;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
   }
 
   .castle-dialog__grid {

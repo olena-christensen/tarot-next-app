@@ -131,7 +131,13 @@ export const CastleGame = () => {
   const [swapFor, setSwapFor] = useState<OwnedItem | null>(null);
   const [busy, setBusy] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
-  const [share, setShare] = useState<{ url: string; name: string } | null>(null);
+  const [share, setShare] = useState<{ url: string; name: string; rowId: string } | null>(null);
+  // Closed without sending: the gift goes back to the vault (Lena, 2026-10-14).
+  const shared = useRef(false);
+  const unsend = async (rowId: string) => {
+    const data = await post("/api/castle/unsend", { rowId });
+    apply(data.state);
+  };
   const [sentNote, setSentNote] = useState(false);
   const [storageOpen, setStorageOpen] = useState(false);
 
@@ -654,15 +660,16 @@ export const CastleGame = () => {
     const url = `${window.location.origin}/castle/gift/${data.giftId}`;
     const name = t(`items.${row.itemId}`);
     const coarse = window.matchMedia("(pointer: coarse)").matches;
+    shared.current = false;
     if (coarse && navigator.share) {
       try {
         await navigator.share({ url });
         setSentNote(true);
       } catch {
-        setShare({ url, name }); // cancelled: offer the dialog instead
+        setShare({ url, name, rowId: row.id }); // cancelled: offer the dialog instead
       }
     } else {
-      setShare({ url, name });
+      setShare({ url, name, rowId: row.id });
     }
   };
 
@@ -1107,7 +1114,11 @@ export const CastleGame = () => {
                 key={id}
                 type="button"
                 className={`castle-dialog__tab${tab === id ? " castle-dialog__tab--on" : ""}`}
-                onClick={() => setTab(id)}
+                onClick={(e) => {
+                  setTab(id);
+                  // the chosen tab slides fully into view
+                  e.currentTarget.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+                }}
               >
                 {t(`tabs.${id}`)}
               </button>
@@ -1302,13 +1313,17 @@ export const CastleGame = () => {
 
       <ShareDialog
         isOpen={Boolean(share)}
-        onClose={() => setShare(null)}
+        onClose={() => {
+          if (share && !shared.current) void unsend(share.rowId);
+          setShare(null);
+        }}
         url={share?.url ?? ""}
         shareTitle={share?.name ?? ""}
         compact
         sendToPerson
         // A gift is given once (Lena, 2026-10-14): the moment it leaves, the window closes.
         onShared={() => {
+          shared.current = true;
           setSentNote(true);
           window.setTimeout(() => setShare(null), 300);
         }}
