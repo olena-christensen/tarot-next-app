@@ -1042,6 +1042,7 @@ export const CastleGame = () => {
             </span>
             <button type="button" className="castle-dialog__clear" onClick={() => (setCatalogOpen(false), setStorageOpen(true))}>
               {t("toVault")}
+              {items.length > 0 && <span className="castle__count">{items.length}</span>}
             </button>
           </div>
           <div className="castle-dialog__tabs">

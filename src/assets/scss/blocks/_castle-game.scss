@@ -1403,8 +1403,15 @@ html.castle-locked body {
 // "Clear the hall" (Lena, 2026-10-14)
 // Emporium and vault: head, tabs and the close button stay in view; only the
 // list of items scrolls (Lena, 2026-10-14).
-.modal .modal__content--pinned {
+.modal .modal__content.modal__content--pinned {
   overflow: hidden;
+
+  // On a computer the window keeps one height on every tab instead of growing
+  // and shrinking with the list: a gap above, a breather below (Lena, 2026-10-14).
+  @include respond-above(md) {
+    height: calc(100dvh - 7rem);
+    max-height: none;
+  }
 
   > .castle-dialog {
     flex: 1 1 auto;
@@ -1426,6 +1433,7 @@ html.castle-locked body {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    align-content: start; // a short list keeps its cards' own height
     // room for card borders and the last row
     padding: 2px 2px 8px;
   }
@@ -1448,6 +1456,11 @@ html.castle-locked body {
   // a second button in the same head sits next to the first one
   &--next {
     margin-left: 0;
+  }
+
+  // the number of items in the vault, as on the vault button below the hall
+  .castle__count {
+    margin-left: 8px;
   }
 }
 
