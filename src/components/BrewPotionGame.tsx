@@ -93,7 +93,11 @@ export const BrewPotionGame = () => {
   const [blurredUntil, setBlurredUntil] = useState(0);
   const [touched, setTouched] = useState(false);
   const [view, setView] = useState<View>({ s: 1, tx: 0, ty: 0, min: 1 });
-  const [fullScreen, setFullScreen] = useState(false);
+  // Phones always play on the whole screen; on a computer the player can
+  // choose it with the full-screen button (Lena, 2026-10-14).
+  const [phoneFull, setPhoneFull] = useState(false);
+  const [chosenFull, setChosenFull] = useState(false);
+  const fullScreen = phoneFull || chosenFull;
   const [shareOpen, setShareOpen] = useState(false);
   const finishedRef = useRef(false);
   // Moonstones: the server times each round; null until it has answered.
@@ -225,7 +229,7 @@ export const BrewPotionGame = () => {
   // ---------- phones: whole screen, no page scroll, no accidental exits ----------
   useEffect(() => {
     const mq = window.matchMedia(FULL_SCREEN_QUERY);
-    const update = () => setFullScreen(mq.matches);
+    const update = () => setPhoneFull(mq.matches);
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
@@ -235,8 +239,28 @@ export const BrewPotionGame = () => {
     finishedRef.current = finishedAt !== null || failed;
   }, [finishedAt, failed]);
 
+  // Full screen on a computer: the browser's own full screen too, where it
+  // exists; leaving it (Esc) leaves the game's full screen as well.
+  const toggleFull = () => {
+    const next = !chosenFull;
+    setChosenFull(next);
+    if (next) void document.documentElement.requestFullscreen?.().catch(() => undefined);
+    else if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
+  };
   useEffect(() => {
-    if (!fullScreen) return;
+    if (!chosenFull) return;
+    const onChange = () => !document.fullscreenElement && setChosenFull(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !document.fullscreenElement && setChosenFull(false);
+    document.addEventListener("fullscreenchange", onChange);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [chosenFull]);
+
+  useEffect(() => {
+    if (!phoneFull) return;
     const root = document.documentElement;
     root.classList.add("potion-locked");
     // A swipe-back (or the back button) while playing lands on this extra
@@ -251,7 +275,7 @@ export const BrewPotionGame = () => {
       root.classList.remove("potion-locked");
       window.removeEventListener("popstate", onPop);
     };
-  }, [fullScreen]);
+  }, [phoneFull]);
 
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<{
@@ -841,7 +865,7 @@ export const BrewPotionGame = () => {
 
   return (
     // Browsers allow sound only after a tap: the first tap anywhere unlocks it.
-    <section className={`potion${fullScreen ? " potion--full" : ""}`} onPointerDownCapture={() => sound.current?.unlock()}>
+    <section className={`potion${fullScreen ? " potion--full" : ""}${chosenFull && !phoneFull ? " potion--fit" : ""}`} onPointerDownCapture={() => sound.current?.unlock()}>
       <h1 className="potion__title title">{t("title")}</h1>
       <p className="potion__subtitle">{t("subtitle")}</p>
 
@@ -874,6 +898,23 @@ export const BrewPotionGame = () => {
                 )}
               </svg>
             </button>
+            {!phoneFull && (
+              <button
+                type="button"
+                className="potion__pill potion__pill--btn potion__fs"
+                onClick={toggleFull}
+                aria-label={t(chosenFull ? "exitFullScreen" : "fullScreen")}
+                title={t(chosenFull ? "exitFullScreen" : "fullScreen")}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {chosenFull ? (
+                    <path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5" />
+                  ) : (
+                    <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
+                  )}
+                </svg>
+              </button>
+            )}
             <button
               type="button"
               className="potion__pill potion__pill--btn"
@@ -888,6 +929,7 @@ export const BrewPotionGame = () => {
         <div
           ref={stageRef}
           className={`potion__stage${shaking ? " potion__stage--shake" : ""}${blurred ? " potion__stage--blur" : ""}${quaking ? " potion__stage--quake" : ""}`}
+          style={chosenFull && !phoneFull ? { aspectRatio: `${WORLD.width} / ${WORLD.height}` } : undefined}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

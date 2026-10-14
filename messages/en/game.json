@@ -83,6 +83,8 @@
     "boiledSummary": "You found {got} of {total} ingredients.",
     "soundOff": "Mute sound",
     "soundOn": "Turn sound on",
+    "fullScreen": "Full screen",
+    "exitFullScreen": "Exit full screen",
     "choiceTitleSeasonal": "Halloween games",
     "choiceTitle": "Witchy games",
     "choiceSub": "Pick your night.",

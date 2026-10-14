@@ -115,7 +115,8 @@
   }
 
   // Sound on/off (approved mockup, 2026-10-07).
-  &__sound {
+  &__sound,
+  &__fs {
     display: inline-flex;
     align-items: center;
     padding: 6px 10px;
@@ -1024,4 +1025,14 @@ html.potion-locked body {
 
 @keyframes potionPending {
   50% { transform: scale(1.15); opacity: 0.65; }
+}
+
+// Full screen chosen on a computer (Lena, 2026-10-14): the whole picture,
+// never cut — the screen's height between the top and bottom bars, the width
+// following the picture's own proportions, centred.
+.potion--full.potion--fit .potion__stage {
+  flex: 1 1 0;
+  align-self: center;
+  width: auto;
+  max-width: 100%;
 }

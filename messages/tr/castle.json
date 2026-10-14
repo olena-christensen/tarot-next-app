@@ -151,6 +151,8 @@
     "sendShort": "Gönder",
     "roomOnly": "Sadece salon",
     "showButtons": "Düğmeleri göster",
+    "fullScreen": "Tam ekran",
+    "exitFullScreen": "Tam ekrandan çık",
     "listen": "Dinle",
     "stopListening": "Durdur",
     "clearHall": "Salonu boşalt",

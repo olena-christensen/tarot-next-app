@@ -151,6 +151,8 @@
     "sendShort": "Send",
     "roomOnly": "Bare salen",
     "showButtons": "Vis knappene",
+    "fullScreen": "Fullskjerm",
+    "exitFullScreen": "Avslutt fullskjerm",
     "listen": "Lytt",
     "stopListening": "Stopp",
     "clearHall": "Tøm salen",

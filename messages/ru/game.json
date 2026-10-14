@@ -83,6 +83,8 @@
     "boiledSummary": "Найдено {got} из {total} ингредиентов.",
     "soundOff": "Выключить звук",
     "soundOn": "Включить звук",
+    "fullScreen": "На весь экран",
+    "exitFullScreen": "Выйти из полноэкранного режима",
     "choiceTitleSeasonal": "Игры на Хэллоуин",
     "choiceTitle": "Ведьминские игры",
     "choiceSub": "Выбери свою ночь.",

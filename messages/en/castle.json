@@ -151,6 +151,8 @@
     "sendShort": "Send",
     "roomOnly": "Room only",
     "showButtons": "Show buttons",
+    "fullScreen": "Full screen",
+    "exitFullScreen": "Exit full screen",
     "listen": "Listen",
     "stopListening": "Stop",
     "clearHall": "Clear the hall",
