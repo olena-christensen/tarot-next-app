@@ -15,13 +15,13 @@ import numpy as np
 ROOMS = {
     "wide": dict(
         TABLE=[(662, 508), (920, 508), (1162, 742), (420, 742)], TABLE_LEN=1.45,
-        SEATS_V=[1.20, 0.75, 0.30], PLATE_W=0.40, CENTRE=(0.50, 0.95),
-        TREATS={"treatFront": (0.50, 0.15, 0.22), "treatMiddle": (0.50, 0.55, 0.22)},
+        SEATS_V=[1.20, 0.75, 0.30], PLATE_W=0.40, CENTRE=(0.50, 1.20),
+        TREATS={"treatFront": (0.50, 0.30, 0.22), "treatMiddle": (0.50, 0.75, 0.22)},
     ),
     "phone": dict(
-        TABLE=[(374, 875), (552, 875), (819, 1251), (83, 1251)], TABLE_LEN=4.9,
-        SEATS_V=[4.15, 3.40, 2.65, 1.90, 1.15, 0.40], PLATE_W=0.34, CENTRE=(0.50, 4.4),
-        TREATS={"treatFront": (0.50, 0.35, 0.24), "treatMiddle": (0.50, 1.10, 0.24)},
+        TABLE=[(343, 1312), (594, 1312), (858, 1621), (79, 1621)], TABLE_LEN=3.65,
+        SEATS_V=[1.93, 1.12, 0.32], PLATE_W=0.34, CENTRE=(0.50, 1.93),
+        TREATS={"treatFront": (0.50, 0.32, 0.22), "treatMiddle": (0.50, 1.12, 0.22)},
     ),
 }
 

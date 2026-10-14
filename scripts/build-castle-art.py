@@ -114,8 +114,9 @@ SUFFIX = "-phone" if PHONE else ""
 
 
 def phone_room():
-    """The tall room as drawn (944 x 1680). It is close to the shape of a phone
-    browser's visible area, so filling the screen trims only a sliver."""
+    """The tall room as drawn (944 x 1888, half as wide as tall). It is close to
+    the shape of a phone browser's visible area, so filling the screen trims
+    only a sliver."""
     return Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
 
 
@@ -370,9 +371,9 @@ SEATS_V = [1.20, 0.75, 0.30]          # the three chairs each side, far to near
 PLATE_W = 0.40                         # plate width in table-widths
 # Down the middle of the table, clear of the plates. The centre piece stands
 # furthest back so the two treats in front of it never hide it.
-CENTRE_PIECE = (0.50, 0.95, 0.62)      # u, v, height in table-widths
-TREATS = {"treatFront": (0.50, 0.15, 0.22), "treatMiddle": (0.50, 0.55, 0.22)}   # u, v, width
-GRAMOPHONE = (100, 578, 150)           # base on the side table's top
+CENTRE_PIECE = (0.50, 1.20, 0.62)      # u, v, height in table-widths; v = a pair of plates
+TREATS = {"treatFront": (0.50, 0.30, 0.22), "treatMiddle": (0.50, 0.75, 0.22)}   # u, v, width; between the plates
+GRAMOPHONE = (1203, 178, 110)           # wall plate on the right corner column, horn height
 # Wall shelf: its top edge runs along the right wall, towards the vanishing
 # point of the room (791, 383); items stand on it and the board hides their foot.
 VANISH = (791, 383)
@@ -396,6 +397,7 @@ LEDGE_SIDE_FILE = {k: ITEMS[k][0] for k in ("candelabraSilver", "candelabraBlack
                                             "candelabraSkull", "candelabraSilverFive")}
 LEDGES = {"shelf": (1262, shelf_edge, 125, 0.55), "mantel": (1440, mantel_edge, 180, 0.60)}
 LEDGE_GLOW = {"shelf": 150, "mantel": 180}
+LEDGE_SHADOW = (-9, -3)                # candelabra's shadow on the wall behind: the wall runs away from us
 FIRE = (1463, 683, 116)                # centre x, base y, width: middle of the fireplace
 FIRE_SPILL = 100                       # the warm spill on the floor lies this far to the left
 
@@ -727,10 +729,21 @@ def build_treat(item, place):
 
 
 def build_gramophone():
-    """Horn turned towards the room."""
-    cx, by, h = GRAMOPHONE
-    sp = cut_out(ITEMS["gramophone"][0]).transpose(Image.FLIP_LEFT_RIGHT)
-    L, _, _ = standing(sp, cx, by, h, False, 0.66)
+    """In the room only the gramophone's horn shows, mounted on the wall in the
+    right corner and turned towards the room (Lena, 2026-10-14). The catalog
+    keeps the whole gramophone. GRAMOPHONE = wall plate centre x, y, horn height."""
+    px, py, h = GRAMOPHONE
+    sp = Image.open(os.path.join(ITEMS_DIR, "gramophone-horn.png")).convert("RGBA")
+    k = h / sp.height
+    sp = sp.resize((round(sp.width * k), round(sp.height * k)), Image.LANCZOS)
+    sp = moonlight(sp, 0.70)
+    # the wall plate sits at the right edge, 128/163 of the way down
+    x0, y0 = px - sp.width + 1, py - sp.height * 128 / 163
+    L = Layer()
+    sh = Image.new("RGBA", sp.size, (0, 0, 0, 0))
+    sh.putalpha(sp.getchannel("A").point(lambda v: v * 0.45).filter(ImageFilter.GaussianBlur(4)))
+    L.paste(sh, x0 + 5, y0 + 7)     # soft shadow on the wall behind
+    L.paste(sp, x0, y0)
     return L, None
 
 
@@ -767,7 +780,7 @@ def build_ledge(item, place):
         sh = spr.getchannel("A").filter(ImageFilter.GaussianBlur(5)).point(lambda v: v * 0.45)
         shadow = Image.new("RGBA", spr.size, (4, 4, 10, 0)); shadow.putalpha(sh)
         top = seat_top(spr, cx, edge, sink)
-        L.paste(shadow, cx - spr.width / 2 - 9, top - 3)
+        L.paste(shadow, cx - spr.width / 2 + LEDGE_SHADOW[0], top + LEDGE_SHADOW[1])
     elif lit:
         spr = moonlight(resize_h(sp, h * 0.85), level * 0.85, True, warm_reach=0.06)
     else:
@@ -879,55 +892,58 @@ def build(item, place):
 
 # ---------------------------------------------------------------- the phone room
 if PHONE:
-    # Measured on room-portrait.jpg (944 x 1680). The table's sides meet at
-    # (465, 734).
-    VANISH = (465, 734)
-    CHAIN_END = (461, 178)              # the chain is cut here; the rest and the hook are painted out
-    HOOK_CUT = (178, 382, 432, 494, 66)
-    CHANDELIER_SCALE = 0.95
-    TABLE = [(374, 875), (552, 875), (819, 1251), (83, 1251)]
-    TABLE_POOL = (464, 1040, 280)
-    # A long banquet table: about five widths deep (from its perspective), six
-    # chairs a side. Things stand down its middle, the centre piece furthest back.
-    TABLE_LEN = 4.9
-    SEATS_V = [4.15, 3.40, 2.65, 1.90, 1.15, 0.40]
+    # Measured on room-portrait.jpg (944 x 1888), redrawn 2026-10-14: the
+    # fireplace in the middle of the back wall, the table pointing at it, three
+    # chairs a side. The table's sides meet at (468, 1166).
+    VANISH = (468, 1166)
+    CHAIN_END = (472, 585)              # the chain is cut here; the hook below is painted out
+    HOOK_CUT = (646, 762, 446, 502, 64)
+    CHANDELIER_SCALE = 0.88
+    TABLE = [(343, 1312), (594, 1312), (858, 1621), (79, 1621)]
+    TABLE_POOL = (468, 1460, 300)
+    # From the perspective (the near edge is 3.1 times wider than the far one)
+    # and the chairs: about three and a half widths long, the chairs in its
+    # nearer half, the centre piece further back towards the fireplace.
+    TABLE_LEN = 3.65
+    SEATS_V = [1.93, 1.12, 0.32]
     PLATE_W = 0.34
-    CENTRE_PIECE = (0.50, 4.4, 0.66)
-    TREATS = {"treatFront": (0.50, 0.35, 0.24), "treatMiddle": (0.50, 1.10, 0.24)}
+    CENTRE_PIECE = (0.50, 1.93, 0.62)
+    TREATS = {"treatFront": (0.50, 0.32, 0.22), "treatMiddle": (0.50, 1.12, 0.22)}
     TABLE_H = homography([(0, 0), (1, 0), (1, TABLE_LEN), (0, TABLE_LEN)],
                          [TABLE[3], TABLE[2], TABLE[1], TABLE[0]])
-    WALLS = {   # the inside of the three pointed frames on the back wall
-        "wallBackLeft": [(254, 506), (325, 506), (325, 736), (254, 736)],
-        "wallBackCentre": [(382, 458), (527, 458), (527, 736), (382, 736)],
-        "wallBackRight": [(585, 506), (666, 506), (666, 736), (585, 736)],
+    WALLS = {   # the two empty stone panels on each side of the fireplace
+        "wallBackLeft": [(177, 809), (286, 809), (286, 1023), (177, 1023)],
+        "wallBackRight": [(662, 809), (782, 809), (782, 1023), (662, 1023)],
     }
     STANDS = {"tableCentre": (0, 0, 0, 0.66)}
     CLOTH = {
-        "top": [(368, 870), (558, 870), (837, 1254), (64, 1254)],
-        "drop": (64, 1252, 773, 118),
-        "rows": (866, 1256),
-        "ref": (900, 1240, 333, 605),
+        "top": [(337, 1307), (600, 1307), (866, 1626), (71, 1626)],
+        "drop": (71, 1624, 795, 105),
+        "rows": (1300, 1740),
+        "ref": (1400, 1600, 300, 640),
     }
-    GRAMOPHONE = (868, 1408, 215)       # on the little round side table
-    # The niche shelf and the mantel run along the right wall, both above eye
-    # level, so feet hide behind their front edge (measured lines).
-
-    def shelf_edge(x):
-        return 591 - 0.507 * (np.asarray(x, float) - 760)
+    GRAMOPHONE = (848, 805, 125)        # wall plate on the right wall, by the corner
+    # The mantel faces us across the back wall, above eye level: feet hide
+    # behind its front edge, a level line.
 
     def mantel_edge(x):
-        return 630 - 0.34 * (np.asarray(x, float) - 780)
+        return 1005 + 0 * np.asarray(x, float)
 
-    LEDGES = {"shelf": (791, shelf_edge, 62, 0.55), "mantel": (862, mantel_edge, 118, 0.60)}
-    LEDGE_GLOW = {"shelf": 90, "mantel": 130}
-    FIRE = (920, 992, 110)
-    FIRE_SPILL = 160
-    FIRE_OPENING = [(870, 996), (870, 760), (880, 735), (900, 718), (944, 712), (944, 996)]
-    ANDIRONS = []
-    for _w in ("wallLeft", "wallRight"):
-        PLACES.pop(_w, None)
-    # the little side table stands nearer than the dining table: the gramophone goes on top
-    ORDER = [p for p in ORDER if p not in ("wallLeft", "wallRight", "corner")] + ["corner"]
+    LEDGES = {"mantel": (475, mantel_edge, 150, 0.60)}
+    LEDGE_GLOW = {"mantel": 150}
+    LEDGE_SHADOW = (0, 3)               # the chimney faces us: the shadow falls straight behind
+    FIRE = (478, 1292, 118)
+    FIRE_SPILL = 0                      # the fire faces the room: its spill comes straight towards us
+    FIRE_OPENING = [(390, 1302), (390, 1118), (410, 1102), (478, 1094), (548, 1102), (571, 1118), (571, 1302)]
+    ANDIRONS = [
+        ("ellipse", (419, 1214, 430, 1228)), ("rect", (421, 1226, 427, 1284)),
+        ("poly", [(420, 1280), (428, 1280), (443, 1302), (437, 1303), (424, 1288), (410, 1303), (404, 1302)]),
+        ("ellipse", (528, 1217, 539, 1231)), ("rect", (530, 1229, 536, 1284)),
+        ("poly", [(529, 1280), (537, 1280), (553, 1302), (547, 1303), (533, 1288), (519, 1303), (513, 1302)]),
+    ]
+    for _p in ("wallLeft", "wallRight", "wallBackCentre", "shelf"):
+        PLACES.pop(_p, None)
+    ORDER = [p for p in ORDER if p in PLACES]
 
 
 # ---------------------------------------------------------------- run

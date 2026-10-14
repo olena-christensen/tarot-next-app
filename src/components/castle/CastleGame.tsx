@@ -352,9 +352,8 @@ export const CastleGame = () => {
       setScale(s);
       setView(
         immersiveRef.current
-          ? // The upright room keeps its right side (gramophone, fire) in view and
-            // gives up a little of the window on the left (Lena, 2026-10-14).
-            { x: (w - world.w * s) * (world.h > world.w ? 0.8 : 0.5), y: (h - world.h * s) / 2, h }
+          ? // The upright room is centred on its fireplace (Lena, 2026-10-14).
+            { x: (w - world.w * s) / 2, y: (h - world.h * s) / 2, h }
           : { x: 0, y: 0, h: world.h * s },
       );
       setScroll({ left: stage.scrollLeft, width: w });
