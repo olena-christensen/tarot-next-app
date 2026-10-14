@@ -478,6 +478,16 @@ export const BrewPotionGame = () => {
       .catch(() => {});
   };
 
+  // Keeping is open to everyone, but a kept potion belongs to an account: a
+  // visitor who isn't signed in gets the sign-in window straight away, and
+  // comes back to this end screen with the potion kept (Lena, 2026-10-14).
+  const keepIt = () => {
+    decide("kept");
+    if (authStatus === "authenticated") return;
+    if (round && finishedAt) saveClaim({ round, startedAt, finishedAt, decision: "kept", roundId });
+    openLogin();
+  };
+
   // ---------- effects (Web Animations, in world coordinates) ----------
   const spawn = (cls: string, x: number, y: number, w: number, h: number) => {
     const el = document.createElement("div");
@@ -855,7 +865,7 @@ export const BrewPotionGame = () => {
         <PotionMoonRow lit={moon.today} pending>
           <p className="potion-moon__text">{t("keepOrSend")}</p>
         </PotionMoonRow>
-        <button type="button" className="potion__done-btn potion__done-btn--main" onClick={() => decide("kept")}>
+        <button type="button" className="potion__done-btn potion__done-btn--main" onClick={keepIt}>
           {t("keepIt")}
         </button>
         {sendBtn(false)}
