@@ -9,7 +9,7 @@ import { Link } from "@/i18n/navigation";
 import Skull from "@/assets/svg/skull.svg";
 import { Modal } from "@/components/Modal";
 import { ShareDialog } from "@/components/ShareDialog";
-import { SubscriptionModal } from "@/components/SubscriptionModal";
+import { MoreMoonstonesModal } from "@/components/MoonstonesModal";
 import { notifyMoonstonesChanged } from "@/lib/moonstones";
 import {
   CATALOG,
@@ -1274,7 +1274,7 @@ export const CastleGame = () => {
         shareTitle={t("partyShareTitle")}
         compact
       />
-      <SubscriptionModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />
+      <MoreMoonstonesModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />
     </section>
   );
 

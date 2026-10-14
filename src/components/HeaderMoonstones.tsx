@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { MOONSTONES_CHANGED_EVENT } from "@/lib/moonstones";
-import { SubscriptionModal } from "@/components/SubscriptionModal";
+import { MoreMoonstonesModal } from "@/components/MoonstonesModal";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 
 type HeaderMoonstonesProps = {
@@ -11,7 +11,8 @@ type HeaderMoonstonesProps = {
 };
 
 /**
- * Signed-in moonstone balance, beside the avatar. Opens the price list (the
+ * Signed-in moonstone balance, beside the avatar. Opens the choice between
+ * brewing potions and buying a pack (Lena, 2026-10-14; the
  * avatar already covers the profile). Renders nothing until the balance has
  * loaded, so the header never flashes a wrong number. The modal portals to
  * <body>, so the header's transform doesn't trap it.
@@ -60,7 +61,7 @@ export const HeaderMoonstones = ({ onOpenLogin }: HeaderMoonstonesProps) => {
         <MoonstoneIcon className="header-moonstones__icon" aria-hidden="true" />
         <span className="header-moonstones__count">{count}</span>
       </button>
-      <SubscriptionModal
+      <MoreMoonstonesModal
         isOpen={isPlansOpen}
         onClose={() => setIsPlansOpen(false)}
         onRequestLogin={onOpenLogin}
