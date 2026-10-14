@@ -303,10 +303,11 @@ ITEMS = {
     "chandelierCrystal": ("chandelier-crystal.png", "chandelier", True),
     # candelabras live on the shelf and mantel only; drawn from the side and
     # slightly from below, because both ledges are above eye level
-    "candelabraSilver": ("grand-silver3.png", "standing", True),
-    "candelabraBlackWax": ("grand-black5.png", "standing", True),
-    "candelabraSkull": ("grand-skulls.png", "standing", True),
-    "candelabraSilverFive": ("grand-silver5.png", "standing", True),
+    # frontal pictures: the Emporium and the phone chimney show them face on (Lena, 2026-10-14)
+    "candelabraSilver": ("candelabra-silver.png", "standing", True),
+    "candelabraBlackWax": ("candelabra-blackwax.png", "standing", True),
+    "candelabraSkull": ("candelabra-skull.png", "standing", True),
+    "candelabraSilverFive": ("candelabra-silverfive.png", "standing", True),
     # candle groups: round, so they look right from any side; drawn seen
     # from slightly below for the high shelf and mantel
     "candlesSkull": ("candles-skull.png", "standing", True),
@@ -393,8 +394,12 @@ def mantel_edge(x):
     return 304 - 0.233 * (np.asarray(x, float) - 1380)
 
 
-LEDGE_SIDE_FILE = {k: ITEMS[k][0] for k in ("candelabraSilver", "candelabraBlackWax",
-                                            "candelabraSkull", "candelabraSilverFive")}
+# On the computer the mantel and shelf run along the side wall: candelabras stand
+# turned along it, so the room uses side pictures of the same candelabras.
+LEDGE_SIDE_FILE = {"candelabraSilver": "candelabra-silver-side.png",
+                   "candelabraBlackWax": "candelabra-blackwax-side.png",
+                   "candelabraSkull": "candelabra-skull-side.png",
+                   "candelabraSilverFive": "grand-silver5.png"}
 LEDGES = {"shelf": (1262, shelf_edge, 125, 0.55), "mantel": (1440, mantel_edge, 180, 0.60)}
 LEDGE_GLOW = {"shelf": 150, "mantel": 180}
 LEDGE_SHADOW = (-9, -3)                # candelabra's shadow on the wall behind: the wall runs away from us
@@ -932,6 +937,7 @@ if PHONE:
     LEDGES = {"mantel": (475, mantel_edge, 150, 0.60)}
     LEDGE_GLOW = {"mantel": 150}
     LEDGE_SHADOW = (0, 3)               # the chimney faces us: the shadow falls straight behind
+    LEDGE_SIDE_FILE = {k: ITEMS[k][0] for k in LEDGE_SIDE_FILE}   # face on, as in the Emporium
     FIRE = (478, 1292, 118)
     FIRE_SPILL = 0                      # the fire faces the room: its spill comes straight towards us
     FIRE_OPENING = [(390, 1302), (390, 1118), (410, 1102), (478, 1094), (548, 1102), (571, 1118), (571, 1302)]

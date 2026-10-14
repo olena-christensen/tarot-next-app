@@ -61,3 +61,4 @@ candles-skull MAHXZl4MQO8 (faces left; replaces MAHXZtdge_E)
 record-waltz MAHXgyEV2gU
 record-organ MAHXg7FU-j0
 record-lullaby MAHXg7VNnkw
+candelabra-silverfive MAHX-mEJofo (frontal, catalog: candelabraSilverFive; 2026-10-14 frontal set replaces grand-* in the Emporium)
