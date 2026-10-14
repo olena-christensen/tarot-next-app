@@ -11,6 +11,11 @@
   background-color: var(--bg);
   z-index: 70; // full-screen loading overlay: above footer (50) + cookie banner (60)
 
+  // over an open dialog (100), e.g. the game choice while a game loads
+  &--top {
+    z-index: 110;
+  }
+
   svg {
     width: 100px;
     height: 100px;
