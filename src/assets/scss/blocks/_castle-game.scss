@@ -1401,6 +1401,36 @@ html.castle-locked body {
 }
 
 // "Clear the hall" (Lena, 2026-10-14)
+// Emporium and vault: head, tabs and the close button stay in view; only the
+// list of items scrolls (Lena, 2026-10-14).
+.modal .modal__content--pinned {
+  overflow: hidden;
+
+  > .castle-dialog {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .castle-dialog__head,
+  .castle-dialog__tabs {
+    flex: none;
+  }
+
+  .castle-dialog__head {
+    flex-wrap: wrap;
+  }
+
+  .castle-dialog__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    // room for card borders and the last row
+    padding: 2px 2px 8px;
+  }
+}
+
 .castle-dialog__clear {
   margin-left: auto;
   padding: 8px 14px;
@@ -1414,6 +1444,11 @@ html.castle-locked body {
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
+
+  // a second button in the same head sits next to the first one
+  &--next {
+    margin-left: 0;
+  }
 }
 
 .castle-dialog__text {

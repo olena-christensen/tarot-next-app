@@ -7,7 +7,7 @@
     "wheelButton": "Çark",
     "wheelFree": "Çark · ücretsiz çevirme",
     "sound": "Ses",
-    "catalog": "Katalog",
+    "catalog": "Dükkân",
     "throwParty": "Partiyi başlat",
     "missing": "Parti için eksik: {list}.",
     "needs": {
@@ -44,7 +44,7 @@
       "fireplace": "Biraz odun ateşi yakardı",
       "corner": "Bir gramofon müzik getirirdi"
     },
-    "hintLink": "Katalogda bul ›",
+    "hintLink": "Dükkânda bul ›",
     "signInToPlay": "Salonunu süslemek için giriş yap",
     "tabs": {
       "lights": "Işıklar",
@@ -70,7 +70,7 @@
     "swap": "Başkasıyla değiştir",
     "send": "Bir arkadaşa gönder",
     "swapTitle": "Şununla değiştir…",
-    "nothingToSwap": "Bu yer için başka eşyan yok. Katalogda daha fazlasını bul.",
+    "nothingToSwap": "Bu yer için başka eşyan yok. Dükkânda daha fazlasını bul.",
     "fireLit": "Ateş yanıyor",
     "inMusic": "Gramofonda çalıyor",
     "sentTitle": "Gönderildi!",
@@ -136,12 +136,14 @@
     "giftMetaDescription": "Gece Yarısı Gelecekler'deki perili salonun için bir hediye — The Veil'den ücretsiz bir oyun.",
     "takeGift": "Hediyeyi al",
     "takeHint": "Almak için giriş yap — doğrudan şatondaki eşyalarına gider.",
-    "giftTakenYou": "Artık senin! Katalogda bul.",
+    "giftTakenYou": "Artık senin! Hazinende bul.",
     "giftTaken": "Bu hediye zaten alınmış.",
     "giftOwn": "Bu senin gönderdiğin hediye. Arkadaşını bekliyor.",
     "openCastle": "Şatonu aç",
-    "myItems": "Eşyalarım",
-    "storageEmpty": "Burada henüz bir şey yok. Katalogdan bul ya da çarkta kazan.",
+    "myItems": "Hazine",
+    "toVault": "Hazinen ›",
+    "toEmporium": "Dükkân ›",
+    "storageEmpty": "Burada henüz bir şey yok. Dükkândan bul ya da çarkta kazan.",
     "inHall": "Salonda",
     "inStorage": "Eşyalarında",
     "yoursNow": "Artık senin",
@@ -152,6 +154,6 @@
     "stopListening": "Durdur",
     "clearHall": "Salonu boşalt",
     "clearAsk": "Her şeyi indirelim mi?",
-    "clearBody": "Tüm eşyalar Eşyalarım'a döner. Hiçbir şey kaybolmaz."
+    "clearBody": "Tüm eşyalar hazineye döner. Hiçbir şey kaybolmaz."
   }
 }

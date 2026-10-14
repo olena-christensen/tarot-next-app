@@ -1032,7 +1032,7 @@ export const CastleGame = () => {
       )}
 
       {/* ---------- catalog ---------- */}
-      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide>
+      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide pinned>
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("catalog")}</h2>
@@ -1040,6 +1040,9 @@ export const CastleGame = () => {
               <MoonstoneIcon aria-hidden="true" />
               {state?.balance ?? 0}
             </span>
+            <button type="button" className="castle-dialog__clear" onClick={() => (setCatalogOpen(false), setStorageOpen(true))}>
+              {t("toVault")}
+            </button>
           </div>
           <div className="castle-dialog__tabs">
             {TABS.map((id) => (
@@ -1097,12 +1100,15 @@ export const CastleGame = () => {
       </Modal>
 
       {/* ---------- my items ---------- */}
-      <Modal isOpen={storageOpen} onClose={() => setStorageOpen(false)} wide>
+      <Modal isOpen={storageOpen} onClose={() => setStorageOpen(false)} wide pinned>
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("myItems")}</h2>
+            <button type="button" className="castle-dialog__clear" onClick={() => (setStorageOpen(false), setCatalogOpen(true))}>
+              {t("toEmporium")}
+            </button>
             {items.some((i) => i.place) && (
-              <button type="button" className="castle-dialog__clear" onClick={() => setClearAsk(true)}>
+              <button type="button" className="castle-dialog__clear castle-dialog__clear--next" onClick={() => setClearAsk(true)}>
                 {t("clearHall")}
               </button>
             )}

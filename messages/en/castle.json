@@ -7,7 +7,7 @@
     "wheelButton": "Wheel",
     "wheelFree": "Wheel · free spin",
     "sound": "Sound",
-    "catalog": "Catalog",
+    "catalog": "Emporium",
     "throwParty": "Throw the party",
     "missing": "Missing for the party: {list}.",
     "needs": {
@@ -44,7 +44,7 @@
       "fireplace": "Some firewood would light the fire",
       "corner": "A gramophone would bring music"
     },
-    "hintLink": "Find one in the catalog ›",
+    "hintLink": "Find one in the emporium ›",
     "signInToPlay": "Sign in to decorate your hall",
     "tabs": {
       "lights": "Lights",
@@ -70,7 +70,7 @@
     "swap": "Swap for another",
     "send": "Send to a friend",
     "swapTitle": "Swap for…",
-    "nothingToSwap": "You have nothing else for this spot. Find more in the catalog.",
+    "nothingToSwap": "You have nothing else for this spot. Find more in the emporium.",
     "fireLit": "The fire is lit",
     "inMusic": "Plays on the gramophone",
     "sentTitle": "Sent!",
@@ -136,12 +136,14 @@
     "giftMetaDescription": "A gift for your haunted hall in They Arrive at Midnight, a free game from The Veil.",
     "takeGift": "Take the gift",
     "takeHint": "Sign in to take it — it goes straight into your castle items.",
-    "giftTakenYou": "It's yours! Find it in your catalog.",
+    "giftTakenYou": "It's yours! Find it in your vault.",
     "giftTaken": "This gift has already been taken.",
     "giftOwn": "This is the gift you sent. It's waiting for your friend.",
     "openCastle": "Open your castle",
-    "myItems": "My items",
-    "storageEmpty": "Nothing here yet. Find things in the catalog or win them on the wheel.",
+    "myItems": "Vault",
+    "toVault": "Your vault ›",
+    "toEmporium": "Emporium ›",
+    "storageEmpty": "Nothing here yet. Find things in the emporium or win them on the wheel.",
     "inHall": "In the hall",
     "inStorage": "In your items",
     "yoursNow": "Yours now",
@@ -152,6 +154,6 @@
     "stopListening": "Stop",
     "clearHall": "Clear the hall",
     "clearAsk": "Take everything down?",
-    "clearBody": "All items go back to My items. Nothing is lost."
+    "clearBody": "All items go back to your vault. Nothing is lost."
   }
 }

@@ -7,7 +7,7 @@
     "wheelButton": "Hjulet",
     "wheelFree": "Hjulet · gratis snurr",
     "sound": "Lyd",
-    "catalog": "Katalog",
+    "catalog": "Krambua",
     "throwParty": "Hold festen",
     "missing": "Mangler til festen: {list}.",
     "needs": {
@@ -44,7 +44,7 @@
       "fireplace": "Litt ved ville tent ilden",
       "corner": "En grammofon ville gitt musikk"
     },
-    "hintLink": "Finn noe i katalogen ›",
+    "hintLink": "Finn noe i krambua ›",
     "signInToPlay": "Logg inn for å pynte salen din",
     "tabs": {
       "lights": "Lys",
@@ -70,7 +70,7 @@
     "swap": "Bytt med noe annet",
     "send": "Send til en venn",
     "swapTitle": "Bytt med…",
-    "nothingToSwap": "Du har ikke noe annet til dette stedet. Finn mer i katalogen.",
+    "nothingToSwap": "Du har ikke noe annet til dette stedet. Finn mer i krambua.",
     "fireLit": "Ilden brenner",
     "inMusic": "Spilles på grammofonen",
     "sentTitle": "Sendt!",
@@ -136,12 +136,14 @@
     "giftMetaDescription": "En gave til den hjemsøkte salen din i De kommer ved midnatt, et gratis spill fra The Veil.",
     "takeGift": "Ta imot gaven",
     "takeHint": "Logg inn for å ta den — den går rett til tingene dine i slottet.",
-    "giftTakenYou": "Den er din! Finn den i katalogen.",
+    "giftTakenYou": "Den er din! Finn den i hvelvet.",
     "giftTaken": "Denne gaven er allerede tatt.",
     "giftOwn": "Dette er gaven du sendte. Den venter på vennen din.",
     "openCastle": "Åpne slottet ditt",
-    "myItems": "Mine ting",
-    "storageEmpty": "Ingenting her ennå. Finn ting i katalogen eller vinn dem på hjulet.",
+    "myItems": "Hvelvet",
+    "toVault": "Ditt hvelv ›",
+    "toEmporium": "Krambua ›",
+    "storageEmpty": "Ingenting her ennå. Finn ting i krambua eller vinn dem på hjulet.",
     "inHall": "I salen",
     "inStorage": "Blant tingene dine",
     "yoursNow": "Din nå",
@@ -152,6 +154,6 @@
     "stopListening": "Stopp",
     "clearHall": "Tøm salen",
     "clearAsk": "Ta ned alt?",
-    "clearBody": "Alt går tilbake til Mine ting. Ingenting går tapt."
+    "clearBody": "Alt går tilbake til hvelvet. Ingenting går tapt."
   }
 }
