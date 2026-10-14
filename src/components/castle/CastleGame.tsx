@@ -1201,7 +1201,11 @@ export const CastleGame = () => {
         shareTitle={share?.name ?? ""}
         compact
         sendToPerson
-        onShared={() => setSentNote(true)}
+        // A gift is given once (Lena, 2026-10-14): the moment it leaves, the window closes.
+        onShared={() => {
+          setSentNote(true);
+          window.setTimeout(() => setShare(null), 300);
+        }}
       />
       <SubscriptionModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />
     </section>
