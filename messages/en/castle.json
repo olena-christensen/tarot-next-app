@@ -147,6 +147,9 @@
     "roomOnly": "Room only",
     "showButtons": "Show buttons",
     "listen": "Listen",
-    "stopListening": "Stop"
+    "stopListening": "Stop",
+    "clearHall": "Clear the hall",
+    "clearAsk": "Take everything down?",
+    "clearBody": "All items go back to My items. Nothing is lost."
   }
 }

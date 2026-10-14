@@ -291,6 +291,64 @@
     text-align: left;
   }
 
+  &__menu-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  &__menu-x {
+    flex: none;
+    display: flex;
+    margin: -4px -4px 0 auto;
+    padding: 6px;
+    background: none;
+    border: 0;
+    color: var(--text-soft);
+    cursor: pointer;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+  }
+
+  // a record on the gramophone: play / stop
+  &__menu-play {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 6px;
+    padding: 9px 10px;
+    background: transparent;
+    border: 1px solid rgba(250, 225, 163, 0.45);
+    border-radius: 8px;
+    color: var(--text-soft);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+
+    svg {
+      flex: none;
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    &--on {
+      background: rgba(250, 225, 163, 0.12);
+      border: 2px solid var(--gold);
+      padding: 8px 9px;
+      color: var(--gold);
+    }
+  }
+
   &__menu-title {
     margin: 0 0 8px;
     font-size: 0.9rem;
@@ -1070,8 +1128,13 @@ html.castle-locked body {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; // phones see the whole wide film, letterboxed like a cinema
+    object-fit: contain; // a wide screen of another shape sees the whole film
     transition: opacity 0.6s ease;
+
+    // the tall cut fills an upright phone edge to edge
+    &--tall {
+      object-fit: cover;
+    }
   }
 
   &--end {
@@ -1281,5 +1344,38 @@ html.castle-locked body {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+// "Clear the hall" (Lena, 2026-10-14)
+.castle-dialog__clear {
+  margin-left: auto;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(250, 225, 163, 0.5);
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.castle-dialog__text {
+  margin: 0 0 4px;
+  color: var(--text-faint);
+}
+
+.castle-dialog__pair {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+
+  .castle-records__start--plain {
+    background: transparent;
+    border-color: rgba(250, 225, 163, 0.5);
   }
 }

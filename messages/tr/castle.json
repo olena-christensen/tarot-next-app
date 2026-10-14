@@ -147,6 +147,9 @@
     "roomOnly": "Sadece salon",
     "showButtons": "Düğmeleri göster",
     "listen": "Dinle",
-    "stopListening": "Durdur"
+    "stopListening": "Durdur",
+    "clearHall": "Salonu boşalt",
+    "clearAsk": "Her şeyi indirelim mi?",
+    "clearBody": "Tüm eşyalar Eşyalarım'a döner. Hiçbir şey kaybolmaz."
   }
 }

@@ -147,6 +147,9 @@
     "roomOnly": "Bare salen",
     "showButtons": "Vis knappene",
     "listen": "Lytt",
-    "stopListening": "Stopp"
+    "stopListening": "Stopp",
+    "clearHall": "Tøm salen",
+    "clearAsk": "Ta ned alt?",
+    "clearBody": "Alt går tilbake til Mine ting. Ingenting går tapt."
   }
 }

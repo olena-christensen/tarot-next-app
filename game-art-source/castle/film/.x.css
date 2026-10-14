@@ -5481,6 +5481,57 @@ html.potion-locked body {
   border-radius: 14px;
   text-align: left;
 }
+.castle__menu-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.castle__menu-x {
+  flex: none;
+  display: flex;
+  margin: -4px -4px 0 auto;
+  padding: 6px;
+  background: none;
+  border: 0;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.castle__menu-x svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.castle__menu-play {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 10px;
+  background: transparent;
+  border: 1px solid rgba(250, 225, 163, 0.45);
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+.castle__menu-play svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+.castle__menu-play--on {
+  background: rgba(250, 225, 163, 0.12);
+  border: 2px solid var(--gold);
+  padding: 8px 9px;
+  color: var(--gold);
+}
 .castle__menu-title {
   margin: 0 0 8px;
   font-size: 0.9rem;
@@ -6168,6 +6219,9 @@ html.castle-locked body {
   object-fit: contain;
   transition: opacity 0.6s ease;
 }
+.castle-party__film--tall {
+  object-fit: cover;
+}
 .castle-party--end {
   background: rgba(9, 9, 9, 0.7);
 }
@@ -6349,6 +6403,37 @@ html.castle-locked body {
     transform: none;
   }
 }
+.castle-dialog__clear {
+  margin-left: auto;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(250, 225, 163, 0.5);
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.castle-dialog__text {
+  margin: 0 0 4px;
+  color: var(--text-faint);
+}
+
+.castle-dialog__pair {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.castle-dialog__pair .castle-records__start--plain {
+  background: transparent;
+  border-color: rgba(250, 225, 163, 0.5);
+}
+
 @media print {
   :root {
     --bg: var(--white);
