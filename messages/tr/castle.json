@@ -29,8 +29,10 @@
       "perfect": "Kusursuz bir salon.",
       "moreGames": "Yeni oyunlar seni almaya geliyor…",
       "watchAgain": "Tekrar izle",
-      "backToHall": "Salona dön"
+      "backToHall": "Salona dön",
+      "share": "Arkadaşlarınla paylaş"
     },
+    "partyShareTitle": "Partiden sağ çıktım. Peki sen?",
     "hints": {
       "cloth": "Buraya bir masa örtüsü çok yakışırdı",
       "settings": "Konukların tabak ve kadehe ihtiyacı var",

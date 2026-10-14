@@ -29,8 +29,10 @@
       "perfect": "A perfect hall.",
       "moreGames": "More games are coming for you…",
       "watchAgain": "Watch again",
-      "backToHall": "Back to the hall"
+      "backToHall": "Back to the hall",
+      "share": "Share with friends"
     },
+    "partyShareTitle": "I survived the party. Will you?",
     "hints": {
       "cloth": "A tablecloth would look lovely here",
       "settings": "The guests need plates and glasses",

@@ -349,7 +349,9 @@ export const CastleGame = () => {
       setScale(s);
       setView(
         immersiveRef.current
-          ? { x: (w - world.w * s) / 2, y: (h - world.h * s) / 2, h }
+          ? // The upright room keeps its right side (gramophone, fire) in view and
+            // gives up a little of the window on the left (Lena, 2026-10-14).
+            { x: (w - world.w * s) * (world.h > world.w ? 0.8 : 0.5), y: (h - world.h * s) / 2, h }
           : { x: 0, y: 0, h: world.h * s },
       );
       setScroll({ left: stage.scrollLeft, width: w });
@@ -401,6 +403,7 @@ export const CastleGame = () => {
   const [party, setParty] = useState<{ record: string; run: number } | null>(null);
   const [partyOutcome, setPartyOutcome] = useState<PartyOutcome | null>(null);
   const bareBefore = useRef(false);
+  const [partyShare, setPartyShare] = useState(false);
 
   const startParty = async (recordId: string) => {
     const sample = catalogItem(recordId)?.sample;
@@ -983,6 +986,10 @@ export const CastleGame = () => {
           muted={!soundOn}
           tall={tall}
           onReplay={() => setParty((p) => (p ? { ...p, run: p.run + 1 } : p))}
+          onShare={() => {
+            track("castle_party_share");
+            setPartyShare(true);
+          }}
           onClose={closeParty}
         />
       )}
@@ -1206,6 +1213,14 @@ export const CastleGame = () => {
           setSentNote(true);
           window.setTimeout(() => setShare(null), 300);
         }}
+      />
+      <ShareDialog
+        isOpen={partyShare}
+        onClose={() => setPartyShare(false)}
+        // No language in the link: each friend opens it in their own language.
+        url={partyShare ? `${window.location.origin}/castle/survived` : ""}
+        shareTitle={t("partyShareTitle")}
+        compact
       />
       <SubscriptionModal isOpen={plansOpen} onClose={() => setPlansOpen(false)} />
     </section>

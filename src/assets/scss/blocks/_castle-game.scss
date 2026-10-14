@@ -1131,10 +1131,7 @@ html.castle-locked body {
     object-fit: contain; // a wide screen of another shape sees the whole film
     transition: opacity 0.6s ease;
 
-    // the tall cut fills an upright phone edge to edge
-    &--tall {
-      object-fit: cover;
-    }
+    // the tall cut is shown whole: taller phones get thin black bands, nothing is trimmed
   }
 
   &--end {

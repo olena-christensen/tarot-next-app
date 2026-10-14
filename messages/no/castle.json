@@ -29,8 +29,10 @@
       "perfect": "En perfekt sal.",
       "moreGames": "Flere spill kommer for deg…",
       "watchAgain": "Se igjen",
-      "backToHall": "Tilbake til salen"
+      "backToHall": "Tilbake til salen",
+      "share": "Del med venner"
     },
+    "partyShareTitle": "Jeg overlevde festen. Tør du?",
     "hints": {
       "cloth": "En duk ville vært nydelig her",
       "settings": "Gjestene trenger tallerkener og glass",
