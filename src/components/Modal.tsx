@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import Skull from "../assets/svg/skull.svg";
 
@@ -25,6 +25,9 @@ type ModalProps = {
   pinned?: boolean;
 };
 
+/** Open windows, oldest first: Esc closes only the one on top. */
+const openStack: string[] = [];
+
 export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissible = true, pinned }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
@@ -40,6 +43,26 @@ export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissi
       document.body.style.paddingRight = "";
     };
   }, [isOpen]);
+
+  // Esc closes the window on top, as clicking outside does (Lena, 2026-10-14).
+  const id = useId();
+  // latest close handler, so a parent re-render never reorders the stack
+  const closeRef = useRef({ onClose, dismissible });
+  closeRef.current = { onClose, dismissible };
+  useEffect(() => {
+    if (!isOpen) return;
+    openStack.push(id);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || openStack[openStack.length - 1] !== id) return;
+      if (closeRef.current.dismissible) closeRef.current.onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      const i = openStack.lastIndexOf(id);
+      if (i >= 0) openStack.splice(i, 1);
+    };
+  }, [isOpen, id]);
 
   if (!isOpen || typeof document === "undefined") return null;
 

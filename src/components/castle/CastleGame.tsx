@@ -130,7 +130,6 @@ export const CastleGame = () => {
   const [menu, setMenu] = useState<OwnedItem | null>(null);
   const [swapFor, setSwapFor] = useState<OwnedItem | null>(null);
   const [busy, setBusy] = useState(false);
-  const [short, setShort] = useState<string | null>(null); // item id we couldn't afford
   const [plansOpen, setPlansOpen] = useState(false);
   const [share, setShare] = useState<{ url: string; name: string } | null>(null);
   const [sentNote, setSentNote] = useState(false);
@@ -509,14 +508,14 @@ export const CastleGame = () => {
   const buy = async (item: CatalogItem) => {
     if (needSignIn() || busy || item.price === null) return;
     if ((state?.balance ?? 0) < item.price) {
-      setShort(item.id);
+      setPlansOpen(true); // straight to the moonstones (Lena, 2026-10-14)
       return;
     }
     setBusy(true);
     try {
       const data = await post<{ rowId?: string }>("/api/castle/buy", { itemId: item.id });
       apply(data.state);
-      if (data.error === "no-moonstones") setShort(item.id);
+      if (data.error === "no-moonstones") setPlansOpen(true);
       if (data.rowId) {
         track("castle_bought", { item: item.id });
         setCatalogOpen(false);
@@ -610,6 +609,16 @@ export const CastleGame = () => {
 
   // ---------- wheel ----------
   const canFree = Boolean(state?.freeSpin);
+  // Time to the next free spin, counted down while the wheel is open (Lena, 2026-10-14).
+  const [clock, setClock] = useState(() => Date.now());
+  useEffect(() => {
+    if (!wheelOpen) return;
+    setClock(Date.now());
+    const timer = window.setInterval(() => setClock(Date.now()), 30 * 1000);
+    return () => window.clearInterval(timer);
+  }, [wheelOpen]);
+  const minutesLeft = Math.max(1, Math.ceil(((state?.nextSpinAt ?? 0) - clock) / 60000));
+  const nextFreeText = t("nextFree", { hours: Math.floor(minutesLeft / 60), minutes: minutesLeft % 60 });
   const canPaid = Boolean(state?.paidSpin);
 
   const spin = async () => {
@@ -1085,14 +1094,6 @@ export const CastleGame = () => {
                       </>
                     )}
                   </div>
-                  {short === item.id && (
-                    <p className="castle-card__short">
-                      {t("notEnough")} ·{" "}
-                      <a href="#" onClick={(e) => (e.preventDefault(), setPlansOpen(true))}>
-                        {t("getMoonstones")}
-                      </a>
-                    </p>
-                  )}
                 </div>
               );
             })}
@@ -1206,14 +1207,21 @@ export const CastleGame = () => {
         <div className="castle-dialog castle-wheel-panel">
           <h2 className="castle-wheel-panel__title">{t("wheelTitle")}</h2>
           <p className="castle__subtitle">{t("wheelSub")}</p>
+          <p className="castle-wheel-panel__balance">
+            <span className="castle__stones">
+              <MoonstoneIcon aria-hidden="true" />
+              {state?.balance ?? 0}
+            </span>
+          </p>
           <CastleWheel target={spinTarget} spinKey={spinKey} onStopped={onSpinStopped} />
           {canFree || canPaid ? (
             <button type="button" className="castle__btn castle__btn--main castle-wheel-panel__spin" disabled={spinning} onClick={spin}>
               {spinning ? t("spinning") : canFree ? t("spinFree") : t("spinPaid")}
             </button>
           ) : (
-            <p className="castle__note">{spinning ? t("spinning") : t("spinTomorrow")}</p>
+            <p className="castle__note">{spinning ? t("spinning") : nextFreeText}</p>
           )}
+          {!canFree && canPaid && !spinning && <p className="castle__note">{nextFreeText}</p>}
           <p className="castle-wheel-panel__odds">{t("odds")}</p>
 
           {prize && !spinning && (

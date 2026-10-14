@@ -80,6 +80,7 @@
     "spinFree": "Snurr · gratis i dag",
     "spinPaid": "Snurr igjen · 1 månestein",
     "spinTomorrow": "Kom tilbake i morgen for et nytt snurr",
+    "nextFree": "Neste gratis spinn om {hours} t {minutes} min",
     "spinning": "Snurrer…",
     "odds": "1 månestein 35 % · en gjenstand 35 % · 2 månesteiner 15 % · en sjelden gjenstand 10 % · 3 månesteiner 5 %",
     "paneItem": "Gjenstand",

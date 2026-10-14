@@ -80,6 +80,7 @@
     "spinFree": "Çevir · bugün ücretsiz",
     "spinPaid": "Tekrar çevir · 1 ay taşı",
     "spinTomorrow": "Yeni bir çevirme için yarın tekrar gel",
+    "nextFree": "Sonraki ücretsiz çevirme {hours} sa {minutes} dk sonra",
     "spinning": "Dönüyor…",
     "odds": "1 ay taşı %35 · bir eşya %35 · 2 ay taşı %15 · nadir bir eşya %10 · 3 ay taşı %5",
     "paneItem": "Eşya",
