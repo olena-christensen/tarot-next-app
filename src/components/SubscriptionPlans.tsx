@@ -30,9 +30,11 @@ const intervalSuffix = (interval: Plan["interval"]): string => {
 
 type SubscriptionPlansProps = {
   showHeader?: boolean;
+  /** Only the moonstone packs, as tiles (the moonstone top-up, Lena 2026-10-14). */
+  moonstonesOnly?: boolean;
 };
 
-export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps) => {
+export const SubscriptionPlans = ({ showHeader = true, moonstonesOnly = false }: SubscriptionPlansProps) => {
   const t = useTranslations("ui");
   const tPlans = useTranslations("plans");
   const locale = useLocale();
@@ -191,6 +193,10 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
   return (
     <section className="subscription">
       <div className="container">
+        {moonstonesOnly ? (
+          <MoonstonePacks busy={busyPlan} onBuy={(id) => handleSubscribe(id)} />
+        ) : (
+        <>
         {showHeader && (
           <header className="subscription__header">
             <h1 className="subscription__title">{t("chooseYourPath")}</h1>
@@ -304,6 +310,8 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
           disabled={Boolean(busyPlan)}
           onBuy={(id) => handleSubscribe(id)}
         />
+        </>
+        )}
 
         {/*
           Required disclosure, not decoration: the price tags say euros but the
@@ -348,6 +356,36 @@ export const SubscriptionPlans = ({ showHeader = true }: SubscriptionPlansProps)
     </section>
   );
 };
+
+// The moonstone top-up: one tile per pack, a tap goes straight to payment.
+function MoonstonePacks({ busy, onBuy }: { busy: Purchasable | null; onBuy: (id: MoonstonePackId) => void }) {
+  const t = useTranslations("ui");
+  return (
+    <div className="moon-packs">
+      {MOONSTONE_PACK_ORDER.map((id) => {
+        const pack = MOONSTONE_PACKS[id];
+        return (
+          <button
+            key={id}
+            type="button"
+            className={`moon-pack${pack.highlight ? " moon-pack--pop" : ""}`}
+            disabled={Boolean(busy)}
+            aria-busy={busy === id}
+            aria-label={t("buyMoonstonesAria", { count: pack.qty })}
+            onClick={() => onBuy(id)}
+          >
+            {pack.highlight && <span className="moon-pack__tag">{t("mostPopular")}</span>}
+            <span className="moon-pack__qty">
+              <MoonstoneIcon className="moon-pack__icon" aria-hidden="true" />
+              {pack.qty}
+            </span>
+            <span className="moon-pack__price">{busy === id ? t("processingBtn") : `€${pack.priceEur}`}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 type MoonstoneBuyRowProps = {
   busy: Purchasable | null;

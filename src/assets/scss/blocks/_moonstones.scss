@@ -1,0 +1,139 @@
+// Where moonstones come from (Lena, 2026-10-14): the choice between brewing
+// potions and buying a pack, and the pack tiles of the moonstone top-up.
+
+.moon-choice {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &__opt {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 44px 18px 18px;
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    color: inherit;
+    font-family: var(--font-family);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(250, 225, 163, 0.75);
+      background: rgba(250, 225, 163, 0.05);
+    }
+  }
+
+  &__free {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  &__name {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--text-soft);
+  }
+
+  &__text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-faint);
+  }
+
+  &__go {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.6rem;
+    color: var(--gold);
+  }
+}
+
+.moon-packs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.moon-pack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 6px 16px;
+  border: 1px solid rgba(250, 225, 163, 0.35);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  color: inherit;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    border-color: rgba(250, 225, 163, 0.8);
+    background: rgba(250, 225, 163, 0.06);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  &--pop {
+    border-color: rgba(250, 225, 163, 0.8);
+    background: rgba(250, 225, 163, 0.06);
+  }
+
+  &__tag {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 1px 8px;
+    border: 1px solid rgba(250, 225, 163, 0.8);
+    border-radius: 9px;
+    background: var(--bg);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  &__qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.6rem;
+    font-weight: 200;
+    color: var(--text-soft);
+  }
+
+  &__icon {
+    width: 1em;
+    height: 1em;
+  }
+
+  &__price {
+    padding: 6px 14px;
+    border: 1px solid rgba(250, 225, 163, 0.6);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+  }
+}
