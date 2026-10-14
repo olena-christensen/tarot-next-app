@@ -29,8 +29,10 @@
       "perfect": "Kusursuz bir salon.",
       "moreGames": "Yeni oyunlar seni almaya geliyor…",
       "watchAgain": "Tekrar izle",
-      "backToHall": "Salona dön"
+      "backToHall": "Salona dön",
+      "share": "Arkadaşlarınla paylaş"
     },
+    "partyShareTitle": "Partiden sağ çıktım. Peki sen?",
     "hints": {
       "cloth": "Buraya bir masa örtüsü çok yakışırdı",
       "settings": "Konukların tabak ve kadehe ihtiyacı var",
@@ -136,7 +138,7 @@
     "takeHint": "Almak için giriş yap — doğrudan şatondaki eşyalarına gider.",
     "giftTakenYou": "Artık senin! Katalogda bul.",
     "giftTaken": "Bu hediye zaten alınmış.",
-    "giftOwn": "Bu senin kendi hediyen — bağlantıyı bir arkadaşına gönder.",
+    "giftOwn": "Bu senin gönderdiğin hediye. Arkadaşını bekliyor.",
     "openCastle": "Şatonu aç",
     "myItems": "Eşyalarım",
     "storageEmpty": "Burada henüz bir şey yok. Katalogdan bul ya da çarkta kazan.",

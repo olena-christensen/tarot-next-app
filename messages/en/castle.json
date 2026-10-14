@@ -29,8 +29,10 @@
       "perfect": "A perfect hall.",
       "moreGames": "More games are coming for you…",
       "watchAgain": "Watch again",
-      "backToHall": "Back to the hall"
+      "backToHall": "Back to the hall",
+      "share": "Share with friends"
     },
+    "partyShareTitle": "I survived the party. Will you?",
     "hints": {
       "cloth": "A tablecloth would look lovely here",
       "settings": "The guests need plates and glasses",
@@ -136,7 +138,7 @@
     "takeHint": "Sign in to take it — it goes straight into your castle items.",
     "giftTakenYou": "It's yours! Find it in your catalog.",
     "giftTaken": "This gift has already been taken.",
-    "giftOwn": "This is your own gift — send the link to a friend.",
+    "giftOwn": "This is the gift you sent. It's waiting for your friend.",
     "openCastle": "Open your castle",
     "myItems": "My items",
     "storageEmpty": "Nothing here yet. Find things in the catalog or win them on the wheel.",

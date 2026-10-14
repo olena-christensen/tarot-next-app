@@ -37,10 +37,12 @@ type Props = {
   /** A phone held upright: the tall film. */
   tall: boolean;
   onReplay: () => void;
+  /** "Share with friends": the dare link (Lena, 2026-10-14). */
+  onShare: () => void;
   onClose: () => void;
 };
 
-export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onClose }: Props) => {
+export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onShare, onClose }: Props) => {
   const t = useTranslations("castle.party");
   const videoRef = useRef<HTMLVideoElement>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
@@ -131,6 +133,9 @@ export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onClo
           <div className="castle-party__buttons">
             <button type="button" className="castle-party__btn" onClick={onReplay}>
               {t("watchAgain")}
+            </button>
+            <button type="button" className="castle-party__btn" onClick={onShare}>
+              {t("share")}
             </button>
             <button type="button" className="castle-party__btn castle-party__btn--main" onClick={onClose}>
               {t("backToHall")}

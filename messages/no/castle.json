@@ -29,8 +29,10 @@
       "perfect": "En perfekt sal.",
       "moreGames": "Flere spill kommer for deg…",
       "watchAgain": "Se igjen",
-      "backToHall": "Tilbake til salen"
+      "backToHall": "Tilbake til salen",
+      "share": "Del med venner"
     },
+    "partyShareTitle": "Jeg overlevde festen. Tør du?",
     "hints": {
       "cloth": "En duk ville vært nydelig her",
       "settings": "Gjestene trenger tallerkener og glass",
@@ -136,7 +138,7 @@
     "takeHint": "Logg inn for å ta den — den går rett til tingene dine i slottet.",
     "giftTakenYou": "Den er din! Finn den i katalogen.",
     "giftTaken": "Denne gaven er allerede tatt.",
-    "giftOwn": "Dette er din egen gave — send lenken til en venn.",
+    "giftOwn": "Dette er gaven du sendte. Den venter på vennen din.",
     "openCastle": "Åpne slottet ditt",
     "myItems": "Mine ting",
     "storageEmpty": "Ingenting her ennå. Finn ting i katalogen eller vinn dem på hjulet.",
