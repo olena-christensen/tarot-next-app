@@ -30,36 +30,12 @@
     height: 100%;
     background-repeat: no-repeat;
 
-    &--moon {
-      z-index: -1;
-    }
-
     &--cards {
-      opacity: 0;
       z-index: 1;
     }
   }
 
-  .moon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: 0;
-    width: 70vw;
-    height: 70vw;
-    max-width: 513px;
-    max-height: 513px;
-    background-image: url("/decor-img/moon.webp");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    z-index: 0;
-  }
-
   .offer-block__screen--cards {
-    opacity: 0;
     .inner-wrap {
       position: absolute;
       left: 50%;
@@ -140,7 +116,7 @@
   .offer-block__title {
     position: absolute;
     left: 50%;
-    top: -20px;
+    top: 15%; // sits close under the header on phones
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -150,7 +126,7 @@
     width: 100%;
     font-size: clamp(1.75rem, 9vw, 42px); // shrink only where 42px would overflow (long localized words)
     z-index: 1;
-    transform: translate(-50%, -100%);
+    transform: translate(-50%, 0);
 
     // Long locales (e.g. Ukrainian "Дізнайтеся свою Долю") wrap to two lines and
     // the taller title overlaps the reader portrait below. Tighten it on mobile.
@@ -172,35 +148,29 @@
     }
   }
 
-  &.loaded {
-
+  // Home page intro, 2 s (Lena, 2026-10-14). Plays only while <html data-intro="play">
+  // — when, and how it ends: src/lib/intro.ts. Header, smoke and footer have their
+  // own rules in their block files. `both` keeps each element hidden until its delay;
+  // every final frame equals the normal style, so dropping the attribute never jumps.
+  html[data-intro="play"] & {
     .offer-block__title {
-      animation: offerBlockTitleAnimationMobile 3s forwards;
-      animation-iteration-count: 1;
-      animation-delay: 4s;
+      animation: introTitle 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
     }
 
-    .moon {
-      animation: moonAnimationMobile 6s forwards;
-      animation-iteration-count: 1;
-      animation-delay: 2.5s;
+    .offer-block__screen-bg {
+      animation: introBloom 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.6s both;
     }
 
-    .offer-block__screen--cards {
-      animation: offerBlockCardBlockAnimation 5s forwards;
-      animation-iteration-count: 1;
-      animation-delay: 8s;
+    .offer-block__reader {
+      animation: introRise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.6s both;
     }
-  }
 
-  &.skip-intro {
-    .offer-block__title,
-    .moon,
-    .offer-block__screen--cards,
-    .offer-block__reader,
-    .smoke-animation {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
+    @media (prefers-reduced-motion: reduce) {
+      .offer-block__title,
+      .offer-block__screen-bg,
+      .offer-block__reader {
+        animation: introFade 0.4s ease-out both;
+      }
     }
   }
 
@@ -344,17 +314,10 @@
     }
 
     .offer-block__title {
+      top: 120px;
       gap: 2rem;
       padding: 0;
       font-size: 100px;
-    }
-
-    .moon {
-      top: 32.5%;
-      width: 513px;
-      height: 513px;
-      max-width: 513px;
-      max-height: 513px;
     }
 
     .offer-block__screen--cards {
@@ -383,27 +346,6 @@
     .animated-card {
       width: 365px !important;
       height: 450px !important;
-    }
-
-    &.loaded {
-
-      .offer-block__title {
-        animation: offerBlockTitleAnimation 3s forwards;
-        animation-iteration-count: 1;
-        animation-delay: 4s;
-      }
-
-      .moon {
-        animation: moonAnimation 6s forwards;
-        animation-iteration-count: 1;
-        animation-delay: 2.5s;
-      }
-
-      .offer-block__screen--cards {
-        animation: offerBlockCardBlockAnimation 5s forwards;
-        animation-iteration-count: 1;
-        animation-delay: 8s;
-      }
     }
 
     .offer-block__screen-bg {

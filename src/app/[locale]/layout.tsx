@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { buildAlternates, buildJsonLd } from "@/lib/seo";
 import { CookieBanner } from "@/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/next";
+import { introBootScript } from "@/lib/intro";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -80,8 +81,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
-    <html lang={locale}>
+    // suppressHydrationWarning: the intro boot script sets data-intro on <html> before React loads.
+    <html lang={locale} suppressHydrationWarning>
       <body className={raleway.className}>
+        {/* Decides whether the home page intro plays — must run before the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: introBootScript(routing.locales) }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdString }}

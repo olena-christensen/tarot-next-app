@@ -11,6 +11,15 @@
     z-index: 50; // above the tarot reading screen (40), below cookie banner (60) + modals (100)
     pointer-events: none;
 
+    // Home page intro only (src/lib/intro.ts).
+    html[data-intro="play"] & {
+      animation: introFade 0.8s ease-out 0.9s both;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: introFade 0.4s ease-out both;
+      }
+    }
+
     // On short mobile screens the fixed footer must not sit on top of the
     // primary CTAs (reader "Summon", tarot post-actions). Drop the tall
     // disclaimer block here; the legal links row stays.

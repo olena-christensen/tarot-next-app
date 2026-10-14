@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { INTRO_DONE_EVENT, isIntroPlaying } from "@/lib/intro";
 
 const STORAGE_KEY = "theveil_cookie_consent";
 const RESET_EVENT = "theveil:cookie-consent-reset";
-// Set by OfferBlock while the intro animation plays; `theveil:intro-done` fires
-// when it ends. The banner waits for that so it doesn't pop over the intro.
-const INTRO_DONE_EVENT = "theveil:intro-done";
-const INTRO_FALLBACK_MS = 15000;
+// While the home page intro plays (src/lib/intro.ts) the banner waits for
+// `theveil:intro-done`, fired as the reader appears or on skip.
+const INTRO_FALLBACK_MS = 4000;
 
 type Consent = "accepted" | "rejected";
 
@@ -30,7 +30,7 @@ export const CookieBanner = () => {
     };
 
     if (!stored) {
-      if ((window as Window & { __theveilIntroPlaying?: boolean }).__theveilIntroPlaying) {
+      if (isIntroPlaying()) {
         // Intro is animating — wait for it to finish. Fallback so a missed
         // event can never leave the banner permanently hidden.
         window.addEventListener(INTRO_DONE_EVENT, reveal, { once: true });

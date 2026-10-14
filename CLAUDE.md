@@ -600,18 +600,20 @@ Use the shared Sass mixins in `_mixins.scss` — do NOT write raw `@media` queri
 
 ## Animations
 
-### Intro animations (play once per session)
+### Home page intro (rebuilt 2026-10-14)
 
-The main page has a multi-stage intro: moon rises and falls, title slides in, cards section fades in, smoke fades in, header slides down. These are CSS animations triggered by the `loaded` class on the offer-block, with staggered `animation-delay` values.
+2 seconds: smoke fades in, header drops in, "Discover Your Fate" rises into place, then medallions, reader block and footer fade in together. The moon and the separate title stage are gone (Lena). Any tap or key skips straight to the final frame.
 
-**Skip-intro pattern:** Animations play on first visit and page refresh, but NOT on client-side navigation (clicking logo, changing language, navigating back from other pages).
+**When it plays** — `src/lib/intro.ts` (`shouldPlayIntro`, tested in `intro.test.ts`): only on a FULL load of the home page (`/` or `/{locale}`), and only if it is the visitor's first home-page load of the day (localStorage `theveil_intro_day`, visitor's local date) or they pressed reload. Never on client-side navigation, back/forward, or a full load of any other page — so returns from Google sign-in, monobank and the legal pages show the page straight away. Other pages never animate the header any more.
 
-- Module-level `let hasPlayedIntro = false` in `OfferBlock.tsx` (and `hasPlayedHeaderIntro` in `Header.tsx`) — resets on page refresh (JS reloads), persists on client-side navigation.
-- `useState` initializer checks and sets the flag. When skipping, `isLoaded` starts as `true` (no loading flash).
-- **SSR guard (required):** the initializer's FIRST line is `if (typeof window === "undefined") return false;`. Server modules persist across requests, so without this the flag is read/mutated on the server, sticks at `true`, and desyncs server vs. client HTML → hydration mismatch ("switch to client rendering"). The server must always render the intro-plays state to match a fresh client load. Keep this guard on any copy of the pattern.
-- `skip-intro` CSS class sets `animation-duration: 0s; animation-delay: 0s` on **specific elements only**: `.offer-block__title`, `.moon`, `.offer-block__screen--cards`, `.offer-block__reader`, `.smoke-animation`. The `forwards` fill mode keeps them at their end state.
-- **NEVER use wildcard selectors** (`*`) for skip-intro — it kills unrelated animations (deck glow, card twist). Always list specific elements.
-- Header uses the same pattern with its own `skip-intro` class in `_main-header.scss`.
+**How** — `introBootScript()` is inlined at the top of `<body>` in `src/app/[locale]/layout.tsx` and sets `<html data-intro="play">` before the first paint (`suppressHydrationWarning` is on `<html>` for that). Every intro animation is plain CSS under `html[data-intro="play"] &` in `_offer-block.scss`, `_main-header.scss`, `_smoke-animation.scss` and `_main-footer.scss`; keyframes `intro*` in `_animations.scss`. Server and client HTML are identical, so there is no loader and no hydration mismatch. `armIntro()` (called once from OfferBlock) adds skip-on-tap, fires `theveil:intro-done` at 0.6 s (the cookie banner waits for it, 4 s fallback) and removes the attribute at 2 s.
+
+- **Every intro keyframe must end on the element's normal style.** Removing the attribute (on skip, or at 2 s) drops the animation, so any difference would jump. Base styles are the final layout (title `top: 15%` / `120px` at `lg`, `translate(-50%, 0)`).
+- `animation-fill-mode: both` keeps elements hidden until their delay. List elements explicitly — never wildcard.
+- `prefers-reduced-motion: reduce` → a plain 0.4 s fade, no movement.
+- `armIntro()` state is module-level on purpose: React's dev double-mount must not end the intro, and leaving the page mid-intro must still clear the attribute.
+
+**Smoke** (`SmokeAnimation.tsx`): one requestAnimationFrame loop, paused while the tab is hidden, resized with the window; on unmount it disposes geometry/material/texture and calls `renderer.forceContextLoss()` (each visit used to leak a WebGL context). Texture `public/decor-img/smoke.png` (self-hosted copy of the old CodePen sprite); the material stays invisible until it has loaded, so a missing file means no smoke, never white squares.
 
 ### Reading reveal flow
 
@@ -623,7 +625,7 @@ After the user clicks the deck (which appears after clicking "Summon" on the mai
 4. 3 more seconds (5s total) → `isPredictionReady` = true, reading modal appears, loader fades out (`tarot__loader--hidden`)
 5. User closes reading modal → two `<MysticButton>` components appear in `tarot__post-actions` (flex row): "Unveil Another Fate" reshuffles and resets cards in-place; "Back to the Sanctum" triggers a 0.5s fade-out (`tarot-modal--closing` class + `tarotModalFadeOut` keyframe) before unmounting and returning to main page with reader
 
-**Key:** This reading-flow loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component. Separately, `OfferBlock`'s initial `!isLoaded` state DOES render the full-screen `<Loader />` component (`.loader`, centered `position: fixed`, z-index 70) — restored after the SEO refactor (commit `4d2e5b4`) had replaced it with a bare unstyled `<div>{t("loading")}</div>` that rendered off-screen-left.
+**Key:** This reading-flow loader uses the ouroboros SVG directly (`import LoaderSvg from "@/assets/svg/ouroboros.svg"`), NOT the `Loader` component. The main page no longer shows the full-screen `<Loader />` before the intro (2026-10-14) — the page is server-rendered and the intro is CSS, so there is nothing to wait for. `Loader.tsx` / `.loader` are currently unused.
 
 ### Deck card glow
 
