@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/PageShell";
-import { BrewPotionGame } from "@/components/BrewPotionGame";
+import { GameChoice } from "@/components/GameChoice";
 import { absoluteUrl, buildAlternates } from "@/lib/seo";
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = params;
   const t = await getTranslations({ locale, namespace: "game" });
-  const title = t("metaTitle");
-  const description = t("metaDescription");
+  const title = t("hubMetaTitle");
+  const description = t("hubMetaDescription");
   const alternates = buildAlternates({ locale, path: "/game" });
-  const image = absoluteUrl("/game-art/potion/room.webp");
+  const image = absoluteUrl("/game-art/cover-castle.jpg");
 
   return {
     title,
@@ -25,11 +25,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function GamePage({ params }: Props) {
+/** All the games (Lena, 2026-10-14): the potion game lives at /potion now. */
+export default function GamesPage({ params }: Props) {
   unstable_setRequestLocale(params.locale);
   return (
     <PageShell>
-      <BrewPotionGame />
+      <section className="games-page">
+        <GameChoice />
+      </section>
     </PageShell>
   );
 }

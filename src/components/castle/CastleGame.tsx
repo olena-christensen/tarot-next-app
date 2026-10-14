@@ -244,6 +244,11 @@ export const CastleGame = () => {
   const ambienceRef = useRef<HTMLAudioElement | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   useEffect(() => {
+    // Arriving by a click on the site (the games page, the main page) counts as
+    // a tap: the wind starts with the hall, as the cauldron does (Lena,
+    // 2026-10-14). From a shared link the browser waits for the first tap.
+    const nav = navigator as Navigator & { userActivation?: { hasBeenActive: boolean } };
+    if (nav.userActivation?.hasBeenActive) setUnlocked(true);
     const unlock = () => setUnlocked(true);
     window.addEventListener("pointerdown", unlock, { once: true });
     window.addEventListener("keydown", unlock, { once: true });
@@ -538,7 +543,12 @@ export const CastleGame = () => {
     audio.loop = true;
     audio.volume = 0;
     ambienceRef.current = audio;
-    void audio.play().catch(() => undefined);
+    // If the browser still holds sound back, the first tap starts it.
+    const retry = () => void audio.play().catch(() => undefined);
+    void audio.play().catch(() => {
+      window.addEventListener("pointerdown", retry, { once: true });
+      window.addEventListener("keydown", retry, { once: true });
+    });
     // glides towards its level, so it never starts or changes with a jolt
     const glide = window.setInterval(() => {
       const target = ambienceLevelRef.current;
@@ -546,6 +556,8 @@ export const CastleGame = () => {
       audio.volume = Math.abs(target - v) < 0.03 ? target : v + Math.sign(target - v) * 0.03;
     }, 80);
     return () => {
+      window.removeEventListener("pointerdown", retry);
+      window.removeEventListener("keydown", retry);
       window.clearInterval(glide);
       audio.pause();
       if (ambienceRef.current === audio) ambienceRef.current = null;

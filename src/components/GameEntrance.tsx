@@ -3,22 +3,18 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Modal } from "@/components/Modal";
 import { Loader } from "@/components/Loader";
 
 /**
  * The way into the games from the main page (Lena, 2026-10-09): a glowing
  * button with a pumpkin in a witch hat, in the reader block's own flow under
- * "Change your reader" (it used to float and covered the buttons on short
- * screens). It opens a choice of the games as big picture cards.
+ * "Change your reader". It opens the games page /game (Lena, 2026-10-14; it
+ * used to open a pop-up with the same cards), behind the dark loader.
  * "Halloween is coming" in October, "Witchy games" the rest of the year.
  */
 export const GameEntrance = () => {
   const t = useTranslations("game");
   const [seasonal, setSeasonal] = useState(false);
-  const [open, setOpen] = useState(false);
-  // A game was picked: the dark loader covers the page until the game opens,
-  // so the main page never flashes in between (Lena, 2026-10-14).
   const [going, setGoing] = useState(false);
 
   useEffect(() => {
@@ -27,7 +23,7 @@ export const GameEntrance = () => {
 
   return (
     <>
-      <button type="button" className="game-entrance" onClick={() => setOpen(true)}>
+      <Link href="/game" className="game-entrance" onClick={() => setGoing(true)}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="game-entrance__pumpkin" src="/game-art/pumpkin-hat.webp" alt="" />
         <span className="game-entrance__text">
@@ -36,35 +32,7 @@ export const GameEntrance = () => {
           </span>
           <span className="game-entrance__cta">{t("entranceCta")} →</span>
         </span>
-      </button>
-
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <div className="game-choice">
-          <h2 className="game-choice__title">{seasonal ? t("choiceTitleSeasonal") : t("choiceTitle")}</h2>
-          <p className="game-choice__sub">{t("choiceSub")}</p>
-          <Link href="/game" className="game-choice__card" onClick={() => setGoing(true)}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/game-art/cover-potion.jpg" alt="" />
-            <span className="game-choice__shade" />
-            <span className="game-choice__text">
-              <b>{t("title")}</b>
-              <span>{t("choicePotion")}</span>
-            </span>
-            <span className="game-choice__go">{t("choicePlay")}</span>
-          </Link>
-          <Link href="/castle" className="game-choice__card" onClick={() => setGoing(true)}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/game-art/cover-castle.jpg" alt="" />
-            <span className="game-choice__new">{t("choiceNew")}</span>
-            <span className="game-choice__shade" />
-            <span className="game-choice__text">
-              <b>{t("castleTitle")}</b>
-              <span>{t("choiceCastle")}</span>
-            </span>
-            <span className="game-choice__go">{t("choiceEnter")}</span>
-          </Link>
-        </div>
-      </Modal>
+      </Link>
       {going && <Loader top />}
     </>
   );

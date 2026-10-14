@@ -81,7 +81,7 @@ export default async function PotionGiftPage({ params }: Props) {
         <img className="potion-gift__bottle" src="/game-art/potion/bottle.webp" alt="" />
         <h1 className="potion-gift__name">{t(`potionNames.${gift.potion}`)}</h1>
         <PotionGiftTake roundId={gift.round ?? ""} status={status} />
-        <Link href="/game" className="potion-gift__cta">
+        <Link href="/potion" className="potion-gift__cta">
           {t("brewYourOwn")}
         </Link>
       </section>
