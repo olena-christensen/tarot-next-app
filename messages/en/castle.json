@@ -25,7 +25,7 @@
       "rated": "The guests rated your hall",
       "batsLabel": "{count} of {max} bats",
       "newBest": "New best! +{count} moonstones",
-      "toNext": "{count, plural, one {Fill # more spot for the next bat.} other {Fill # more spots for the next bat.}}",
+      "toNext": "{count, plural, one {Decorate # more spot in your hall to earn the next bat.} other {Decorate # more spots in your hall to earn the next bat.}}",
       "perfect": "A perfect hall.",
       "moreGames": "More games are coming for you…",
       "watchAgain": "Watch again",

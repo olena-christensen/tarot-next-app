@@ -25,7 +25,7 @@
       "rated": "Gjestenes vurdering av salen din",
       "batsLabel": "{count} av {max} flaggermus",
       "newBest": "Ny rekord! +{count} månesteiner",
-      "toNext": "{count, plural, one {Fyll # plass til for neste flaggermus.} other {Fyll # plasser til for neste flaggermus.}}",
+      "toNext": "{count, plural, one {Pynt # plass til i salen for å få neste flaggermus.} other {Pynt # plasser til i salen for å få neste flaggermus.}}",
       "perfect": "En perfekt sal.",
       "moreGames": "Flere spill kommer for deg…",
       "watchAgain": "Se igjen",
