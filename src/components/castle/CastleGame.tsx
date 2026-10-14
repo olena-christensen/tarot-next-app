@@ -147,6 +147,9 @@ export const CastleGame = () => {
     const same = listening === item.id;
     stopListening();
     if (same) return;
+    gramRef.current?.pause();
+    gramRef.current = null;
+    setPlaying(null);
     const audio = new Audio(`/sounds/castle/${item.sample}-sample.mp3`);
     audio.addEventListener("ended", () => {
       if (audioRef.current === audio) stopListening();
@@ -259,6 +262,17 @@ export const CastleGame = () => {
     keepHint();
     hintTimer.current = window.setTimeout(() => setHint(null), 250);
   };
+
+  // A tap outside the item menu closes it (Lena, 2026-10-14).
+  useEffect(() => {
+    if (!menu) return;
+    const away = (e: PointerEvent) => {
+      const el = e.target as Element | null;
+      if (!el?.closest(".castle__menu, .castle__hit")) setMenu(null);
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [menu]);
 
   // A tap anywhere else closes the hint (phones have no "mouse leaves").
   useEffect(() => {
@@ -427,8 +441,46 @@ export const CastleGame = () => {
     document.addEventListener("visibilitychange", sync);
     return () => document.removeEventListener("visibilitychange", sync);
   }, []);
+  // ---------- the gramophone (Lena, 2026-10-14) ----------
+  // The full song of a record the player owns, looping, while the gramophone
+  // stands in the hall. The sound button stops it with everything else.
+  const [playing, setPlaying] = useState<string | null>(null); // record item id
+  const gramRef = useRef<HTMLAudioElement | null>(null);
+  const stopRecord = useCallback(() => {
+    gramRef.current?.pause();
+    gramRef.current = null;
+    setPlaying(null);
+  }, []);
+  const playRecord = (recordId: string) => {
+    const same = playing === recordId;
+    stopRecord();
+    if (same) return;
+    const sample = catalogItem(recordId)?.sample;
+    if (!sample) return;
+    stopListening();
+    if (!soundOn) toggleSound(); // pressing play means "I want to hear it"
+    const audio = new Audio(`/sounds/castle/${sample}-full.mp3`);
+    audio.loop = true;
+    audio.volume = 0.7;
+    gramRef.current = audio;
+    setPlaying(recordId);
+    audio.play().catch(() => {
+      if (gramRef.current === audio) stopRecord();
+    });
+    track("castle_gramophone", { record: recordId });
+  };
+  const gramophoneUp = placedAt.has("corner");
+  useEffect(() => {
+    if (playing && (!soundOn || party || hidden || !gramophoneUp || !items.some((i) => i.itemId === playing))) stopRecord();
+  }, [playing, soundOn, party, hidden, gramophoneUp, items, stopRecord]);
+  useEffect(() => stopRecord, [stopRecord]);
+
   const ambience = fireLit ? "fire" : "wind";
   const ambienceOn = soundOn && unlocked && !hidden && !party && !listening;
+  // Under a playing record the wind or fire steps back.
+  const ambienceLevel = (ambience === "fire" ? 0.45 : 0.35) * (playing ? 0.35 : 1);
+  const ambienceLevelRef = useRef(ambienceLevel);
+  ambienceLevelRef.current = ambienceLevel;
   useEffect(() => {
     if (!ambienceOn) return;
     const audio = new Audio(`/sounds/castle/${ambience}-loop.mp3`);
@@ -436,15 +488,14 @@ export const CastleGame = () => {
     audio.volume = 0;
     ambienceRef.current = audio;
     void audio.play().catch(() => undefined);
-    // fade in, so it never starts with a jolt
-    let v = 0;
-    const fade = window.setInterval(() => {
-      v = Math.min(v + 0.03, ambience === "fire" ? 0.45 : 0.35);
-      audio.volume = v;
-      if (v >= 0.35) window.clearInterval(fade);
+    // glides towards its level, so it never starts or changes with a jolt
+    const glide = window.setInterval(() => {
+      const target = ambienceLevelRef.current;
+      const v = audio.volume;
+      audio.volume = Math.abs(target - v) < 0.03 ? target : v + Math.sign(target - v) * 0.03;
     }, 80);
     return () => {
-      window.clearInterval(fade);
+      window.clearInterval(glide);
       audio.pause();
       if (ambienceRef.current === audio) ambienceRef.current = null;
     };
@@ -498,6 +549,20 @@ export const CastleGame = () => {
     } finally {
       setBusy(false);
       setPlacing(null);
+    }
+  };
+
+  const [clearAsk, setClearAsk] = useState(false);
+  const clearHall = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const data = await post("/api/castle/clear");
+      apply(data.state);
+      track("castle_cleared");
+    } finally {
+      setBusy(false);
+      setClearAsk(false);
     }
   };
 
@@ -799,10 +864,32 @@ export const CastleGame = () => {
             className="castle__menu"
             style={{
               left: Math.min(Math.max(8, menuPatch.x * scale + view.x - scroll.left), scroll.width - 228),
-              top: Math.min((menuPatch.y + menuPatch.h) * scale + view.y + 10, view.h - (immersive ? 230 : 40)),
+              top: Math.max(8, Math.min((menuPatch.y + menuPatch.h) * scale + view.y + 10, view.h - (immersive ? 230 : 40) - (menu.place === "corner" ? records.length * 44 : 0))),
             }}
           >
-            <p className="castle__menu-title">{t(`items.${menu.itemId}`)}</p>
+            <div className="castle__menu-head">
+              <p className="castle__menu-title">{t(`items.${menu.itemId}`)}</p>
+              <button type="button" className="castle__menu-x" onClick={() => setMenu(null)} aria-label={t("close")} title={t("close")}>
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
+                </svg>
+              </button>
+            </div>
+            {menu.place === "corner" &&
+              records.map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  className={`castle__menu-play${playing === r.id ? " castle__menu-play--on" : ""}`}
+                  onClick={() => playRecord(r.id)}
+                  aria-pressed={playing === r.id}
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    {playing === r.id ? <rect x="3.5" y="3.5" width="9" height="9" rx="1" /> : <path d="M5 3v10l8-5z" />}
+                  </svg>
+                  {t(`items.${r.id}`).replace(/^[^:]*:\s*/, "")}
+                </button>
+              ))}
             <button type="button" className="castle__menu-btn" onClick={() => takeDown(menu)}>
               {t("takeDown")}
             </button>
@@ -894,6 +981,7 @@ export const CastleGame = () => {
           run={party.run}
           outcome={partyOutcome}
           muted={!soundOn}
+          tall={tall}
           onReplay={() => setParty((p) => (p ? { ...p, run: p.run + 1 } : p))}
           onClose={closeParty}
         />
@@ -969,6 +1057,11 @@ export const CastleGame = () => {
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("myItems")}</h2>
+            {items.some((i) => i.place) && (
+              <button type="button" className="castle-dialog__clear" onClick={() => setClearAsk(true)}>
+                {t("clearHall")}
+              </button>
+            )}
           </div>
           {items.length === 0 ? (
             <p className="castle__note">{t("storageEmpty")}</p>
@@ -1009,6 +1102,22 @@ export const CastleGame = () => {
               })}
             </div>
           )}
+        </div>
+      </Modal>
+
+      {/* ---------- clear the hall ---------- */}
+      <Modal isOpen={clearAsk} onClose={() => setClearAsk(false)} narrow>
+        <div className="castle-dialog castle-dialog--records">
+          <h2 className="castle-dialog__title">{t("clearAsk")}</h2>
+          <p className="castle-dialog__text">{t("clearBody")}</p>
+          <div className="castle-dialog__pair">
+            <button type="button" className="castle-records__start castle-records__start--plain" onClick={() => setClearAsk(false)}>
+              {t("cancel")}
+            </button>
+            <button type="button" className="castle-records__start" disabled={busy} onClick={clearHall}>
+              {t("clearHall")}
+            </button>
+          </div>
         </div>
       </Modal>
 

@@ -259,3 +259,9 @@ export async function throwParty(userId: string): Promise<PartyResult> {
   const best = await prisma.castleSpin.count({ where: { userId, day: PARTY_DAY } });
   return { ok: true, bats: rating.bats, best, stones, toNext: rating.toNext };
 }
+
+/** "Clear the hall" (Lena, 2026-10-14): every placed item goes back to the player's items. */
+export async function clearHall(userId: string): Promise<{ ok: true }> {
+  await prisma.castleItem.updateMany({ where: { userId, place: { not: null } }, data: { place: null } });
+  return { ok: true };
+}

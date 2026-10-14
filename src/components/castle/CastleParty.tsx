@@ -15,6 +15,8 @@ import { MAX_BATS } from "@/lib/castleGame/catalog";
  */
 
 const FILM = "/game-art/castle/film/party.mp4";
+/** Phones held upright: a tall cut that follows the action (Lena, 2026-10-14). */
+const FILM_TALL = "/game-art/castle/film/party-tall.mp4";
 /** The film is black from here on; only the clock is still chiming. */
 const DARK_AT = 23.6;
 /** The record fades out under the last shots. */
@@ -32,11 +34,13 @@ type Props = {
   run: number;
   /** The game's sound button is off. */
   muted: boolean;
+  /** A phone held upright: the tall film. */
+  tall: boolean;
   onReplay: () => void;
   onClose: () => void;
 };
 
-export const CastleParty = ({ record, outcome, run, muted, onReplay, onClose }: Props) => {
+export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onClose }: Props) => {
   const t = useTranslations("castle.party");
   const videoRef = useRef<HTMLVideoElement>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
@@ -92,8 +96,8 @@ export const CastleParty = ({ record, outcome, run, muted, onReplay, onClose }: 
     <div className={`castle-party${ended ? " castle-party--end" : ""}`} role="dialog" aria-modal="true" aria-label={t("survived")}>
       <video
         ref={videoRef}
-        className="castle-party__film"
-        src={FILM}
+        className={`castle-party__film${tall ? " castle-party__film--tall" : ""}`}
+        src={tall ? FILM_TALL : FILM}
         playsInline
         muted={muted}
         preload="auto"
