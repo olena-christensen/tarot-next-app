@@ -1,79 +1,102 @@
 "use client";
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { Camera } from 'three';
+
+// Self-hosted copy of the original CodePen smoke sprite (2026-10-14).
+const SMOKE_TEXTURE = "/decor-img/smoke.png";
 
 export const SmokeAnimation = () => {
-    const mountRef = useRef<HTMLDivElement | null>(null); // Create a ref to attach the Three.js renderer
+    const mountRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const mount = mountRef.current; // the same node for the cleanup below
-        let camera: THREE.Object3D<THREE.Object3DEventMap>, scene: THREE.Scene, renderer: THREE.WebGLRenderer, clock: THREE.Clock;
-        let light;
-        let smokeParticles: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshLambertMaterial, THREE.Object3DEventMap>[] = [];
+        const mount = mountRef.current;
+        if (!mount) return;
 
-        function init() {
-            clock = new THREE.Clock();
+        const clock = new THREE.Clock();
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        mount.appendChild(renderer.domElement);
 
-            // Create renderer and attach it to the ref's current element
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            if (mount) {
-                mount.appendChild(renderer.domElement); // Attach renderer to div
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 1000;
+        scene.add(camera);
+
+        const light = new THREE.DirectionalLight(0xffffff, 0.3);
+        light.position.set(-1, 0, 1);
+        scene.add(light);
+
+        const smokeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+        const loader = new THREE.TextureLoader();
+        let smokeTexture: THREE.Texture | null = null;
+        let disposed = false;
+        const useTexture = (texture: THREE.Texture) => {
+            if (disposed) {
+                texture.dispose(); // arrived after the page was left
+                return;
             }
+            smokeTexture = texture;
+            smokeMaterial.map = texture;
+            smokeMaterial.opacity = 1; // hidden until a texture exists — no white squares
+            smokeMaterial.needsUpdate = true;
+        };
+        loader.load(SMOKE_TEXTURE, useTexture);
 
-            scene = new THREE.Scene();
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.z = 1000;
-            scene.add(camera);
-
-            light = new THREE.DirectionalLight(0xffffff, 0.3);
-            light.position.set(-1, 0, 1);
-            scene.add(light);
-
-            const smokeTexture = new THREE.TextureLoader().load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95637/Smoke-Element.png');
-            const smokeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, map: smokeTexture, transparent: true });
-            const smokeGeo = new THREE.PlaneGeometry(300, 300);
-
-            for (let p = 0; p < 150; p++) {
-                const particle = new THREE.Mesh(smokeGeo, smokeMaterial);
-                particle.position.set(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 1000 - 100);
-                particle.rotation.z = Math.random() * 360;
-                scene.add(particle);
-                smokeParticles.push(particle);
-            }
+        const smokeGeo = new THREE.PlaneGeometry(300, 300);
+        const smokeParticles: THREE.Mesh[] = [];
+        for (let p = 0; p < 150; p++) {
+            const particle = new THREE.Mesh(smokeGeo, smokeMaterial);
+            particle.position.set(Math.random() * 500 - 250, Math.random() * 500 - 250, Math.random() * 1000 - 100);
+            particle.rotation.z = Math.random() * 360;
+            scene.add(particle);
+            smokeParticles.push(particle);
         }
 
-        function animate() {
-            requestAnimationFrame(animate);
+        // One loop at a time; it stops when the page is left or the tab is hidden.
+        let frame = 0;
+        const animate = () => {
+            frame = requestAnimationFrame(animate);
             const delta = clock.getDelta();
-            evolveSmoke(delta);
-            render();
-        }
-
-        function evolveSmoke(delta: number) {
             smokeParticles.forEach(particle => {
-                particle.rotation.z += (delta * 0.2);
+                particle.rotation.z += delta * 0.2;
             });
-        }
+            renderer.render(scene, camera);
+        };
+        const start = () => {
+            if (frame) return;
+            clock.getDelta(); // don't jump by the time spent hidden
+            animate();
+        };
+        const stop = () => {
+            cancelAnimationFrame(frame);
+            frame = 0;
+        };
+        const onVisibility = () => (document.hidden ? stop() : start());
+        const onResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
 
-        function render() {
-            if (camera instanceof Camera) {
-                renderer.render(scene, camera);
-            }
-        }
+        document.addEventListener("visibilitychange", onVisibility);
+        window.addEventListener("resize", onResize);
+        if (!document.hidden) start();
 
-        init();
-        animate();
-
-        // Clean up on unmount
+        // Leaving the page must release the graphics context: browsers allow only
+        // ~16 at once, and every return to the main page used to add another.
         return () => {
-            if (mount) {
-                mount.removeChild(renderer.domElement); // Remove renderer from div
-            }
+            disposed = true;
+            stop();
+            document.removeEventListener("visibilitychange", onVisibility);
+            window.removeEventListener("resize", onResize);
+            smokeGeo.dispose();
+            smokeMaterial.dispose();
+            (smokeTexture as THREE.Texture | null)?.dispose();
+            renderer.dispose();
+            renderer.forceContextLoss();
+            if (renderer.domElement.parentNode === mount) mount.removeChild(renderer.domElement);
         };
     }, []);
 
-    return <div className="smoke-animation" ref={mountRef} />; // Attach ref to div element
+    return <div className="smoke-animation" ref={mountRef} />;
 };

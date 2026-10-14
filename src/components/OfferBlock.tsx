@@ -18,10 +18,10 @@ import {READERS, DEFAULT_READER} from "@/lib/readers";
 import {ReaderSelection} from "@/components/ReaderSelection";
 import {Modal} from "@/components/Modal";
 import {MysticButton} from "@/components/MysticButton";
-import { Loader } from "@/components/Loader";
 import { useReadingGate } from "@/hooks/useReadingGate";
 import { HomeAboutToggle } from "@/components/HomeAbout";
 import { GameEntrance } from "@/components/GameEntrance";
+import { armIntro } from "@/lib/intro";
 
 type OfferBlockProps = {
     // Direct openers — used by the "change your reader" / reader-upgrade actions.
@@ -32,20 +32,9 @@ type OfferBlockProps = {
     onBlockedFree: () => void;
 };
 
-let hasPlayedIntro = false;
-
-// Shared with CookieBanner: signals the intro animation is playing so the banner
-// doesn't pop over it. `theveil:intro-done` fires when the interactive cards/CTA
-// screen begins animating in (or immediately on skip).
-type WindowWithIntro = Window & { __theveilIntroPlaying?: boolean };
-const INTRO_DONE_EVENT = "theveil:intro-done";
-
-const finishIntro = () => {
-    const w = window as WindowWithIntro;
-    if (!w.__theveilIntroPlaying) return;
-    w.__theveilIntroPlaying = false;
-    window.dispatchEvent(new Event(INTRO_DONE_EVENT));
-};
+// The intro is pure CSS keyed off <html data-intro="play">, set before the first
+// paint by the boot script in [locale]/layout.tsx. armIntro() handles skip-on-tap
+// and drops the attribute when it's over. Rules and timings: src/lib/intro.ts.
 
 export const OfferBlock = ({
    onOpenLogin,
@@ -56,19 +45,6 @@ export const OfferBlock = ({
     const { data: session, update } = useSession();
     const { state, setState } = useAppContext();
     const t = useTranslations("ui");
-    const [skipIntro] = useState(() => {
-        // SSR must be deterministic and match a fresh client load (intro plays).
-        // Never read/mutate the module flag on the server — it persists across
-        // requests and would desync server vs. client HTML (hydration mismatch).
-        if (typeof window === "undefined") return false;
-        const skip = hasPlayedIntro;
-        hasPlayedIntro = true;
-        // Tell the cookie banner an intro is animating so it waits until it ends
-        // (see CookieBanner). Runs in render, before the banner's mount effect.
-        if (!skip) (window as WindowWithIntro).__theveilIntroPlaying = true;
-        return skip;
-    });
-    const [isLoaded, setIsLoaded] = useState(skipIntro);
     const [isDeckShaking, setIsDeckShaking] = useState(false);
     const [planId, setPlanId] = useState<string | null>(null);
     const [isDeckRevealed, setIsDeckRevealed] = useState(false);
@@ -82,7 +58,7 @@ export const OfferBlock = ({
     });
 
     useEffect(() => {
-        setIsLoaded(true);
+        armIntro();
     }, []);
 
     // Arriving from the reader modal's Summon (on another page): reveal the deck,
@@ -186,141 +162,123 @@ export const OfferBlock = ({
     };
 
     return (
-        <section className={`offer-block${isLoaded ? " loaded" : ""}${skipIntro ? " skip-intro" : ""}`}>
-            {!isLoaded
-                ? <Loader />
-                : (
-                    <>
-                        <SmokeAnimation/>
-                        <h1 className="offer-block__title title title--primary">
-                            <span>{t("discover")}</span>
-                            <span>{t("your")}</span>
-                            <span>{t("fate")}</span>
-                        </h1>
-                        <div className="offer-block__screen offer-block__screen--moon">
-                            <div className="moon"></div>
+        <section className="offer-block">
+            <SmokeAnimation/>
+            <h1 className="offer-block__title title title--primary">
+                <span>{t("discover")}</span>
+                <span>{t("your")}</span>
+                <span>{t("fate")}</span>
+            </h1>
+            <div className="offer-block__screen offer-block__screen--cards">
+                <div className="offer-block__screen-bg">
+                    <div className="offer-block__screen-bg-inner-wrap">
+                        <Medallion1/>
+                        <Medallion2/>
+                    </div>
+                    <div className="offer-block__screen-bg-inner-wrap">
+                        <Medallion3/>
+                        <Medallion4/>
+                    </div>
+                    <div className="offer-block__screen-bg-inner-wrap">
+                        <Medallion5/>
+                        <Medallion6/>
+                    </div>
+                </div>
+                <div className={`inner-wrap inner-wrap--reader${isDeckRevealed ? " inner-wrap--hidden" : ""}`}>
+                    <div className="offer-block__reader"
+                         style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
+                    >
+                        <div className="offer-block__reader-portrait" aria-hidden="true">
+                            <Image
+                                src={READERS[state.selectedReader].avatar}
+                                alt={messages?.readers ? tReader(`${state.selectedReader}.displayName`) : "Tarot reader portrait"}
+                                width={100}
+                                height={100}
+                                className="offer-block__reader-image"
+                            />
                         </div>
-                        <div
-                            className="offer-block__screen offer-block__screen--cards"
-                            onAnimationStart={(e) => {
-                                // Fires when the cards/CTA screen begins animating in (after its
-                                // 8s delay). Reveal the banner now so consent is up as soon as the
-                                // interactive content appears, not only after the full intro ends.
-                                if (e.animationName === "offerBlockCardBlockAnimation") finishIntro();
-                            }}
-                        >
-                            <div className="offer-block__screen-bg">
-                                <div className="offer-block__screen-bg-inner-wrap">
-                                    <Medallion1/>
-                                    <Medallion2/>
-                                </div>
-                                <div className="offer-block__screen-bg-inner-wrap">
-                                    <Medallion3/>
-                                    <Medallion4/>
-                                </div>
-                                <div className="offer-block__screen-bg-inner-wrap">
-                                    <Medallion5/>
-                                    <Medallion6/>
-                                </div>
-                            </div>
-                            <div className={`inner-wrap inner-wrap--reader${isDeckRevealed ? " inner-wrap--hidden" : ""}`}>
-                                <div className="offer-block__reader"
-                                     style={{ "--reader-accent": READERS[state.selectedReader].aura } as React.CSSProperties}
-                                >
-                                    <div className="offer-block__reader-portrait" aria-hidden="true">
-                                        <Image
-                                            src={READERS[state.selectedReader].avatar}
-                                            alt={messages?.readers ? tReader(`${state.selectedReader}.displayName`) : "Tarot reader portrait"}
-                                            width={100}
-                                            height={100}
-                                            className="offer-block__reader-image"
-                                        />
-                                    </div>
-                                    <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
-                                    <h2 className="offer-block__reader-name">
-                                        {messages?.readers
-                                            ? tReader(`${state.selectedReader}.displayName`)
-                                            : "Madame Vespera"}
-                                    </h2>
-                                    <p className="offer-block__reader-bio">
-                                        {messages?.readers
-                                            ? tReader(`${state.selectedReader}.tagline`)
-                                            : ""}
-                                    </p>
-                                    <div className="offer-block__reader-actions">
-                                        <MysticButton
-                                            type="button"
-                                            onClick={handleSummon}
-                                        >
-                                            {t("summonReader", {
-                                                name: messages?.readers
-                                                    ? tReader(`${state.selectedReader}.displayName`)
-                                                    : "Madame Vespera"
-                                            })}
-                                        </MysticButton>
-                                        {messages?.readers && (
-                                            <button
-                                                type="button"
-                                                className="offer-block__change-btn"
-                                                onClick={() => {
-                                                    if (!session) {
-                                                        onOpenLogin();
-                                                        return;
-                                                    }
-                                                    setIsReaderModalOpen(true);
-                                                }}
-                                            >
-                                                {t("changeYourReader")}
-                                            </button>
-                                        )}
-                                        {/* The way into the game sits in the reader block's own
-                                            flow, so it can never land on top of these buttons. */}
-                                        <GameEntrance />
-                                        <HomeAboutToggle />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={`inner-wrap inner-wrap--deck${isDeckRevealed ? " inner-wrap--visible" : ""}`}>
-                                <div
-                                    className="center"
-                                    onClick={() => {
-                                        handleClick();
-                                    }}
-                                >
-                                    <AnimatedCard
-                                        frontUrl="/decor-img/card.webp"
-                                        backUrl="/decor-img/card1.webp"
-                                        isDeckShaking={isDeckShaking}
-                                        isGlowing={!isDeckShaking && !state.isCardsModalOpen}
-                                        animation="cardTwistAnimation 3s infinite"
-                                        interactive={false}
-                                    />
-                                    <div className="hand"><Hand/></div>
-                                </div>
-                            </div>
-                        </div>
-                        {messages?.readers && (
-                            <Modal
-                                title={t("chooseYourReader")}
-                                isOpen={isReaderModalOpen}
-                                onClose={() => setIsReaderModalOpen(false)}
-                                wide
+                        <p className="offer-block__reader-label">{t("yourReaderIs")}</p>
+                        <h2 className="offer-block__reader-name">
+                            {messages?.readers
+                                ? tReader(`${state.selectedReader}.displayName`)
+                                : "Madame Vespera"}
+                        </h2>
+                        <p className="offer-block__reader-bio">
+                            {messages?.readers
+                                ? tReader(`${state.selectedReader}.tagline`)
+                                : ""}
+                        </p>
+                        <div className="offer-block__reader-actions">
+                            <MysticButton
+                                type="button"
+                                onClick={handleSummon}
                             >
-                                <ReaderSelection
-                                    onSelect={handleReaderSelect}
-                                    onChoose={handleReaderChoose}
-                                    currentReader={state.selectedReader}
-                                    isSubscriber={isSubscriber}
-                                    onOpenSubscription={() => {
-                                        setIsReaderModalOpen(false);
-                                        onOpenSubscription();
+                                {t("summonReader", {
+                                    name: messages?.readers
+                                        ? tReader(`${state.selectedReader}.displayName`)
+                                        : "Madame Vespera"
+                                })}
+                            </MysticButton>
+                            {messages?.readers && (
+                                <button
+                                    type="button"
+                                    className="offer-block__change-btn"
+                                    onClick={() => {
+                                        if (!session) {
+                                            onOpenLogin();
+                                            return;
+                                        }
+                                        setIsReaderModalOpen(true);
                                     }}
-                                />
-                            </Modal>
-                        )}
-                    </>
-                )
-            }
+                                >
+                                    {t("changeYourReader")}
+                                </button>
+                            )}
+                            {/* The way into the game sits in the reader block's own
+                                flow, so it can never land on top of these buttons. */}
+                            <GameEntrance />
+                            <HomeAboutToggle />
+                        </div>
+                    </div>
+                </div>
+                <div className={`inner-wrap inner-wrap--deck${isDeckRevealed ? " inner-wrap--visible" : ""}`}>
+                    <div
+                        className="center"
+                        onClick={() => {
+                            handleClick();
+                        }}
+                    >
+                        <AnimatedCard
+                            frontUrl="/decor-img/card.webp"
+                            backUrl="/decor-img/card1.webp"
+                            isDeckShaking={isDeckShaking}
+                            isGlowing={!isDeckShaking && !state.isCardsModalOpen}
+                            animation="cardTwistAnimation 3s infinite"
+                            interactive={false}
+                        />
+                        <div className="hand"><Hand/></div>
+                    </div>
+                </div>
+            </div>
+            {messages?.readers && (
+                <Modal
+                    title={t("chooseYourReader")}
+                    isOpen={isReaderModalOpen}
+                    onClose={() => setIsReaderModalOpen(false)}
+                    wide
+                >
+                    <ReaderSelection
+                        onSelect={handleReaderSelect}
+                        onChoose={handleReaderChoose}
+                        currentReader={state.selectedReader}
+                        isSubscriber={isSubscriber}
+                        onOpenSubscription={() => {
+                            setIsReaderModalOpen(false);
+                            onOpenSubscription();
+                        }}
+                    />
+                </Modal>
+            )}
         </section>
     );
 };

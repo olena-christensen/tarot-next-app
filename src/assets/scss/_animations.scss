@@ -48,67 +48,47 @@
   }
 }
 
-@keyframes offerBlockTitleAnimation {
+// Home page intro (see _offer-block.scss and src/lib/intro.ts). Each one ends on
+// the element's normal style.
+@keyframes introFade {
   from {
-    top: 0;
-    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+}
+
+@keyframes introDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes introTitle {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+    letter-spacing: 0.12em;
+    filter: blur(4px);
   }
   to {
-    top: 120px;
+    opacity: 1;
     transform: translate(-50%, 0);
+    letter-spacing: normal;
+    filter: none;
   }
 }
 
-@keyframes offerBlockTitleAnimationMobile {
+@keyframes introBloom {
   from {
-    top: 0;
-    transform: translate(-50%, -100%);
-  }
-  to {
-    top: 15%; // sit higher on mobile — tighter gap to the header
-    transform: translate(-50%, 0);
+    opacity: 0;
+    transform: scale(1.04);
   }
 }
 
-@keyframes moonAnimation {
-  30% {
-    top: 32.5%;
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-
-  70% {
-    top: 32.5%;
-    opacity: 0.8;
-    transform: translate(-50%, 0);
-  }
-  100% {
-    top: -20px;
-    transform: translate(-50%, -100%);
-  }
-}
-
-@keyframes moonAnimationMobile {
-  30% {
-    top: 50%;
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-
-  70% {
-    top: 50%;
-    opacity: 0.8;
-    transform: translate(-50%, -50%);
-  }
-  100% {
-    top: -20px;
-    transform: translate(-50%, -100%);
-  }
-}
-
-@keyframes offerBlockCardBlockAnimation {
-  100% {
-    opacity: 1;
+@keyframes introRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
 }
 
