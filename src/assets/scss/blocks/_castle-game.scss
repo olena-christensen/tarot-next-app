@@ -152,6 +152,62 @@
     }
   }
 
+  // Table spots: flat shapes on the table top (Lena, 2026-10-14).
+  &__spots {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  &__spot {
+    pointer-events: visiblePainted;
+    cursor: help;
+    outline: none;
+
+    polygon {
+      fill: rgba(250, 225, 163, 0.001); // invisible, still catches the pointer
+      stroke: transparent;
+      stroke-width: 2px;
+      vector-effect: non-scaling-stroke;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+
+    &--on polygon,
+    &:focus-visible polygon {
+      fill: rgba(250, 225, 163, 0.1);
+      stroke: rgba(250, 225, 163, 0.8);
+      stroke-dasharray: 6 5;
+    }
+
+    @media (hover: hover) {
+      &:hover polygon {
+        fill: rgba(250, 225, 163, 0.1);
+        stroke: rgba(250, 225, 163, 0.8);
+        stroke-dasharray: 6 5;
+      }
+    }
+
+    // choosing where an item goes: every possible spot glows on the table
+    &--ring {
+      cursor: pointer;
+      filter: drop-shadow(0 0 6px rgba(255, 233, 168, 0.6));
+      animation: castleRing 1.2s ease-in-out infinite alternate;
+
+      polygon {
+        fill: rgba(255, 233, 168, 0.12);
+        stroke: rgba(255, 233, 168, 0.95);
+        stroke-width: 2.5px;
+        stroke-dasharray: 7 5;
+      }
+    }
+
+    &--busy polygon {
+      stroke: rgba(255, 233, 168, 0.55);
+      stroke-dasharray: none;
+    }
+  }
+
   &__banner {
     position: absolute;
     left: 10px;
@@ -1223,7 +1279,6 @@ html.castle-locked body {
     background: rgba(250, 225, 163, 0.45);
   }
 
-  &__a,
   &__production {
     font-size: 0.7rem;
     letter-spacing: 0.45em;
@@ -1345,6 +1400,44 @@ html.castle-locked body {
 }
 
 // "Clear the hall" (Lena, 2026-10-14)
+// Emporium and vault: head, tabs and the close button stay in view; only the
+// list of items scrolls (Lena, 2026-10-14).
+.modal .modal__content.modal__content--pinned {
+  overflow: hidden;
+
+  // On a computer the window keeps one height on every tab instead of growing
+  // and shrinking with the list: a gap above, a breather below (Lena, 2026-10-14).
+  @include respond-above(md) {
+    height: calc(100dvh - 7rem);
+    max-height: none;
+  }
+
+  > .castle-dialog {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .castle-dialog__head,
+  .castle-dialog__tabs {
+    flex: none;
+  }
+
+  .castle-dialog__head {
+    flex-wrap: wrap;
+  }
+
+  .castle-dialog__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    align-content: start; // a short list keeps its cards' own height
+    // room for card borders and the last row
+    padding: 2px 2px 8px;
+  }
+}
+
 .castle-dialog__clear {
   margin-left: auto;
   padding: 8px 14px;
@@ -1358,6 +1451,16 @@ html.castle-locked body {
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
+
+  // a second button in the same head sits next to the first one
+  &--next {
+    margin-left: 0;
+  }
+
+  // the number of items in the vault, as on the vault button below the hall
+  .castle__count {
+    margin-left: 8px;
+  }
 }
 
 .castle-dialog__text {

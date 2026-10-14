@@ -125,7 +125,6 @@ export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onSha
           )}
           <div className="castle-party__credit">
             <span className="castle-party__rule" aria-hidden="true" />
-            <span className="castle-party__a">A</span>
             <span className="castle-party__studio">Nothing Weird</span>
             <span className="castle-party__production">Agency&nbsp;&nbsp;Production</span>
             <span className="castle-party__more">{t("moreGames")}</span>

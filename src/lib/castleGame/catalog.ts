@@ -132,10 +132,10 @@ export function partyNeeds(items: OwnedItem[]): PartyNeed[] {
 
 /**
  * The guests' rating in bats (Lena, 2026-10-13): 1 bat for a ready hall, then
- * one more at 7, 9, 11 and 13 filled spots. A phone shows 13 spots, so five
- * bats can be reached there too.
+ * one more at 6, 8, 10 and 11 filled spots (lowered 2026-10-14). A phone
+ * shows 12 spots, so five bats can be reached there too.
  */
-export const BAT_SPOTS = [7, 9, 11, 13];
+export const BAT_SPOTS = [6, 8, 10, 11];
 export const MAX_BATS = 1 + BAT_SPOTS.length;
 /** Moonstones for each bat beyond the player's best, paid once per bat. */
 export const STONES_PER_BAT = 2;

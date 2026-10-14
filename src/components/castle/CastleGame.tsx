@@ -26,6 +26,7 @@ import {
 import type { CastleState } from "@/lib/castleGame/server";
 import ART from "@/lib/castleGame/places.generated.json";
 import PHONE_ART from "@/lib/castleGame/places.phone.generated.json";
+import TABLE_SPOTS from "@/lib/castleGame/table-spots.generated.json";
 import MoonstoneIcon from "@/assets/svg/moonstone.svg";
 import { CastleWheel } from "./CastleWheel";
 import { CastleParty, type PartyOutcome } from "./CastleParty";
@@ -51,9 +52,11 @@ type Layout = {
   placeBox: Partial<Record<PlaceId, Box>>;
   /** Where its room, patches and lights live. */
   art: string;
+  /** Spots on the table, drawn flat on the table top in perspective (scripts/build-table-spots.py). */
+  spots: Partial<Record<PlaceId, number[][][]>>;
 };
 
-function layout(data: typeof ART | typeof PHONE_ART, art: string): Layout {
+function layout(data: typeof ART | typeof PHONE_ART, art: string, spots: Layout["spots"]): Layout {
   const patches = data.places as unknown as Record<PlaceId, Record<string, Patch>>;
   const placeBox = Object.fromEntries(
     Object.entries(patches).map(([place, items]) => {
@@ -65,11 +68,11 @@ function layout(data: typeof ART | typeof PHONE_ART, art: string): Layout {
       return [place, { x: x0, y: y0, w: x1 - x0, h: y1 - y0 }];
     }),
   );
-  return { world: { w: data.width, h: data.height }, order: data.order as PlaceId[], patches, placeBox, art };
+  return { world: { w: data.width, h: data.height }, order: data.order as PlaceId[], patches, placeBox, art, spots };
 }
 
-const WIDE_ROOM = layout(ART, "/game-art/castle");
-const TALL_ROOM = layout(PHONE_ART, "/game-art/castle/phone");
+const WIDE_ROOM = layout(ART, "/game-art/castle", TABLE_SPOTS.wide as Layout["spots"]);
+const TALL_ROOM = layout(PHONE_ART, "/game-art/castle/phone", TABLE_SPOTS.phone as Layout["spots"]);
 const ICON = (id: string) => `/game-art/castle/icons/${id}.webp`;
 /** Phones (portrait, or landscape with little height): the hall takes the whole screen, no site header (Lena, 2026-10-09). */
 const FULL_SCREEN_QUERY = "(max-width: 48em), (max-height: 500px)";
@@ -279,7 +282,7 @@ export const CastleGame = () => {
     if (!hint) return;
     const away = (e: PointerEvent) => {
       const el = e.target as Element | null;
-      if (!el?.closest(".castle__hint, .castle__empty")) setHint(null);
+      if (!el?.closest(".castle__hint, .castle__empty, .castle__spot")) setHint(null);
     };
     document.addEventListener("pointerdown", away);
     return () => document.removeEventListener("pointerdown", away);
@@ -349,9 +352,8 @@ export const CastleGame = () => {
       setScale(s);
       setView(
         immersiveRef.current
-          ? // The upright room keeps its right side (gramophone, fire) in view and
-            // gives up a little of the window on the left (Lena, 2026-10-14).
-            { x: (w - world.w * s) * (world.h > world.w ? 0.8 : 0.5), y: (h - world.h * s) / 2, h }
+          ? // The upright room is centred on its fireplace (Lena, 2026-10-14).
+            { x: (w - world.w * s) / 2, y: (h - world.h * s) / 2, h }
           : { x: 0, y: 0, h: world.h * s },
       );
       setScroll({ left: stage.scrollLeft, width: w });
@@ -771,7 +773,7 @@ export const CastleGame = () => {
                 })}
               {/* Empty spots: a hint of what would fit (Lena, 2026-10-13). */}
               {!placing &&
-                emptySpots.map((place) => {
+                emptySpots.filter((place) => !room.spots[place]).map((place) => {
                   const b = PLACE_BOX[place]!;
                   return (
                     <button
@@ -795,7 +797,7 @@ export const CastleGame = () => {
                   );
                 })}
               {placing &&
-                ringPlaces.map((place) => {
+                ringPlaces.filter((place) => !room.spots[place]).map((place) => {
                   const b = PLACE_BOX[place]!;
                   return (
                     <button
@@ -808,6 +810,41 @@ export const CastleGame = () => {
                     />
                   );
                 })}
+              {/* Table spots lie flat on the table top, like the plates (Lena, 2026-10-14). */}
+              <svg className="castle__spots" width={WORLD.w} height={WORLD.h} viewBox={`0 0 ${WORLD.w} ${WORLD.h}`} aria-hidden={false}>
+                {(placing ? ringPlaces : emptySpots).map((place) => {
+                  const shapes = room.spots[place];
+                  if (!shapes) return null;
+                  const ring = Boolean(placing);
+                  const choose = () => {
+                    if (ring) return void putAt(place);
+                    keepHint();
+                    setMenu(null);
+                    setHint(place);
+                  };
+                  return (
+                    <g
+                      key={`s-${place}`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={ring ? place : t(`hints.${SPOT_HINT[place].hint}`)}
+                      className={`castle__spot${ring ? " castle__spot--ring" : ""}${ring && placedAt.has(place) ? " castle__spot--busy" : ""}${!ring && hint === place ? " castle__spot--on" : ""}`}
+                      onClick={choose}
+                      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && choose()}
+                      onPointerEnter={(e) => {
+                        if (ring || e.pointerType !== "mouse") return;
+                        keepHint();
+                        setHint(place);
+                      }}
+                      onPointerLeave={(e) => !ring && e.pointerType === "mouse" && dropHint()}
+                    >
+                      {shapes.map((pts, i) => (
+                        <polygon key={i} points={pts.map((p) => p.join(",")).join(" ")} />
+                      ))}
+                    </g>
+                  );
+                })}
+              </svg>
             </div>
           </div>
         </div>
@@ -995,7 +1032,7 @@ export const CastleGame = () => {
       )}
 
       {/* ---------- catalog ---------- */}
-      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide>
+      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide pinned>
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("catalog")}</h2>
@@ -1003,6 +1040,10 @@ export const CastleGame = () => {
               <MoonstoneIcon aria-hidden="true" />
               {state?.balance ?? 0}
             </span>
+            <button type="button" className="castle-dialog__clear" onClick={() => (setCatalogOpen(false), setStorageOpen(true))}>
+              {t("toVault")}
+              {items.length > 0 && <span className="castle__count">{items.length}</span>}
+            </button>
           </div>
           <div className="castle-dialog__tabs">
             {TABS.map((id) => (
@@ -1060,12 +1101,15 @@ export const CastleGame = () => {
       </Modal>
 
       {/* ---------- my items ---------- */}
-      <Modal isOpen={storageOpen} onClose={() => setStorageOpen(false)} wide>
+      <Modal isOpen={storageOpen} onClose={() => setStorageOpen(false)} wide pinned>
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("myItems")}</h2>
+            <button type="button" className="castle-dialog__clear" onClick={() => (setStorageOpen(false), setCatalogOpen(true))}>
+              {t("toEmporium")}
+            </button>
             {items.some((i) => i.place) && (
-              <button type="button" className="castle-dialog__clear" onClick={() => setClearAsk(true)}>
+              <button type="button" className="castle-dialog__clear castle-dialog__clear--next" onClick={() => setClearAsk(true)}>
                 {t("clearHall")}
               </button>
             )}

@@ -18,9 +18,14 @@ type ModalProps = {
    * inside the dialog (used by the first-sign-in consent window).
    */
   dismissible?: boolean;
+  /**
+   * The dialog itself does not scroll: its head and the close button stay in
+   * view and the dialog scrolls its own list (castle emporium and vault).
+   */
+  pinned?: boolean;
 };
 
-export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissible = true }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissible = true, pinned }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -43,7 +48,7 @@ export const Modal = ({ isOpen, onClose, title, children, wide, narrow, dismissi
   return createPortal(
     <div className="modal" onClick={dismissible ? onClose : undefined}>
       <div
-        className={`modal__content${wide ? " modal__content--wide" : ""}${narrow ? " modal__content--narrow" : ""}`}
+        className={`modal__content${wide ? " modal__content--wide" : ""}${narrow ? " modal__content--narrow" : ""}${pinned ? " modal__content--pinned" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         {dismissible && (
