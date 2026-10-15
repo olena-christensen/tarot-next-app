@@ -4,6 +4,7 @@ import { recordHeartbeat } from "@/lib/heartbeat";
 import { prisma } from "@/lib/prisma";
 import { chargeByToken, LEDGER_CURRENCY, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
+import { downgradeToFreeOnce, reserveRenewalAttempt, type DowngradeSnapshot } from "@/lib/renewalReserve";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
 import { runCronJob } from "@/lib/cronJob";
 import { withDbWake } from "@/lib/dbWake";
@@ -17,16 +18,14 @@ import { withDbWake } from "@/lib/dbWake";
 export const dynamic = "force-dynamic";
 
 async function downgradeToFree(
-  subId: string,
-  userId: string,
+  sub: DowngradeSnapshot & { userId: string },
   reason: "canceled" | "payment_failed" | "no_token"
-): Promise<void> {
-  await prisma.subscription.update({
-    where: { id: subId },
-    data: { planId: "FREE", nextChargeAt: null, renewalAttempts: 0, paymentStatus: null, canceledAt: null },
-  });
+): Promise<boolean> {
+  // Conditional: a second run of this job (or a payment that just extended the
+  // plan) finds nothing to change, and then sends no email.
+  if (!(await downgradeToFreeOnce(sub))) return false;
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: sub.userId },
     // Their language, not the server's — this is the last thing they hear from
     // the app before losing access.
     select: { email: true, preferredLocale: true },
@@ -38,6 +37,7 @@ async function downgradeToFree(
       reason,
     });
   }
+  return true;
 }
 
 export async function GET(req: Request) {
@@ -86,8 +86,7 @@ async function renewDueSubscriptions() {
 
     if (action.type === "downgrade") {
       try {
-        await downgradeToFree(sub.id, sub.userId, action.reason);
-        downgraded++;
+        if (await downgradeToFree(sub, action.reason)) downgraded++;
       } catch (err) {
         console.error(`[cron/renew] downgrade failed for sub ${sub.id}`, err);
         errors++;
@@ -100,20 +99,14 @@ async function renewDueSubscriptions() {
     const token = sub.monoCardToken;
     if (!token) continue; // defensive; decideRenewalAction already guarantees it
 
-    // Reserve the attempt FIRST, using the same bookkeeping as create-invoice:
-    // set pendingPlanId, reset activatedInvoiceId, mark paymentStatus "created"
-    // (so a concurrent run sees an in-flight charge and skips), bump the counter.
+    // Reserve the attempt FIRST. Conditional: if another run already reserved
+    // this subscription since we read it, nothing changes and we must not charge.
     try {
-      await prisma.subscription.update({
-        where: { id: sub.id },
-        data: {
-          pendingPlanId: plan,
-          activatedInvoiceId: null,
-          paymentStatus: "created",
-          renewalAttempts: { increment: 1 },
-          lastRenewalAttemptAt: now,
-        },
-      });
+      const reserved = await reserveRenewalAttempt(sub, plan, now);
+      if (!reserved) {
+        console.info(`[cron/renew] sub ${sub.id} already reserved by another run — skipped`);
+        continue;
+      }
     } catch (err) {
       console.error(`[cron/renew] failed to reserve attempt for sub ${sub.id}`, err);
       errors++;
@@ -141,26 +134,34 @@ async function renewDueSubscriptions() {
       continue;
     }
 
-    // Store the invoice id so the webhook can correlate the callback, and write
-    // the ledger row (best-effort). The webhook is the source of truth for the
-    // outcome (period extension, receipt/dunning email).
-    await prisma.subscription
-      .update({ where: { id: sub.id }, data: { monoInvoiceId: invoiceId } })
-      .catch((e) => console.error(`[cron/renew] failed to store invoiceId for sub ${sub.id}`, e));
-
-    await prisma.payment
-      .create({
-        data: {
-          userId: sub.userId,
-          monoInvoiceId: invoiceId,
-          reference,
-          productType: plan,
-          amount: PLAN_PRICES[plan],
-          currency: LEDGER_CURRENCY,
-          status: "created",
-        },
-      })
-      .catch((e) => console.error(`[cron/renew] failed to write ledger row for sub ${sub.id}`, e));
+    // Record the invoice: the Payment row is what the webhook grants from, so it
+    // is required. mono's callback can arrive before this write — the webhook then
+    // finds no row, answers 500 and mono retries once it exists. If the write
+    // fails outright the webhook keeps failing and alerting, which is the signal
+    // that a charged renewal needs a hand.
+    try {
+      await prisma.$transaction([
+        prisma.subscription.update({
+          where: { id: sub.id },
+          data: { monoInvoiceId: invoiceId },
+        }),
+        prisma.payment.create({
+          data: {
+            userId: sub.userId,
+            monoInvoiceId: invoiceId,
+            reference,
+            productType: plan,
+            amount: PLAN_PRICES[plan],
+            currency: LEDGER_CURRENCY,
+            status: "created",
+          },
+        }),
+      ]);
+    } catch (err) {
+      console.error(`[cron/renew] failed to record invoice ${invoiceId} for sub ${sub.id}`, err);
+      errors++;
+      continue;
+    }
 
     charged++;
   }

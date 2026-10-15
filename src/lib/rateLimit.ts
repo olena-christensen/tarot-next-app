@@ -100,6 +100,17 @@ export function decideRateLimit(
 /**
  * Record an attempt against `key` and say whether it may proceed.
  *
+ * ONE atomic statement: insert-or-update with RETURNING. The earlier version
+ * read the row, decided in JavaScript, then wrote — so requests sent at the same
+ * moment all read the same count and all got through (code review 2026-10-15,
+ * item 9). Postgres now locks the row for the update, so concurrent attempts are
+ * counted one after another.
+ *
+ * The CASE branches are `decideRateLimit` above, written in SQL, in the same
+ * order: still blocked → refuse without counting; window lapsed → fresh window;
+ * otherwise count up and block past the limit. Keep the two in step — the pure
+ * function is where the policy is tested.
+ *
  * Fails OPEN: if the database is unreachable this returns "not blocked" rather
  * than locking every user out of the app. A throttle that becomes an outage is
  * worse than the attack it prevents.
@@ -109,22 +120,37 @@ export async function consumeRateLimit(
   rule: RateLimitRule,
   now: Date = new Date()
 ): Promise<{ blocked: boolean; retryAfterSeconds: number }> {
+  const windowEnd = new Date(now.getTime() + rule.windowMs);
+  const blockEnd = new Date(now.getTime() + rule.blockMs);
   try {
-    const existing = await prisma.rateLimit.findUnique({ where: { key } });
-    const decision = decideRateLimit(existing, rule, now);
-
-    if (decision.next !== existing) {
-      await prisma.rateLimit.upsert({
-        where: { key },
-        create: { key, ...decision.next },
-        update: decision.next,
-      });
-    }
-
-    return {
-      blocked: decision.blocked,
-      retryAfterSeconds: decision.retryAfterSeconds,
-    };
+    const rows = await prisma.$queryRaw<{ blockedUntil: Date | null }[]>`
+      INSERT INTO "RateLimit" AS r ("key", "count", "windowEndsAt", "blockedUntil", "updatedAt")
+      VALUES (${key}, 1, ${windowEnd}, NULL, ${now})
+      ON CONFLICT ("key") DO UPDATE SET
+        "count" = CASE
+          WHEN r."blockedUntil" > ${now} THEN r."count"
+          WHEN r."windowEndsAt" <= ${now} THEN 1
+          ELSE r."count" + 1
+        END,
+        "windowEndsAt" = CASE
+          WHEN r."blockedUntil" > ${now} THEN r."windowEndsAt"
+          WHEN r."windowEndsAt" <= ${now} THEN ${windowEnd}
+          ELSE r."windowEndsAt"
+        END,
+        "blockedUntil" = CASE
+          WHEN r."blockedUntil" > ${now} THEN r."blockedUntil"
+          WHEN r."windowEndsAt" <= ${now} THEN NULL
+          WHEN r."count" + 1 > ${rule.limit} THEN ${blockEnd}
+          ELSE NULL
+        END,
+        "updatedAt" = ${now}
+      RETURNING "blockedUntil"
+    `;
+    const blockedUntil = rows[0]?.blockedUntil ?? null;
+    const remainingMs = blockedUntil ? blockedUntil.getTime() - now.getTime() : 0;
+    return remainingMs > 0
+      ? { blocked: true, retryAfterSeconds: Math.ceil(remainingMs / 1000) }
+      : { blocked: false, retryAfterSeconds: 0 };
   } catch (err) {
     console.error("[rateLimit] check failed, allowing", { key, err });
     return { blocked: false, retryAfterSeconds: 0 };
@@ -188,6 +214,28 @@ export const LOGIN_BY_IP: RateLimitRule = {
 };
 
 export const REGISTER_BY_IP: RateLimitRule = {
+  limit: 5,
+  windowMs: 60 * MINUTE,
+  blockMs: 60 * MINUTE,
+};
+
+/**
+ * Password-reset requests per sender. Without it one sender could make us mail
+ * any number of different inboxes, spending the mail quota and the domain's
+ * reputation; the one-link-a-minute rule only protects each single account.
+ */
+export const FORGOT_BY_IP: RateLimitRule = {
+  limit: 10,
+  windowMs: 60 * MINUTE,
+  blockMs: 60 * MINUTE,
+};
+
+/**
+ * Password-reset requests per address, from anywhere. Stops one inbox being
+ * flooded from many senders. Counted whether or not an account exists, so being
+ * limited reveals nothing about the address.
+ */
+export const FORGOT_BY_EMAIL: RateLimitRule = {
   limit: 5,
   windowMs: 60 * MINUTE,
   blockMs: 60 * MINUTE,

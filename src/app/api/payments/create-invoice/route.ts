@@ -140,57 +140,47 @@ export async function POST(request: Request) {
     );
   }
 
-  // Record the pending invoice. The plan/tier is NOT activated here — we only
-  // record what the user is *trying* to buy via pendingPlanId. The webhook
-  // reads pendingPlanId and, on confirmed "success", upgrades the tier or
-  // grants a reading credit. Never touch planId or readingCredits before payment.
+  // Record the invoice BEFORE the user can pay it. Nothing is activated here.
+  // The Payment row is what the webhook grants from (productType, userId), so it
+  // is required, not bookkeeping: if it can't be written the user never gets the
+  // payment page, and the unpaid invoice simply expires at mono. The
+  // subscription's slot (pendingPlanId / monoInvoiceId / paymentStatus) only
+  // drives the "waiting for payment" screens and the renewal state machine.
   try {
-    await prisma.subscription.upsert({
-      where: { userId },
-      create: {
-        userId,
-        pendingPlanId: plan,
-        monoInvoiceId: invoice.invoiceId,
-        paymentStatus: "created",
-      },
-      update: {
-        pendingPlanId: plan,
-        monoInvoiceId: invoice.invoiceId,
-        paymentStatus: "created",
-        // Reset so the webhook's atomic activatedInvoiceId === null guard is
-        // correct for repeat purchases (the row persists per user). The new
-        // monoInvoiceId also ensures stale deliveries for the prior invoice
-        // no longer match.
-        activatedInvoiceId: null,
-      },
-    });
+    await prisma.$transaction([
+      prisma.subscription.upsert({
+        where: { userId },
+        create: {
+          userId,
+          pendingPlanId: plan,
+          monoInvoiceId: invoice.invoiceId,
+          paymentStatus: "created",
+        },
+        update: {
+          pendingPlanId: plan,
+          monoInvoiceId: invoice.invoiceId,
+          paymentStatus: "created",
+          activatedInvoiceId: null,
+        },
+      }),
+      prisma.payment.create({
+        data: {
+          userId,
+          monoInvoiceId: invoice.invoiceId,
+          reference,
+          productType: plan,
+          amount,
+          currency: LEDGER_CURRENCY,
+          status: "created",
+        },
+      }),
+    ]);
   } catch (err) {
-    console.error("[create-invoice] failed to persist subscription", err);
+    console.error("[create-invoice] failed to record invoice", err);
     return NextResponse.json(
       { error: "Failed to record invoice" },
       { status: 500 }
     );
-  }
-
-  // Append the payment ledger row. Additive bookkeeping — a failure here must
-  // not fail the request: the invoice already exists at Mono and the webhook
-  // (which upserts via updateMany) is the source of truth for activation.
-  try {
-    await prisma.payment.create({
-      data: {
-        userId,
-        monoInvoiceId: invoice.invoiceId,
-        reference,
-        productType: plan,
-        amount,
-        currency: LEDGER_CURRENCY,
-        status: "created",
-      },
-    });
-  } catch (err) {
-    // invoiceId is unique per Mono invoice, so a P2002 collision is unexpected;
-    // log and continue either way — the ledger is best-effort.
-    console.error("[create-invoice] failed to write payment ledger row", err);
   }
 
   return NextResponse.json({ pageUrl: invoice.pageUrl });

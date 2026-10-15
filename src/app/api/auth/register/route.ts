@@ -5,6 +5,7 @@ import { clientIp, consumeRateLimit, REGISTER_BY_IP } from "@/lib/rateLimit";
 import { issueVerificationToken } from "@/lib/emailVerification";
 import { sendVerificationEmail } from "@/lib/mailer";
 import { routing } from "@/i18n/routing";
+import { normalizeEmail } from "@/lib/normalizeEmail";
 
 function appOrigin(): string {
   return (process.env.NEXT_PUBLIC_APP_URL ?? "https://theveil.app").replace(
@@ -32,8 +33,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, email, password, acceptTerms, acceptAge, locale } =
+    const { name, email: rawEmail, password, acceptTerms, acceptAge, locale } =
       await request.json();
+    const email = typeof rawEmail === "string" ? normalizeEmail(rawEmail) : "";
 
     if (!email || !password) {
       return NextResponse.json(
