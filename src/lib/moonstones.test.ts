@@ -23,4 +23,11 @@ describe("moonstone packs", () => {
     expect(isMoonstonePack("MONTHLY")).toBe(false);
     expect(isMoonstonePack(undefined)).toBe(false);
   });
+
+  it("does not accept names every object inherits", () => {
+    expect(isMoonstonePack("constructor")).toBe(false);
+    expect(isMoonstonePack("toString")).toBe(false);
+    expect(isMoonstonePack("__proto__")).toBe(false);
+    expect(isMoonstonePack("hasOwnProperty")).toBe(false);
+  });
 });

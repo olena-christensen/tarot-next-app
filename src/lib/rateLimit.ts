@@ -219,6 +219,28 @@ export const REGISTER_BY_IP: RateLimitRule = {
   blockMs: 60 * MINUTE,
 };
 
+/**
+ * Password-reset requests per sender. Without it one sender could make us mail
+ * any number of different inboxes, spending the mail quota and the domain's
+ * reputation; the one-link-a-minute rule only protects each single account.
+ */
+export const FORGOT_BY_IP: RateLimitRule = {
+  limit: 10,
+  windowMs: 60 * MINUTE,
+  blockMs: 60 * MINUTE,
+};
+
+/**
+ * Password-reset requests per address, from anywhere. Stops one inbox being
+ * flooded from many senders. Counted whether or not an account exists, so being
+ * limited reveals nothing about the address.
+ */
+export const FORGOT_BY_EMAIL: RateLimitRule = {
+  limit: 5,
+  windowMs: 60 * MINUTE,
+  blockMs: 60 * MINUTE,
+};
+
 export const CONTACT_BY_IP: RateLimitRule = {
   limit: 5,
   windowMs: 60 * MINUTE,

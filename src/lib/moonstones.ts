@@ -44,7 +44,9 @@ export const MOONSTONE_PACK_ORDER: MoonstonePackId[] = [
 ];
 
 export function isMoonstonePack(value: unknown): value is MoonstonePackId {
-  return typeof value === "string" && value in MOONSTONE_PACKS;
+  // Own keys only: `in` also accepts names every object inherits ("constructor",
+  // "toString"), which then passed as a pack with no price.
+  return typeof value === "string" && Object.hasOwn(MOONSTONE_PACKS, value);
 }
 
 /** Re-exported so the test can assert the literals against the same peg. */

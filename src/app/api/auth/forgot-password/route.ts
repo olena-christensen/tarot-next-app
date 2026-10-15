@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/mailer";
 import { normalizeEmail } from "@/lib/normalizeEmail";
+import { clientIp, consumeRateLimit, FORGOT_BY_EMAIL, FORGOT_BY_IP } from "@/lib/rateLimit";
 import {
   RESET_TOKEN_TTL_MS,
   RESET_THROTTLE_MS,
@@ -35,6 +36,17 @@ export async function POST(request: Request) {
   const userLocale = typeof locale === "string" ? locale : "en";
 
   try {
+    // Before the lookup, and counted for unknown addresses too. A limited
+    // request still answers { ok: true } below — being refused must look the
+    // same as being served.
+    const [byIp, byEmail] = await Promise.all([
+      consumeRateLimit(`forgot:ip:${clientIp(request.headers)}`, FORGOT_BY_IP),
+      consumeRateLimit(`forgot:email:${address}`, FORGOT_BY_EMAIL),
+    ]);
+    if (byIp.blocked || byEmail.blocked) {
+      return NextResponse.json({ ok: true });
+    }
+
     const user = await prisma.user.findUnique({
       where: { email: address },
       select: { id: true, password: true, preferredLocale: true },
