@@ -57,6 +57,7 @@
     "footerLink": "Rüya tabirleri",
     "searchAllLabel": "Kartlarda ve rüyalarda ara",
     "searchAllPlaceholder": "Bir kart ya da rüya ara",
-    "searchNothing": "Bu adla bir şey yok."
+    "searchNothing": "Bu adla bir şey yok.",
+    "browseAll": "Tüm rüya yorumlarına göz at"
   }
 }

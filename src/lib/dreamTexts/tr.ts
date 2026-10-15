@@ -641,4 +641,164 @@ export const DREAM_TEXTS_TR: DreamTexts = {
       "Gelen bir arama haber ya da kendi zihninizden bir mesaj getirebilir. Çalışmayan bir telefon ya da çevrilemeyen numara, birine ulaşma çabasını gösterir. Görmezden geldiğiniz bir telefon, neyi duymaktan kaçındığınızı sorar.",
     ],
   },
+  coffin: {
+    title: "Tabut",
+    short: "Tabut bir sonu anlatır, ölümü değil. Nelerin bittiğini ve kapanmaya hazır olduğunu sorar.",
+    paragraphs: [
+      "Rüyada tabut bir sonu anlatır: yolunu tamamlamış bir dönemi, bir alışkanlığı ya da bir umudu. Gerçek ölümden nadiren söz eder.",
+      "Kapalı bir tabut görmek, bir şeyin bittiğini söyler. Açık ya da boş bir tabut, hâlâ neyi bırakmak istemediğinizi sorar. İçinde olmak, bir durum yüzünden sıkıştığınızı hissettiğinizi ve çıkmak istediğinizi anlatır.",
+    ],
+  },
+  rope: {
+    title: "İp",
+    short: "İp bir bağı, bir can simidini ya da bir sınırı anlatır. Sizi tutması ya da bağlaması anlamını değiştirir.",
+    paragraphs: [
+      "Rüyada ip bir bağı anlatır: bir can simidini, insanlar arasındaki bir bağı ya da sizi geri tutan bir sınırı. Nasıl kullanıldığı hangisi olduğunu söyler.",
+      "İpe tırmanmak, yukarı doğru çalıştığınızı gösterir. İple bağlanmak, kısıtlanmış hissettiğinizi anlatır. Çözemediğiniz bir düğüm, hangi sorunu giderek daha çok sıktığınızı sorar. Size atılan bir ip, yolda olan bir yardımdır.",
+    ],
+  },
+  ladder: {
+    title: "Merdiven",
+    short: "Merdiven bir hedefe doğru istikrarlı ilerlemeyi anlatır. Tırmanışın nasıl hissettirdiği, yolda ne kadar güvende olduğunuzu gösterir.",
+    paragraphs: [
+      "Rüyada merdiven basamak basamak ilerlemeyi anlatır. Hırstan, emekten ve yükselme arzusundan söz eder.",
+      "Rahatça tırmanmak, güvenle yükseldiğinizi söyler. Sallanan ya da eksik bir basamak, ayağınızın nerede emin olmadığını sorar. Aşağı inmek başarısızlık değildir: başladığınız yere daha yakından bakmak anlamına gelebilir.",
+    ],
+  },
+  boat: {
+    title: "Tekne",
+    short: "Tekne duygularınızın içinden nasıl yol aldığınızı anlatır. Sakin bir yolculuk güvendir; çalkantılı su belirsizliktir.",
+    paragraphs: [
+      "Rüyada tekne hayatta ve duygularınızın içinde nasıl yol aldığınızı anlatır. Sizi taşır ama yolculuğun çoğunu su belirler.",
+      "Sakin bir yolculuk, rotanıza güvendiğinizi söyler. Su alan ya da sürüklenen bir tekne, neyi artık yönlendirmediğinizi sorar. Kıyıya varmak, uzun bir dönemin ardından güvenli bir yere ulaşmanın işaretidir.",
+    ],
+  },
+  gift: {
+    title: "Hediye",
+    short: "Hediye size sunulan ya da vermek istediğiniz bir şeyi anlatır. Neyi kabul etmeye hazır olduğunuzu sorar.",
+    paragraphs: [
+      "Rüyada hediye iyiliği, şansı ya da size sunulan bir yeteneği anlatır. Ayrıca almaya kendinize izin verip vermediğinizi sorar.",
+      "Hediye almak, iyi şeylerin yakında olduğunu söyler. Vermek cömertliği ya da teşekkür edilme arzusunu anlatır. Açılmamış bir hediye, hangi fırsatı henüz açmadığınızı sorar.",
+    ],
+  },
+  garden: {
+    title: "Bahçe",
+    short: "Bahçe hayatınızda baktığınız şeyleri anlatır. Gelişen bir bahçe iyi bir işaret; bakımsız olan ise özen ister.",
+    paragraphs: [
+      "Rüyada bahçe büyüttüğünüz ve baktığınız şeyleri anlatır: ilişkileri, planları ve kendi huzurunuzu. Görünümü, ona nasıl baktığınızı yansıtır.",
+      "Yeşil ve çiçek açmış bir bahçe, büyümenin mutlu bir işaretidir. Yabani otlar ve kuru toprak, neyi ihmal ettiğinizi sorar. Ekmek umudu, hasat etmek sabırlı emeğin karşılığını anlatır.",
+    ],
+  },
+  eyes: {
+    title: "Gözler",
+    short: "Gözler içgörüyü ve görülmeyi anlatır. Berrak gözler anlayışı; bulanık ya da acıyan gözler henüz göremediğiniz bir şeyi anlatır.",
+    paragraphs: [
+      "Rüyada gözler içgörüyü, farkındalığı ve görülme duygusunu anlatır. Neye baktığınızı ve neden kaçındığınızı sorar.",
+      "Parlak ve berrak gözler, durumunuzu iyi gördüğünüzü söyler. Bulanık, kapalı ya da acıyan gözler, neye bakmak istemediğinizi sorar. İzlenmek, kendinize dönük bir bilinci ya da fark edilme arzusunu anlatır.",
+    ],
+  },
+  stars: {
+    title: "Yıldızlar",
+    short: "Yıldızlar umudu, yol göstermeyi ve daha büyük bir şeye duyulan arzuyu anlatır. Parlak olanlar iyi bir işarettir.",
+    paragraphs: [
+      "Rüyada yıldızlar umudu, yol göstermeyi ve gündelik kaygıların ötesine bakan yanınızı anlatır. En umut verici işaretlerden biridir.",
+      "Berrak, yıldızlı bir gökyüzü, umutlarınızın erişilebilir olduğunu söyler. Kayan yıldız bir dileği ya da ani bir fırsatı anlatır. Soluk ya da gizli yıldızlar, size yol gösteren şeyi nerede gözden kaçırdığınızı sorar.",
+    ],
+  },
+  rainbow: {
+    title: "Gökkuşağı",
+    short: "Gökkuşağı zorluğun ardından gelen umudu anlatır. Fırtına geçince daha aydınlık günler vaat eder.",
+    paragraphs: [
+      "Rüyada gökkuşağı zorluğun ardından gelen umudu anlatır. Yağmurdan sonra çıkar, bu yüzden zor bir dönemin ardından gelen rahatlamadan söz eder.",
+      "Onu net görmek, daha iyi günlerin ve tutulan sözlerin güzel bir işaretidir. Soluk ya da kırık bir gökkuşağı sabırlı olmanızı ister. Ona doğru yürümek, hâlâ uzak hissettiren bir dileğe uzanmayı anlatır.",
+    ],
+  },
+  desert: {
+    title: "Çöl",
+    short: "Çöl boşluğu ve hayatın kurak bir dönemini anlatır. Neye susadığınızı sorar.",
+    paragraphs: [
+      "Rüyada çöl boşluğu, hayatın kurak bir dönemini ya da bir sınanma zamanını anlatır. Neyin eksik olduğunu sorar.",
+      "Onu tek başına geçmek, yalnız verdiğiniz bir çabayı anlatır. Susuzluk neyi özlediğinizi sorar. Su ya da gölge bulmak, rahatlamanın hissettiğinizden daha yakın olduğunun işaretidir.",
+    ],
+  },
+  cave: {
+    title: "Mağara",
+    short: "Mağara kendinizin gizli yanlarını anlatır. Bir sığınak ya da girmekten korktuğunuz bir yer olabilir.",
+    paragraphs: [
+      "Rüyada mağara kendinizin gizli yanlarını anlatır: nadiren uğradığınız anıları, korkuları ve güçleri. Hem bir sığınak hem de bir gizemdir.",
+      "İçine sakince girmek, içe bakmaya hazır olduğunuzu söyler. Korkutucu karanlık bir mağara, neyle yüzleşmekten kaçındığınızı sorar. Öbür uçta ışık bulmak, anlayışın erişilebilir olduğunun işaretidir.",
+    ],
+  },
+  ghost: {
+    title: "Hayalet",
+    short: "Hayalet geçmişten gelen, henüz yatışmamış bir şeyi anlatır. Sizi hâlâ neyin takip ettiğini sorar.",
+    paragraphs: [
+      "Rüyada hayalet geçmişten gelen, henüz yatışmamış bir şeyi anlatır: bir anıyı, bir pişmanlığı ya da barışmadığınız birini.",
+      "Korkutucu bir hayalet, neyle yüzleşmekten kaçındığınızı sorar. Nazik bir hayalet rahatlığı ya da duymaya hazır olduğunuz bir mesajı anlatır. Onu bırakmak, eski meselelerin sakinleştiğinin işaretidir.",
+    ],
+  },
+  thief: {
+    title: "Hırsız",
+    short: "Hırsız bir kayıp duygusunu, size ait bir şeyin alındığı hissini anlatır. Kendinizi nerede korumasız hissettiğinizi sorar.",
+    paragraphs: [
+      "Rüyada hırsız bir şeyin sizden alındığı hissini anlatır: zamanı, enerjiyi, güveni ya da ilgiyi.",
+      "Soyulmak, kendinizi nerede korumasız hissettiğinizi sorar. Hırsızı yakalamak, size ait olanı savunmaya hazır olduğunuzu söyler. Hırsız olmak, istemeye izin verilmediğini hissettiğiniz bir şeyi arzulamayı anlatır.",
+    ],
+  },
+  twins: {
+    title: "İkizler",
+    short: "İkizler kendinizin iki yanını ya da iki yollu bir seçimi anlatır. Bu yanların nasıl bir arada yaşayabileceğini sorarlar.",
+    paragraphs: [
+      "Rüyada ikizler kendinizin iki yanını ya da iki yol arasındaki bir seçimi anlatır. Dengeden ve sizde neyin yansıdığından söz ederler.",
+      "Mutlu ikizler, iki yanınızın iyi çalıştığını söyler. Kavga edenler, nerede iki yöne çekildiğinizi sorar. İkizler ayrıca çifte bereket ya da çifte iş getirir.",
+    ],
+  },
+  rabbit: {
+    title: "Tavşan",
+    short: "Tavşan nazikliği, şansı ve hızlı büyümeyi anlatır. Ayrıca çekingen bir kaçma arzusuna da işaret edebilir.",
+    paragraphs: [
+      "Rüyada tavşan nazikliği, iyi şansı ve çabuk büyüyen şeyleri anlatır. Hafif, iyi bir işarettir.",
+      "Sakin bir tavşan, yumuşak bir iyi haberin yakın olduğunu söyler. Korkmuş ya da kaçan bir tavşan, kendi saklanma arzunuzu anlatır. Çok sayıda tavşan planlarda, ailede ya da şansta hızlı büyümeye işaret eder.",
+    ],
+  },
+  owl: {
+    title: "Baykuş",
+    short: "Baykuş bilgeliği ve gecenin gösterdiklerini anlatır. Başkaları görmezken sizin neyi gördüğünüzü sorar.",
+    paragraphs: [
+      "Rüyada baykuş bilgeliği, uyanıklığı ve gecenin netleştirdiği şeyleri anlatır. Başkalarının göremediği yeri görür.",
+      "Sakin bir baykuş, kendi yargınıza güvenmenizi söyler. Ötüşen bir baykuş, kaçırdığınız bir mesajı dinlemenizi ister. Eski inanışta, ortaya çıkmak üzere olan bir sır konusunda uyarabilir.",
+    ],
+  },
+  whale: {
+    title: "Balina",
+    short: "Balina derin duyguyu ve büyük, sessiz gücü anlatır. Yüzeyinizin altında neyin yaşadığını sorar.",
+    paragraphs: [
+      "Rüyada balina derin duyguyu, sessiz gücü ve yüzeyin altında uzanan geniş yanınızı anlatır.",
+      "Huzurla yüzen bir balina, iç dünyanızın güçlü ve dengeli olduğunu söyler. Yaklaşan bir balina, derinlerden gelen bir mesajı anlatır. Yutulmak, neyin yüzleşemeyecek kadar büyük hissettirdiğini sorar.",
+    ],
+  },
+  shark: {
+    title: "Köpekbalığı",
+    short: "Köpekbalığı gizli bir tehdidi ya da acımasız bir kişiyi anlatır. Tehlikenin nerede görünmeden dolaştığını sorar.",
+    paragraphs: [
+      "Rüyada köpekbalığı yüzeyin altında dolaşan bir tehdidi anlatır: acımasız bir kişiyi, ani bir tehlikeyi ya da kendi korkunuzu.",
+      "Uzaktan bir yüzgeç görmek, hissettiğiniz ama henüz adlandıramadığınız şeyi sorar. Bir köpekbalığından kurtulmak, zor bir durumdan sağ çıkacağınızı söyler. Ona sakince karşı durmak, sahip olduğunuzu bilmediğiniz bir cesareti anlatır.",
+    ],
+  },
+  bees: {
+    title: "Arılar",
+    short: "Arılar sıkı çalışmayı, topluluğu ve ödülü anlatır. Bir iğne, tatlı bir şeyden gelen küçük bir acıyı anlatır.",
+    paragraphs: [
+      "Rüyada arılar sıkı çalışmayı, topluluğu ve ödülü anlatır. Düzenli emekten tatlı bir şey inşa ederler.",
+      "Sakin bir kovan ya da bal, başarının ve ortak emeğin iyi bir işaretidir. Bir arı sürüsü, çok fazla talebin sizi nerede sıkıştırdığını sorar. Bir iğne, çoğu zaman yakın biri ya da değer verdiğiniz bir şeyden gelen küçük bir incinmeyi anlatır.",
+    ],
+  },
+  lightning: {
+    title: "Yıldırım",
+    short: "Yıldırım ani bir içgörüyü ya da şoku anlatır. Gizli olanı bir anda aydınlatır.",
+    paragraphs: [
+      "Rüyada yıldırım ani bir içgörüyü, şoku ya da değişimi anlatır. Gizli olanı bir anda aydınlatır.",
+      "Onu güvenli bir yerden izlemek, görmeye başladığınız bir gerçeği anlatır. Çarpılmak ya da ucuz kurtulmak, keskin bir sürprizin sizi nerede sarstığını sorar. Ardından gelen yağmur bir arınmadır, gerginliğin ardından gelen bir rahatlamadır.",
+    ],
+  },
 };

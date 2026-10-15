@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { PageShell } from "@/components/PageShell";
 import { DreamTeller } from "@/components/DreamTeller";
 import { routing } from "@/i18n/routing";
@@ -67,6 +68,9 @@ export default async function TellDreamPage({ params }: Props) {
           popular={[...POPULAR_SLUGS]}
           cardSlugs={CARD_MEANINGS.map((card) => card.slug)}
         />
+        <p className="dream-tell__browse">
+          <Link href="/dreams">{t("browseAll")}</Link>
+        </p>
       </main>
     </PageShell>
   );

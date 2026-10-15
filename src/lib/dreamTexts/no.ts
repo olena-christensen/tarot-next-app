@@ -641,4 +641,164 @@ export const DREAM_TEXTS_NO: DreamTexts = {
       "Et anrop kan bringe nyheter eller en beskjed fra ditt eget sinn. En telefon som ikke virker, eller et nummer du ikke får slått, taler om vanskeligheter med å nå noen. En telefon som ringer og du overser, spør hva du unngår å høre.",
     ],
   },
+  coffin: {
+    title: "Likkiste",
+    short: "En likkiste står for en avslutning, ikke for død. Den spør hva som er ferdig og klart til å lukkes.",
+    paragraphs: [
+      "En likkiste i en drøm står for en avslutning: et kapittel, en vane eller et håp som har gått ut på dato. Den taler sjelden om virkelig død.",
+      "En lukket likkiste sier at noe er ferdig. En åpen eller tom en spør hva du fortsatt ikke vil slippe. Å ligge i en taler om at du føler deg innestengt av en situasjon og vil ut.",
+    ],
+  },
+  rope: {
+    title: "Tau",
+    short: "Et tau står for et bånd, en livline eller en grense. Om det holder deg oppe eller binder deg, endrer betydningen.",
+    paragraphs: [
+      "Et tau i en drøm står for en forbindelse: en livline, et bånd mellom mennesker eller en grense som holder deg tilbake. Hvordan det brukes, viser hvilken.",
+      "Å klatre i et tau sier at du arbeider deg oppover. Å være bundet med et taler om å føle seg begrenset. En knute du ikke får opp, spør hvilket problem du fortsetter å stramme til. Et tau som kastes til deg, er hjelp på vei.",
+    ],
+  },
+  ladder: {
+    title: "Stige",
+    short: "En stige står for jevn framgang mot et mål. Hvordan klatringen føles, viser hvor trygg du er på veien.",
+    paragraphs: [
+      "En stige i en drøm står for framgang, trinn for trinn. Den taler om ambisjoner, arbeid og ønsket om å stige.",
+      "Å klatre med letthet sier at du går trygt oppover. Et vaklende eller manglende trinn spør hvor fotfestet føles usikkert. Å klatre ned er ikke nederlag: det kan bety å ta en nærmere titt på der du begynte.",
+    ],
+  },
+  boat: {
+    title: "Båt",
+    short: "En båt står for hvordan du ferdes gjennom følelsene dine. Rolig seilas er tillit; urolig vann er usikkerhet.",
+    paragraphs: [
+      "En båt i en drøm står for hvordan du ferdes gjennom livet og gjennom følelsene dine. Den bærer deg, men vannet bestemmer mye av turen.",
+      "En rolig reise sier at du stoler på kursen din. En båt som lekker eller driver, spør hva du ikke lenger styrer. Å nå land er et tegn på å ankomme et trygt sted etter en lang periode.",
+    ],
+  },
+  gift: {
+    title: "Gave",
+    short: "En gave står for noe som blir tilbudt deg, eller noe du vil gi. Den spør hva du er klar til å ta imot.",
+    paragraphs: [
+      "En gave i en drøm står for vennlighet, hell eller et talent som blir tilbudt. Den spør også om du tillater deg selv å ta imot.",
+      "Å få en gave sier at gode ting er nær. Å gi en taler om raushet, eller om ønsket om å bli takket. En gave som ikke er åpnet, spør hvilken sjanse du ennå ikke har pakket ut.",
+    ],
+  },
+  garden: {
+    title: "Hage",
+    short: "En hage står for det du steller i livet ditt. En blomstrende hage er et godt tegn; en forsømt ber om omsorg.",
+    paragraphs: [
+      "En hage i en drøm står for det du dyrker og steller: forhold, planer og din egen ro. Hvordan den ser ut, speiler hvordan du tar vare på den.",
+      "En grønn hage i full blomst er et gladt tegn på vekst. Ugress og tørr jord spør hvor du har forsømt noe. Å så taler om håp; å høste om lønn for tålmodig arbeid.",
+    ],
+  },
+  eyes: {
+    title: "Øyne",
+    short: "Øyne står for innsikt og for å bli sett. Klare øyne taler om forståelse; uklare eller smertefulle om noe du ennå ikke ser.",
+    paragraphs: [
+      "Øyne i en drøm står for innsikt, oppmerksomhet og følelsen av å bli sett. De spør hva du ser på, og hva du unngår.",
+      "Lyse, klare øyne sier at du ser situasjonen din godt. Uklare, lukkede eller smertefulle øyne spør hva du ikke vil se på. Å bli iakttatt taler om selvbevissthet, eller om et ekte ønske om å bli lagt merke til.",
+    ],
+  },
+  stars: {
+    title: "Stjerner",
+    short: "Stjerner står for håp, veiledning og lengsel etter noe større. Klare stjerner er et godt tegn.",
+    paragraphs: [
+      "Stjerner i en drøm står for håp, veiledning og den delen av deg som ser forbi hverdagens bekymringer. De er blant de mest oppmuntrende tegnene.",
+      "En klar stjernehimmel sier at håpene dine er innen rekkevidde. Et stjerneskudd taler om et ønske, eller en plutselig sjanse. Svake eller skjulte stjerner spør hvor du har mistet av syne det som leder deg.",
+    ],
+  },
+  rainbow: {
+    title: "Regnbue",
+    short: "En regnbue står for håp etter vanskelige tider. Den lover lysere dager når stormen er over.",
+    paragraphs: [
+      "En regnbue i en drøm står for håp etter vanskelige tider. Den kommer etter regn, og taler derfor om lettelsen som følger en tung periode.",
+      "Å se den tydelig er et fint tegn på bedre dager og løfter som holdes. En svak eller brutt regnbue ber deg være tålmodig. Å gå mot en taler om å strekke seg etter et ønske som ennå føles langt unna.",
+    ],
+  },
+  desert: {
+    title: "Ørken",
+    short: "En ørken står for tomhet og en tørr periode i livet. Den spør hva du tørster etter.",
+    paragraphs: [
+      "En ørken i en drøm står for tomhet, en tørr periode i livet eller en tid med prøvelser. Den spør hva du savner.",
+      "Å krysse den alene taler om en innsats du gjør på egen hånd. Tørst spør hva du lengter etter. Å finne vann eller skygge er et tegn på at lettelsen er nærmere enn den føles.",
+    ],
+  },
+  cave: {
+    title: "Hule",
+    short: "En hule står for de skjulte sidene av deg selv. Den kan være tilflukt eller et sted du frykter å gå inn i.",
+    paragraphs: [
+      "En hule i en drøm står for de skjulte sidene av deg selv: minner, frykt og styrke du sjelden besøker. Den er både et tilfluktssted og en gåte.",
+      "Å gå rolig inn sier at du er klar til å se innover. En skremmende mørk hule spør hva du unngår å møte. Å finne lys i den andre enden er et tegn på at forståelsen er innen rekkevidde.",
+    ],
+  },
+  ghost: {
+    title: "Spøkelse",
+    short: "Et spøkelse står for noe fra fortiden som ennå ikke har lagt seg. Det spør hva som fortsatt følger deg.",
+    paragraphs: [
+      "Et spøkelse i en drøm står for noe fra fortiden som ikke har lagt seg: et minne, en anger eller en person du ikke har gjort opp med.",
+      "Et skremmende spøkelse spør hva du unngår å møte. Et mildt taler om trøst, eller om en beskjed du er klar til å høre. Å slippe det fri er et tegn på at gamle saker roer seg.",
+    ],
+  },
+  thief: {
+    title: "Tyv",
+    short: "En tyv står for en følelse av tap, eller av at noe er tatt fra deg. Den spør hvor du føler deg ubeskyttet.",
+    paragraphs: [
+      "En tyv i en drøm står for en følelse av at noe blir tatt fra deg: tid, energi, tillit eller oppmerksomhet.",
+      "Å bli bestjålet spør hvor du føler deg ubeskyttet. Å fange tyven sier at du er klar til å forsvare det som er ditt. Å være tyven taler om å ønske seg noe du ikke føler du har lov til å be om.",
+    ],
+  },
+  twins: {
+    title: "Tvillinger",
+    short: "Tvillinger står for to sider av deg selv eller et valg mellom to veier. De spør hvordan sidene kan leve sammen.",
+    paragraphs: [
+      "Tvillinger i en drøm står for to sider av deg selv, eller et valg mellom to veier. De taler om balanse og om det som speiles i deg.",
+      "Glade tvillinger sier at to deler av deg fungerer godt sammen. Kranglende spør hvor du blir dratt i to retninger. Tvillinger gir også dobbel velsignelse, eller dobbelt så mye arbeid.",
+    ],
+  },
+  rabbit: {
+    title: "Kanin",
+    short: "En kanin står for mildhet, hell og rask vekst. Den kan også peke på et sjenert ønske om å løpe bort.",
+    paragraphs: [
+      "En kanin i en drøm står for mildhet, hell og ting som vokser raskt. Det er et lett og vennlig tegn.",
+      "En rolig kanin sier at gode nyheter er nær. En redd eller flyktende en taler om ditt eget ønske om å gjemme deg. Mange kaniner peker på rask vekst i planer, familie eller hell.",
+    ],
+  },
+  owl: {
+    title: "Ugle",
+    short: "En ugle står for visdom og det natten viser. Den spør hva du ser når andre ikke gjør det.",
+    paragraphs: [
+      "En ugle i en drøm står for visdom, våkenhet og det natten gjør klart. Den ser der andre ikke kan.",
+      "En rolig ugle sier at du skal stole på din egen dømmekraft. En ugle som uler, ber deg lytte etter en beskjed du har gått glipp av. I gammel tro kan den advare om en hemmelighet som snart kommer for en dag.",
+    ],
+  },
+  whale: {
+    title: "Hval",
+    short: "En hval står for dype følelser og stor, stille styrke. Den spør hva som lever under overflaten din.",
+    paragraphs: [
+      "En hval i en drøm står for dype følelser, stille styrke og den veldige delen av deg som ligger under overflaten.",
+      "En hval som svømmer fredelig, sier at ditt indre liv er sterkt og stødig. En som kommer nær, taler om en beskjed fra dypet. Å bli svelget spør hva som føles for stort å møte.",
+    ],
+  },
+  shark: {
+    title: "Hai",
+    short: "En hai står for en skjult trussel eller en hensynsløs person. Den spør hvor faren beveger seg usett.",
+    paragraphs: [
+      "En hai i en drøm står for en trussel som beveger seg under overflaten: en hensynsløs person, en plutselig fare eller din egen frykt.",
+      "Å se en finne på avstand spør hva du aner, men ennå ikke kan sette navn på. Å slippe unna en hai sier at du vil komme deg gjennom en vanskelig situasjon. Å møte den rolig taler om mot du ikke visste at du hadde.",
+    ],
+  },
+  bees: {
+    title: "Bier",
+    short: "Bier står for hardt arbeid, fellesskap og belønning. Et stikk taler om en liten smerte fra noe søtt.",
+    paragraphs: [
+      "Bier i en drøm står for hardt arbeid, fellesskap og belønning. De bygger noe søtt av jevn innsats.",
+      "En rolig bikube eller honning er et godt tegn på suksess og felles arbeid. En sverm spør hvor for mange krav trenger seg på. Et stikk taler om et lite sår, ofte fra noen som står deg nær eller noe du verdsetter.",
+    ],
+  },
+  lightning: {
+    title: "Lyn",
+    short: "Lyn står for en plutselig innsikt eller et sjokk. Det lyser opp det skjulte på et øyeblikk.",
+    paragraphs: [
+      "Lyn i en drøm står for en plutselig innsikt, et sjokk eller en endring. Det lyser opp det som var skjult, på et øyeblikk.",
+      "Å se det fra trygg avstand taler om en sannhet du begynner å se. Å bli truffet, eller nesten, spør hvor en skarp overraskelse rister deg. Lyn etterfulgt av regn er en klarning, en lettelse etter spenning.",
+    ],
+  },
 };

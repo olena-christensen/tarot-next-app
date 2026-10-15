@@ -65,6 +65,7 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
 
 ### 2026-10
 
+- 2026-10-15 · Main page first screen in normal flow on every screen size: the title "Discover Your Fate" and the reader block are no longer absolute. They were absolute only for the old title animation stage, removed on 2026-10-14; left absolute, the reader block climbed onto the title and header once the dream pill made it taller. Rule: when an animation is removed, its positioning goes with it. `src/assets/scss/blocks/_offer-block.scss`
 - 2026-10-14 · Main page intro cut from 13 s to 2 s (no moon, no separate title stage), plays only on the first visit of the day or a reload, tap skips; smoke no longer leaks a graphics context per visit. `src/lib/intro.ts`
 - 2026-10-06 · Brew the Potion on phones: full screen with no site header or page scroll, swipe-back caught, sideways layout. Potions get names and can be sent to a friend (phone share menu; Facebook, Slack, Telegram, WhatsApp, copy link on computers) as a picture card linking to a page with the bottle and "Brew your own". Main page way in: "A Halloween treat" pill above the footer.
 - 2026-10-05 · Built "Brew the Potion", a hidden-object game at /game: 7 ingredients, 16 hiding spots, a new recipe every round, pinch-to-zoom on phones, sounds and cauldron effects, in all 5 languages. Not in the menu yet; no moonstone reward yet. `docs/hidden-object-game.md`

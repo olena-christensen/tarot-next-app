@@ -1,8 +1,30 @@
+// The first screen of the main page: title, then the reader block (or the deck
+// in its place), one under the other in normal flow.
+//
+// Normal flow, not absolute (Lena, 2026-10-15). The title and the reader block
+// used to be absolute, pinned by percentages, only for the old 13 s intro that
+// moved them on their own. That stage was removed on 2026-10-14, so nothing
+// needs absolute any more, and pinned blocks overlapped as soon as one grew
+// (the reader block climbed onto the title and header). Do not make them
+// absolute again. When the content is taller than the screen, the page scrolls.
 .offer-block {
   position: relative;
-  padding-top: 136px;
-  height: 100dvh;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+  overflow-x: clip; // smoke and medallions never cause a sideways scroll
+  padding-top: 112px; // under the header row (88px)
+  // --home-footer-h (measured in HomeAbout.tsx) leaves out the footer's own
+  // 2rem top padding; add it back so, scrolled to the end, the last line
+  // clears the floating footer.
+  padding-bottom: calc(var(--home-footer-h, 92px) + 2rem + var(--veil-gap));
+
+  // Phones: no visible title, so the reader block itself keeps clear of the
+  // header (Lena, 2026-10-15: 30–40px further down).
+  @include respond-below(sm) {
+    padding-top: 148px;
+  }
 
   &::before {
     content: "";
@@ -21,30 +43,24 @@
     z-index: 0;
   }
 
+  // Holds the two views (reader, deck). They share one grid cell, so they
+  // cross-fade in place. Not a layer of its own: the medallions behind it are
+  // positioned against the whole block.
   .offer-block__screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    display: grid;
     width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-
-    &--cards {
-      z-index: 1;
-    }
   }
 
   .offer-block__screen--cards {
     .inner-wrap {
-      position: absolute;
-      left: 50%;
-      top: 25%;
+      position: relative;
+      z-index: 1;
+      grid-area: 1 / 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       width: 100%;
-      transform: translate(-50%, 0);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
@@ -53,19 +69,19 @@
 
       &.inner-wrap--hidden {
         opacity: 0;
-        transform: translate(-50%, 0) scale(0.95);
+        transform: scale(0.95);
         pointer-events: none;
       }
     }
 
     .inner-wrap--deck {
       opacity: 0;
-      transform: translate(-50%, 0) scale(1.05);
+      transform: scale(1.05);
       pointer-events: none;
 
       &.inner-wrap--visible {
         opacity: 1;
-        transform: translate(-50%, 0) scale(1);
+        transform: scale(1);
         pointer-events: auto;
       }
     }
@@ -114,26 +130,21 @@
   }
 
   .offer-block__title {
-    position: absolute;
-    left: 50%;
-    top: 15%; // sits close under the header on phones
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
-    margin-top: 0;
+    margin: 0 0 40px; // the reader block starts 40px under the title
     padding: 0 1.2rem;
-    width: 100%;
     font-size: clamp(1.75rem, 9vw, 42px); // shrink only where 42px would overflow (long localized words)
     z-index: 1;
-    transform: translate(-50%, 0);
 
-    // Long locales (e.g. Ukrainian "Дізнайтеся свою Долю") wrap to two lines and
-    // the taller title overlaps the reader portrait below. Tighten it on mobile.
+    // Hidden on phones (Lena, 2026-10-15): the reader block starts right under
+    // the header. Visually hidden, not removed: it stays the page's heading
+    // for search engines and screen readers.
     @include respond-below(sm) {
-      gap: 0.35rem;      // row-gap between wrapped title lines
-      line-height: 1.05;
-      font-size: clamp(1.5rem, 7.5vw, 34px);
+      @include visually-hidden;
     }
   }
 
@@ -150,8 +161,8 @@
 
   // Home page intro, 2 s (Lena, 2026-10-14). Plays only while <html data-intro="play">
   // — when, and how it ends: src/lib/intro.ts. Header, smoke and footer have their
-  // own rules in their block files. `both` keeps each element hidden until its delay;
-  // every final frame equals the normal style, so dropping the attribute never jumps.
+  // own rules in their block files. A fade and a small rise in place; it never
+  // moves an element across the page, so nothing here needs absolute positioning.
   html[data-intro="play"] & {
     .offer-block__title {
       animation: introTitle 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
@@ -258,10 +269,13 @@
     }
   }
 
+  // Background decoration behind the whole first screen.
   .offer-block__screen-bg {
     display: flex;
     flex-direction: column;
     position: absolute;
+    top: 0;
+    left: 0;
     padding-top: 100px;
     width: 100%;
     height: 100%;
@@ -302,6 +316,7 @@
 
 @include respond-above(lg) {
   .offer-block {
+    padding-top: 120px;
 
     &::before {
       background-image: linear-gradient(
@@ -314,19 +329,14 @@
     }
 
     .offer-block__title {
-      top: 120px;
       gap: 2rem;
       padding: 0;
-      font-size: 100px;
+      font-size: 90px;
     }
 
     .offer-block__screen--cards {
       .offer-block__btn {
         display: -webkit-box;
-      }
-
-      .inner-wrap {
-        top: 32%;
       }
 
       .hand {
@@ -337,10 +347,6 @@
           height: 103px;
         }
       }
-    }
-
-    .offer-block__screen-bg svg {
-      transform: none;
     }
 
     .animated-card {
@@ -372,8 +378,8 @@
   }
 }
 
-// Short phone screens (small phones, Display Zoom, larger text): tighten the
-// reader block so it and the overlay footer don't run into each other.
+// Short phone screens (small phones, Display Zoom, larger text): a more
+// compact reader block, so less of it needs scrolling.
 @media (max-height: 720px) and (max-width: 37.5em) {
   .offer-block {
     .offer-block__reader {
@@ -397,34 +403,10 @@
     .offer-block__reader-actions {
       gap: 12px; // keeps the --veil-gap steps below exact
     }
-
-    .offer-block__screen--cards .inner-wrap {
-      top: 24%;
-    }
   }
 }
 
-// The reader block starts 40px under the title; spare screen height goes
-// between the toggle and the footer (never less than one --veil-gap). On short
-// screens it keeps the footer distance and moves up instead. Title bottom:
-// 15% + 31px on phones, 235 / 203 / 189px on desktop. --home-footer-h is
-// measured in HomeAbout.tsx.
-.offer-block .offer-block__screen--cards .inner-wrap--reader {
-  top: calc(15% + 71px);
-  bottom: calc(var(--home-footer-h, 92px) + var(--veil-gap));
-  flex-direction: column;
-  justify-content: flex-end;
-
-  @media (min-width: 56.25em) { top: 275px; }
-  @media (min-width: 56.25em) and (max-height: 820px) { top: 243px; }
-  @media (min-width: 56.25em) and (max-height: 740px) { top: 229px; }
-
-  .offer-block__reader { flex: 0 0 auto; }
-  &::after { content: ""; flex: 1 1 0; }
-}
-
-// Laptop screens without much height: shrink the title and portrait so the
-// block still clears the title.
+// Laptop screens without much height: a smaller title and portrait.
 @media (min-width: 56.25em) and (max-height: 820px) {
   .offer-block {
     .offer-block__title {

@@ -66,15 +66,9 @@
 @keyframes introTitle {
   from {
     opacity: 0;
-    transform: translate(-50%, 14px);
+    transform: translateY(14px);
     letter-spacing: 0.12em;
     filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-    letter-spacing: normal;
-    filter: none;
   }
 }
 
