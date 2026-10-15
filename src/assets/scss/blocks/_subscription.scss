@@ -1,6 +1,6 @@
 .subscription {
   position: relative;
-  padding: 120px 0 80px;
+  padding: var(--page-top) 0 80px; // see _main-header.scss
   // Transparent so the shared <MysticBackground /> shows through (body paints --bg).
   color: var(--primary);
   font-family: var(--font-family);
@@ -319,7 +319,7 @@
   }
 
   @include respond-above(md) {
-    padding: 156px 0 40px;
+    padding: var(--page-top) 0 40px;
 
     &__title {
       font-size: 2.2rem;

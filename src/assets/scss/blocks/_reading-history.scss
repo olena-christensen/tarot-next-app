@@ -1,5 +1,5 @@
 .history-page {
-  padding-block: 120px 80px;
+  padding-block: var(--page-top) 80px; // see _main-header.scss
   padding-inline: 20px;
 
   &__title {
@@ -8,7 +8,7 @@
   }
 
   @include respond-above(md) {
-    padding-block: 160px 100px;
+    padding-block: var(--page-top) 100px;
   }
 
   @include respond-above(lg) {

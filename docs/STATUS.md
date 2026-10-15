@@ -17,15 +17,11 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
    Signed-in Seekers get 3 readings a day, but nothing on the screen says so. The first they learn of the limit is the wall after reading 3.
    Why 💶: a visible "1 reading left" is the moment a Seeker thinks about moonstones. Today the paywall just appears with no warning.
 
-3. **Add Pinterest to the share window** · 🎨 mockup first · ~30 min
-   Shared readings offer Facebook, Telegram, WhatsApp and the phone's own share menu. There is no Pinterest, the one channel we are growing.
-   Why 👥: every reading a visitor pins is a free pin pointing back to theveil.app.
-
-4. **Brew the Potion: moonstone reward** · ~2 hours
+3. **Brew the Potion: moonstone reward** · ~2 hours
    Finishing the game gives nothing yet.
    Why 🔁💶: a daily moonstone for finishing pulls players into readings, which is where moonstones are spent.
 
-5. **Pinterest** · 📣 · 10 min a day
+4. **Pinterest** · 📣 · 10 min a day
    Post the next pins from `docs/pinterest-pin-log.md` (you are at pin 10). Monday 12 October, 10:00: send a screenshot of https://analytics.pinterest.com so we can decide Batch 2.
    Why 👥: this is the only visitor source we have.
 
@@ -65,6 +61,9 @@ Every open item below was checked against the code on 2026-10-04. Each one says 
 
 ### 2026-10
 
+- 2026-10-15 · One header for the whole site: the header, session, background and login window live in the locale layout (`src/components/SiteChrome.tsx`) and stay put between pages; a page now renders only itself and its footer (`PageShell`). Before, every page mounted its own header and fetched the session again, so the header flashed signed out and the page jumped. The first visit shows the dark loader until the session is known, then it fades and never returns. Legal pages (outside the locale layout) keep their own header; shared readings and the payment return stay without one. Rule: anything shared by every page goes in SiteChrome, never inside a page.
+- 2026-10-15 · One top spacing for every page: `--page-top` (header height + 40px, defined in `_main-header.scss`) is the top padding of every page, and each page's first element has no top margin. Content starts 40px under the header everywhere (128px on phones, 176px on large screens, more on phones when signed in), so pages no longer jump. New pages use `var(--page-top)`, never a fixed number.
+- 2026-10-15 · Pinterest button in the share window (shared readings, card pages, dream pages and dream results). No picture is passed: Pinterest reads the page's share picture itself. Left out of gift dialogs (potion, castle), which go to one person. `src/components/ShareDialog.tsx`
 - 2026-10-15 · Main page first screen in normal flow on every screen size: the title "Discover Your Fate" and the reader block are no longer absolute. They were absolute only for the old title animation stage, removed on 2026-10-14; left absolute, the reader block climbed onto the title and header once the dream pill made it taller. Rule: when an animation is removed, its positioning goes with it. `src/assets/scss/blocks/_offer-block.scss`
 - 2026-10-14 · Main page intro cut from 13 s to 2 s (no moon, no separate title stage), plays only on the first visit of the day or a reload, tap skips; smoke no longer leaks a graphics context per visit. `src/lib/intro.ts`
 - 2026-10-06 · Brew the Potion on phones: full screen with no site header or page scroll, swipe-back caught, sideways layout. Potions get names and can be sent to a friend (phone share menu; Facebook, Slack, Telegram, WhatsApp, copy link on computers) as a picture card linking to a page with the bottle and "Brew your own". Main page way in: "A Halloween treat" pill above the footer.

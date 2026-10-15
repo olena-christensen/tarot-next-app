@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { buildAlternates, buildJsonLd } from "@/lib/seo";
 import { CookieBanner } from "@/components/CookieBanner";
+import { SiteChrome } from "@/components/SiteChrome";
 import { Analytics } from "@vercel/analytics/next";
 import { introBootScript } from "@/lib/intro";
 
@@ -91,7 +92,9 @@ export default async function LocaleLayout({ children, params }: Props) {
           dangerouslySetInnerHTML={{ __html: jsonLdString }}
         />
         <NextIntlClientProvider messages={messages}>
-          {children}
+          {/* Header, session, background and login window: mounted once and
+              kept between pages (components/SiteChrome.tsx). */}
+          <SiteChrome>{children}</SiteChrome>
           <CookieBanner />
         </NextIntlClientProvider>
         <Analytics />

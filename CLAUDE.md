@@ -13,6 +13,14 @@ preference and it is not up for debate:
 Mobile-first, mobile-first, mobile-first. If you are about to write a
 `max-width` media query as the default, stop — you are doing it wrong.
 
+## Default: established practice
+- Build the way the framework documents it and the way experienced frontend developers have built for years. This file lists project-specific choices only; anything it does not mention means "do it the standard, correct way", never "anything goes".
+- Shared UI (header, session/providers, background, login window) lives once in the layout and survives navigation. Pages never mount their own copies.
+- Nothing moves after first paint: no flashes, no jumps, no late padding. Show the loader until the page is ready.
+- One spacing value for the gap under the header on every page: `var(--page-top)`.
+- `position: absolute` and fixed offsets only with a reason in a comment; when the reason goes, so does the positioning.
+- Check every layout change in the browser at 375px and 1440px before reporting it done.
+
 ## Infrastructure
 
 - **Hosting:** Vercel — **Pro plan** (confirmed 2026-08-02). Cron jobs are not limited to two-per-project-once-per-day the way Hobby is, and commercial use (selling subscriptions) is permitted. Earlier docs described this project as Hobby and used that to defer work — that was wrong; do not reintroduce a "wait for Pro" blocker. Current crons live in `vercel.json`.

@@ -1,9 +1,10 @@
 .legal-page {
-  padding-top: 120px;
+  padding-top: var(--page-top); // see _main-header.scss
   padding-bottom: 3rem;
 
-  @include respond-above(md) {
-    padding-top: 160px;
+  // The page heading is the first thing: no extra gap above it.
+  h1 {
+    margin-top: 0;
   }
 
   &__content {

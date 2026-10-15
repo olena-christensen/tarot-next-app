@@ -10,12 +10,21 @@ import FacebookIcon from "@/assets/svg/facebook.svg";
 import TelegramIcon from "@/assets/svg/telegram.svg";
 import WhatsAppIcon from "@/assets/svg/whatsapp.svg";
 import MessengerIcon from "@/assets/svg/messenger.svg";
+import PinterestIcon from "@/assets/svg/pinterest.svg";
 import { messengerSendUrl } from "@/lib/facebook";
 
 // Plain intent URLs — no third-party SDKs, so no trackers load and nothing
 // needs cookie consent. Each pre-fills the link in the network's own composer;
 // brand names are the accessible label (they aren't translated).
-export const SHARE_NETWORKS = [
+type ShareNetwork = {
+  id: string;
+  label: string;
+  Icon: typeof XIcon;
+  /** `title` is used only where the network takes a description (Pinterest). */
+  href: (url: string, title?: string) => string;
+};
+
+export const SHARE_NETWORKS: ShareNetwork[] = [
   {
     id: "x",
     label: "X",
@@ -41,7 +50,17 @@ export const SHARE_NETWORKS = [
     Icon: WhatsAppIcon,
     href: (url: string) => `https://wa.me/?text=${encodeURIComponent(url)}`,
   },
-] as const;
+  {
+    // No picture passed: Pinterest reads the page and offers its share picture
+    // (opengraph-image), with the title as the pin's description.
+    id: "pinterest",
+    label: "Pinterest",
+    Icon: PinterestIcon,
+    href: (url: string, title?: string) =>
+      `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}` +
+      (title ? `&description=${encodeURIComponent(title)}` : ""),
+  },
+];
 
 type ShareDialogProps = {
   isOpen: boolean;
@@ -116,8 +135,9 @@ export const ShareDialog = ({
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
-  const networks = sendToPerson
-    ? SHARE_NETWORKS.map((n) =>
+  // A gift goes to one person, so no public pin either.
+  const networks: ShareNetwork[] = sendToPerson
+    ? SHARE_NETWORKS.filter((n) => n.id !== "pinterest").map((n) =>
         n.id === "facebook"
           ? { id: "messenger", label: "Messenger", Icon: MessengerIcon, href: (u: string) => messengerSendUrl(u, touch) }
           : n,
@@ -197,7 +217,7 @@ export const ShareDialog = ({
                 <a
                   key={id}
                   className="reading-share__network"
-                  href={href(url)}
+                  href={href(url, shareTitle)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => onShared?.()}

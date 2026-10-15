@@ -3,11 +3,11 @@
 // fits the width. Black and gold only — no other colours (Lena, 2026-10-08).
 
 .castle {
-  padding: 128px 0 40px;
+  padding: var(--page-top) 0 40px; // see _main-header.scss
   text-align: center;
 
   @include respond-above(md) {
-    padding: 150px 16px 48px;
+    padding: var(--page-top) 16px 48px;
   }
 
   &__title {

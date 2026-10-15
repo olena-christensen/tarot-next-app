@@ -1,7 +1,7 @@
 // Public page for a reading its owner published. Deliberately spare — a
 // stranger arrives here from a social link with no account and no context.
 .shared-reading {
-  padding-block: 100px 60px;
+  padding-block: var(--page-top) 60px; // see _main-header.scss
   padding-inline: 20px;
   color: var(--text-color);
   font-family: var(--font-family);
@@ -91,7 +91,7 @@
   }
 
   @include respond-above(md) {
-    padding-block: 140px 80px;
+    padding-block: var(--page-top) 80px;
 
     &__panel {
       max-width: 900px;

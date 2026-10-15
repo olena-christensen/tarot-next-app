@@ -63,3 +63,6 @@ game-art-source/_contact.png
 
 # Working files from Claude (pictures, mockups, drafts) — not part of the app
 /Claude outputs/
+
+# Browser-test leftovers (screenshots, logs)
+.playwright-mcp/

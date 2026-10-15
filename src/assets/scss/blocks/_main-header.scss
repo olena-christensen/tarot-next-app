@@ -1,3 +1,28 @@
+// One top spacing for every page (Lena, 2026-10-15). The header is absolute,
+// so each page pads its content down by --page-top: the header's height plus
+// one breather. Use it for the page's top padding, and give the page's first
+// element no top margin, so pages never jump against each other.
+:root {
+  --header-h: 88px; // 0.5rem top + 80px logo
+  --page-gap: 40px;
+  --page-top: calc(var(--header-h) + var(--page-gap));
+
+  @include respond-above(sm) {
+    --header-h: 96px; // 1rem top + 80px logo
+  }
+
+  @include respond-above(lg) {
+    --header-h: 136px; // 1rem top + 120px logo
+  }
+}
+
+// Signed in, below md: the greeting strip pushes the row down (see --greeted).
+@include respond-below(md) {
+  :root:has(.main-header--greeted) {
+    --header-h: 116px; // 2.25rem top + 80px logo
+  }
+}
+
 .main-header {
   position: absolute;
   top: 0;
