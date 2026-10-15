@@ -19,9 +19,6 @@ const nextConfig = {
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
     },
-    env: {
-        OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    },
     experimental: {
         // The OG image reads the Raleway file off disk at request time. Next's
         // tracer can't see a runtime `readFile(join(process.cwd(), ...))`, so on

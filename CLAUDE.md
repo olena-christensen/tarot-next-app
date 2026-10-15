@@ -142,7 +142,7 @@ src/
   app/
     layout.tsx         # Thin root layout (styles + metadata only — returns children, no html/body)
     api/               # Route handlers: auth/, user/ (deck, locale, password, password-status,
-                       #   plan, profile, reader), contact/ (Zoho SMTP), ask/ (DEAD CODE)
+                       #   plan, profile, reader), contact/ (Zoho SMTP)
     privacy/           # /privacy — UNPREFIXED. Self-contained layout w/ own <html>/<body>
                        #   (page.tsx + layout.tsx + PrivacyContent.tsx). Middleware bypass.
     terms/             # /terms — same pattern (page.tsx + layout.tsx + TermsContent.tsx)
@@ -178,7 +178,6 @@ src/
   assets/scss/         # All styles
   data.ts              # Card data (id, image, value — no names; paths are deck-relative)
   AppProvider.tsx      # App state + deck-aware card image resolution
-  handleAsk.tsx        # DEAD CODE — orphaned OpenAI integration, no callers
 messages/
   en/                  # English translations (source of truth)
   no/                  # Norwegian translations
@@ -195,9 +194,6 @@ Required (see `.env.example`):
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (registered in Google Cloud project `mistic-wispers`)
 - `NEXT_PUBLIC_SITE_URL` — used by `src/lib/seo.ts` for canonical URLs / sitemap / OG
 - `ZOHO_SMTP_USER`, `ZOHO_SMTP_PASS` — contact form mailer. `ZOHO_SMTP_PASS` is a **Zoho app password**, not the account password.
-
-Dead env:
-- `CONNECTION_OPEN_AI_KEY` — referenced only by `src/app/api/ask/route.ts` and `src/handleAsk.tsx`, both unreachable. Safe to delete on Vercel.
 
 In Vercel, mark genuine secrets as **Sensitive** (UI hygiene — hides value in dashboard): `GOOGLE_CLIENT_SECRET`, `NEXTAUTH_SECRET`, `DATABASE_URL`, `ZOHO_SMTP_PASS`. For a solo dev this is hygiene only — no rotation needed just because the dashboard flags visibility.
 
