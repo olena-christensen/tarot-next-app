@@ -5,7 +5,7 @@ import { PageShell } from "@/components/PageShell";
 import { DreamIndexSearch } from "@/components/DreamIndexSearch";
 import { routing } from "@/i18n/routing";
 import { DREAMS, DREAM_SOURCE } from "@/lib/dreamMeanings";
-import { getLocalizedDreams, groupLocalizedByLetter } from "@/lib/dreamTranslations";
+import { getLocalizedDreams } from "@/lib/dreamTranslations";
 import {
   DREAM_CONTENT_LOCALES,
   absoluteUrl,
@@ -50,12 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DreamsIndexPage({ params }: Props) {
   unstable_setRequestLocale(params.locale);
   const t = await getTranslations({ locale: params.locale, namespace: "dreams" });
-  const groups = groupLocalizedByLetter(params.locale);
-  const index = getLocalizedDreams(params.locale).map(({ slug, title, terms }) => ({
-    slug,
-    title,
-    terms,
-  }));
+  const dreams = getLocalizedDreams(params.locale);
+  const index = dreams.map(({ slug, title, terms }) => ({ slug, title, terms }));
 
   return (
     <PageShell>
@@ -70,30 +66,20 @@ export default async function DreamsIndexPage({ params }: Props) {
         )}
 
         <DreamIndexSearch index={index}>
-          <nav className="dreams-index__letters" aria-label={t("indexTitle")}>
-            {groups.map(({ letter }) => (
-              <a key={letter} className="dreams-index__letter" href={`#letter-${letter}`}>
-                {letter}
-              </a>
+          {/* One plain A–Z list. Letter headings come back when there are
+              enough dreams (about 60) for them to help. */}
+          <ul className="dreams-index__list">
+            {dreams.map((dream) => (
+              <li key={dream.slug}>
+                <Link className="dreams-index__link" href={`/dreams/${dream.slug}`}>
+                  {dream.title}
+                </Link>
+              </li>
             ))}
-          </nav>
-          {groups.map(({ letter, dreams }) => (
-            <section className="dreams-index__group" key={letter} id={`letter-${letter}`}>
-              <h2 className="dreams-index__group-title">{letter}</h2>
-              <ul className="dreams-index__list">
-                {dreams.map((dream) => (
-                  <li key={dream.slug}>
-                    <Link className="dreams-index__link" href={`/dreams/${dream.slug}`}>
-                      {dream.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          </ul>
         </DreamIndexSearch>
 
-        <aside className="cards-index__source">
+        <aside className="cards-index__source dreams-index__source">
           <p className="cards-index__source-lead">{t("sourceLead")}</p>
           <p className="cards-index__citation">
             {DREAM_SOURCE.author}, {DREAM_SOURCE.title} ({DREAM_SOURCE.year})
