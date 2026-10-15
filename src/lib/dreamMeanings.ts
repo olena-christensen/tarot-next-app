@@ -693,6 +693,226 @@ export const DREAMS: DreamSymbol[] = [
       "A made, comfortable bed says you feel at ease. A messy, strange or occupied bed asks where your rest or privacy is disturbed. Being unable to sleep speaks of a mind that will not settle.",
     ],
   },
+  {
+    slug: "graveyard",
+    title: "Graveyard",
+    terms: "cemetery grave graves tomb tombstone gravestone burial",
+    short:
+      "A graveyard stands for endings you are still carrying and for memory. It asks what you are ready to lay to rest.",
+    paragraphs: [
+      "A graveyard in a dream stands for memory, endings and things you have not yet laid to rest. It rarely speaks of real death; more often of a past chapter, a loss or a habit you still visit.",
+      "Walking through one calmly says you are making peace with something. Feeling afraid there asks what you avoid remembering. A well-kept graveyard is a gentle sign of respect for where you came from.",
+    ],
+  },
+  {
+    slug: "mouse",
+    title: "Mouse",
+    terms: "mice small pest",
+    short:
+      "A mouse stands for small worries that nibble at you. Seeing it clearly is the first step to dealing with it.",
+    paragraphs: [
+      "A mouse in a dream stands for small troubles: petty worries, minor annoyances and details that quietly eat away at your peace.",
+      "A mouse running off says a nuisance will pass. Catching one speaks of dealing with a problem at last. Many mice ask whether small things have piled up into something you can no longer ignore.",
+    ],
+  },
+  {
+    slug: "wolf",
+    title: "Wolf",
+    terms: "wolves pack howl",
+    short:
+      "A wolf stands for instinct, loyalty and a wary kind of danger. Whether it hunts you or walks beside you changes the message.",
+    paragraphs: [
+      "A wolf in a dream stands for instinct, independence and the pull of the pack. It can be a threat, or a wild part of yourself you are learning to trust.",
+      "A wolf that stalks you points to someone or something you do not trust. A wolf that stays calm, or walks with you, says your instincts are sound. A howling wolf speaks of a longing to belong.",
+    ],
+  },
+  {
+    slug: "elephant",
+    title: "Elephant",
+    terms: "elephants trunk",
+    short:
+      "An elephant stands for strength, memory and steady wisdom. It also points to something large in the room that nobody names.",
+    paragraphs: [
+      "An elephant in a dream stands for strength, a long memory and calm wisdom. It is a protective sign, often tied to someone dependable in your life.",
+      "A gentle elephant is a good omen of support and good fortune. An angry or charging one asks what heavy matter you have been avoiding. An elephant in a small room speaks of a problem everyone sees and no one mentions.",
+    ],
+  },
+  {
+    slug: "monkey",
+    title: "Monkey",
+    terms: "monkeys ape apes chimpanzee",
+    short:
+      "A monkey stands for play, mischief and restless thoughts. It can point to someone who is not as honest as they seem.",
+    paragraphs: [
+      "A monkey in a dream stands for play, curiosity and mischief. It can also stand for a busy, jumping mind that will not settle on one thing.",
+      "A playful monkey is a light, happy sign. A thieving or teasing one points to someone who is not quite honest with you, or to your own habit of avoiding serious things. Being chased by monkeys asks what small matters are wearing you down.",
+    ],
+  },
+  {
+    slug: "frog",
+    title: "Frog",
+    terms: "frogs toad toads pond",
+    short:
+      "A frog stands for change and renewal. It often appears when something in your life is about to transform.",
+    paragraphs: [
+      "A frog in a dream stands for change, cleansing and renewal. It moves between water and land, and so it often appears when you are between one phase of life and the next.",
+      "A frog leaping forward says a change is coming and will go well. A frog that is hidden or croaking loudly asks what you have been unwilling to say. Many frogs are a sign of growth and good luck.",
+    ],
+  },
+  {
+    slug: "ring",
+    title: "Ring",
+    terms: "rings jewelry jewellery engagement finger lost found",
+    short:
+      "A ring stands for commitment, promises and bonds. Its state shows how you feel about the tie it stands for.",
+    paragraphs: [
+      "A ring in a dream stands for commitment, a promise or a bond with another person. It is a circle, and so it also speaks of things that continue.",
+      "Wearing a ring with pride says you value a tie in your life. Losing one speaks of fear of losing a connection. A broken or tight ring asks whether a promise still fits you.",
+    ],
+  },
+  {
+    slug: "shoes",
+    title: "Shoes",
+    terms: "shoe boots sandals barefoot feet footwear",
+    short:
+      "Shoes stand for the path you are on and how ready you feel for it. Missing or ill-fitting ones speak of unease.",
+    paragraphs: [
+      "Shoes in a dream stand for the path you are walking and your readiness for it. They speak of direction, status and how steady your steps feel.",
+      "New, comfortable shoes say you are ready for what is ahead. Lost, worn-out or ill-fitting shoes ask where your path feels wrong. Going barefoot can mean freedom, or feeling unprepared.",
+    ],
+  },
+  {
+    slug: "clothes",
+    title: "Clothes",
+    terms: "clothing dress dressed coat shirt wardrobe outfit",
+    short:
+      "Clothes stand for the face you show the world. Their state shows how comfortable you are in your own role.",
+    paragraphs: [
+      "Clothes in a dream stand for the role you play and the image you show others. They speak of how comfortable you are being seen the way you are.",
+      "Fine, well-fitting clothes say you feel confident. Torn, dirty or wrong clothes ask where you feel exposed or out of place. Changing clothes speaks of a change in how you see yourself.",
+    ],
+  },
+  {
+    slug: "kitchen",
+    title: "Kitchen",
+    terms: "cooking cook food meal stove oven dinner",
+    short:
+      "A kitchen stands for nourishment and the care you give or need. A warm one is a good sign for home and health.",
+    paragraphs: [
+      "A kitchen in a dream stands for nourishment, care and the heart of home. It speaks of what feeds you, in body, feeling and company.",
+      "A warm, busy kitchen is a good sign of comfort and closeness. An empty or untidy one asks where you feel under-nourished. Cooking for others speaks of your wish to give care.",
+    ],
+  },
+  {
+    slug: "window",
+    title: "Window",
+    terms: "windows glass broken open view",
+    short:
+      "A window stands for outlook and opportunity. What you see through it shows how you view what lies ahead.",
+    paragraphs: [
+      "A window in a dream stands for your outlook: how you see the world, and how the world is able to see you. It is a way of looking without yet stepping through.",
+      "An open window says new chances are near. A closed or cracked one speaks of a view that feels blocked. Looking in from outside asks where you feel left out.",
+    ],
+  },
+  {
+    slug: "road",
+    title: "Road",
+    terms: "path street highway journey way crossroads",
+    short:
+      "A road stands for the course of your life. Its state shows how smooth or unsure the way ahead feels.",
+    paragraphs: [
+      "A road in a dream stands for the course of your life and the choices that shape it. How it looks mirrors how you feel about where you are going.",
+      "A clear, straight road says you are on course. A rough, dark or forking one asks which way you should choose. A road that ends abruptly speaks of a plan that needs rethinking.",
+    ],
+  },
+  {
+    slug: "mountain",
+    title: "Mountain",
+    terms: "mountains hill hills climb climbing peak summit",
+    short:
+      "A mountain stands for a goal and the effort to reach it. How the climb feels shows how you see your own challenge.",
+    paragraphs: [
+      "A mountain in a dream stands for a goal, a challenge or a long effort. It asks how much you want to arrive, and what you are willing to carry on the way.",
+      "Climbing steadily says you will get there. Struggling or slipping asks whether the goal is too heavy for now. Standing at the summit is a sign of achievement and a wider view.",
+    ],
+  },
+  {
+    slug: "river",
+    title: "River",
+    terms: "rivers stream creek current bank",
+    short:
+      "A river stands for the flow of your life. A calm current is ease; a rough one speaks of change you cannot slow.",
+    paragraphs: [
+      "A river in a dream stands for the flow of your life and the changes that carry you along. It moves in one direction, and so it speaks of time.",
+      "A clear, steady river says life is flowing well. A muddy or fast one points to trouble or change you cannot control. Crossing a river speaks of passing from one stage of life to another.",
+    ],
+  },
+  {
+    slug: "island",
+    title: "Island",
+    terms: "islands beach shore alone isolated desert",
+    short:
+      "An island stands for solitude and a place apart. It can be refuge or loneliness, depending on how it feels.",
+    paragraphs: [
+      "An island in a dream stands for solitude and a place set apart from everyday life. It speaks of the need to be by yourself, or of feeling cut off from others.",
+      "A peaceful island says you need rest and quiet. Being stranded on one asks where you feel alone or out of reach. Leaving an island speaks of rejoining the world.",
+    ],
+  },
+  {
+    slug: "earthquake",
+    title: "Earthquake",
+    terms: "quake tremor shaking collapse ruins",
+    short:
+      "An earthquake stands for a sudden shake to what you thought was solid. It asks what is built on weak ground.",
+    paragraphs: [
+      "An earthquake in a dream stands for a sudden shock to the things you thought were solid: a job, a home, a belief or a relationship.",
+      "Surviving it says you will weather the change. Watching things fall asks what was built on weak ground. A quake that passes and leaves you steady speaks of strength you did not know you had.",
+    ],
+  },
+  {
+    slug: "war",
+    title: "War",
+    terms: "battle fight fighting soldier soldiers weapon gun",
+    short:
+      "War stands for inner or outer conflict. It asks where you are fighting, and whether the fight is yours.",
+    paragraphs: [
+      "War in a dream stands for conflict, inside you or around you. It often appears when you feel pulled in two directions, or under pressure from others.",
+      "Fighting in it speaks of a struggle you are engaged in. Watching from afar asks what conflict you are avoiding. Peace after war is a hopeful sign that a long struggle is nearing its end.",
+    ],
+  },
+  {
+    slug: "police",
+    title: "Police",
+    terms: "officer cop cops arrest arrested prison jail law",
+    short:
+      "Police stand for rules, guilt and authority. They ask whether you are being protected or judged, by others or yourself.",
+    paragraphs: [
+      "Police in a dream stand for rules, authority and your own inner judge. They often appear when you feel guilty, watched or in need of protection.",
+      "Being arrested without cause speaks of feeling unfairly blamed. Being helped by police says you feel supported. Running from them asks what you are trying to avoid facing.",
+    ],
+  },
+  {
+    slug: "airplane",
+    title: "Airplane",
+    terms: "aeroplane plane flight airport jet crash landing",
+    short:
+      "An airplane stands for ambition and a big change of direction. A smooth flight is a good sign; turbulence speaks of doubt.",
+    paragraphs: [
+      "An airplane in a dream stands for ambition, travel and a big step toward a goal. It carries you far, but you are not the one at the controls.",
+      "A smooth flight says you trust where you are headed. Turbulence or a crash asks where you fear losing control. Missing a flight speaks of a chance you feel you let slip.",
+    ],
+  },
+  {
+    slug: "phone",
+    title: "Phone",
+    terms: "telephone call calling mobile cell message text",
+    short:
+      "A phone stands for contact and messages you want to send or receive. A call that fails speaks of a gap in communication.",
+    paragraphs: [
+      "A phone in a dream stands for contact, messages and the wish to be heard. It often appears when something needs to be said or answered.",
+      "Receiving a call can bring news or a message from your own mind. A phone that will not work, or numbers you cannot dial, speak of a struggle to reach someone. A ringing phone you ignore asks what you avoid hearing.",
+    ],
+  },
 ];
 
 /** What the "Tell me your dream" page shows before anyone types. */

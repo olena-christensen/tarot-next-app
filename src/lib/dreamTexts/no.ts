@@ -481,4 +481,164 @@ export const DREAM_TEXTS_NO: DreamTexts = {
       "En ryddig og god seng sier at du har det godt. En rotete, fremmed eller opptatt seng spør hvor hvilen eller privatlivet ditt forstyrres. Å ikke få sove taler om et sinn som ikke vil sette seg.",
     ],
   },
+  graveyard: {
+    title: "Kirkegård",
+    short: "En kirkegård står for minner og avslutninger du fortsatt bærer på. Den spør hva du er klar til å slippe.",
+    paragraphs: [
+      "En kirkegård i en drøm står for minner, avslutninger og det som ikke er sluppet ennå. Sjelden handler den om virkelig død; oftere om et tidligere kapittel, et tap eller en vane du stadig vender tilbake til.",
+      "Å gå rolig gjennom den sier at du gjør fred med noe. Å være redd der spør hva du unngår å huske. En velstelt kirkegård er et mildt tegn på respekt for røttene dine.",
+    ],
+  },
+  mouse: {
+    title: "Mus",
+    short: "En mus står for små bekymringer som gnager litt etter litt. Å se dem tydelig er første skritt mot en løsning.",
+    paragraphs: [
+      "En mus i en drøm står for småplager: små bekymringer, irritasjoner og detaljer som stille tærer på roen din.",
+      "En mus som løper bort, sier at et ubehag vil gå over. Å fange en mus taler om å ta tak i et problem til slutt. Mange mus spør om småting har hopet seg opp til noe du ikke lenger kan overse.",
+    ],
+  },
+  wolf: {
+    title: "Ulv",
+    short: "En ulv står for instinkt, lojalitet og en lurende form for fare. Om den jager deg eller går ved siden av deg, endrer budskapet.",
+    paragraphs: [
+      "En ulv i en drøm står for instinkt, uavhengighet og flokkens kall. Den kan være en trussel, eller en vill side av deg selv som du lærer å stole på.",
+      "En ulv som lister seg etter deg, peker på en person eller situasjon du ikke stoler på. En ulv som står rolig, eller går ved siden av deg, sier at instinktene dine er til å stole på. En hylende ulv er lengsel etter å høre til.",
+    ],
+  },
+  elephant: {
+    title: "Elefant",
+    short: "En elefant står for styrke, hukommelse og stille visdom. Den peker også på noe stort i rommet som ingen snakker om.",
+    paragraphs: [
+      "En elefant i en drøm står for styrke, lang hukommelse og rolig visdom. Det er et beskyttende tegn, ofte knyttet til en pålitelig person i livet ditt.",
+      "En mild elefant er et godt tegn på støtte og lykke. En sint elefant, eller en som løper mot deg, spør hvilken tung sak du går utenom. En elefant i et trangt rom er et problem alle ser og ingen nevner.",
+    ],
+  },
+  monkey: {
+    title: "Ape",
+    short: "En ape står for lek, pjatt og urolige tanker. Den kan peke på noen som ikke er så ærlige som de ser ut til.",
+    paragraphs: [
+      "En ape i en drøm står for lek, nysgjerrighet og skøyeri. Den kan også stå for et rastløst sinn som aldri blir værende ved én ting.",
+      "En leken ape er et lett og glad tegn. En som stjeler eller erter, peker på uærlighet i nærheten eller på din egen vane med å unngå det alvorlige. Å løpe fra aper spør hvilke småting som sliter deg ut.",
+    ],
+  },
+  frog: {
+    title: "Frosk",
+    short: "En frosk står for forandring og fornyelse. Den dukker opp når noe i livet ditt er i ferd med å forvandle seg.",
+    paragraphs: [
+      "En frosk i en drøm står for forandring, renselse og fornyelse. Den lever både i vann og på land, og viser seg gjerne når du står mellom to faser i livet.",
+      "En frosk som hopper framover, sier at en forandring nærmer seg og vil gå bra. En som gjemmer seg eller kvekker høyt, spør hva du ikke har turt å si. Mange frosker er et tegn på vekst og lykke.",
+    ],
+  },
+  ring: {
+    title: "Ring",
+    short: "En ring står for forpliktelse, løfter og bånd. Tilstanden viser hva du føler for båndet den representerer.",
+    paragraphs: [
+      "En ring i en drøm står for forpliktelse, et løfte eller et bånd til et annet menneske. Den er en sirkel, og taler derfor også om det som varer.",
+      "Å bære ringen med stolthet sier at du verdsetter et bånd i livet ditt. Å miste den er frykt for å miste noen nær. En ødelagt eller trang ring spør om løftet fortsatt passer deg.",
+    ],
+  },
+  shoes: {
+    title: "Sko",
+    short: "Sko står for veien du går og hvor klar du føler deg for den. Tapte eller ubehagelige sko taler om uro.",
+    paragraphs: [
+      "Sko i en drøm står for veien du går og hvor forberedt du er. De taler om retning, stilling og hvor trygge skrittene dine føles.",
+      "Nye, behagelige sko sier at du er klar for det som kommer. Tapte, slitte eller trange sko spør hvor veien føles gal. Å gå barføtt kan bety frihet, eller å føle seg uforberedt.",
+    ],
+  },
+  clothes: {
+    title: "Klær",
+    short: "Klær står for ansiktet du viser verden. Tilstanden deres viser hvor godt du trives i rollen din.",
+    paragraphs: [
+      "Klær i en drøm står for rollen du spiller og bildet du viser andre. De taler om hvor trygt du kan bli sett som den du er.",
+      "Fine klær som passer godt, sier at du føler deg trygg. Revne, skitne eller feil klær spør hvor du føler deg utsatt eller malplassert. Å skifte klær taler om en endring i hvordan du ser deg selv.",
+    ],
+  },
+  kitchen: {
+    title: "Kjøkken",
+    short: "Et kjøkken står for næring og omsorg, den du gir eller trenger. Et varmt kjøkken er et godt tegn for hjem og helse.",
+    paragraphs: [
+      "Et kjøkken i en drøm står for næring, omsorg og hjemmets hjerte. Det taler om det som gir deg påfyll: kropp, følelser og selskap.",
+      "Et varmt, travelt kjøkken er et godt tegn på trygghet og nærhet. Et tomt eller rotete kjøkken spør hvor du mangler påfyll. Å lage mat til andre taler om ønsket om å gi omsorg.",
+    ],
+  },
+  window: {
+    title: "Vindu",
+    short: "Et vindu står for utsikt og mulighet. Det du ser gjennom det, viser hvordan du ser på det som venter.",
+    paragraphs: [
+      "Et vindu i en drøm står for utsynet ditt: hvordan du ser verden, og hvordan verden kan se deg. Det er en måte å se på uten å gå videre.",
+      "Et åpent vindu sier at nye sjanser er nær. Et lukket eller sprukket vindu er et blikk som føles stengt. Å se inn utenfra spør hvor du føler deg utenfor.",
+    ],
+  },
+  road: {
+    title: "Vei",
+    short: "En vei står for livets løp. Tilstanden viser hvor jevn eller usikker veien videre føles.",
+    paragraphs: [
+      "En vei i en drøm står for livets løp og valgene som former det. Hvordan den ser ut, speiler hva du føler om retningen din.",
+      "En klar, rett vei sier at du er på rett kurs. En ujevn, mørk eller delt vei spør hvilket valg du skal ta. En vei som plutselig tar slutt, er en plan som bør tenkes om.",
+    ],
+  },
+  mountain: {
+    title: "Fjell",
+    short: "Et fjell står for et mål og innsatsen for å nå det. Hvordan stigningen føles, viser hvordan du ser på din egen utfordring.",
+    paragraphs: [
+      "Et fjell i en drøm står for et mål, en utfordring eller en lang innsats. Det spør hvor mye du vil fram, og hva du er villig til å bære med deg.",
+      "Å stige jevnt sier at du kommer fram. Å streve eller skli spør om målet er for tungt akkurat nå. Å stå på toppen er et tegn på prestasjon og videre utsyn.",
+    ],
+  },
+  river: {
+    title: "Elv",
+    short: "En elv står for livets strøm. Rolig strøm er letthet; sterk strøm er forandring du ikke kan stanse.",
+    paragraphs: [
+      "En elv i en drøm står for livets strøm og forandringene som bærer deg med. Den renner én vei, og taler derfor om tid.",
+      "En klar, rolig elv sier at livet flyter godt. En grumset eller rask elv peker på bekymring eller forandring utenfor din kontroll. Å krysse en elv taler om å gå fra én fase i livet til en annen.",
+    ],
+  },
+  island: {
+    title: "Øy",
+    short: "En øy står for ensomhet og et sted for seg selv. Den kan være tilflukt eller ensomhet, alt etter hvordan den føles.",
+    paragraphs: [
+      "En øy i en drøm står for ensomhet og et sted avskåret fra hverdagen. Den taler om behovet for å være alene, eller om følelsen av å være avskåret fra andre.",
+      "En fredelig øy sier at du trenger hvile og stillhet. Å bli strandet på en øy spør hvor du føler deg alene eller utenfor rekkevidde. Å forlate øya taler om å vende tilbake til verden.",
+    ],
+  },
+  earthquake: {
+    title: "Jordskjelv",
+    short: "Et jordskjelv står for en plutselig risting av det du trodde var fast. Det spør hva som er bygget på svak grunn.",
+    paragraphs: [
+      "Et jordskjelv i en drøm står for et brått støt mot det du trodde var solid: en jobb, et hjem, en tro eller et forhold.",
+      "Å overleve det sier at du kommer deg gjennom forandringen. Å se alt falle spør hva som var bygget på svak grunn. Et skjelv som går over og lar deg stå støtt, taler om en styrke du ikke visste at du hadde.",
+    ],
+  },
+  war: {
+    title: "Krig",
+    short: "Krig står for konflikt, innvendig eller utvendig. Den spør hvor du kjemper, og om kampen er din.",
+    paragraphs: [
+      "Krig i en drøm står for konflikt, inni deg eller rundt deg. Den dukker ofte opp når du blir dratt i to retninger, eller presset av andre.",
+      "Å kjempe i den taler om en strid du allerede er med i. Å se på fra avstand spør hvilken konflikt du unngår. Fred etter krig er et håpefullt tegn på at en lang kamp nærmer seg slutten.",
+    ],
+  },
+  police: {
+    title: "Politi",
+    short: "Politi står for regler, skyld og autoritet. De spør om du blir beskyttet eller dømt, av andre eller av deg selv.",
+    paragraphs: [
+      "Politi i en drøm står for regler, autoritet og din egen indre dommer. De dukker ofte opp når du føler skyld, overvåkning eller behov for beskyttelse.",
+      "Å bli arrestert uten grunn taler om følelsen av å bli urettferdig anklaget. Å få hjelp av politiet sier at du føler deg støttet. Å løpe fra dem spør hva du prøver å unngå å se.",
+    ],
+  },
+  airplane: {
+    title: "Fly",
+    short: "Et fly står for ambisjoner og et stort retningsskifte. En rolig flytur er et godt tegn; turbulens taler om tvil.",
+    paragraphs: [
+      "Et fly i en drøm står for ambisjoner, reise og et stort skritt mot et mål. Det bærer deg langt, men det er ikke du som styrer.",
+      "En rolig flytur sier at du stoler på retningen din. Turbulens eller en krasj spør hvor du frykter å miste kontrollen. Å gå glipp av flyet taler om en sjanse du føler du lot gli.",
+    ],
+  },
+  phone: {
+    title: "Telefon",
+    short: "En telefon står for kontakt og beskjeder du vil sende eller få. Et anrop som ikke går gjennom, taler om et brudd i kommunikasjonen.",
+    paragraphs: [
+      "En telefon i en drøm står for kontakt, beskjeder og ønsket om å bli hørt. Den dukker ofte opp når noe må sies eller besvares.",
+      "Et anrop kan bringe nyheter eller en beskjed fra ditt eget sinn. En telefon som ikke virker, eller et nummer du ikke får slått, taler om vanskeligheter med å nå noen. En telefon som ringer og du overser, spør hva du unngår å høre.",
+    ],
+  },
 };

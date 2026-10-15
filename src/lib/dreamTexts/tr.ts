@@ -481,4 +481,164 @@ export const DREAM_TEXTS_TR: DreamTexts = {
       "Yapılmış, rahat bir yatak huzurlu olduğunuzu söyler. Dağınık, yabancı ya da dolu bir yatak, dinlenmenizin ya da mahremiyetinizin nerede bozulduğunu sorar. Uyuyamamak yatışmayan bir zihinden söz eder.",
     ],
   },
+  graveyard: {
+    title: "Mezarlık",
+    short: "Mezarlık, henüz taşıdığınız anıları ve biten şeyleri anlatır. Neyi bırakmaya hazır olduğunuzu sorar.",
+    paragraphs: [
+      "Rüyada mezarlık; anıyı, bitişleri ve henüz bırakılmamış olanı anlatır. Nadiren gerçek ölümden söz eder; daha çok geçmiş bir hayat bölümünü, bir kaybı ya da hep döndüğünüz bir alışkanlığı gösterir.",
+      "Orada sakin sakin yürümek, bir şeyle barıştığınızı söyler. Orada korkmak, neyi hatırlamaktan kaçındığınızı sorar. Bakımlı bir mezarlık, köklerinize duyulan sayganın yumuşak bir işaretidir.",
+    ],
+  },
+  mouse: {
+    title: "Fare",
+    short: "Fare, içinizi yavaş yavaş kemiren küçük endişeleri anlatır. Onları net görmek, çözmenin ilk adımıdır.",
+    paragraphs: [
+      "Rüyada fare küçük sıkıntıları anlatır: ufak endişeleri, can sıkan şeyleri ve huzurunuzu sessizce aşındıran ayrıntıları.",
+      "Kaçan bir fare, bir sıkıntının geçeceğini söyler. Birini yakalamak, bir sorunla nihayet başa çıkmaktır. Çok sayıda fare, küçük şeylerin artık görmezden gelinemeyecek bir yığına dönüşüp dönüşmediğini sorar.",
+    ],
+  },
+  wolf: {
+    title: "Kurt",
+    short: "Kurt içgüdüyü, sadakati ve temkinli bir tehlikeyi anlatır. Size mi saldırıyor, yanınızda mı yürüyor; mesaj ona göre değişir.",
+    paragraphs: [
+      "Rüyada kurt içgüdüyü, bağımsızlığı ve sürünün çağrısını anlatır. Bir tehdit olabilir ya da güvenmeyi öğrendiğiniz kendi yabani yanınız.",
+      "Sizi izleyen kurt, güvenmediğiniz bir kişiyi ya da durumu gösterir. Sakin duran ya da yanınızda yürüyen kurt, içgüdülerinizin yerinde olduğunu söyler. Uluyan kurt, bir yere ait olma özlemidir.",
+    ],
+  },
+  elephant: {
+    title: "Fil",
+    short: "Fil gücü, hafızayı ve sakin bilgeliği anlatır. Odada herkesin gördüğü ama kimsenin söylemediği büyük bir şeye de işaret eder.",
+    paragraphs: [
+      "Rüyada fil güç, uzun bir hafıza ve sakin bilgelik anlatır. Koruyucu bir işaret olup çoğu zaman hayatınızdaki güvenilir bir kişiyle bağlantılıdır.",
+      "Nazik bir fil, destek ve şans getiren iyi bir alâmettir. Öfkeli ya da üzerinize koşan bir fil, hangi ağır meseleden kaçtığınızı sorar. Dar bir odadaki fil, herkesin gördüğü ama kimsenin anmadığı bir sorundur.",
+    ],
+  },
+  monkey: {
+    title: "Maymun",
+    short: "Maymun oyunbazlığı, yaramazlığı ve huzursuz düşünceleri anlatır. Göründüğü kadar dürüst olmayan birine işaret edebilir.",
+    paragraphs: [
+      "Rüyada maymun oyunbazlığı, merakı ve yaramazlığı anlatır. Bir şeyde duramayan, sürekli zıplayan bir zihni de anlatabilir.",
+      "Oyunbaz bir maymun hafif ve neşeli bir işarettir. Çalan ya da dalga geçen maymun, yanınızdaki içtenlik eksikliğine ya da ciddi şeylerden kaçma alışkanlığınıza işaret eder. Maymunlardan kaçmak, hangi ufak şeylerin sizi yıprattığını sorar.",
+    ],
+  },
+  frog: {
+    title: "Kurbağa",
+    short: "Kurbağa değişimi ve yenilenmeyi anlatır. Hayatınızda bir şeyin dönüşmek üzere olduğu zamanlarda ortaya çıkar.",
+    paragraphs: [
+      "Rüyada kurbağa değişimi, arınmayı ve yenilenmeyi anlatır. Hem suda hem karada yaşar; bu yüzden hayatın iki evresi arasında olduğunuzda görünür.",
+      "İleri zıplayan bir kurbağa, bir değişimin yaklaştığını ve iyi gideceğini söyler. Saklanan ya da yüksek sesle vaklayan kurbağa, söylemeye cesaret edemediklerinizi sorar. Çok sayıda kurbağa büyüme ve şans işaretidir.",
+    ],
+  },
+  ring: {
+    title: "Yüzük",
+    short: "Yüzük bağlılığı, sözleri ve bağları anlatır. Durumu, o bağa karşı ne hissettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada yüzük; bir bağlılığı, bir sözü ya da başka biriyle olan bir bağı anlatır. Bir daire olduğu için süren şeylerden de söz eder.",
+      "Yüzüğü gururla taşımak, hayatınızdaki bir bağa değer verdiğinizi gösterir. Kaybetmek, sevdiklerinizi yitirme korkusudur. Kırık ya da sıkı bir yüzük, o sözün size hâlâ uyup uymadığını sorar.",
+    ],
+  },
+  shoes: {
+    title: "Ayakkabı",
+    short: "Ayakkabı yürüdüğünüz yolu ve ona ne kadar hazır olduğunuzu anlatır. Kayıp ya da dar olanlar huzursuzluğu gösterir.",
+    paragraphs: [
+      "Rüyada ayakkabı yürüdüğünüz yolu ve ona hazırlığınızı anlatır. Yönü, konumu ve adımlarınızın ne kadar sağlam olduğunu gösterir.",
+      "Yeni ve rahat ayakkabı, geleceğe hazır olduğunuzu söyler. Kaybolmuş, yıpranmış ya da dar ayakkabı, yolun nerede yanlış geldiğini sorar. Yalnayak olmak özgürlük de olabilir, hazırsız hissetmek de.",
+    ],
+  },
+  clothes: {
+    title: "Giysi",
+    short: "Giysi dünyaya gösterdiğiniz yüzüdür. Durumu, kendi rolünüzde ne kadar rahat olduğunuzu gösterir.",
+    paragraphs: [
+      "Rüyada giysi oynadığınız rolü ve başkalarına gösterdiğiniz imajı anlatır. Olduğunuz gibi görülmekten ne kadar rahat olduğunuzla ilgilidir.",
+      "İyi oturan güzel giysi özgüven gösterir. Yırtık, kirli ya da yanlış giysi, kendinizi nerede açıkta ya da yersiz hissettiğinizi sorar. Giysi değiştirmek, kendinize bakışınızdaki bir değişimdir.",
+    ],
+  },
+  kitchen: {
+    title: "Mutfak",
+    short: "Mutfak besleyici bir ilgiyi, verdiğiniz ya da ihtiyaç duyduğunuz özeni anlatır. Sıcak bir mutfak, ev ve sağlık için iyi bir işaret.",
+    paragraphs: [
+      "Rüyada mutfak beslenmeyi, özeni ve evin kalbini anlatır. Sizi neyin beslediğini söyler: beden, duygu ve arkadaşlık.",
+      "Sıcak ve hareketli bir mutfak, rahatlık ve yakınlık işaretidir. Boş ya da dağınık bir mutfak, nerede yeterince beslenmediğinizi sorar. Başkaları için yemek yapmak, özen verme isteğidir.",
+    ],
+  },
+  window: {
+    title: "Pencere",
+    short: "Pencere bakış açınızı ve fırsatı anlatır. Ondan gördüklerinizin, geleceğe nasıl baktığınızı gösterir.",
+    paragraphs: [
+      "Rüyada pencere bakış açınızı anlatır: dünyayı nasıl gördüğünüzü ve dünyanın sizi nasıl görebileceğini. Daha ileri adım atmadan bakmanın bir yoludur.",
+      "Açık pencere, yeni fırsatların yakın olduğunu söyler. Kapalı ya da çatlak pencere, tıkanmış hissedilen bir bakıştır. Dışarıdan içeri bakmak, kendinizi nerede dışlanmış hissettiğinizi sorar.",
+    ],
+  },
+  road: {
+    title: "Yol",
+    short: "Yol hayatınızın gidişatını anlatır. Durumu, ilerideki yolun ne kadar düzgün ya da belirsiz geldiğini gösterir.",
+    paragraphs: [
+      "Rüyada yol hayatınızın gidişatını ve onu şekillendiren seçimleri anlatır. Görünüşü, gittiğiniz yöne nasıl hissettiğinizi yansıtır.",
+      "Açık ve düz bir yol, doğru yolda olduğunuzu söyler. Bozuk, karanlık ya da yol ayrımı, hangi seçimi yapacağınızı sorar. Aniden biten bir yol, gözden geçirilmesi gereken bir plandır.",
+    ],
+  },
+  mountain: {
+    title: "Dağ",
+    short: "Dağ bir hedefi ve ona ulaşma çabasını anlatır. Tırmanmanın nasıl hissettirdiği, kendi zorluğunuza nasıl baktığınızı gösterir.",
+    paragraphs: [
+      "Rüyada dağ bir hedefi, bir zorluğu ya da uzun bir çabayı anlatır. Varmayı ne kadar çok istediğinizi ve yanınızda neleri taşımaya hazır olduğunuzu sorar.",
+      "Düzgün tırmanış, ulaşacağınızı söyler. Zorlanmak ya da kaymak, hedefin şimdilik fazla ağır olup olmadığını sorar. Zirvede durmak, başarı ve daha geniş bir bakış işaretidir.",
+    ],
+  },
+  river: {
+    title: "Nehir",
+    short: "Nehir hayatınızın akışını anlatır. Sakin akıntı rahatlık; çalkantılı akıntı durduramayacağınız değişimlerdir.",
+    paragraphs: [
+      "Rüyada nehir hayatın akışını ve sizi sürükleyen değişimleri anlatır. Tek yöne akar; bu yüzden zamandan söz eder.",
+      "Berrak ve sakin bir nehir, hayatın iyi aktığını söyler. Bulanık ya da hızlı olan, kontrolünüz dışındaki sıkıntıya ya da değişime işaret eder. Nehri geçmek, hayatın bir evresinden diğerine geçmektir.",
+    ],
+  },
+  island: {
+    title: "Ada",
+    short: "Ada yalnızlığı ve ayrı bir yeri anlatır. Nasıl hissettirdiğine göre sığınak ya da yalnızlık olabilir.",
+    paragraphs: [
+      "Rüyada ada yalnızlığı ve günlük hayattan ayrı bir yeri anlatır. Tek başına kalma ihtiyacını ya da başkalarından kopmuş hissetmeyi söyler.",
+      "Huzurlu bir ada, dinlenmeye ve sessizliğe ihtiyacınız olduğunu söyler. Orada mahsur kalmak, nerede yalnız ya da erişilmez hissettiğinizi sorar. Adadan ayrılmak, dünyaya geri dönmektir.",
+    ],
+  },
+  earthquake: {
+    title: "Deprem",
+    short: "Deprem sarsılmaz sanılan şeylerin aniden sarsılmasını anlatır. Neyin zayıf zemine kurulduğunu sorar.",
+    paragraphs: [
+      "Rüyada deprem sağlam sanılan şeylere gelen ani darbeyi anlatır: iş, ev, inanç ya da ilişki.",
+      "Onu atlatmak, değişime dayanmaktır. Her şeyin yıkılışını izlemek, neyin zayıf zemine kurulduğunu sorar. Geçip giden ve sizi ayakta bırakan bir deprem, bilmediğiniz bir gücünüzü gösterir.",
+    ],
+  },
+  war: {
+    title: "Savaş",
+    short: "Savaş içteki ya da dıştaki bir çatışmayı anlatır. Nerede savaştığınızı ve bu savaşın size ait olup olmadığını sorar.",
+    paragraphs: [
+      "Rüyada savaş içinizdeki ya da çevrenizdeki bir çatışmayı anlatır. İki yöne çekildiğinizde ya da başkaları baskı yaptığında sık sık görünür.",
+      "İçinde savaşmak, zaten içinde olduğunuz bir mücadeledir. Uzaktan izlemek, hangi çatışmadan kaçtığınızı sorar. Savaş sonrası barış, uzun bir mücadelenin sonuna yaklaştığını gösteren umut verici bir işarettir.",
+    ],
+  },
+  police: {
+    title: "Polis",
+    short: "Polis kuralları, suçluluğu ve otoriteyi anlatır. Korunuyor musunuz yoksa yargılanıyor musunuz, başkaları tarafından mı kendiniz mi, onu sorar.",
+    paragraphs: [
+      "Rüyada polis kuralları, otoriteyi ve içsel yargıcınızı anlatır. Suçlu, gözetim altında ya da korunmaya muhtaç hissettiğinizde sık sık görünür.",
+      "Nedensiz tutuklanmak, haksız suçlanma duygusudur. Polisten yardım görmek, desteklendiğinizi söyler. Ondan kaçmak, neyi görmemeye çalıştığınızı sorar.",
+    ],
+  },
+  airplane: {
+    title: "Uçak",
+    short: "Uçak hedefleri ve yönde büyük bir dönüşü anlatır. Pürüzsüz bir uçuş iyi bir işaret; türbülans ise şüphedir.",
+    paragraphs: [
+      "Rüyada uçak hedefleri, yolculuğu ve amaca doğru atılan büyük bir adımı anlatır. Sizi uzağa taşır ama onu siz yönetmezsiniz.",
+      "Pürüzsüz bir uçuş, yönünüze güvendiğinizi söyler. Türbülans ya da kaza, kontrolü nerede kaybetmekten korktuğunuzu sorar. Uçağı kaçırmak, elinizden kaçırdığınızı hissettiğiniz bir fırsattır.",
+    ],
+  },
+  phone: {
+    title: "Telefon",
+    short: "Telefon iletişimi ve göndermek ya da almak istediğiniz mesajları anlatır. Bağlanamayan bir arama, iletişimdeki bir kopukluktur.",
+    paragraphs: [
+      "Rüyada telefon iletişimi, mesajları ve duyulma arzusunu anlatır. Bir şeyin söylenmesi ya da cevaplanması gerektiğinde sık sık görünür.",
+      "Gelen bir arama haber ya da kendi zihninizden bir mesaj getirebilir. Çalışmayan bir telefon ya da çevrilemeyen numara, birine ulaşma çabasını gösterir. Görmezden geldiğiniz bir telefon, neyi duymaktan kaçındığınızı sorar.",
+    ],
+  },
 };
