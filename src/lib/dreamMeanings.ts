@@ -913,6 +913,226 @@ export const DREAMS: DreamSymbol[] = [
       "Receiving a call can bring news or a message from your own mind. A phone that will not work, or numbers you cannot dial, speak of a struggle to reach someone. A ringing phone you ignore asks what you avoid hearing.",
     ],
   },
+  {
+    slug: "coffin",
+    title: "Coffin",
+    terms: "casket burial buried grave dead",
+    short:
+      "A coffin stands for an ending, not a death. It asks what is finished and ready to be closed.",
+    paragraphs: [
+      "A coffin in a dream stands for an ending: a chapter, a habit or a hope that has run its course. It seldom speaks of real death.",
+      "Seeing a closed coffin says something is finished. An open or empty one asks what you are still unwilling to let go. Being inside one speaks of feeling shut in by a situation, and wanting out.",
+    ],
+  },
+  {
+    slug: "rope",
+    title: "Rope",
+    terms: "cord string knot tied tied-up hanging pull climb",
+    short:
+      "A rope stands for a bond, a lifeline or a limit. Whether it holds or binds you changes its meaning.",
+    paragraphs: [
+      "A rope in a dream stands for a tie: a lifeline, a bond between people, or a limit that holds you back. Its use tells you which.",
+      "Climbing a rope says you are working your way up. Being tied by one speaks of feeling restricted. A knot you cannot undo asks what problem you keep pulling tighter. A rope thrown to you is help on its way.",
+    ],
+  },
+  {
+    slug: "ladder",
+    title: "Ladder",
+    terms: "ladders climb climbing rung steps",
+    short:
+      "A ladder stands for steady progress toward a goal. How the climb feels shows how secure you are on the way.",
+    paragraphs: [
+      "A ladder in a dream stands for progress, one rung at a time. It speaks of ambition, work and the wish to rise.",
+      "Climbing with ease says you are moving up securely. A shaky or missing rung asks where your footing feels unsure. Climbing down is not failure: it can mean taking a closer look at where you began.",
+    ],
+  },
+  {
+    slug: "boat",
+    title: "Boat",
+    terms: "ship boats sailing sail yacht canoe row anchor",
+    short:
+      "A boat stands for how you travel through your feelings. Calm sailing is trust; rough water is uncertainty.",
+    paragraphs: [
+      "A boat in a dream stands for how you travel through life and through your feelings. It carries you, but the water decides much of the trip.",
+      "A smooth voyage says you trust your course. A leaking or drifting boat asks what you no longer steer. Reaching the shore is a sign of arriving somewhere safe after a long stretch.",
+    ],
+  },
+  {
+    slug: "gift",
+    title: "Gift",
+    terms: "present gifts presents given receive wrapped surprise",
+    short:
+      "A gift stands for something offered to you, or something you want to give. It asks what you are ready to accept.",
+    paragraphs: [
+      "A gift in a dream stands for kindness, luck or a talent being offered. It also asks whether you allow yourself to receive.",
+      "Receiving one says good things are near. Giving one speaks of generosity, or a wish to be thanked. An unopened gift asks what chance you have not yet unwrapped.",
+    ],
+  },
+  {
+    slug: "garden",
+    title: "Garden",
+    terms: "gardens plants growing yard grass lawn weeds",
+    short:
+      "A garden stands for what you tend in your life. A flourishing one is a good sign; a neglected one asks for care.",
+    paragraphs: [
+      "A garden in a dream stands for what you grow and tend: relationships, plans and your own peace. How it looks mirrors how you look after it.",
+      "A green, blooming garden is a happy sign of growth. Weeds and dry soil ask where you have neglected something. Planting speaks of hope; harvesting, of reward for patient work.",
+    ],
+  },
+  {
+    slug: "eyes",
+    title: "Eyes",
+    terms: "eye seeing looking blind blindness sight vision watching",
+    short:
+      "Eyes stand for insight and being seen. Clear eyes speak of understanding; blurred or hurt ones of something you cannot yet see.",
+    paragraphs: [
+      "Eyes in a dream stand for insight, awareness and the feeling of being seen. They ask what you are looking at, and what you avoid.",
+      "Bright, clear eyes say you see your situation well. Blurred, closed or painful eyes ask what you do not want to look at. Being watched speaks of self-consciousness, or of a real wish for notice.",
+    ],
+  },
+  {
+    slug: "stars",
+    title: "Stars",
+    terms: "star sky night shooting-star falling-star constellation",
+    short:
+      "Stars stand for hope, guidance and a wish for something larger. Bright ones are a good sign.",
+    paragraphs: [
+      "Stars in a dream stand for hope, guidance and the part of you that looks beyond daily worries. They are among the most hopeful signs of all.",
+      "A clear, starry sky says your hopes are within reach. A shooting star speaks of a wish, or a sudden chance. Dim or hidden stars ask where you have lost sight of what guides you.",
+    ],
+  },
+  {
+    slug: "rainbow",
+    title: "Rainbow",
+    terms: "rainbows colors colours sky after-rain",
+    short:
+      "A rainbow stands for hope after hardship. It promises brighter days once the storm has passed.",
+    paragraphs: [
+      "A rainbow in a dream stands for hope after hardship. It appears after rain, and so it speaks of relief that follows a difficult time.",
+      "Seeing one clearly is a fine sign of better days and promises kept. A faint or broken rainbow asks you to be patient. Walking toward one speaks of reaching for a wish that still feels far away.",
+    ],
+  },
+  {
+    slug: "desert",
+    title: "Desert",
+    terms: "sand dunes dry thirst thirsty barren hot",
+    short:
+      "A desert stands for emptiness and a dry stretch of life. It asks what you thirst for.",
+    paragraphs: [
+      "A desert in a dream stands for emptiness, a dry stretch of life, or a time of testing. It asks what you are missing.",
+      "Crossing it alone speaks of an effort you are making by yourself. Thirst asks what you long for. Finding water or shade is a sign that relief is nearer than it feels.",
+    ],
+  },
+  {
+    slug: "cave",
+    title: "Cave",
+    terms: "caves cavern tunnel underground dark hole cavern",
+    short:
+      "A cave stands for the hidden parts of yourself. It can be shelter or a place you fear to enter.",
+    paragraphs: [
+      "A cave in a dream stands for the hidden parts of yourself: memories, fears and strengths you rarely visit. It is both a refuge and a mystery.",
+      "Entering one with calm says you are ready to look inward. A frightening dark cave asks what you avoid facing. Finding light at the far end is a sign that understanding is within reach.",
+    ],
+  },
+  {
+    slug: "ghost",
+    title: "Ghost",
+    terms: "ghosts spirit spirits haunted haunting phantom",
+    short:
+      "A ghost stands for something from the past that has not yet settled. It asks what still follows you.",
+    paragraphs: [
+      "A ghost in a dream stands for something from the past that has not settled: a memory, a regret or a person you have not made peace with.",
+      "A frightening ghost asks what you avoid facing. A gentle one speaks of comfort, or a message you are ready to hear. Letting it go is a sign that old matters are quieting.",
+    ],
+  },
+  {
+    slug: "thief",
+    title: "Thief",
+    terms: "thieves robber robbery stolen steal stealing burglar theft",
+    short:
+      "A thief stands for a feeling of loss, or of something taken from you. It asks where you feel unprotected.",
+    paragraphs: [
+      "A thief in a dream stands for a feeling that something is being taken from you: time, energy, trust or attention.",
+      "Being robbed asks where you feel unprotected. Catching the thief says you are ready to defend what is yours. Being the thief speaks of wanting something you do not feel allowed to ask for.",
+    ],
+  },
+  {
+    slug: "twins",
+    title: "Twins",
+    terms: "twin double doubles identical pair",
+    short:
+      "Twins stand for two sides of yourself or a choice with two paths. They ask how those sides can live together.",
+    paragraphs: [
+      "Twins in a dream stand for two sides of yourself, or a choice between two paths. They speak of balance, and of what is mirrored in you.",
+      "Happy twins say two parts of you are working well together. Quarrelling ones ask where you are pulled in two directions. Twins also bring double blessings, or double the work.",
+    ],
+  },
+  {
+    slug: "rabbit",
+    title: "Rabbit",
+    terms: "rabbits bunny hare hares",
+    short:
+      "A rabbit stands for gentleness, luck and quick growth. It can also point to a timid wish to run.",
+    paragraphs: [
+      "A rabbit in a dream stands for gentleness, good luck and things that grow fast. It is a light, kind sign.",
+      "A calm rabbit says soft good news is near. A frightened or fleeing one speaks of your own wish to hide. Many rabbits point to quick growth in plans, family or luck.",
+    ],
+  },
+  {
+    slug: "owl",
+    title: "Owl",
+    terms: "owls night bird wise wisdom hoot",
+    short:
+      "An owl stands for wisdom and what the night shows. It asks what you see when others do not.",
+    paragraphs: [
+      "An owl in a dream stands for wisdom, watchfulness and the things the night makes clear. It sees where others cannot.",
+      "A calm owl says to trust your own judgment. A hooting owl asks you to listen for a message you have missed. In old tradition it can warn of a secret that is about to come to light.",
+    ],
+  },
+  {
+    slug: "whale",
+    title: "Whale",
+    terms: "whales sea ocean giant deep dolphin",
+    short:
+      "A whale stands for deep feeling and great, quiet strength. It asks what lives beneath your surface.",
+    paragraphs: [
+      "A whale in a dream stands for deep feeling, quiet strength and the vast part of you that lies below the surface.",
+      "A whale swimming peacefully says your inner life is strong and steady. One that comes close speaks of a message from deep within. Being swallowed asks what feels too big to face.",
+    ],
+  },
+  {
+    slug: "shark",
+    title: "Shark",
+    terms: "sharks sea ocean fin teeth predator bite",
+    short:
+      "A shark stands for a hidden threat or a ruthless person. It asks where danger moves unseen.",
+    paragraphs: [
+      "A shark in a dream stands for a threat that moves beneath the surface: a ruthless person, a sudden danger or your own fear.",
+      "Seeing a fin from far away asks what you sense but cannot yet name. Escaping a shark says you will outlast a hard situation. Facing one calmly speaks of courage you did not know you had.",
+    ],
+  },
+  {
+    slug: "bees",
+    title: "Bees",
+    terms: "bee honey hive wasp sting swarm buzzing",
+    short:
+      "Bees stand for hard work, community and reward. A sting speaks of small pain from something sweet.",
+    paragraphs: [
+      "Bees in a dream stand for hard work, community and reward. They build something sweet from steady effort.",
+      "A calm hive or honey is a good sign of success and shared work. A swarm asks where too many demands crowd you. A sting speaks of a small hurt, often from someone close or something you value.",
+    ],
+  },
+  {
+    slug: "lightning",
+    title: "Lightning",
+    terms: "thunder bolt flash thunderstorm strike electric",
+    short:
+      "Lightning stands for a sudden insight or a shock. It lights up what was hidden in a moment.",
+    paragraphs: [
+      "Lightning in a dream stands for a sudden insight, shock or change. It lights up in a moment what was hidden.",
+      "Watching it from safety speaks of a truth you are starting to see. Being struck, or nearly, asks where a sharp surprise is shaking you. Lightning followed by rain is a clearing, a release after tension.",
+    ],
+  },
 ];
 
 /** What the "Tell me your dream" page shows before anyone types. */
