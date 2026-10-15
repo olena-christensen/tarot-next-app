@@ -141,26 +141,34 @@ async function renewDueSubscriptions() {
       continue;
     }
 
-    // Store the invoice id so the webhook can correlate the callback, and write
-    // the ledger row (best-effort). The webhook is the source of truth for the
-    // outcome (period extension, receipt/dunning email).
-    await prisma.subscription
-      .update({ where: { id: sub.id }, data: { monoInvoiceId: invoiceId } })
-      .catch((e) => console.error(`[cron/renew] failed to store invoiceId for sub ${sub.id}`, e));
-
-    await prisma.payment
-      .create({
-        data: {
-          userId: sub.userId,
-          monoInvoiceId: invoiceId,
-          reference,
-          productType: plan,
-          amount: PLAN_PRICES[plan],
-          currency: LEDGER_CURRENCY,
-          status: "created",
-        },
-      })
-      .catch((e) => console.error(`[cron/renew] failed to write ledger row for sub ${sub.id}`, e));
+    // Record the invoice: the Payment row is what the webhook grants from, so it
+    // is required. mono's callback can arrive before this write — the webhook then
+    // finds no row, answers 500 and mono retries once it exists. If the write
+    // fails outright the webhook keeps failing and alerting, which is the signal
+    // that a charged renewal needs a hand.
+    try {
+      await prisma.$transaction([
+        prisma.subscription.update({
+          where: { id: sub.id },
+          data: { monoInvoiceId: invoiceId },
+        }),
+        prisma.payment.create({
+          data: {
+            userId: sub.userId,
+            monoInvoiceId: invoiceId,
+            reference,
+            productType: plan,
+            amount: PLAN_PRICES[plan],
+            currency: LEDGER_CURRENCY,
+            status: "created",
+          },
+        }),
+      ]);
+    } catch (err) {
+      console.error(`[cron/renew] failed to record invoice ${invoiceId} for sub ${sub.id}`, err);
+      errors++;
+      continue;
+    }
 
     charged++;
   }
