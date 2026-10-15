@@ -4,7 +4,7 @@ import { recordHeartbeat } from "@/lib/heartbeat";
 import { prisma } from "@/lib/prisma";
 import { chargeByToken, LEDGER_CURRENCY, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
-import { reserveRenewalAttempt } from "@/lib/renewalReserve";
+import { downgradeToFreeOnce, reserveRenewalAttempt, type DowngradeSnapshot } from "@/lib/renewalReserve";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
 import { runCronJob } from "@/lib/cronJob";
 import { withDbWake } from "@/lib/dbWake";
@@ -18,16 +18,14 @@ import { withDbWake } from "@/lib/dbWake";
 export const dynamic = "force-dynamic";
 
 async function downgradeToFree(
-  subId: string,
-  userId: string,
+  sub: DowngradeSnapshot & { userId: string },
   reason: "canceled" | "payment_failed" | "no_token"
-): Promise<void> {
-  await prisma.subscription.update({
-    where: { id: subId },
-    data: { planId: "FREE", nextChargeAt: null, renewalAttempts: 0, paymentStatus: null, canceledAt: null },
-  });
+): Promise<boolean> {
+  // Conditional: a second run of this job (or a payment that just extended the
+  // plan) finds nothing to change, and then sends no email.
+  if (!(await downgradeToFreeOnce(sub))) return false;
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: sub.userId },
     // Their language, not the server's — this is the last thing they hear from
     // the app before losing access.
     select: { email: true, preferredLocale: true },
@@ -39,6 +37,7 @@ async function downgradeToFree(
       reason,
     });
   }
+  return true;
 }
 
 export async function GET(req: Request) {
@@ -87,8 +86,7 @@ async function renewDueSubscriptions() {
 
     if (action.type === "downgrade") {
       try {
-        await downgradeToFree(sub.id, sub.userId, action.reason);
-        downgraded++;
+        if (await downgradeToFree(sub, action.reason)) downgraded++;
       } catch (err) {
         console.error(`[cron/renew] downgrade failed for sub ${sub.id}`, err);
         errors++;

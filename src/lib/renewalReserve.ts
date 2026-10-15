@@ -42,3 +42,35 @@ export async function reserveRenewalAttempt(
   });
   return count === 1;
 }
+
+export type DowngradeSnapshot = {
+  id: string;
+  planId: string;
+  expiresAt: Date | null;
+};
+
+/**
+ * Moves an ended subscription back to free, at most once. Same reasoning as
+ * the reserve above: a doubled cron run holds the same snapshot, and an
+ * unconditional update let both runs "downgrade" and both send the
+ * subscription-ended email. Conditional on the plan and expiry still being
+ * what this run read, so it also stops if a payment extended the plan in the
+ * meantime. The cron sends the email only when this returns true.
+ */
+export async function downgradeToFreeOnce(sub: DowngradeSnapshot): Promise<boolean> {
+  const { count } = await prisma.subscription.updateMany({
+    where: {
+      id: sub.id,
+      planId: sub.planId as "MONTHLY" | "YEARLY",
+      expiresAt: sub.expiresAt,
+    },
+    data: {
+      planId: "FREE",
+      nextChargeAt: null,
+      renewalAttempts: 0,
+      paymentStatus: null,
+      canceledAt: null,
+    },
+  });
+  return count === 1;
+}

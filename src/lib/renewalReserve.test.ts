@@ -8,7 +8,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { reserveRenewalAttempt } from "@/lib/renewalReserve";
+import { downgradeToFreeOnce, reserveRenewalAttempt } from "@/lib/renewalReserve";
 
 const NOW = new Date("2026-10-15T03:00:00Z");
 const YESTERDAY = new Date("2026-10-14T03:00:00Z");
@@ -74,5 +74,42 @@ describe("reserveRenewalAttempt", () => {
     Object.assign(subs.rows[0], { paymentStatus: "success", renewalAttempts: 0 });
 
     expect(await reserveRenewalAttempt(stale, "MONTHLY", NOW)).toBe(false);
+  });
+});
+
+describe("downgradeToFreeOnce", () => {
+  const expired = new Date("2026-10-01T00:00:00Z");
+
+  beforeEach(() => {
+    Object.assign(subs.rows[0], { expiresAt: expired, nextChargeAt: expired, canceledAt: YESTERDAY });
+  });
+
+  const read = () => ({ ...subs.rows[0] }) as { id: string; planId: string; expiresAt: Date | null };
+
+  it("downgrades a paid subscription to free", async () => {
+    expect(await downgradeToFreeOnce(read())).toBe(true);
+
+    const row = subs.rows[0];
+    expect(row.planId).toBe("FREE");
+    expect(row.nextChargeAt).toBeNull();
+    expect(row.renewalAttempts).toBe(0);
+    expect(row.paymentStatus).toBeNull();
+    expect(row.canceledAt).toBeNull();
+  });
+
+  it("two runs that read the same row: only the first downgrades (one email)", async () => {
+    const runA = read();
+    const runB = read();
+
+    expect(await downgradeToFreeOnce(runA)).toBe(true);
+    expect(await downgradeToFreeOnce(runB)).toBe(false);
+  });
+
+  it("a payment that extended the plan since the read stops the downgrade", async () => {
+    const stale = read();
+    Object.assign(subs.rows[0], { expiresAt: new Date("2026-11-01T00:00:00Z") });
+
+    expect(await downgradeToFreeOnce(stale)).toBe(false);
+    expect(subs.rows[0].planId).toBe("MONTHLY");
   });
 });
