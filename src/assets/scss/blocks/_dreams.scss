@@ -594,6 +594,10 @@
 // Second pill on the main page, same shape as the games one.
 .game-entrance--dream {
   padding-inline-start: 62px;
+  // Sits close under the games pill, so the extra row costs the reader block
+  // as little height as possible (the block grows upward and would climb
+  // onto the title and header on a phone).
+  margin-top: 12px;
 
   .game-entrance__moon {
     position: absolute;
