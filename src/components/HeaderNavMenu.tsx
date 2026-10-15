@@ -113,6 +113,7 @@ export const HeaderNavMenu = ({ onOpenChange }: HeaderNavMenuProps) => {
                         <li><IntlLink className="header-nav__link" href="/" onClick={close}>{t("menuReadCards")}</IntlLink></li>
                         <li><IntlLink className="header-nav__link" href="/cards" onClick={close}>{tCards("navLabel")}</IntlLink></li>
                         <li><IntlLink className="header-nav__link" href="/dreams/tell" onClick={close}>{tDreams("menuDreams")}<span className="header-nav__tag">{tDreams("menuNew")}</span></IntlLink></li>
+                        <li><IntlLink className="header-nav__link" href="/dreams" onClick={close}>{tDreams("footerLink")}</IntlLink></li>
                         <li><IntlLink className="header-nav__link" href="/game" onClick={close}>{t("menuGames")}</IntlLink></li>
                         <li><IntlLink className="header-nav__link" href="/decks" onClick={close}>{t("menuDecks")}</IntlLink></li>
                         <li><IntlLink className="header-nav__link" href="/subscription" onClick={close}>{t("menuSubscription")}</IntlLink></li>
