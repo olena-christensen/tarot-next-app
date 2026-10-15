@@ -321,4 +321,164 @@ export const DREAM_TEXTS_NO: DreamTexts = {
       "En fugl i flukt tyder på et ønske som stiger. En fugl i bur taler om å føle seg innestengt; en fugl som kommer inn i hjemmet ditt, er ofte et budskap du blir bedt om å legge merke til.",
     ],
   },
+  hair: {
+    title: "Hår",
+    short: "Hår står for styrke, stolthet og hvordan du presenterer deg selv. Å klippe eller miste det taler om forandring, eller frykt for å miste kontroll.",
+    paragraphs: [
+      "Hår i en drøm står for livskraft, stolthet og bildet du viser verden. Langt, friskt hår tyder på selvtillit; floket eller matt hår peker på noe som føles uordentlig.",
+      "Å klippe håret markerer ofte et ønske om en ny start. Å miste det taler om uro for alder, status eller kontroll. Å børste eller flette det sier at du setter noe i orden.",
+    ],
+  },
+  bear: {
+    title: "Bjørn",
+    short: "En bjørn står for rå styrke, beskyttelse og sinne som holdes inne. Den spør om du står overfor en kraft, eller den overfor deg.",
+    paragraphs: [
+      "En bjørn i en drøm står for stor styrke, sterk beskyttelse og noen ganger sinne som ikke har funnet stemme. Den kan være en trussel eller en vokter, alt etter hvordan den oppfører seg.",
+      "En bjørn som jager deg, peker på et press du ikke har møtt ennå. En rolig bjørn, eller en du står ved siden av, sier at du lærer å holde din egen kraft uten frykt.",
+    ],
+  },
+  horse: {
+    title: "Hest",
+    short: "En hest står for frihet, driv og energien som bærer deg fremover. Hvordan du rir, viser hvordan du håndterer din egen kraft.",
+    paragraphs: [
+      "En hest i en drøm står for energi, frihet og drivet som bærer deg gjennom livet. Den taler også om stolthet og lidenskaper du lærer å styre.",
+      "Å ri med letthet sier at du styrer din egen vei. En hest som går til, eller kaster deg av, spør hvor drivet har løpt fra kontrollen. En hvit eller mild hest er et godt tegn.",
+    ],
+  },
+  lion: {
+    title: "Løve",
+    short: "En løve står for mot, stolthet og autoritet. Å møte den rolig sier at du tar din egen styrke i eie.",
+    paragraphs: [
+      "En løve i en drøm står for mot, stolthet og naturlig autoritet. Det kan være din egen styrke, eller en mektig person i livet ditt.",
+      "Å se en løve i øynene uten frykt sier at du finner motet ditt. Å løpe fra den tyder på en kraft du ikke føler deg klar til å møte. En løve i ro er et tegn på styrke som ikke trenger å bevise seg.",
+    ],
+  },
+  crocodile: {
+    title: "Krokodille",
+    short: "En krokodille står for en fare som skjuler seg under overflaten, eller en person som virker rolig, men ikke er trygg.",
+    paragraphs: [
+      "En krokodille i en drøm står for en fare du ikke helt ser: noe tålmodig og skjult som kan angripe når du er minst forberedt.",
+      "Den peker ofte på en person eller situasjon som ser rolig ut, men føles utrygg. Å komme seg unna sier at du merker risikoen i tide. Å se den på avstand spør hva du har valgt å ikke se på.",
+    ],
+  },
+  flood: {
+    title: "Flom",
+    short: "En flom står for følelser eller krav som har vokst seg for store til å holde tilbake. Den spør hva som har steget mens du så en annen vei.",
+    paragraphs: [
+      "En flom i en drøm står for følelser, bekymringer eller krav som har vokst utover det du kan holde tilbake. Den kommer ofte i en tid med overbelastning.",
+      "Å se på vannet fra et trygt sted sier at du er klar over presset og fortsatt har kontroll. En strøm som drar deg med, spør hva du må slippe. Vann som trekker seg tilbake er et tegn på lettelse.",
+    ],
+  },
+  storm: {
+    title: "Storm",
+    short: "En storm står for konflikt og opprør, i deg eller rundt deg. Den renser ofte lufta før noe roligere.",
+    paragraphs: [
+      "En storm i en drøm står for konflikt, opprør og sterke følelser, i deg eller i omgivelsene. Den kan speile en vanskelig tid du går gjennom.",
+      "Å ta ly i trygghet sier at du stoler på at du kommer deg gjennom. Å bli tatt av den i det åpne spør hvor du føler deg ubeskyttet. En storm som drar forbi og lar himmelen bli klar, er et løfte om ro etter uro.",
+    ],
+  },
+  door: {
+    title: "Dør",
+    short: "En dør står for en sjanse eller et valg. Åpen, lukket eller låst viser den hvor klar du føler deg til å gå gjennom.",
+    paragraphs: [
+      "En dør i en drøm står for en sjanse, et valg eller et nytt trinn. Det som er bak den, betyr mindre enn hvordan du føler deg foran den.",
+      "En åpen dør er en invitasjon. En låst dør spør hva som holder deg ute, eller inne. Å banke på sier at du venter på en tillatelse du kanskje kan gi deg selv.",
+    ],
+  },
+  stairs: {
+    title: "Trapp",
+    short: "En trapp står for framgang. Å gå opp taler om innsats og vekst; å gå ned om å se dypere inn i deg selv.",
+    paragraphs: [
+      "En trapp i en drøm står for framgang, ett trinn av gangen. Å klatre viser innsats og ambisjon; hvor slitsomt det føles, viser hvordan du ser på arbeidet foran deg.",
+      "Å gå ned er ikke noe tap: det betyr ofte å se dypere på noe, en følelse eller et minne. Trapper som ender brått eller aldri tar slutt, spør om målet har vært klart for deg.",
+    ],
+  },
+  knife: {
+    title: "Kniv",
+    short: "En kniv står for en beslutning som skjærer, eller for sinne og sårende ord. Den spør hva som må skilles ut eller sies.",
+    paragraphs: [
+      "En kniv i en drøm står for en skarp beslutning: noe du må skjære bort, eller ord som sårer. Den kan også bære sinne som ikke er uttalt.",
+      "Å holde kniven tyder på at du er klar til å handle eller avslutte noe. Å bli truet med en peker på skarp kritikk eller frykt. Det betyr sjelden virkelig vold.",
+    ],
+  },
+  hands: {
+    title: "Hender",
+    short: "Hender står for det du gjør og hvordan du rekker ut til andre. Tilstanden deres viser hvor dyktig og forbundet du føler deg.",
+    paragraphs: [
+      "Hender i en drøm står for handling, dyktighet og måten du rekker ut til folk på. Sterke, rene hender sier at du føler deg i stand til det som ligger foran deg.",
+      "Skadde, bundne eller manglende hender peker på en følelse av ikke å kunne handle. Å holde noen i handa taler om tillit og nærhet. Å vaske hendene spør hva du ønsker å bli kvitt.",
+    ],
+  },
+  tree: {
+    title: "Tre",
+    short: "Et tre står for vekst, røtter og det lange blikket. Tilstanden viser hvor stabil og næret du føler deg.",
+    paragraphs: [
+      "Et tre i en drøm står for vekst, slektens røtter og et liv bygget over tid. Tilstanden speiler hvor stabil og næret du føler deg.",
+      "Et høyt, grønt tre er et godt tegn på styrke og framgang. Et bart eller falt tre spør hva som trenger omsorg, eller har gått ut på dato. Å klatre i et tre taler om å søke et videre utsyn.",
+    ],
+  },
+  flowers: {
+    title: "Blomster",
+    short: "Blomster står for skjønnhet, hengivenhet og det som springer ut. Friske gir håp; visne spør hva som trenger stell.",
+    paragraphs: [
+      "Blomster i en drøm står for skjønnhet, hengivenhet og noe som springer ut: et vennskap, en plan, en mildere tid.",
+      "Friske, lyse blomster er et håpefullt tegn. Visne spør hva som er latt ligge uten omsorg. Å få blomster taler om å bli verdsatt; å gi dem taler om varmen du vil dele.",
+    ],
+  },
+  moon: {
+    title: "Måne",
+    short: "Månen står for intuisjon, sykluser og det som er skjult om dagen. En klar måne er et godt tegn på indre visshet.",
+    paragraphs: [
+      "Månen i en drøm står for intuisjon, følelse og livets sykluser. Den lyser opp det som er skjult om dagen og inviterer deg til å stole på det du kjenner.",
+      "En full, klar måne sier at din indre stemme er tydelig. En matt eller skjult måne ber deg vente med å bestemme deg. En måne som skifter form taler om en forandring som kommer i sin egen tid.",
+    ],
+  },
+  sun: {
+    title: "Sol",
+    short: "Sola står for klarhet, varme og suksess. Å se den tydelig er et godt tegn; for mye av den kan bety press.",
+    paragraphs: [
+      "Sola i en drøm står for klarhet, varme og livskraft. Det er et av de mest håpefulle drømmetegnene, et hint om at ting kommer fram i lyset.",
+      "Soloppgang taler om en ny begynnelse; solnedgang om en stille avslutning. En brennende sol spør hvor du føler deg for utsatt eller presset. Skyer som deler seg lover lettelse.",
+    ],
+  },
+  train: {
+    title: "Tog",
+    short: "Et tog står for livets vei. Om du er om bord, kommer for sent eller ser det kjøre, viser hvordan du føler om retningen din.",
+    paragraphs: [
+      "Et tog i en drøm står for veien livet ditt tar, langs skinner du kanskje ikke valgte. Reisen viser hvordan du føler om retningen din.",
+      "Å kjøre jevnt sier at du er på kurs. Å gå glipp av toget taler om frykt for en tapt sjanse. Å sitte på feil tog spør om veien din fortsatt passer deg.",
+    ],
+  },
+  hospital: {
+    title: "Sykehus",
+    short: "Et sykehus står for helbredelse og behov for omsorg. Det dukker ofte opp når du er sliten eller trenger hvile.",
+    paragraphs: [
+      "Et sykehus i en drøm står for helbredelse, omsorg og behovet for å komme seg. Det dukker ofte opp når du er utslitt, eller en del av livet trenger å lappes sammen.",
+      "Å være pasient spør hvor du trenger hvile eller hjelp. Å besøke noen taler om omtanke for dem. Å forlate sykehuset frisk er et tegn på at bedring kommer. Det er ikke en medisinsk advarsel.",
+    ],
+  },
+  school: {
+    title: "Skole",
+    short: "Skole står for leksjoner, vurdering og gamle vaner med selvtvil. Den spør hva du fortsatt lærer.",
+    paragraphs: [
+      "Skole i en drøm står for læring, vurdering og vaner med selvtvil som begynner i barndommen. Den vender ofte tilbake når livet gir deg en ny prøve.",
+      "Å føle seg bortkommen i timen eller uforberedt taler om frykt for å komme til kort. Å glede seg over leksjonen sier at du er åpen for å lære. Drømmen spør hvilken leksjon livet legger foran deg nå.",
+    ],
+  },
+  key: {
+    title: "Nøkkel",
+    short: "En nøkkel står for tilgang og svar. Å finne en er et godt tegn; å miste en taler om å føle seg utestengt.",
+    paragraphs: [
+      "En nøkkel i en drøm står for tilgang, løsninger og tillit. Den antyder at svaret du trenger, kanskje allerede er innen rekkevidde.",
+      "Å finne en nøkkel sier at en åpning er på vei. Å miste den, eller en nøkkel som ikke passer, taler om å føle seg utestengt eller usikker på hvilket valg man skal ta. Å gi bort en nøkkel viser tillit.",
+    ],
+  },
+  bed: {
+    title: "Seng",
+    short: "En seng står for hvile, privatliv og nærhet. Tilstanden viser hvor trygg og uthvilt du føler deg.",
+    paragraphs: [
+      "En seng i en drøm står for hvile, privatliv og nærhet. Tilstanden speiler hvor trygg og uthvilt du føler deg i ditt eget liv.",
+      "En ryddig og god seng sier at du har det godt. En rotete, fremmed eller opptatt seng spør hvor hvilen eller privatlivet ditt forstyrres. Å ikke få sove taler om et sinn som ikke vil sette seg.",
+    ],
+  },
 };

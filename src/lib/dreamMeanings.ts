@@ -473,6 +473,226 @@ export const DREAMS: DreamSymbol[] = [
       "A bird in flight suggests a wish rising. A caged bird speaks of feeling confined; a bird that comes into your home is often a message you are being asked to notice.",
     ],
   },
+  {
+    slug: "hair",
+    title: "Hair",
+    terms: "haircut hair loss bald braid long hair cutting",
+    short:
+      "Hair stands for strength, vanity and how you present yourself. Cutting or losing it speaks of change, or of fear of losing control.",
+    paragraphs: [
+      "Hair in a dream stands for vitality, pride and the image you show the world. Long, healthy hair suggests confidence; tangled or dull hair points to something that feels out of order.",
+      "Cutting hair often marks a wish for a fresh start. Losing it speaks of worry about ageing, status or control. Brushing or braiding it says you are putting something in order.",
+    ],
+  },
+  {
+    slug: "bear",
+    title: "Bear",
+    terms: "bears grizzly cub wild animal",
+    short:
+      "A bear stands for raw strength, protection and anger held in. It asks whether you are facing a power or being faced by one.",
+    paragraphs: [
+      "A bear in a dream stands for great strength, fierce protection and sometimes anger that has not found a voice. It can be a threat or a guardian, depending on how it behaves.",
+      "A bear that chases you points to a pressure you have not yet faced. A calm bear, or one you stand beside, says you are learning to hold your own power without fear.",
+    ],
+  },
+  {
+    slug: "horse",
+    title: "Horse",
+    terms: "horses riding stallion mare pony gallop",
+    short:
+      "A horse stands for freedom, drive and the energy that carries you forward. How you ride it shows how you handle your own power.",
+    paragraphs: [
+      "A horse in a dream stands for energy, freedom and the drive that carries you through life. It also speaks of pride and of passions you are learning to steer.",
+      "Riding with ease says you are in command of your path. A horse that bolts or throws you asks where your drive has run ahead of your control. A white or gentle horse is a good sign.",
+    ],
+  },
+  {
+    slug: "lion",
+    title: "Lion",
+    terms: "lions lioness big cat pride king",
+    short:
+      "A lion stands for courage, pride and authority. Meeting one calmly says you are claiming your own strength.",
+    paragraphs: [
+      "A lion in a dream stands for courage, pride and natural authority. It can be your own strength, or a powerful person in your life.",
+      "Facing a lion without fear says you are finding your courage. Running from one suggests a power you feel unready to meet. A lion at rest is a sign of strength that does not need to prove itself.",
+    ],
+  },
+  {
+    slug: "crocodile",
+    title: "Crocodile",
+    terms: "crocodiles alligator reptile river jaws",
+    short:
+      "A crocodile stands for a danger that hides below the surface, or for a person who seems calm but is not safe.",
+    paragraphs: [
+      "A crocodile in a dream stands for a danger you cannot quite see: something patient and hidden that may strike when you are least ready.",
+      "It often points to a person or a situation that looks calm but feels unsafe. Escaping one says you are sensing the risk in time. Watching one from a distance asks what you have decided not to look at.",
+    ],
+  },
+  {
+    slug: "flood",
+    title: "Flood",
+    terms: "flooding flooded rising water tsunami wave drowning",
+    short:
+      "A flood stands for feelings or demands that have grown too big to hold back. It asks what has been rising while you looked away.",
+    paragraphs: [
+      "A flood in a dream stands for feelings, worries or demands that have grown beyond what you can hold back. It often comes in a time of overload.",
+      "Watching the water from safety says you are aware of the pressure and still in control. Being swept along asks what you need to let go of. Water that drains away is a sign of relief.",
+    ],
+  },
+  {
+    slug: "storm",
+    title: "Storm",
+    terms: "thunder lightning wind hurricane tornado thunderstorm",
+    short:
+      "A storm stands for conflict and upheaval, inside you or around you. It often clears the air before something calmer.",
+    paragraphs: [
+      "A storm in a dream stands for conflict, upheaval and strong feeling, inside you or in your surroundings. It can mirror a hard time you are going through.",
+      "Sheltering safely says you trust that you will come through. Being caught in the open asks where you feel unprotected. A storm that passes and leaves clear sky is a promise of calm after trouble.",
+    ],
+  },
+  {
+    slug: "door",
+    title: "Door",
+    terms: "doors doorway gate entrance locked open knock threshold",
+    short:
+      "A door stands for a chance or a choice. Open, closed or locked, it shows how ready you feel to step through.",
+    paragraphs: [
+      "A door in a dream stands for a chance, a choice or a new stage. What is behind it matters less than how you feel standing in front of it.",
+      "An open door is an invitation. A locked one asks what is keeping you out, or keeping you in. Knocking says you are waiting for permission that you may be able to give yourself.",
+    ],
+  },
+  {
+    slug: "stairs",
+    title: "Stairs",
+    terms: "staircase steps climbing ladder escalator up down",
+    short:
+      "Stairs stand for progress. Going up speaks of effort and growth; going down of looking deeper into yourself.",
+    paragraphs: [
+      "Stairs in a dream stand for progress, one step at a time. Climbing shows effort and ambition; how tiring it feels shows how you view the work ahead.",
+      "Going down is not a loss: it often means looking deeper into something, a feeling or a memory. Stairs that end suddenly or never finish ask whether the goal has been clear to you.",
+    ],
+  },
+  {
+    slug: "knife",
+    title: "Knife",
+    terms: "knives blade stab cut sharp dagger weapon",
+    short:
+      "A knife stands for a decision that cuts, or for anger and hurt words. It asks what needs to be separated or said.",
+    paragraphs: [
+      "A knife in a dream stands for a sharp decision: something you need to cut away, or words that cut. It can also carry anger that has not been spoken.",
+      "Holding the knife suggests you are ready to act or to end something. Being threatened with one points to a sharp criticism or fear. It rarely means real violence.",
+    ],
+  },
+  {
+    slug: "hands",
+    title: "Hands",
+    terms: "hand fingers palm arm holding touch",
+    short:
+      "Hands stand for what you do and how you reach others. Their state shows how capable and connected you feel.",
+    paragraphs: [
+      "Hands in a dream stand for action, skill and the way you reach out to people. Strong, clean hands say you feel capable of what lies ahead.",
+      "Hurt, bound or missing hands point to a feeling of being unable to act. Holding someone's hand speaks of trust and closeness. Washing your hands asks what you wish to be free of.",
+    ],
+  },
+  {
+    slug: "tree",
+    title: "Tree",
+    terms: "trees roots branches leaves oak growing orchard",
+    short:
+      "A tree stands for growth, roots and the long view. Its health shows how steady and nourished you feel.",
+    paragraphs: [
+      "A tree in a dream stands for growth, family roots and a life built over time. Its state reflects how steady and nourished you feel.",
+      "A tall, green tree is a good sign of strength and progress. A bare or fallen tree asks what needs care or has run its course. Climbing a tree speaks of seeking a wider view.",
+    ],
+  },
+  {
+    slug: "flowers",
+    title: "Flowers",
+    terms: "flower blossom bouquet garden rose bloom petals",
+    short:
+      "Flowers stand for beauty, affection and things coming into bloom. Fresh ones are hopeful; wilted ones ask what needs tending.",
+    paragraphs: [
+      "Flowers in a dream stand for beauty, affection and something coming into bloom: a friendship, a plan, a gentler time.",
+      "Fresh, bright flowers are a hopeful sign. Wilted ones ask what has been left without care. Receiving flowers speaks of being valued; giving them, of the warmth you wish to share.",
+    ],
+  },
+  {
+    slug: "moon",
+    title: "Moon",
+    terms: "moonlight full moon crescent night lunar",
+    short:
+      "The moon stands for intuition, cycles and what is hidden by day. A bright moon is a good sign for inner knowing.",
+    paragraphs: [
+      "The moon in a dream stands for intuition, feeling and the cycles of life. It lights what is hidden by day and invites you to trust what you sense.",
+      "A full, bright moon says your inner voice is clear. A dim or hidden moon asks you to wait before deciding. A moon that changes shape speaks of a change that comes in its own time.",
+    ],
+  },
+  {
+    slug: "sun",
+    title: "Sun",
+    terms: "sunlight sunshine sunrise sunset daylight bright",
+    short:
+      "The sun stands for clarity, warmth and success. Seeing it clearly is a good sign; too much of it can mean pressure.",
+    paragraphs: [
+      "The sun in a dream stands for clarity, warmth and vitality. It is one of the most hopeful dream signs, a hint that things are coming into the light.",
+      "Sunrise speaks of a new beginning; sunset, of a quiet ending. A scorching sun asks where you feel too exposed or pressed. Clouds clearing from the sun promise relief.",
+    ],
+  },
+  {
+    slug: "train",
+    title: "Train",
+    terms: "trains railway station railroad track platform subway",
+    short:
+      "A train stands for the path of your life. Whether you are on it, late for it or watching it go shows how you feel about your direction.",
+    paragraphs: [
+      "A train in a dream stands for the path your life is taking, along rails you may not have chosen. The journey shows how you feel about your direction.",
+      "Riding smoothly says you are on course. Missing the train speaks of a feared lost chance. Being on the wrong train asks whether your path still suits you.",
+    ],
+  },
+  {
+    slug: "hospital",
+    title: "Hospital",
+    terms: "doctor nurse patient sick ill surgery clinic medicine",
+    short:
+      "A hospital stands for healing and a need for care. It often appears when you are worn down or need rest.",
+    paragraphs: [
+      "A hospital in a dream stands for healing, care and the need to recover. It often appears when you are worn down, or a part of life needs mending.",
+      "Being the patient asks where you need rest or help. Visiting someone speaks of concern for them. Leaving the hospital well is a sign that recovery is coming. It is not a medical warning.",
+    ],
+  },
+  {
+    slug: "school",
+    title: "School",
+    terms: "classroom teacher lesson student class homework university",
+    short:
+      "School stands for lessons, being judged and old habits of self-doubt. It asks what you are still learning.",
+    paragraphs: [
+      "School in a dream stands for learning, being judged and the habits of self-doubt that start in childhood. It often returns when life sets you a new test.",
+      "Feeling lost in class or unready speaks of fear of falling short. Enjoying the lesson says you are open to learning. It asks what lesson life is putting before you now.",
+    ],
+  },
+  {
+    slug: "key",
+    title: "Key",
+    terms: "keys lock locked unlock keyhole found lost",
+    short:
+      "A key stands for access and answers. Finding one is a good sign; losing one speaks of feeling shut out.",
+    paragraphs: [
+      "A key in a dream stands for access, solutions and trust. It suggests the answer you need may already be within reach.",
+      "Finding a key says an opening is coming. Losing one, or a key that does not fit, speaks of feeling shut out or unsure which choice to make. Giving a key shows trust.",
+    ],
+  },
+  {
+    slug: "bed",
+    title: "Bed",
+    terms: "bedroom sleeping pillow blanket mattress rest",
+    short:
+      "A bed stands for rest, privacy and closeness. Its state shows how safe and rested you feel.",
+    paragraphs: [
+      "A bed in a dream stands for rest, privacy and closeness. Its state reflects how safe and rested you feel in your own life.",
+      "A made, comfortable bed says you feel at ease. A messy, strange or occupied bed asks where your rest or privacy is disturbed. Being unable to sleep speaks of a mind that will not settle.",
+    ],
+  },
 ];
 
 /** What the "Tell me your dream" page shows before anyone types. */

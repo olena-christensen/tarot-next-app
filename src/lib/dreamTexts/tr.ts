@@ -321,4 +321,164 @@ export const DREAM_TEXTS_TR: DreamTexts = {
       "Uçan bir kuş, yükselen bir arzuya işaret eder. Kafesteki kuş, sıkışıp kalma hissini anlatır; eve giren bir kuş ise çoğu zaman fark etmeniz istenen bir haberdir.",
     ],
   },
+  hair: {
+    title: "Saç",
+    short: "Saç gücü, gururu ve kendinizi nasıl sunduğunuzu anlatır. Kesmek ya da dökülmesi, değişimden ya da kontrolü kaybetme korkusundan söz eder.",
+    paragraphs: [
+      "Rüyada saç, canlılığı, gururu ve dünyaya gösterdiğiniz imajı simgeler. Uzun ve sağlıklı saç özgüveni; karmaşık ya da solgun saç yerinde olmayan hissettiren bir şeyi gösterir.",
+      "Saç kesmek çoğu zaman yeniden başlama arzusunu işaretler. Dökülmesi yaş, konum ya da kontrol endişesini anlatır. Taramak ya da örmek bir şeyi düzene sokmak demektir.",
+    ],
+  },
+  bear: {
+    title: "Ayı",
+    short: "Ayı ham güç, koruma ve içe atılmış öfke demektir. Bir gücün karşısında mısınız yoksa o güç sizin karşınızda mı diye sorar.",
+    paragraphs: [
+      "Rüyada ayı, büyük güç, sert koruma ve bazen sesini bulamamış öfke demektir. Davranışına göre hem tehdit hem koruyucu olabilir.",
+      "Sizi kovalayan ayı, henüz yüzleşmediğiniz bir baskıya işaret eder. Sakin bir ayı ya da yanında durduğunuz ayı, kendi gücünü korkusuzca taşımayı öğrendiğinizi söyler.",
+    ],
+  },
+  horse: {
+    title: "At",
+    short: "At özgürlük, atılım ve sizi ileri taşıyan enerji demektir. Nasıl bindiğiniz, kendi gücünüzle nasıl baş ettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada at, enerji, özgürlük ve sizi hayat boyunca taşıyan atılım demektir. Ayrıca gurur ve yönlendirmeyi öğrendiğiniz tutkulardan da söz eder.",
+      "Rahat binmek, yolunuza hâkim olduğunuzu söyler. Kaçan ya da sizi düşüren at, atılımınızın kontrolünüzü nerede geride bıraktığını sorar. Beyaz ya da uysal bir at iyi bir işaret.",
+    ],
+  },
+  lion: {
+    title: "Aslan",
+    short: "Aslan cesaret, gurur ve otorite demektir. Onu sakince karşılamak kendi gücünüzü sahiplendiğinizi söyler.",
+    paragraphs: [
+      "Rüyada aslan, cesaret, gurur ve doğal otorite demektir. Kendi gücünüz ya da hayatınızdaki güçlü biri olabilir.",
+      "Aslana korkusuzca bakmak cesaretinizi bulduğunuzu söyler. Ondan kaçmak, bir gücü karşılamaya hazır olmadığınızı gösterir. Dinlenen bir aslan, kanıtlamaya ihtiyacı olmayan gücün işaretidir.",
+    ],
+  },
+  crocodile: {
+    title: "Timsah",
+    short: "Timsah yüzeyin altında saklanan bir tehlikeyi ya da sakin görünen ama güvenli olmayan birini anlatır.",
+    paragraphs: [
+      "Rüyada timsah, tam göremediğiniz bir tehlikeyi simgeler: en az hazır olduğunuzda saldırabilecek sabırlı ve gizli bir şey.",
+      "Çoğu zaman sakin görünen ama güvensiz hissettiren bir kişiye ya da duruma işaret eder. Ondan kaçmayı başarmak, riski zamanında sezdiğinizi gösterir. Uzaktan izlemek, neye bakmamayı seçtiğinizi sorar.",
+    ],
+  },
+  flood: {
+    title: "Sel",
+    short: "Sel, tutulamayacak kadar büyümüş duygular ya da beklentilerdir. Başka yere bakarken neyin yükseldiğini sorar.",
+    paragraphs: [
+      "Rüyada sel, tutabileceğinizden fazla büyüyen duygular, endişeler ya da talepler demektir. Sık sık aşırı yük döneminde gelir.",
+      "Suyu güvenli bir yerden izlemek, baskının farkında olduğunuzu ve kontrolü koruduğunuzu söyler. Sizi sürükleyen akıntı, neyi bırakmanız gerektiğini sorar. Çekilen su rahatlamanın işaretidir.",
+    ],
+  },
+  storm: {
+    title: "Fırtına",
+    short: "Fırtına çatışma ve altüst oluş demektir, içinizde ya da çevrenizde. Çoğu zaman daha sakin bir dönemden önce havayı temizler.",
+    paragraphs: [
+      "Rüyada fırtına, içinizde ya da çevrenizde çatışma, altüst oluş ve güçlü duygular demektir. Yaşadığınız zor bir dönemi yansıtabilir.",
+      "Güvenle sığınmak, atlatacağınıza güvendiğinizi söyler. Açıkta yakalanmak, nerede korunmasız hissettiğinizi sorar. Geçip temiz bir gökyüzü bırakan fırtına, sıkıntıdan sonra gelen dinginliğin sözüdür.",
+    ],
+  },
+  door: {
+    title: "Kapı",
+    short: "Kapı bir fırsat ya da seçim demektir. Açık, kapalı ya da kilitli, adım atmaya ne kadar hazır olduğunuzu gösterir.",
+    paragraphs: [
+      "Rüyada kapı, bir fırsat, seçim ya da yeni bir aşama demektir. Arkasındakinden çok, önünde ne hissettiğiniz önemlidir.",
+      "Açık kapı bir davettir. Kilitli olan, sizi neyin dışarıda ya da içeride tuttuğunu sorar. Kapıyı çalmak, belki de kendinize verebileceğiniz bir izni beklemek demektir.",
+    ],
+  },
+  stairs: {
+    title: "Merdiven",
+    short: "Merdiven ilerleme demektir. Çıkmak çaba ve büyümeden; inmek ise kendine daha derin bakmaktan söz eder.",
+    paragraphs: [
+      "Rüyada merdiven, adım adım ilerlemeyi simgeler. Çıkmak çaba ve hırsı gösterir; ne kadar yorduğu, önünüzdeki işi nasıl gördüğünüzü gösterir.",
+      "İnmek kayıp değildir: çoğu zaman bir şeye, bir duyguya ya da anıya daha derin bakmak anlamına gelir. Birdenbire biten ya da hiç bitmeyen merdivenler, hedefin sizin için net olup olmadığını sorar.",
+    ],
+  },
+  knife: {
+    title: "Bıçak",
+    short: "Bıçak kesen bir karar ya da öfke ve acı sözler demektir. Neyin ayrılması ya da söylenmesi gerektiğini sorar.",
+    paragraphs: [
+      "Rüyada bıçak keskin bir karar demektir: kesip atmanız gereken bir şey ya da yaralayan sözler. Konuşulmamış öfkeyi de taşıyabilir.",
+      "Bıçağı elinizde tutmak, harekete geçmeye ya da bir şeyi bitirmeye hazır olduğunuzu gösterir. Bıçakla tehdit edilmek sert bir eleştiriye ya da korkuya işaret eder. Nadiren gerçek şiddet anlamına gelir.",
+    ],
+  },
+  hands: {
+    title: "Eller",
+    short: "Eller yaptıklarınızı ve başkalarına nasıl uzandığınızı anlatır. Durumları, kendinizi ne kadar yetkin ve bağlantılı hissettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada eller eylemi, beceriliği ve insanlara nasıl uzandığınızı simgeler. Güçlü ve temiz eller, önünüzdekine karşı kendinizi yetkin hissettiğinizi söyler.",
+      "Yaralı, bağlı ya da eksik eller, harekete geçememe hissine işaret eder. Birinin elini tutmak güven ve yakınlıktan söz eder. Ellerinizi yıkamak, neden kurtulmak istediğinizi sorar.",
+    ],
+  },
+  tree: {
+    title: "Ağaç",
+    short: "Ağaç büyüme, kök ve uzun vadeli bakış demektir. Sağlığı, kendinizi ne kadar sağlam ve beslenmiş hissettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada ağaç, büyüme, aile kökleri ve zamanla kurulmuş bir hayat demektir. Durumu, kendinizi ne kadar sağlam ve beslenmiş hissettiğinizi yansıtır.",
+      "Uzun, yeşil bir ağaç güç ve ilerlemenin iyi bir işaretidir. Çıplak ya da devrilmiş olan, neyin bakıma ihtiyacı olduğunu veya neyin sonuna geldiğini sorar. Ağaca tırmanmak daha geniş bir bakış aramaktır.",
+    ],
+  },
+  flowers: {
+    title: "Çiçekler",
+    short: "Çiçekler güzellik, sevgi ve açan şeyler demektir. Taze olanlar umut verir; solmuş olanlar neye bakılması gerektiğini sorar.",
+    paragraphs: [
+      "Rüyada çiçekler güzelliği, sevgiyi ve açmakta olan bir şeyi simgeler: bir dostluk, bir plan, daha yumuşak bir dönem.",
+      "Taze, canlı çiçekler umutlu bir işaret. Solmuş olanlar neyin ilgisiz kaldığını sorar. Çiçek almak değerli hissetmek; vermek paylaşmak istediğiniz sıcaklıktır.",
+    ],
+  },
+  moon: {
+    title: "Ay",
+    short: "Ay sezgi, döngüler ve gündüz gizli kalan şeyler demektir. Parlak bir ay içsel bilmenin iyi bir işaretidir.",
+    paragraphs: [
+      "Rüyada ay, sezgi, duygu ve hayatın döngülerini simgeler. Gündüz gizli kalanı aydınlatır ve hissettiklerinize güvenmeye çağırır.",
+      "Dolunay, iç sesinizin net olduğunu söyler. Soluk ya da gizli bir ay karar vermeden önce beklemenizi ister. Şekil değiştiren ay, kendi zamanında gelen bir değişimden söz eder.",
+    ],
+  },
+  sun: {
+    title: "Güneş",
+    short: "Güneş netlik, sıcaklık ve başarı demektir. Onu açık görmek iyi bir işaret; çok fazlası baskı anlamına gelebilir.",
+    paragraphs: [
+      "Rüyada güneş, netlik, sıcaklık ve canlılık demektir. En umut verici rüya işaretlerinden biridir; her şeyin gün ışığına çıktığına dair bir ipucu.",
+      "Doğan güneş yeni bir başlangıcı; batan güneş sessiz bir sonu anlatır. Kavurucu güneş nerede çok açıkta ya da sıkışık hissettiğinizi sorar. Dağılan bulutlar rahatlama vaat eder.",
+    ],
+  },
+  train: {
+    title: "Tren",
+    short: "Tren hayatınızın yoludur. İçinde olmanız, ona geç kalmanız ya da gidişini izlemeniz yönünüze bakışınızı gösterir.",
+    paragraphs: [
+      "Rüyada tren, hayatınızın izlediği yolu, belki de seçmediğiniz raylar üzerinde, simgeler. Yolculuk, yönünüze dair ne hissettiğinizi gösterir.",
+      "Düzgün gitmek, rotada olduğunuzu söyler. Treni kaçırmak, korkulan bir kaybedilmiş fırsattan söz eder. Yanlış trende olmak, yolunuzun size hâlâ uyup uymadığını sorar.",
+    ],
+  },
+  hospital: {
+    title: "Hastane",
+    short: "Hastane iyileşme ve bakıma ihtiyaç demektir. Genellikle yorgun düştüğünüzde ya da dinlenmeye ihtiyacınız olduğunda görülür.",
+    paragraphs: [
+      "Rüyada hastane, iyileşme, bakım ve toparlanma ihtiyacını simgeler. Sık sık yorgun olduğunuzda ya da hayatınızın bir kısmı onarım gerektirdiğinde görülür.",
+      "Hasta olmak, nerede dinlenmeye ya da yardıma ihtiyacınız olduğunu sorar. Birini ziyaret etmek onun için duyulan kaygıdır. Hastaneden iyileşerek çıkmak, iyileşmenin geldiğine dair bir işaret. Bu tıbbi bir uyarı değildir.",
+    ],
+  },
+  school: {
+    title: "Okul",
+    short: "Okul dersler, değerlendirilme ve eski özgüven eksikliği alışkanlıkları demektir. Henüz neyi öğrendiğinizi sorar.",
+    paragraphs: [
+      "Rüyada okul, öğrenmeyi, değerlendirilmeyi ve çocuklukta başlayan kendinden şüphe alışkanlıklarını simgeler. Hayat size yeni bir sınav koyduğunda sık sık geri döner.",
+      "Derste kaybolmuş ya da hazırlıksız hissetmek, yetersiz kalma korkusundan söz eder. Dersten keyif almak, öğrenmeye açık olduğunuzu söyler. Rüya, hayatın şu anda önünüze hangi dersi koyduğunu sorar.",
+    ],
+  },
+  key: {
+    title: "Anahtar",
+    short: "Anahtar erişim ve cevaplar demektir. Bulmak iyi bir işaret; kaybetmek dışlanmış hissetmekten söz eder.",
+    paragraphs: [
+      "Rüyada anahtar, erişim, çözüm ve güven demektir. İhtiyacınız olan cevabın zaten elinizin erişiminde olabileceğini düşündürür.",
+      "Anahtar bulmak bir kapının açılacağını söyler. Kaybetmek ya da uymayan bir anahtar, dışlanmış hissetmeyi veya hangi seçimi yapacağınızdan emin olmamayı anlatır. Anahtar vermek güven gösterir.",
+    ],
+  },
+  bed: {
+    title: "Yatak",
+    short: "Yatak dinlenme, mahremiyet ve yakınlık demektir. Durumu, kendinizi ne kadar güvende ve dinlenmiş hissettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada yatak, dinlenme, mahremiyet ve yakınlığı simgeler. Durumu, kendi hayatınızda kendinizi ne kadar güvende ve dinlenmiş hissettiğinizi yansıtır.",
+      "Yapılmış, rahat bir yatak huzurlu olduğunuzu söyler. Dağınık, yabancı ya da dolu bir yatak, dinlenmenizin ya da mahremiyetinizin nerede bozulduğunu sorar. Uyuyamamak yatışmayan bir zihinden söz eder.",
+    ],
+  },
 };

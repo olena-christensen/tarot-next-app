@@ -1,6 +1,6 @@
 # Dream meanings
 
-**Status (2026-10-15):** prototype built on branch `dream-interpritor`: 40 symbols (batches 1 and 2) in all 5 languages, the "Tell me your dream" tool, result page, share picture, menu entry, second home-page pill, footer link, combined search. Not yet type-checked, tested or looked at in a browser (no shell was available when it was written).
+**Status (2026-10-15):** prototype built on branch `dream-interpritor`: 60 symbols (batches 1 to 3) in all 5 languages, the "Tell me your dream" tool, result page, share picture, menu entry, second home-page pill, footer link, combined search. Not yet type-checked, tested or looked at in a browser (no shell was available when it was written).
 
 Goal: more visitors from Google and from sharing, led into a free card reading.
 
@@ -37,7 +37,7 @@ No Russian services, and no tool that needs signing up, for numbers or anything 
 
 ## Not done yet
 
-- The uk, ru, tr and no words (button labels and the 40 dream texts) were written by Claude, not by a native reader. Lena chose not to review them.
-- Remaining batches. Batch 1: water, falling, snake, teeth, flying, being chased, house, fire, death, baby, dog, cat, ocean, money, wedding, exam, car, mirror, bridge, forest. Batch 2: pregnancy, the dead, child, fish, sea, ex-partner, cheating partner, rats, gold, blood, being naked, being late, being lost, funeral, rain, snow, mother, father, spider, bird. Candidates for later batches: graveyard, hair, bear, horse, mouse, crocodile, lion, flood, storm, door, stairs, knife, hands, adjusted by what Search Console shows.
-- Letter headings on `/dreams` once there are around 60 dreams.
+- The uk, ru, tr and no words (button labels and the 60 dream texts) were written by Claude, not by a native reader. Lena chose not to review them.
+- More batches (target about 100). Batch 1: water, falling, snake, teeth, flying, being chased, house, fire, death, baby, dog, cat, ocean, money, wedding, exam, car, mirror, bridge, forest. Batch 2: pregnancy, the dead, child, fish, sea, ex-partner, cheating partner, rats, gold, blood, being naked, being late, being lost, funeral, rain, snow, mother, father, spider, bird. Batch 3: hair, bear, horse, lion, crocodile, flood, storm, door, stairs, knife, hands, tree, flowers, moon, sun, train, hospital, school, key, bed. Candidates for later batches: graveyard, mouse, adjusted by what Search Console shows.
+- Letter headings on `/dreams`: 60 dreams reached, worth considering now.
 - Artificial intelligence for signed-in Seekers as a moonstone item, only if people use the tool.
