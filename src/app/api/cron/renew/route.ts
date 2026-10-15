@@ -4,6 +4,7 @@ import { recordHeartbeat } from "@/lib/heartbeat";
 import { prisma } from "@/lib/prisma";
 import { chargeByToken, LEDGER_CURRENCY, PLAN_PRICES } from "@/lib/mono";
 import { decideRenewalAction } from "@/lib/renewal";
+import { reserveRenewalAttempt } from "@/lib/renewalReserve";
 import { sendSubscriptionEndedEmail } from "@/lib/mailer";
 import { runCronJob } from "@/lib/cronJob";
 import { withDbWake } from "@/lib/dbWake";
@@ -100,20 +101,14 @@ async function renewDueSubscriptions() {
     const token = sub.monoCardToken;
     if (!token) continue; // defensive; decideRenewalAction already guarantees it
 
-    // Reserve the attempt FIRST, using the same bookkeeping as create-invoice:
-    // set pendingPlanId, reset activatedInvoiceId, mark paymentStatus "created"
-    // (so a concurrent run sees an in-flight charge and skips), bump the counter.
+    // Reserve the attempt FIRST. Conditional: if another run already reserved
+    // this subscription since we read it, nothing changes and we must not charge.
     try {
-      await prisma.subscription.update({
-        where: { id: sub.id },
-        data: {
-          pendingPlanId: plan,
-          activatedInvoiceId: null,
-          paymentStatus: "created",
-          renewalAttempts: { increment: 1 },
-          lastRenewalAttemptAt: now,
-        },
-      });
+      const reserved = await reserveRenewalAttempt(sub, plan, now);
+      if (!reserved) {
+        console.info(`[cron/renew] sub ${sub.id} already reserved by another run — skipped`);
+        continue;
+      }
     } catch (err) {
       console.error(`[cron/renew] failed to reserve attempt for sub ${sub.id}`, err);
       errors++;

@@ -1,59 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// ---------------------------------------------------------------------------
-// In-memory stand-in for the Prisma client: just the calls payment activation
-// makes, with the same "where" semantics (equality, null, not, in, notIn) and
-// "data" semantics (plain value or { increment }). Enough to test the logic
-// without a database.
-// ---------------------------------------------------------------------------
-type Row = Record<string, unknown>;
-
-function matches(row: Row, where: Row = {}): boolean {
-  return Object.entries(where).every(([key, cond]) => {
-    const value = row[key] ?? null;
-    if (cond !== null && typeof cond === "object" && !(cond instanceof Date)) {
-      const c = cond as { not?: unknown; in?: unknown[]; notIn?: unknown[] };
-      if ("not" in c) return value !== c.not;
-      if (c.in) return c.in.includes(value);
-      if (c.notIn) return !c.notIn.includes(value);
-    }
-    return value === cond;
-  });
-}
-
-function apply(row: Row, data: Row): void {
-  for (const [key, val] of Object.entries(data)) {
-    if (val !== null && typeof val === "object" && "increment" in (val as Row)) {
-      row[key] = ((row[key] as number) ?? 0) + ((val as { increment: number }).increment);
-    } else {
-      row[key] = val;
-    }
-  }
-}
-
-function table(rows: Row[]) {
-  return {
-    rows,
-    findFirst: async ({ where }: { where?: Row }) => rows.find((r) => matches(r, where)) ?? null,
-    findUnique: async ({ where }: { where: Row }) => rows.find((r) => matches(r, where)) ?? null,
-    updateMany: async ({ where, data }: { where?: Row; data: Row }) => {
-      const hit = rows.filter((r) => matches(r, where));
-      hit.forEach((r) => apply(r, data));
-      return { count: hit.length };
-    },
-    update: async ({ where, data }: { where: Row; data: Row }) => {
-      const row = rows.find((r) => matches(r, where));
-      if (!row) throw new Error("Record to update not found");
-      apply(row, data);
-      return row;
-    },
-    create: async ({ data }: { data: Row }) => {
-      const row: Row = { readingCredits: 0, planId: "FREE", ...data };
-      rows.push(row);
-      return row;
-    },
-  };
-}
+import { fakeClient, fakeTable, type FakeTable } from "@/lib/testing/fakePrisma";
 
 const db = vi.hoisted(() => ({ current: null as unknown as Record<string, unknown> }));
 
@@ -74,21 +21,14 @@ import { sendPaymentFailedEmail, sendRenewalReceiptEmail } from "@/lib/mailer";
 const NOW = new Date("2026-10-15T12:00:00Z");
 const USER = "user-1";
 
-let subs: ReturnType<typeof table>;
-let payments: ReturnType<typeof table>;
+let subs: FakeTable;
+let payments: FakeTable;
 
 function makeDb() {
-  subs = table([]);
-  payments = table([]);
-  const users = table([{ id: USER, email: "anna@example.com", preferredLocale: "en" }]);
-  const client = {
-    subscription: subs,
-    payment: payments,
-    user: users,
-    $executeRaw: async () => 0,
-    $transaction: async (fn: (tx: unknown) => unknown) => fn(client),
-  };
-  db.current = client;
+  subs = fakeTable();
+  payments = fakeTable();
+  const user = fakeTable([{ id: USER, email: "anna@example.com", preferredLocale: "en" }]);
+  db.current = fakeClient({ subscription: subs, payment: payments, user });
 }
 
 /** What create-invoice (or the renewal cron) leaves behind for one checkout. */
