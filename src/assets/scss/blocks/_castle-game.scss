@@ -626,6 +626,11 @@ html.castle-locked body {
   }
 }
 
+// Phones live in full screen now, so choosing a spot still needs its banner and Cancel.
+.castle--full.castle--bare .castle__banner {
+  display: flex;
+}
+
 .castle__eye,
 .castle__unbare {
   display: flex;
@@ -650,16 +655,63 @@ html.castle-locked body {
   margin-left: 8px;
 }
 
-.castle__unbare {
+.castle__corner {
   position: absolute;
   top: calc(10px + env(safe-area-inset-top));
   right: 10px;
   z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  .castle__eye {
+    margin-left: 0;
+  }
+}
+
+.castle__unbare {
   opacity: 0.55;
 
   &:hover {
     opacity: 1;
   }
+}
+
+// Phones: the party as an icon. Dim until the hall is ready, then it glows (Lena, 2026-10-15).
+.castle__party {
+  position: relative;
+  display: flex;
+}
+
+.castle__party-btn {
+  opacity: 0.55;
+
+  &--ready {
+    opacity: 1;
+    color: var(--text-soft);
+    border-color: rgba(250, 225, 163, 0.8);
+    box-shadow: 0 0 14px rgba(250, 225, 163, 0.35);
+    animation: castleGlow 2.4s ease-in-out infinite alternate;
+  }
+}
+
+.castle__party-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 4;
+  width: max-content;
+  max-width: 230px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  background: rgba(9, 9, 9, 0.92);
+  border: 1px solid rgba(250, 225, 163, 0.6);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-soft);
+  text-align: left;
+  animation: castleAppear 0.2s ease-out;
 }
 
 .castle__home {
@@ -1174,6 +1226,7 @@ html.castle-locked body {
 @media (prefers-reduced-motion: reduce) {
   .castle__light,
   .castle__pill--glow,
+  .castle__party-btn--ready,
   .castle__ring {
     animation: none;
   }
