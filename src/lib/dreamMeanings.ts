@@ -253,6 +253,226 @@ export const DREAMS: DreamSymbol[] = [
       "A path, a clearing or a light between the trees is a good sign: it says you are finding your way. Dark and thick woods ask you to slow down and trust the next step before the whole road is clear.",
     ],
   },
+  {
+    slug: "pregnancy",
+    title: "Pregnancy",
+    terms: "pregnant expecting birth giving birth womb",
+    short:
+      "Pregnancy in a dream is about something growing: a plan, a change, or a part of you getting ready to be born. It is not a prediction.",
+    paragraphs: [
+      "Dreaming of pregnancy is seldom a forecast. It speaks of something growing inside you: a plan, a hope, a project or a change that is not ready to show yet.",
+      "How you felt matters most. Joy says you welcome what is coming. Fear or surprise asks what responsibility you are unsure you can carry, and whether you have been given enough time to prepare.",
+    ],
+  },
+  {
+    slug: "the-dead",
+    title: "The dead",
+    terms: "dead person deceased passed away late grandmother grandfather ghost",
+    short:
+      "Seeing someone who has died is usually about memory and unfinished feeling. It often brings comfort, or a wish to say what was left unsaid.",
+    paragraphs: [
+      "Dreams of people who have died are very common, and they are usually about memory rather than visits. The mind brings back someone you loved, or feared, because the feeling is still alive in you.",
+      "A calm or warm meeting speaks of comfort and acceptance. A troubled one points to something left unsaid or unfinished. Either way, the dream is asking what you still carry of that person, and whether it is time to put some of it down.",
+    ],
+  },
+  {
+    slug: "child",
+    title: "Child",
+    terms: "children kid son daughter boy girl",
+    short:
+      "A child in a dream stands for innocence, play and your own younger self. How the child fares shows how you treat that side of you.",
+    paragraphs: [
+      "A child in a dream often stands for innocence, curiosity and play, or for the younger version of yourself. It can also point to a real child in your life that you worry about.",
+      "A happy child suggests you are in touch with joy and hope. A frightened or lost child asks what part of you needs care, or what you have been too busy to protect.",
+    ],
+  },
+  {
+    slug: "fish",
+    title: "Fish",
+    terms: "fishing fishes sea river pond catch aquarium",
+    short:
+      "Fish stand for the hidden life under the surface: feelings, ideas and chances that are only now rising into view.",
+    paragraphs: [
+      "Fish live below the surface, so in dreams they stand for what is hidden in the deeper mind: feelings, ideas and chances that are only beginning to rise into view.",
+      "Catching a fish suggests you are bringing something to light. A fish slipping away speaks of a chance you fear you will miss. Clear, lively fish are a good sign; dead or tangled ones point to something neglected.",
+    ],
+  },
+  {
+    slug: "sea",
+    title: "Sea",
+    terms: "seaside waves sailing ship boat shore beach horizon voyage",
+    short:
+      "The sea is a long crossing. Calm or rough, it shows how you feel about the journey you are on and what lies beyond the horizon.",
+    paragraphs: [
+      "The sea in a dream is about travel and distance: the long crossing from where you are to where you hope to be. Its mood shows how you feel about the journey.",
+      "A calm sea and a steady ship say you trust the way. Rough water or a lost shore says the journey feels uncertain. A wide horizon is a hopeful sign: it means you still see somewhere to go.",
+    ],
+  },
+  {
+    slug: "ex-partner",
+    title: "Ex-partner",
+    terms: "ex boyfriend girlfriend husband wife former lover breakup",
+    short:
+      "Dreaming of an ex rarely means you want them back. It usually points to a feeling or a lesson from that time that is asking for attention.",
+    paragraphs: [
+      "Dreaming of an ex-partner rarely means you want them back. More often the person stands for a feeling, a habit or a lesson from that time, which something in your present has stirred.",
+      "Notice how you felt. Peace suggests the chapter is settled. Hurt or longing asks what you still need from it: an answer, an apology, or simply to be heard by yourself.",
+    ],
+  },
+  {
+    slug: "cheating-partner",
+    title: "Cheating partner",
+    terms: "cheating infidelity unfaithful betrayal affair jealous partner husband wife boyfriend girlfriend",
+    short:
+      "A dream of a partner cheating is usually about fear of loss or distrust, not a fact. It asks where you feel unsure or unseen.",
+    paragraphs: [
+      "A dream of a cheating partner is usually about fear, not fact. It reflects worry about losing closeness, feeling less important, or a trust that has been shaken.",
+      "Ask what you felt in the dream: anger, shame, relief? That feeling is the message. If something real is troubling you, the dream is a nudge to talk about it openly rather than carry it alone.",
+    ],
+  },
+  {
+    slug: "rats",
+    title: "Rats",
+    terms: "rat mouse mice rodent vermin",
+    short:
+      "Rats stand for worry that gnaws, or for people and habits that quietly drain you. They ask what you should clear out.",
+    paragraphs: [
+      "Rats in dreams stand for things that gnaw at you quietly: small worries, petty betrayals, or habits that drain you without notice. They also speak of resourcefulness.",
+      "Rats you chase away show that you are ready to clear something out. Rats that swarm point to a worry that has grown while you looked elsewhere.",
+    ],
+  },
+  {
+    slug: "gold",
+    title: "Gold",
+    terms: "golden treasure jewellery jewelry coins ring wealth rich",
+    short:
+      "Gold stands for what you value most: worth, success, or something precious you are afraid to lose.",
+    paragraphs: [
+      "Gold in a dream stands for what you value most: your worth, your success, or something precious in your life. It can also speak of a wish for security.",
+      "Finding gold says you are discovering your own value. Losing it, or gold that turns to dust, asks whether what you chase is as precious as it looks.",
+    ],
+  },
+  {
+    slug: "blood",
+    title: "Blood",
+    terms: "bleeding wound cut injury red",
+    short:
+      "Blood stands for life, energy and family. Bleeding points to a drain on your strength; strong, healthy blood to vitality.",
+    paragraphs: [
+      "Blood is the stuff of life, so in a dream it speaks of energy, vitality and family ties. How it appears shows whether your strength is flowing or being drained.",
+      "Bleeding suggests something is costing you more than you can afford, such as effort, love or time. Blood that does not hurt can point to a change that is deeper than it looks. It rarely means harm to the body.",
+    ],
+  },
+  {
+    slug: "being-naked",
+    title: "Being naked",
+    terms: "naked nude undressed exposed public embarrassed",
+    short:
+      "Being naked in public is the fear of being seen as you really are. It usually appears when you feel exposed or unprepared.",
+    paragraphs: [
+      "Being naked in public is one of the most common dreams. It speaks of feeling exposed, unprepared, or afraid that people will see something you try to hide.",
+      "If no one noticed, the fear is bigger than the danger. If you felt free, the dream may be a wish to stop pretending. Either way, it asks where you feel you must hide.",
+    ],
+  },
+  {
+    slug: "being-late",
+    title: "Being late",
+    terms: "late missed train bus flight deadline hurry",
+    short:
+      "Being late is the fear of missing a chance. It shows where you feel pressed for time or behind in life.",
+    paragraphs: [
+      "Dreams of being late or missing a train show up when you feel pressed for time, or fear that a chance in your life is slipping by.",
+      "Look at what you were late for. It often points to the part of life where you feel behind. Arriving in time, even at the last moment, says you will manage better than you fear.",
+    ],
+  },
+  {
+    slug: "being-lost",
+    title: "Being lost",
+    terms: "lost lost way maze wandering directions confused",
+    short:
+      "Being lost shows uncertainty about the direction of your life. It often comes before a decision or a change.",
+    paragraphs: [
+      "Being lost in a dream shows that you are unsure of your direction, in work, in love or in who you are becoming. It often comes just before a decision.",
+      "Notice whether you were afraid or only puzzled. Puzzled, and still walking, says you are searching and will find a way. Frightened and stuck asks what help or what information you have not yet asked for.",
+    ],
+  },
+  {
+    slug: "funeral",
+    title: "Funeral",
+    terms: "burial grave cemetery graveyard mourning coffin",
+    short:
+      "A funeral marks an ending you are ready, or not ready, to accept. It is rarely about a real death.",
+    paragraphs: [
+      "A funeral in a dream is the mind's way of marking an ending: a relationship, a role or a time of life that is closing. It is rarely a sign of real death.",
+      "Calm at the funeral says you are ready to say goodbye. Grief or anger suggests you are not done mourning something. Attending the funeral of someone living usually means that a part of your bond with them has changed.",
+    ],
+  },
+  {
+    slug: "rain",
+    title: "Rain",
+    terms: "storm rainfall wet drizzle shower umbrella",
+    short:
+      "Rain stands for cleansing and release. Gentle rain is relief; a downpour speaks of feelings that have been held back too long.",
+    paragraphs: [
+      "Rain in a dream stands for cleansing and release. Gentle rain brings relief and renewal, like tears that finally come and wash something away.",
+      "A heavy downpour or a storm points to feelings that have been held back too long. Staying dry under shelter says you feel protected; being soaked asks whether you have let yourself feel what you needed to.",
+    ],
+  },
+  {
+    slug: "snow",
+    title: "Snow",
+    terms: "snowing winter ice cold frost white",
+    short:
+      "Snow is stillness and a clean slate. It can mean peace, a pause, or a cold distance between you and others.",
+    paragraphs: [
+      "Snow in a dream is stillness: a world made quiet and clean. It can mean peace, a pause in your life, or a fresh start waiting to be written on.",
+      "Cold, deep or blocking snow points to feeling shut in or distant from people. Walking through it and leaving footprints says you are making your own way, one step at a time.",
+    ],
+  },
+  {
+    slug: "mother",
+    title: "Mother",
+    terms: "mom mum mama motherhood mother in law",
+    short:
+      "A mother in a dream stands for care, origin and how you nurture yourself and others. Her mood shows how you feel about those things.",
+    paragraphs: [
+      "A mother in a dream stands for care, comfort and where you come from. It may be your own mother, or the part of you that nurtures and protects.",
+      "A warm mother suggests you feel safe and cared for. A distant or angry one asks where you lack comfort, or what you still need to settle with the past. Becoming a mother in a dream speaks of taking on care for something new.",
+    ],
+  },
+  {
+    slug: "father",
+    title: "Father",
+    terms: "dad papa fatherhood parent",
+    short:
+      "A father in a dream stands for authority, protection and rules. His mood shows how you feel about your own strength and limits.",
+    paragraphs: [
+      "A father in a dream stands for authority, guidance and protection. It may be your own father, or the voice inside you that sets rules and limits.",
+      "A kind, steady father suggests confidence and support. A stern or absent one asks where you feel judged, or where you lack guidance. Facing him calmly often means you are claiming your own authority.",
+    ],
+  },
+  {
+    slug: "spider",
+    title: "Spider",
+    terms: "spiders web cobweb insect",
+    short:
+      "A spider stands for patience, creativity and being caught in a tangle. It asks whether you are weaving or being trapped.",
+    paragraphs: [
+      "Spiders in dreams carry two meanings: patient creation and entanglement. The web can be your own careful work, or a situation you feel stuck in.",
+      "A spider calmly weaving suggests a plan taking shape. A spider that frightens you, or a web you cannot leave, asks what has caught you and what you can cut free.",
+    ],
+  },
+  {
+    slug: "bird",
+    title: "Bird",
+    terms: "birds feathers wings sky nest owl dove crow",
+    short:
+      "Birds stand for freedom and messages. Their kind and mood show what news or wish is moving in you.",
+    paragraphs: [
+      "Birds in dreams stand for freedom, hope and messages. Their song, flight and kind add detail: a dove for peace, an owl for wisdom, a crow for a warning or a change.",
+      "A bird in flight suggests a wish rising. A caged bird speaks of feeling confined; a bird that comes into your home is often a message you are being asked to notice.",
+    ],
+  },
 ];
 
 /** What the "Tell me your dream" page shows before anyone types. */

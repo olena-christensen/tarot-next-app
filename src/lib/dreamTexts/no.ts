@@ -161,4 +161,164 @@ export const DREAM_TEXTS_NO: DreamTexts = {
       "En sti, en glenne eller et lys mellom trærne er et godt tegn: det sier at du finner veien. Mørk og tett skog ber deg bremse og stole på neste skritt før hele veien er klar.",
     ],
   },
+  pregnancy: {
+    title: "Graviditet",
+    short: "Graviditet i en drøm handler om noe som vokser: en plan, en forandring eller en del av deg som gjør seg klar til å bli født. Det er ikke en spådom.",
+    paragraphs: [
+      "Å drømme om graviditet er sjelden et varsel. Det taler om noe som vokser inni deg: en plan, et håp, et prosjekt eller en forandring som ikke er klar til å vise seg ennå.",
+      "Det viktigste er hva du kjente. Glede sier at du tar imot det som kommer. Frykt eller overraskelse spør hvilket ansvar du er usikker på om du kan bære, og om du har fått nok tid til å forberede deg.",
+    ],
+  },
+  "the-dead": {
+    title: "De døde",
+    short: "Å se noen som har dødd handler som regel om minner og uferdige følelser. Drømmen gir ofte trøst, eller et ønske om å si det som ble usagt.",
+    paragraphs: [
+      "Drømmer om døde er svært vanlige, og de handler som regel om minner, ikke om besøk. Sinnet henter fram en du var glad i, eller var redd for, fordi følelsen fortsatt lever i deg.",
+      "Et rolig eller varmt møte taler om trøst og aksept. Et urolig møte peker på noe usagt eller uferdig. Uansett spør drømmen hva du ennå bærer med deg fra den personen, og om det er på tide å legge noe fra seg.",
+    ],
+  },
+  child: {
+    title: "Barn",
+    short: "Et barn i en drøm står for uskyld, lek og ditt eget yngre jeg. Hvordan det går med barnet, viser hvordan du behandler den siden av deg.",
+    paragraphs: [
+      "Et barn i en drøm står ofte for uskyld, nysgjerrighet og lek, eller for den yngre utgaven av deg selv. Det kan også peke på et virkelig barn i livet ditt som du er bekymret for.",
+      "Et glad barn tyder på at du er i kontakt med glede og håp. Et redd eller bortkommet barn spør hvilken del av deg som trenger omsorg, eller hva du har vært for travel til å beskytte.",
+    ],
+  },
+  fish: {
+    title: "Fisk",
+    short: "Fisk står for livet som er skjult under overflaten: følelser, tanker og muligheter som først nå stiger opp i synet.",
+    paragraphs: [
+      "Fisk lever under overflaten, så i drømmer står de for det som er skjult i det dypere sinnet: følelser, tanker og muligheter som så vidt begynner å stige opp.",
+      "Å fange en fisk tyder på at du bringer noe fram i lyset. En fisk som slipper unna, taler om en mulighet du frykter å gå glipp av. Klare, livlige fisker er et godt tegn; døde eller floket inn peker på noe forsømt.",
+    ],
+  },
+  sea: {
+    title: "Sjø",
+    short: "Sjøen er en lang overfart. Rolig eller stri viser den hvordan du føler om reisen du er på, og om det som ligger bak horisonten.",
+    paragraphs: [
+      "Sjøen i en drøm handler om reise og avstand: den lange overfarten fra der du er til der du håper å være. Stemningen viser hvordan du føler om reisen.",
+      "En rolig sjø og et stødig skip sier at du stoler på veien. Urolig vann eller en kyst som forsvinner, sier at reisen føles usikker. En vid horisont er et håpefullt tegn: den betyr at du fortsatt ser et sted å dra.",
+    ],
+  },
+  "ex-partner": {
+    title: "Ekspartner",
+    short: "Å drømme om en eks betyr sjelden at du vil ha vedkommende tilbake. Det peker som regel på en følelse eller lærdom fra den tiden som ber om oppmerksomhet.",
+    paragraphs: [
+      "Å drømme om en ekspartner betyr sjelden at du vil ha vedkommende tilbake. Oftere står personen for en følelse, en vane eller en lærdom fra den tiden, som noe i nåtiden din har rørt ved.",
+      "Legg merke til hva du følte. Ro tyder på at kapittelet er avsluttet. Sårhet eller lengsel spør hva du fortsatt trenger fra det: et svar, en unnskyldning, eller bare å bli hørt av deg selv.",
+    ],
+  },
+  "cheating-partner": {
+    title: "Utroskap",
+    short: "En drøm om at partneren er utro handler som regel om frykt for å miste eller mistillit, ikke om fakta. Den spør hvor du føler deg usikker eller oversett.",
+    paragraphs: [
+      "En drøm om utroskap handler som regel om frykt, ikke fakta. Den speiler uro for å miste nærhet, følelsen av å bety mindre, eller en tillit som er rystet.",
+      "Spør deg selv hva du kjente i drømmen: sinne, skam, lettelse? Den følelsen er budskapet. Hvis noe virkelig plager deg, er drømmen et dytt til å snakke åpent om det i stedet for å bære det alene.",
+    ],
+  },
+  rats: {
+    title: "Rotter",
+    short: "Rotter står for bekymring som gnager, eller for mennesker og vaner som stille tapper deg. De spør hva du bør rydde ut.",
+    paragraphs: [
+      "Rotter i drømmer står for det som stille gnager på deg: små bekymringer, små svik eller vaner som tapper deg uten at du merker det. De taler også om oppfinnsomhet.",
+      "Rotter du jager bort viser at du er klar til å rydde ut noe. Rotter som vrimler, peker på en bekymring som har vokst mens du så andre steder.",
+    ],
+  },
+  gold: {
+    title: "Gull",
+    short: "Gull står for det du verdsetter høyest: verdi, suksess eller noe dyrebart du er redd for å miste.",
+    paragraphs: [
+      "Gull i en drøm står for det du verdsetter høyest: din egen verdi, din suksess eller noe dyrebart i livet ditt. Det kan også tale om et ønske om trygghet.",
+      "Å finne gull sier at du oppdager din egen verdi. Å miste det, eller gull som blir til støv, spør om det du jager er så dyrebart som det ser ut til.",
+    ],
+  },
+  blood: {
+    title: "Blod",
+    short: "Blod står for liv, energi og slekt. Blødning peker på at kreftene dine tappes; sterkt, friskt blod på livskraft.",
+    paragraphs: [
+      "Blod er livets stoff, så i en drøm taler det om energi, livskraft og familiebånd. Hvordan det dukker opp, viser om kreftene dine strømmer fritt eller tappes.",
+      "Blødning tyder på at noe koster deg mer enn du har råd til, som innsats, kjærlighet eller tid. Blod som ikke gjør vondt, kan peke på en forandring som går dypere enn den ser ut. Det betyr sjelden skade på kroppen.",
+    ],
+  },
+  "being-naked": {
+    title: "Nakenhet",
+    short: "Å være naken blant folk er frykten for å bli sett som du virkelig er. Drømmen kommer som regel når du føler deg utsatt eller uforberedt.",
+    paragraphs: [
+      "Å være naken blant folk er en av de vanligste drømmene. Den taler om å føle seg utsatt, uforberedt, eller redd for at andre skal se noe du prøver å skjule.",
+      "Hvis ingen la merke til det, er frykten større enn faren. Hvis du følte deg fri, kan drømmen være et ønske om å slutte å late som. Uansett spør den hvor du føler at du må skjule deg.",
+    ],
+  },
+  "being-late": {
+    title: "Forsinkelse",
+    short: "Å komme for sent er frykten for å gå glipp av en sjanse. Det viser hvor du føler deg presset på tid eller på etterskudd i livet.",
+    paragraphs: [
+      "Drømmer om å komme for sent eller å miste toget dukker opp når du føler deg presset på tid, eller frykter at en sjanse i livet glir forbi.",
+      "Se på hva du var forsinket til. Det peker ofte på den delen av livet der du føler deg på etterskudd. Å rekke det i tide, selv i siste liten, sier at du klarer deg bedre enn du frykter.",
+    ],
+  },
+  "being-lost": {
+    title: "Villrede",
+    short: "Å gå seg vill viser usikkerhet om retningen i livet. Det kommer ofte før en beslutning eller en forandring.",
+    paragraphs: [
+      "Å gå seg vill i en drøm viser at du er usikker på retningen din, i arbeid, i kjærlighet eller i hvem du er i ferd med å bli. Det kommer ofte rett før en beslutning.",
+      "Legg merke til om du var redd eller bare forvirret. Forvirret, men fortsatt på vei, sier at du leter og vil finne en vei. Redd og fastlåst spør hvilken hjelp eller informasjon du ennå ikke har bedt om.",
+    ],
+  },
+  funeral: {
+    title: "Begravelse",
+    short: "En begravelse markerer en avslutning du er klar for, eller ikke klar for, å akseptere. Den handler sjelden om en virkelig død.",
+    paragraphs: [
+      "En begravelse i en drøm er sinnets måte å markere en avslutning på: et forhold, en rolle eller et livsavsnitt som lukkes. Den er sjelden et tegn på virkelig død.",
+      "Ro i begravelsen sier at du er klar til å si farvel. Sorg eller sinne tyder på at du ikke er ferdig med å sørge over noe. Å være i begravelsen til en som lever, betyr som regel at en del av båndet til vedkommende har endret seg.",
+    ],
+  },
+  rain: {
+    title: "Regn",
+    short: "Regn står for renselse og utløsning. Mildt regn er lettelse; styrtregn taler om følelser som har vært holdt tilbake for lenge.",
+    paragraphs: [
+      "Regn i en drøm står for renselse og utløsning. Mildt regn gir lettelse og fornyelse, som tårer som endelig kommer og vasker noe bort.",
+      "Et kraftig skybrudd eller et uvær peker på følelser som har vært holdt tilbake for lenge. Å holde seg tørr under tak sier at du føler deg beskyttet; å bli gjennomvåt spør om du har latt deg selv kjenne det du trengte å kjenne.",
+    ],
+  },
+  snow: {
+    title: "Snø",
+    short: "Snø er stillhet og et rent ark. Den kan bety ro, en pause, eller en kald avstand mellom deg og andre.",
+    paragraphs: [
+      "Snø i en drøm er stillhet: en verden gjort stille og ren. Den kan bety ro, en pause i livet ditt, eller en nystart som venter på å bli skrevet på.",
+      "Kald, dyp eller sperrende snø peker på å føle seg innestengt eller langt fra folk. Å gå gjennom den og legge igjen spor sier at du baner din egen vei, ett skritt av gangen.",
+    ],
+  },
+  mother: {
+    title: "Mor",
+    short: "En mor i en drøm står for omsorg, opphav og hvordan du nærer deg selv og andre. Stemningen hennes viser hva du føler om disse tingene.",
+    paragraphs: [
+      "En mor i en drøm står for omsorg, trøst og hvor du kommer fra. Det kan være din egen mor, eller den delen av deg som nærer og beskytter.",
+      "En varm mor tyder på at du føler deg trygg og ivaretatt. En fjern eller sint mor spør hvor du mangler trøst, eller hva du fortsatt må gjøre opp med fortiden. Å bli mor i en drøm taler om å ta på seg omsorgen for noe nytt.",
+    ],
+  },
+  father: {
+    title: "Far",
+    short: "En far i en drøm står for autoritet, beskyttelse og regler. Stemningen hans viser hva du føler om din egen styrke og dine egne grenser.",
+    paragraphs: [
+      "En far i en drøm står for autoritet, veiledning og beskyttelse. Det kan være din egen far, eller stemmen inni deg som setter regler og grenser.",
+      "En snill og stødig far tyder på trygghet og støtte. En streng eller fraværende far spør hvor du føler deg dømt, eller hvor du mangler veiledning. Å møte blikket hans rolig betyr ofte at du tar din egen autoritet.",
+    ],
+  },
+  spider: {
+    title: "Edderkopp",
+    short: "En edderkopp står for tålmodighet, kreativitet og det å sitte fast i en floke. Den spør om du spinner eller er fanget.",
+    paragraphs: [
+      "Edderkopper i drømmer har to betydninger: tålmodig skaping og fastflokethet. Nettet kan være ditt eget omhyggelige arbeid, eller en situasjon du føler deg fastlåst i.",
+      "En edderkopp som rolig spinner, tyder på en plan som tar form. En edderkopp som skremmer deg, eller et nett du ikke kommer deg ut av, spør hva som har fanget deg og hva du kan skjære deg løs fra.",
+    ],
+  },
+  bird: {
+    title: "Fugl",
+    short: "Fugler står for frihet og budskap. Art og stemning viser hvilken nyhet eller hvilket ønske som rører seg i deg.",
+    paragraphs: [
+      "Fugler i drømmer står for frihet, håp og budskap. Sangen, flukten og arten gir detaljer: en due for fred, en ugle for visdom, en kråke for en advarsel eller en forandring.",
+      "En fugl i flukt tyder på et ønske som stiger. En fugl i bur taler om å føle seg innestengt; en fugl som kommer inn i hjemmet ditt, er ofte et budskap du blir bedt om å legge merke til.",
+    ],
+  },
 };

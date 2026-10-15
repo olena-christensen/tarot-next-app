@@ -161,4 +161,164 @@ export const DREAM_TEXTS_TR: DreamTexts = {
       "Bir patika, bir açıklık ya da ağaçların arasındaki bir ışık iyi bir işarettir: yolunuzu bulduğunuzu söyler. Karanlık ve sık bir orman, tüm yol netleşmeden önce yavaşlamanızı ve sonraki adıma güvenmenizi ister.",
     ],
   },
+  pregnancy: {
+    title: "Hamilelik",
+    short: "Rüyada hamilelik, büyüyen bir şeyi anlatır: bir plan, bir değişim ya da doğmaya hazırlanan bir yanınız. Bir kehanet değildir.",
+    paragraphs: [
+      "Hamilelik rüyası nadiren bir tahmindir. İçinizde büyüyen bir şeyden söz eder: bir plan, bir umut, bir iş ya da henüz görünmeye hazır olmayan bir değişim.",
+      "En önemlisi ne hissettiğinizdir. Sevinç, gelecek olanı kabul ettiğinizi söyler. Korku ya da şaşkınlık, hangi sorumluluğu taşıyabileceğinizden emin olmadığınızı ve hazırlanmaya yetecek zamanınız olup olmadığını sorar.",
+    ],
+  },
+  "the-dead": {
+    title: "Ölüler",
+    short: "Ölmüş birini görmek çoğunlukla anı ve yarım kalmış duygularla ilgilidir. Rüya sık sık teselli ya da söylenmemiş kalanı söyleme isteği getirir.",
+    paragraphs: [
+      "Ölmüşlerle ilgili rüyalar çok yaygındır ve çoğunlukla ziyaretle değil, anıyla ilgilidir. Zihin, sevdiğiniz ya da korktuğunuz birini geri getirir; çünkü o duygu içinizde hâlâ canlıdır.",
+      "Sakin ya da sıcak bir karşılaşma teselli ve kabulden söz eder. Tedirgin edici olanı ise söylenmemiş ya da bitmemiş bir şeye işaret eder. Her iki durumda da rüya, o kişinin size ne bıraktığını ve bir kısmını bırakmanın zamanı gelip gelmediğini sorar.",
+    ],
+  },
+  child: {
+    title: "Çocuk",
+    short: "Rüyada çocuk, masumiyeti, oyunu ve daha genç haliniz anlatır. Çocuğun durumu, bu yanınıza nasıl davrandığınızı gösterir.",
+    paragraphs: [
+      "Rüyada çocuk çoğunlukla masumiyeti, merakı ve oyunu ya da sizin daha küçük yaştaki halinizi simgeler. Ayrıca hayatınızdaki, endişelendiğiniz gerçek bir çocuğa da işaret edebilir.",
+      "Mutlu bir çocuk, sevinç ve umutla bağınızın güçlü olduğunu söyler. Korkmuş ya da kaybolmuş bir çocuk, sizin hangi yanınızın şefkate ihtiyacı olduğunu veya korumaya vakit bulamadığınız şeyin ne olduğunu sorar.",
+    ],
+  },
+  fish: {
+    title: "Balık",
+    short: "Balıklar yüzeyin altındaki gizli hayatı anlatır: duygular, düşünceler ve ancak şimdi görünür hale gelen fırsatlar.",
+    paragraphs: [
+      "Balıklar yüzeyin altında yaşar; bu yüzden rüyalarda zihnin derinliklerinde saklananı simgelerler: yeni yeni yüzeye çıkmaya başlayan duygular, düşünceler ve fırsatlar.",
+      "Balık tutmak, bir şeyi gün ışığına çıkardığınızı gösterir. Elden kaçan balık, kaçıracağınızdan korktuğunuz bir fırsattan söz eder. Berrak ve canlı balıklar iyi bir işaret; ölü ya da düğümlenmiş olanlar ihmal edilmiş bir şeye işaret eder.",
+    ],
+  },
+  sea: {
+    title: "Deniz",
+    short: "Deniz uzun bir yolculuktur. Sakin ya da dalgalı, içinde olduğunuz yolculuğa ve ufkun ötesindekine nasıl baktığınızı gösterir.",
+    paragraphs: [
+      "Rüyada deniz, yolculuk ve mesafeyle ilgilidir: bulunduğunuz yerden olmak istediğiniz yere uzanan uzun geçiş. Denizin ruh hali, yolculuğa dair hislerinizi gösterir.",
+      "Sakin bir deniz ve sağlam bir gemi, yola güvendiğinizi söyler. Dalgalı su ya da gözden kaybolan kıyı, yolun belirsiz geldiğini anlatır. Geniş bir ufuk umut verici bir işaret: henüz gidilecek bir yer gördüğünüz anlamına gelir.",
+    ],
+  },
+  "ex-partner": {
+    title: "Eski sevgili",
+    short: "Eski sevgiliyi rüyada görmek nadiren onu geri istemek anlamına gelir. Çoğunlukla o dönemden kalan, ilgi bekleyen bir duygu ya da ders vardır.",
+    paragraphs: [
+      "Eski sevgili rüyası nadiren onu geri istediğiniz anlamına gelir. Daha sık, o kişi o dönemden kalan bir duyguyu, alışkanlığı ya da dersi temsil eder; bugününüzdeki bir şey bunu yeniden harekete geçirmiştir.",
+      "Ne hissettiğinize bakın. Huzur, o bölümün kapandığını söyler. Acı ya da özlem, ondan hâlâ neye ihtiyacınız olduğunu sorar: bir cevap, bir özür ya da sadece kendi sesinizin duyulması.",
+    ],
+  },
+  "cheating-partner": {
+    title: "Partnerin aldatması",
+    short: "Partnerin aldattığı rüyası çoğunlukla kaybetme korkusu ya da güvensizlikle ilgilidir, gerçekle değil. Nerede emin ya da fark edilmiş hissetmediğinizi sorar.",
+    paragraphs: [
+      "Partnerin aldattığı rüyası çoğunlukla gerçekle değil, korkuyla ilgilidir. Yakınlığı kaybetme endişesini, daha az önemli hissetmeyi ya da sarsılmış bir güveni yansıtır.",
+      "Rüyada ne hissettiğinizi sorun: öfke, utanç, rahatlama? Mesaj o duygudur. Eğer gerçekten sizi rahatsız eden bir şey varsa, rüya bunu tek başınıza taşımak yerine açıkça konuşmaya itiyor.",
+    ],
+  },
+  rats: {
+    title: "Sıçanlar",
+    short: "Sıçanlar kemiren bir endişeyi ya da sizi sessizce tüketen insanlar ve alışkanlıkları anlatır. Neyin temizlenmesi gerektiğini sorarlar.",
+    paragraphs: [
+      "Rüyalardaki sıçanlar sessizce kemiren şeyleri simgeler: küçük endişeler, küçük ihanetler ya da fark ettirmeden tüketen alışkanlıklar. Aynı zamanda kıvraklıktan da söz ederler.",
+      "Kovaladığınız sıçanlar, bir şeyi temizlemeye hazır olduğunuzu gösterir. Sürü halindeki sıçanlar ise başka yere bakarken büyüyen bir endişeye işaret eder.",
+    ],
+  },
+  gold: {
+    title: "Altın",
+    short: "Altın en çok değer verdiğiniz şeyi anlatır: değerinizi, başarıyı ya da kaybetmekten korktuğunuz değerli bir şeyi.",
+    paragraphs: [
+      "Rüyada altın, en çok değer verdiğiniz şeyi simgeler: kendi değerinizi, başarınızı ya da hayatınızdaki değerli bir şeyi. Güvence arzusundan da söz edebilir.",
+      "Altın bulmak, kendi değerinizi keşfettiğinizi söyler. Onu kaybetmek ya da toz olup dağılmasını görmek, peşinden koştuğunuz şeyin göründüğü kadar değerli olup olmadığını sorar.",
+    ],
+  },
+  blood: {
+    title: "Kan",
+    short: "Kan hayatı, enerjiyi ve aileyi anlatır. Kanama güç kaybına, güçlü ve sağlıklı kan canlılığa işaret eder.",
+    paragraphs: [
+      "Kan hayatın özüdür; bu yüzden rüyada enerji, canlılık ve aile bağlarından söz eder. Görünüşü, gücünüzün akıp akılmadığını ya da tükenip tükenmediğini gösterir.",
+      "Kanama, bir şeyin size güçlükle karşılayabileceğinizden fazlaya mal olduğunu düşündürür: çaba, sevgi ya da zaman. Acı vermeyen kan, göründüğünden daha derin bir değişime işaret edebilir. Nadiren bedene zarar anlamına gelir.",
+    ],
+  },
+  "being-naked": {
+    title: "Çıplaklık",
+    short: "İnsanların arasında çıplak olmak, gerçek halinizle görülme korkusudur. Genellikle açıkta ya da hazırlıksız hissettiğinizde görülür.",
+    paragraphs: [
+      "İnsanların arasında çıplak kalmak en yaygın rüyalardan biridir. Açıkta, hazırlıksız hissetmeyi ya da gizlemeye çalıştığınız bir şeyin görülmesinden korkmayı anlatır.",
+      "Kimse fark etmediyse korku, tehlikeden büyüktür. Özgür hissettiyseniz, rüya rol yapmayı bırakma arzusu olabilir. Her iki durumda da nerede saklanmanız gerektiğini düşündüğünüzü sorar.",
+    ],
+  },
+  "being-late": {
+    title: "Geç kalmak",
+    short: "Geç kalmak, bir fırsatı kaçırma korkusudur. Nerede zamanla yarıştığınızı ya da geride kaldığınızı hissettiğinizi gösterir.",
+    paragraphs: [
+      "Geç kalma ya da treni kaçırma rüyaları, zamanla yarıştığınızda veya hayatınızdaki bir fırsatın elinizden kaydığından korktuğunuzda görülür.",
+      "Neye geç kaldığınıza bakın. Çoğu zaman bu, kendinizi geride hissettiğiniz hayat alanına işaret eder. Son anda bile olsa yetişmek, korktuğunuzdan daha iyi başaracağınızı söyler.",
+    ],
+  },
+  "being-lost": {
+    title: "Kaybolmak",
+    short: "Kaybolmak, hayatınızın yönüne dair belirsizliği gösterir. Genellikle bir karardan ya da değişimden önce gelir.",
+    paragraphs: [
+      "Rüyada kaybolmak, işte, aşkta ya da olmakta olduğunuz kişide yönünüzden emin olmadığınızı gösterir. Sık sık bir kararın hemen öncesinde gelir.",
+      "Korktuğunuza mı, yoksa sadece şaşırdığınıza mı dikkat edin. Şaşkın ama hâlâ yürüyorsanız, aradığınızı ve bir yol bulacağınızı söyler. Korku ve takılıp kalmak, hangi yardımı ya da bilgiyi henüz istemediğinizi sorar.",
+    ],
+  },
+  funeral: {
+    title: "Cenaze",
+    short: "Cenaze, kabul etmeye hazır olduğunuz ya da olmadığınız bir sonu işaretler. Nadiren gerçek bir ölümle ilgilidir.",
+    paragraphs: [
+      "Rüyada cenaze, zihnin bir sonu işaretleme biçimidir: bir ilişkinin, bir rolün ya da kapanmakta olan bir hayat döneminin sonu. Nadiren gerçek bir ölümün işareti olur.",
+      "Cenazede sakin olmak, veda etmeye hazır olduğunuzu söyler. Keder ya da öfke, bir şey için yasınızı henüz tamamlamadığını düşündürür. Yaşayan birinin cenazesinde bulunmak genellikle onunla bağınızın bir kısmının değiştiği anlamına gelir.",
+    ],
+  },
+  rain: {
+    title: "Yağmur",
+    short: "Yağmur arınma ve bırakma demektir. Hafif yağmur rahatlamadır; sağanak ise çok uzun süre bastırılmış duyguları anlatır.",
+    paragraphs: [
+      "Rüyada yağmur arınma ve bırakma anlamına gelir. Hafif yağmur, sonunda gelip bir şeyi yıkayan gözyaşları gibi rahatlama ve yenilenme getirir.",
+      "Şiddetli sağanak ya da fırtına, çok uzun süre bastırılmış duygulara işaret eder. Sığınakta kuru kalmak korunmuş hissettiğinizi söyler; ıslanmak ise ihtiyacınız olanı hissetmenize izin verip vermediğinizi sorar.",
+    ],
+  },
+  snow: {
+    title: "Kar",
+    short: "Kar sessizlik ve temiz bir sayfadır. Huzur, bir mola ya da sizinle başkaları arasındaki soğuk bir mesafe demek olabilir.",
+    paragraphs: [
+      "Rüyada kar sessizliktir: sessiz ve temiz kılınmış bir dünya. Huzur, hayatınızda bir mola ya da üzerine yazılmayı bekleyen yeni bir başlangıç anlamına gelebilir.",
+      "Soğuk, derin ya da yolu kapatan kar, hapsolmuş ya da insanlardan uzak hissetmeye işaret eder. İçinden yürüyüp iz bırakmak, kendi yolunuzu adım adım açtığınızı söyler.",
+    ],
+  },
+  mother: {
+    title: "Anne",
+    short: "Rüyada anne, şefkati, kökenleri ve kendinizi ve başkalarını nasıl beslediğinizi anlatır. Ruh hali, bunlara dair hislerinizi gösterir.",
+    paragraphs: [
+      "Rüyada anne, şefkati, teselliyi ve nereden geldiğinizi simgeler. Kendi anneniz olabilir ya da içinizdeki besleyen ve koruyan yan.",
+      "Sıcak bir anne, kendinizi güvende ve korunmuş hissettiğinizi söyler. Uzak ya da öfkeli bir anne, nerede teselliye ihtiyacınız olduğunu ya da geçmişle henüz neyi yoluna koymanız gerektiğini sorar. Rüyada anne olmak, yeni bir şeyin bakımını üstlenmek demektir.",
+    ],
+  },
+  father: {
+    title: "Baba",
+    short: "Rüyada baba, otoriteyi, korumayı ve kuralları anlatır. Ruh hali, kendi gücünüzü ve sınırlarınızı nasıl hissettiğinizi gösterir.",
+    paragraphs: [
+      "Rüyada baba, otorite, rehberlik ve koruma demektir. Kendi babanız olabilir ya da içinizdeki kuralları ve sınırları koyan ses.",
+      "İyi kalpli, sağlam bir baba güveni ve desteği anlatır. Sert ya da yokluğu hissedilen baba, nerede yargılandığınızı veya nerede rehberliğe ihtiyaç duyduğunuzu sorar. Ona sakince bakabilmek çoğu zaman kendi otoritenizi üstlendiğiniz anlamına gelir.",
+    ],
+  },
+  spider: {
+    title: "Örümcek",
+    short: "Örümcek sabır, yaratıcılık ve bir ağa takılmak demektir. Örüyor musunuz yoksa tuzağa mı düştünüz diye sorar.",
+    paragraphs: [
+      "Rüyalardaki örümcekler iki anlam taşır: sabırlı yaratma ve dolanıp kalma. Ağ, sizin özenli eseriniz ya da içinde sıkıştığınız bir durum olabilir.",
+      "Sakince ağ ören bir örümcek, şekillenen bir plana işaret eder. Sizi korkutan bir örümcek ya da çıkamadığınız bir ağ, sizi neyin yakaladığını ve neyi kesip kurtulabileceğinizi sorar.",
+    ],
+  },
+  bird: {
+    title: "Kuş",
+    short: "Kuşlar özgürlüğü ve haberleri anlatır. Türleri ve ruh halleri, içinizde hangi haberin ya da arzunun kıpırdadığını gösterir.",
+    paragraphs: [
+      "Rüyalardaki kuşlar özgürlüğü, umudu ve haberleri simgeler. Şarkıları, uçuşları ve türleri ayrıntı katar: barış için güvercin, bilgelik için baykuş, uyarı ya da değişim için karga.",
+      "Uçan bir kuş, yükselen bir arzuya işaret eder. Kafesteki kuş, sıkışıp kalma hissini anlatır; eve giren bir kuş ise çoğu zaman fark etmeniz istenen bir haberdir.",
+    ],
+  },
 };
