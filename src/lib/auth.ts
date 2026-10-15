@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
+import { normalizeEmail } from "./normalizeEmail";
 import {
   clearRateLimit,
   clientIp,
@@ -66,7 +67,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const email = credentials.email.toLowerCase().trim();
+        const email = normalizeEmail(credentials.email);
         // NextAuth v4 hands the raw request in as the second argument; its
         // headers are the only place the client IP is available here.
         const ip = clientIp(new Headers((req?.headers ?? {}) as HeadersInit));
@@ -127,7 +128,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider !== "google") return true;
-      const email = profile?.email?.toLowerCase();
+      const email = profile?.email ? normalizeEmail(profile.email) : undefined;
       // Google says whether it verified the address; never link on an unverified one.
       if (!email || (profile as { email_verified?: boolean }).email_verified === false) {
         return "/?error=GoogleNotLinked";

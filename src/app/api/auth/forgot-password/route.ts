@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/mailer";
+import { normalizeEmail } from "@/lib/normalizeEmail";
 import {
   RESET_TOKEN_TTL_MS,
   RESET_THROTTLE_MS,
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
 
-  const address = email.trim();
+  const address = normalizeEmail(email);
   const userLocale = typeof locale === "string" ? locale : "en";
 
   try {
