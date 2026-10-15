@@ -5,13 +5,10 @@ import { useTranslations } from "next-intl";
 import { OfferBlock } from "@/components/OfferBlock";
 import { HomeAbout } from "@/components/HomeAbout";
 import { Tarot } from "@/components/Tarot";
-import { Modal } from "@/components/Modal";
-import { LoginForm } from "@/components/LoginForm";
 import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { ReadingGateModal, type GateReason } from "@/components/ReadingGateModal";
-import { Header } from "@/components/Header";
+import { useOpenLogin } from "@/components/LoginContext";
 import Footer from "@/components/Footer";
-import { Providers } from "@/components/Providers";
 import { useAppContext } from "@/AppProvider";
 
 // The cards/reading screen (.tarot-modal) is a full screen, not a page — no
@@ -23,10 +20,13 @@ function HomeFooter() {
   return <Footer overlay />;
 }
 
+/**
+ * The main page. The header, session and login window come from SiteChrome in
+ * the locale layout, shared with every other page.
+ */
 export function HomePageClient() {
   const t = useTranslations("ui");
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [loginNotice, setLoginNotice] = useState<string | undefined>();
+  const openLogin = useOpenLogin();
 
   // A refused Google sign-in lands here as /?error=… (pages.signIn in auth.ts).
   // Open the login modal with an explanation instead of failing silently, then
@@ -35,30 +35,28 @@ export function HomePageClient() {
     const params = new URLSearchParams(window.location.search);
     const authError = params.get("error");
     if (authError === "GoogleNotLinked" || authError === "OAuthAccountNotLinked") {
-      setLoginNotice(t("googleNotLinked"));
-      setIsLoginOpen(true);
+      openLogin(t("googleNotLinked"));
       params.delete("error");
       params.delete("callbackUrl");
       const qs = params.toString();
       window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : ""));
     }
-  }, [t]);
+  }, [t, openLogin]);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   const [gateReason, setGateReason] = useState<GateReason | null>(null);
 
   // The gate speaks in-character first, then hands off to the real wall.
   const handleGateProceed = (reason: GateReason) => {
     setGateReason(null);
-    if (reason === "anon") setIsLoginOpen(true);
+    if (reason === "anon") openLogin();
     else setIsSubscriptionOpen(true);
   };
 
   return (
-    <Providers>
-      <Header onOpenLogin={() => setIsLoginOpen(true)} />
+    <>
       <main className="">
         <OfferBlock
-          onOpenLogin={() => setIsLoginOpen(true)}
+          onOpenLogin={() => openLogin()}
           onOpenSubscription={() => setIsSubscriptionOpen(true)}
           onBlockedAnon={() => setGateReason("anon")}
           onBlockedFree={() => setGateReason("free")}
@@ -70,23 +68,16 @@ export function HomePageClient() {
         onBlockedFree={() => setGateReason("free")}
       />
       <HomeFooter />
-      <Modal
-        title={t("stepThroughTheVeil")}
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      >
-        <LoginForm notice={loginNotice} onSuccess={() => setIsLoginOpen(false)} />
-      </Modal>
       <SubscriptionModal
         isOpen={isSubscriptionOpen}
         onClose={() => setIsSubscriptionOpen(false)}
-        onRequestLogin={() => setIsLoginOpen(true)}
+        onRequestLogin={() => openLogin()}
       />
       <ReadingGateModal
         reason={gateReason}
         onClose={() => setGateReason(null)}
         onProceed={handleGateProceed}
       />
-    </Providers>
+    </>
   );
 }

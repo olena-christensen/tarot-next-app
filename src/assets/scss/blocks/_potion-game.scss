@@ -3,11 +3,11 @@
 // Below md: they sit above and below it, and the picture opens zoomed in.
 
 .potion {
-  padding: 150px 16px 48px;
+  padding: var(--page-top) 16px 48px; // see _main-header.scss
   text-align: center;
 
   @include respond-below(md) {
-    padding: 128px 0 32px;
+    padding: var(--page-top) 0 32px;
   }
 
   &__title {
@@ -1043,10 +1043,10 @@ html.potion-locked body {
 .games-page {
   display: flex;
   justify-content: center;
-  padding: 150px 16px 64px; // below the site header, as on the game pages
+  padding: var(--page-top) 16px 64px; // see _main-header.scss
 
   @include respond-below(md) {
-    padding: 128px 16px 48px;
+    padding: var(--page-top) 16px 48px;
   }
 }
 

@@ -1,5 +1,5 @@
 .profile-page {
-  padding: 160px 0 0;
+  padding: var(--page-top) 0 0; // see _main-header.scss
   // No background: body already paints var(--bg); staying transparent lets the
   // shared <MysticBackground /> (fixed, behind content) show through.
   color: var(--primary);
@@ -10,10 +10,9 @@
   align-items: center;
 
   @include respond-below(sm) {
-    // 132px top clears the ~96px absolute header + a comfortable gap before the
-    // title; 1.5rem sides restore horizontal padding (the `0` above otherwise
+    // 1.5rem sides restore horizontal padding (the `0` above otherwise
     // clobbers the `.container` padding on this same element).
-    padding: 132px 1.5rem 0;
+    padding: var(--page-top) 1.5rem 0;
   }
 
   &__title {

@@ -16,6 +16,13 @@
     z-index: 110;
   }
 
+  // The first-load veil fading away once the page is ready.
+  &--leaving {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
   svg {
     width: 100px;
     height: 100px;
