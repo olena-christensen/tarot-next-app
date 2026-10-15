@@ -51,16 +51,17 @@ export const HeaderMoonstones = ({ onOpenLogin }: HeaderMoonstonesProps) => {
 
   return (
     <>
-      <button
-        type="button"
-        className={`header-moonstones${count === 0 ? " header-moonstones--empty" : ""}`}
-        onClick={() => setIsPlansOpen(true)}
-        aria-label={label}
-        title={label}
-      >
-        <MoonstoneIcon className="header-moonstones__icon" aria-hidden="true" />
-        <span className="header-moonstones__count">{count}</span>
-      </button>
+      <span className="header-tip" data-tip={label}>
+        <button
+          type="button"
+          className={`header-moonstones${count === 0 ? " header-moonstones--empty" : ""}`}
+          onClick={() => setIsPlansOpen(true)}
+          aria-label={label}
+        >
+          <MoonstoneIcon className="header-moonstones__icon" aria-hidden="true" />
+          <span className="header-moonstones__count">{count}</span>
+        </button>
+      </span>
       <MoreMoonstonesModal
         isOpen={isPlansOpen}
         onClose={() => setIsPlansOpen(false)}

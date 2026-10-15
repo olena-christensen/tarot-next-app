@@ -216,6 +216,15 @@
     "welcomeConsentLead": "Hoş geldiniz, {name}. İlk falınızdan önce küçük bir ayin.",
     "welcomeConsentLeadNoName": "Hoş geldiniz. İlk falınızdan önce küçük bir ayin.",
     "sealThePact": "Antlaşmayı Mühürle",
-    "welcomeSignOut": "Şimdi değil — çıkış yap"
+    "welcomeSignOut": "Şimdi değil — çıkış yap",
+    "menuOpen": "Menüyü açın",
+    "menuClose": "Menüyü kapatın",
+    "menuLabel": "Menü",
+    "menuReadCards": "Kartlarınızı Açın",
+    "menuGames": "Cadı Oyunları",
+    "menuDecks": "Desteler",
+    "menuSubscription": "Abonelik",
+    "menuMyReadings": "Okumalarım",
+    "menuMyProfile": "Profilim"
   }
 }

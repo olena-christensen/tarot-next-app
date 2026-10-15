@@ -16,15 +16,17 @@ export const HeaderAvatar = () => {
   const initial = (session?.user?.name || "?").charAt(0).toUpperCase();
 
   return (
-    <Link href="/profile" className="header-avatar" aria-label={t("profileTitle")}>
-      {image ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={image} alt="" className="header-avatar__img" />
-      ) : (
-        <span className="header-avatar__fallback" aria-hidden="true">
-          {initial}
-        </span>
-      )}
-    </Link>
+    <span className="header-tip" data-tip={t("profileTitle")}>
+      <Link href="/profile" className="header-avatar" aria-label={t("profileTitle")}>
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={image} alt="" className="header-avatar__img" />
+        ) : (
+          <span className="header-avatar__fallback" aria-hidden="true">
+            {initial}
+          </span>
+        )}
+      </Link>
+    </span>
   );
 };

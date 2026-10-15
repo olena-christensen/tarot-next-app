@@ -1,0 +1,189 @@
+// Header toolbar icons (search, menu, log-in, log-out, language), the toolbar
+// tooltips, and the site menu.
+
+// Nude icon: no frame, no border, no glow — the glyph is the whole control.
+// The LAYOUT box is only as wide as the drawn glyph (16px), so the header's one
+// gap spaces every visible shape in the row equally — icons, the moonstone
+// chip, the avatar. The 44×44 touch target is the ::before, which reaches past
+// the box; next to another icon on a phone the two targets overlap slightly.
+.header-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 44px;
+  padding-block: 0;
+  padding-inline: 0;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.25s ease;
+
+  // 20px drawing in a 16px box: the strokes sit ~3px inside the viewBox, so the
+  // ink lines up with the box edges. Centred overflow, both sides.
+  svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: -14px;
+  }
+
+  &:hover,
+  &:focus-visible,
+  &--active {
+    color: var(--gold);
+  }
+}
+
+// Tooltip from the wrapper's data-tip. Pure CSS; the button's aria-label is the
+// real name (phones have no hover). `/ ""` keeps the generated text out of the
+// accessibility tree so it isn't read twice.
+.header-tip {
+  position: relative;
+  display: inline-flex;
+
+  &::after {
+    content: attr(data-tip);
+    content: attr(data-tip) / "";
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-block: 6px;
+    padding-inline: 12px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: var(--border);
+    color: var(--gold);
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 200;
+    letter-spacing: 0.08em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 1;
+  }
+
+  // An item without a tip (the menu button while open) shows nothing.
+  &:not([data-tip])::after {
+    content: none;
+  }
+
+  // Rightmost icon: align the tip to its right edge so it can't run off-screen.
+  &--end::after {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  // Hover devices only — on touch a tap would leave the tip stuck open.
+  @media (hover: hover) {
+    &:hover::after,
+    &:focus-within::after {
+      opacity: 1;
+    }
+  }
+}
+
+// Set by HeaderNavMenu while the phone panel is open (same shape as
+// html.potion-locked).
+html.header-nav-locked,
+html.header-nav-locked body {
+  overflow: hidden;
+}
+
+// ── Site menu ──
+// Mobile-first: the panel is a full-width list under the header covering the
+// page. Positioned against .main-header (absolute), never fixed — the header's
+// intro transform would trap a fixed child.
+.header-nav {
+  &__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    // --header-nav-top is the header's bottom edge, measured in HeaderNavMenu.
+    height: calc(100dvh - var(--header-nav-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-block: 1.5rem;
+    padding-inline: 1.5rem;
+    background: var(--bg);
+  }
+
+  &__list {
+    @include list-style;
+    border-top: 1px solid rgba(250, 225, 163, 0.2);
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    border-bottom: 1px solid rgba(250, 225, 163, 0.2);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-weight: 200;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  // Computer: a small panel under the button, right-aligned to it.
+  @include respond-above(md) {
+    position: relative;
+
+    &__panel {
+      top: calc(100% + 8px);
+      left: auto;
+      right: 0;
+      width: 300px;
+      height: auto;
+      overflow-y: visible;
+      padding-block: 8px;
+      padding-inline: 8px;
+      border: var(--border);
+      border-radius: var(--border-radius);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 24px rgba(68, 53, 35, 0.5);
+    }
+
+    &__list {
+      border-top: none;
+    }
+
+    &__link {
+      min-height: 0;
+      padding-block: 14px;
+      padding-inline: 16px;
+      border-bottom: none;
+      border-radius: 6px;
+      font-size: 15px;
+
+      &:hover,
+      &:focus-visible {
+        background-color: rgba(250, 225, 163, 0.07);
+      }
+    }
+
+    // Contact and legal stay in the footer on a computer.
+    &__item--phone {
+      display: none;
+    }
+  }
+}

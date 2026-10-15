@@ -216,6 +216,15 @@
     "welcomeConsentLead": "Velkommen, {name}. Før din første lesning, en liten rite.",
     "welcomeConsentLeadNoName": "Velkommen. Før din første lesning, en liten rite.",
     "sealThePact": "Besegl Pakten",
-    "welcomeSignOut": "Ikke nå — logg ut"
+    "welcomeSignOut": "Ikke nå — logg ut",
+    "menuOpen": "Åpne menyen",
+    "menuClose": "Lukk menyen",
+    "menuLabel": "Meny",
+    "menuReadCards": "Les kortene dine",
+    "menuGames": "Heksespill",
+    "menuDecks": "Kortstokker",
+    "menuSubscription": "Abonnement",
+    "menuMyReadings": "Mine lesninger",
+    "menuMyProfile": "Min profil"
   }
 }

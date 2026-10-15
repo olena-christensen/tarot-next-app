@@ -216,6 +216,15 @@
     "welcomeConsentLead": "Welcome, {name}. Before your first reading, one small rite.",
     "welcomeConsentLeadNoName": "Welcome. Before your first reading, one small rite.",
     "sealThePact": "Seal the Pact",
-    "welcomeSignOut": "Not now — sign out"
+    "welcomeSignOut": "Not now — sign out",
+    "menuOpen": "Open the menu",
+    "menuClose": "Close the menu",
+    "menuLabel": "Menu",
+    "menuReadCards": "Read Your Cards",
+    "menuGames": "Witchy Games",
+    "menuDecks": "Decks",
+    "menuSubscription": "Subscription",
+    "menuMyReadings": "My Readings",
+    "menuMyProfile": "My Profile"
   }
 }
