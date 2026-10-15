@@ -8,11 +8,14 @@ export default function Footer({ overlay = false }: { overlay?: boolean }) {
     const t = useTranslations("ui");
     const tDisc = useTranslations("disclaimers");
     const tCards = useTranslations("cardMeanings");
+    const tDreams = useTranslations("dreams");
     return (
         <footer className={`main-footer container${overlay ? " main-footer--overlay" : ""}`}>
             <p className="main-footer__disclaimer">{tDisc("entertainmentFull")}</p>
             <p className="main-footer__legal">
                 <IntlLink className="main-footer__link" href="/cards">{tCards("navLabel")}</IntlLink>
+                {" · "}
+                <IntlLink className="main-footer__link" href="/dreams">{tDreams("footerLink")}</IntlLink>
                 {" · "}
                 <NextLink className="main-footer__link" href="/terms">{t("termsOfService")}</NextLink>
                 {" · "}

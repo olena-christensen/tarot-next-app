@@ -26,6 +26,16 @@ export const GLOBAL_ROUTES = ["/privacy", "/terms"] as const;
  */
 export const CARD_CONTENT_LOCALES = ["en", "uk", "ru", "tr", "no"] as const;
 
+/**
+ * Locales with real dream-meaning text (see src/lib/dreamTexts). A locale
+ * without its own text would show English and must stay out of this list.
+ */
+export const DREAM_CONTENT_LOCALES = ["en", "uk", "ru", "tr", "no"] as const;
+
+export function isDreamContentLocale(locale: string): boolean {
+  return (DREAM_CONTENT_LOCALES as readonly string[]).includes(locale);
+}
+
 export function isCardContentLocale(locale: string): boolean {
   return (CARD_CONTENT_LOCALES as readonly string[]).includes(locale);
 }

@@ -16,18 +16,18 @@ type MainMenuProps = {
 export default function MainMenu({ onOpenLogin, onMenuOpenChange }: MainMenuProps) {
     const { data: session, status } = useSession();
     const t = useTranslations("ui");
-    const tCards = useTranslations("cardMeanings");
+    const tDreams = useTranslations("dreams");
 
     return (
         <nav className="main-menu">
             <ul className="main-menu__list">
                 <li className="main-menu__item">
                     {/* Icon only — the label is the accessible name, not visible text. */}
-                    <span className="header-tip" data-tip={tCards("navLabel")}>
+                    <span className="header-tip" data-tip={tDreams("searchAllLabel")}>
                         <Link
                             className="header-icon"
                             href="/cards"
-                            aria-label={tCards("navLabel")}
+                            aria-label={tDreams("searchAllLabel")}
                         >
                             <SearchIcon aria-hidden="true" />
                         </Link>

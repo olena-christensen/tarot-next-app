@@ -21,6 +21,7 @@ import {MysticButton} from "@/components/MysticButton";
 import { useReadingGate } from "@/hooks/useReadingGate";
 import { HomeAboutToggle } from "@/components/HomeAbout";
 import { GameEntrance } from "@/components/GameEntrance";
+import { DreamEntrance } from "@/components/DreamEntrance";
 import { armIntro } from "@/lib/intro";
 
 type OfferBlockProps = {
@@ -237,6 +238,7 @@ export const OfferBlock = ({
                             {/* The way into the game sits in the reader block's own
                                 flow, so it can never land on top of these buttons. */}
                             <GameEntrance />
+                            <DreamEntrance />
                             <HomeAboutToggle />
                         </div>
                     </div>
