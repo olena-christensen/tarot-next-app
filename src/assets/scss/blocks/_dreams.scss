@@ -119,10 +119,17 @@
     width: 100%;
     max-width: 46rem;
     margin-top: 20px;
+
+    // Under a letter heading the names line up on the left edge.
+    .dreams-index__link {
+      justify-content: flex-start;
+      text-align: left;
+    }
   }
 
   &__group-title {
     margin: 0 0 8px;
+    text-align: left;
     font-size: 1rem;
     font-weight: var(--font-weight);
     letter-spacing: 0.16em;
