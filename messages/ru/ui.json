@@ -216,6 +216,15 @@
     "welcomeConsentLead": "Добро пожаловать, {name}. Перед первым раскладом — небольшой обряд.",
     "welcomeConsentLeadNoName": "Добро пожаловать. Перед первым раскладом — небольшой обряд.",
     "sealThePact": "Скрепить Договор",
-    "welcomeSignOut": "Не сейчас — выйти"
+    "welcomeSignOut": "Не сейчас — выйти",
+    "menuOpen": "Открыть меню",
+    "menuClose": "Закрыть меню",
+    "menuLabel": "Меню",
+    "menuReadCards": "Разложить карты",
+    "menuGames": "Ведьминские игры",
+    "menuDecks": "Колоды",
+    "menuSubscription": "Подписка",
+    "menuMyReadings": "Мои расклады",
+    "menuMyProfile": "Мой профиль"
   }
 }

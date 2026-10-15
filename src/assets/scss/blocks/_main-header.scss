@@ -5,13 +5,27 @@
   right: 0;
   display: flex;
   align-items: center;
-  gap: 2rem;
-  padding-top: 1rem;
-  z-index: 30; // layer scale: content < header(30) < greeting-bar(31) < tarot-screen(40) < footer(50) < banner(60) < modal(100)
+  // One spacing for the whole toolbar row (this gap + .main-menu__list's), so
+  // the distance between any two visible items is the same.
+  // Grows with the screen: 16px on a 320px phone (where a signed-in row with a
+  // three-digit moonstone balance needs every pixel), 24px from ~480px.
+  --header-gap: clamp(16px, 5vw, 24px);
+  gap: var(--header-gap);
+  padding-top: 0.5rem;
+  z-index: 30; // layer scale: content < header(30) < greeting-bar(31) < tarot-screen(40) < footer(50) < header-menu-open(55) < banner(60) < modal(100)
 
-  @include respond-below(sm) {
-    gap: 1rem;
-    padding-top: 0.5rem;
+  @include respond-above(sm) {
+    padding-top: 1rem;
+  }
+
+  @include respond-above(md) {
+    --header-gap: 32px;
+  }
+
+  // Menu open: above the overlay footer (50), which would otherwise show
+  // through the phone panel; still under the cookie banner (60).
+  &--menu-open {
+    z-index: 55;
   }
 
   // Home page intro only (src/lib/intro.ts); every other load shows the header at once.
@@ -40,16 +54,43 @@
     flex: 0 0 auto;
   }
 
-  // The header owns placement. The avatar is a fixed-size circle and must never
-  // be squeezed by whatever else shares the row.
-  .header-avatar,
-  .header-moonstones {
+  // The header owns placement. Toolbar items (each wrapped in its .header-tip)
+  // must never be squeezed by whatever else shares the row.
+  > .header-tip {
     flex: 0 0 auto;
   }
 }
 
 @include respond-above(lg) {
   .main-header {
+    .logo {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+// Signed in, the row holds moonstones + avatar + log-out on top of the icons;
+// at 320px that overflowed. Below sm the logo is the one item allowed to
+// shrink — it gives up exactly what the moonstone chip needs, however many
+// digits the balance has (min 44px, a full touch target). Its box keeps 80px of
+// height so the header (and the menu panel under it) doesn't move. Compound
+// selector so it outranks `.main-header .logo`; each breakpoint restores it.
+.main-header.main-header--greeted {
+  .logo {
+    flex: 0 1 80px;
+    min-width: 44px;
+    width: auto;
+  }
+
+  @include respond-above(sm) {
+    .logo {
+      flex: 0 0 auto;
+      width: 80px;
+    }
+  }
+
+  @include respond-above(lg) {
     .logo {
       width: 120px;
       height: 120px;

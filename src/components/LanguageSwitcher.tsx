@@ -62,13 +62,15 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="language-switcher">
+    // Rightmost item of the signed-out header row, so its tip aligns to the end.
+    <div className="language-switcher header-tip header-tip--end" data-tip={t("language")}>
       <button
-        className="language-switcher__trigger"
+        type="button"
+        className="header-icon"
         onClick={handleOpen}
         aria-label={t("language")}
       >
-        <GlobeIcon />
+        <GlobeIcon aria-hidden="true" />
       </button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={t("language")}>
         <div className="options-modal">

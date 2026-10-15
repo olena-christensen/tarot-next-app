@@ -216,6 +216,15 @@
     "welcomeConsentLead": "Ласкаво просимо, {name}. Перед першим розкладом — невеликий обряд.",
     "welcomeConsentLeadNoName": "Ласкаво просимо. Перед першим розкладом — невеликий обряд.",
     "sealThePact": "Скріпити угоду",
-    "welcomeSignOut": "Не зараз — вийти"
+    "welcomeSignOut": "Не зараз — вийти",
+    "menuOpen": "Відкрити меню",
+    "menuClose": "Закрити меню",
+    "menuLabel": "Меню",
+    "menuReadCards": "Розкласти карти",
+    "menuGames": "Відьомські ігри",
+    "menuDecks": "Колоди",
+    "menuSubscription": "Підписка",
+    "menuMyReadings": "Мої розклади",
+    "menuMyProfile": "Мій профіль"
   }
 }
