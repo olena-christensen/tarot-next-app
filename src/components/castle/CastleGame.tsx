@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { track } from "@vercel/analytics";
@@ -490,6 +490,62 @@ export const CastleGame = () => {
     else setRecordPick(records[0].id);
   };
 
+  // Phones: the party is an icon by the full-screen one. Dim until the hall has
+  // everything; a tap on it then says what is missing (Lena, 2026-10-15).
+  const partyReady = Boolean(state?.signedIn) && !needs.length && records.length > 0;
+  const [partyTip, setPartyTip] = useState(false);
+  const tapParty = () => {
+    if (needSignIn()) return;
+    if (partyReady) {
+      setPartyTip(false);
+      throwParty();
+      return;
+    }
+    setPartyTip((on) => !on);
+  };
+  useEffect(() => {
+    if (!partyTip) return;
+    const away = (e: PointerEvent) => {
+      const el = e.target as Element | null;
+      if (!el?.closest(".castle__party")) setPartyTip(false);
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [partyTip]);
+  const partyIcon = (
+    <span className="castle__party">
+      <button
+        type="button"
+        className={`castle__eye castle__party-btn${partyReady ? " castle__party-btn--ready" : ""}`}
+        onClick={tapParty}
+        aria-label={t("throwParty")}
+        title={t("throwParty")}
+        aria-expanded={partyReady ? undefined : partyTip}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 3.5h10l-.6 5.2a4.4 4.4 0 0 1-8.8 0z" />
+          <path d="M12 13.5v6M8.5 20.5h7" />
+        </svg>
+      </button>
+      {partyTip && !partyReady && (
+        <span className="castle__party-tip" role="status">
+          {t("missing", { list: needs.map((n) => t(`needs.${n}`)).join(", ") })}
+        </span>
+      )}
+    </span>
+  );
+
+  // Phones: the first tap in the hall only clears the buttons away, so the
+  // next taps reach the table under them (Lena, 2026-10-15).
+  const tapHall = (e: ReactMouseEvent) => {
+    if (!fullScreen || bare || placing) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setHint(null);
+    setMenu(null);
+    enterFull();
+  };
+
   const closeParty = () => {
     setParty(null);
     setBare(bareBefore.current);
@@ -785,6 +841,7 @@ export const CastleGame = () => {
             <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
           </svg>
         </button>
+        {fullScreen && partyIcon}
         {fullScreen && (
           <Link href="/" className="castle__home" aria-label={t("close")}>
             <Skull aria-hidden="true" />
@@ -793,7 +850,7 @@ export const CastleGame = () => {
       </div>
 
       <div className="castle__board">
-        <div className="castle__stage" ref={stageRef} onScroll={onScroll}>
+        <div className="castle__stage" ref={stageRef} onScroll={onScroll} onClickCapture={tapHall}>
           <div
             className="castle__extent"
             style={{ width: WORLD.w * scale, height: WORLD.h * scale, left: view.x, top: view.y }}
@@ -920,11 +977,14 @@ export const CastleGame = () => {
         </div>
 
         {bare && (
-          <button type="button" className="castle__unbare" onClick={() => leaveFull()} aria-label={t("exitFullScreen")} title={t("exitFullScreen")}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5" />
-            </svg>
-          </button>
+          <div className="castle__corner">
+            {fullScreen && partyIcon}
+            <button type="button" className="castle__unbare" onClick={() => leaveFull()} aria-label={t("exitFullScreen")} title={t("exitFullScreen")}>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5" />
+              </svg>
+            </button>
+          </div>
         )}
         {placing && (
           <div className="castle__banner">
@@ -1023,6 +1083,7 @@ export const CastleGame = () => {
           {items.length > 0 && <span className="castle__count">{items.length}</span>}
         </button>
       </div>
+      {!fullScreen && (
       <div className="castle__bar">
         <button
           type="button"
@@ -1033,6 +1094,7 @@ export const CastleGame = () => {
           {t("throwParty")}
         </button>
       </div>
+      )}
       {state?.signedIn === false && (
         <p className="castle__note">
           <a href="#" onClick={(e) => (e.preventDefault(), openLogin())}>
@@ -1040,7 +1102,7 @@ export const CastleGame = () => {
           </a>
         </p>
       )}
-      {state?.signedIn && (
+      {state?.signedIn && !fullScreen && (
         <p className="castle__note">
           {needs.length
             ? t("missing", { list: needs.map((n) => t(`needs.${n}`)).join(", ") })
