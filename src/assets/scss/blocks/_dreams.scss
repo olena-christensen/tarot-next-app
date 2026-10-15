@@ -1,0 +1,584 @@
+// Dream meanings: the A–Z list, a dream page, "Tell me your dream" and its result.
+// Mobile-first. Dream pages reuse .card-page / .cards-search; only the extras live here.
+
+.dream-glow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding-block: 0;
+  padding-inline: 28px;
+  background: rgba(9, 9, 9, 0.4);
+  border: 1px solid rgba(250, 225, 163, 0.6);
+  border-radius: 8px;
+  color: var(--gold);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow:
+    0 0 14px rgba(250, 225, 163, 0.22),
+    0 0 34px rgba(160, 110, 40, 0.25);
+  transition: box-shadow 0.25s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    box-shadow:
+      0 0 20px rgba(250, 225, 163, 0.4),
+      0 0 46px rgba(160, 110, 40, 0.4);
+  }
+}
+
+.dreams-index {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 100px 0;
+  padding-inline: 20px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  @include respond-above(lg) {
+    padding-inline: 3rem;
+  }
+
+  &__moon {
+    width: 44px;
+    height: 44px;
+    margin-top: 40px;
+    color: var(--gold);
+  }
+
+  &__title {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+
+  &__lead {
+    margin: 0 0 24px;
+    text-align: center;
+    color: var(--text-soft);
+
+    a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+
+  &__note {
+    margin: 0 auto 24px;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+
+  &__search {
+    margin: 0 auto 24px;
+  }
+
+  &__letters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  &__letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 36px;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    color: var(--text-soft);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+  }
+
+  &__group {
+    width: 100%;
+    max-width: 46rem;
+    margin-top: 20px;
+  }
+
+  &__group-title {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    color: var(--primary);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 14px;
+    width: 100%;
+    max-width: 46rem;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    list-style: none;
+
+    @include respond-above(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--text-color);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+}
+
+.dream-page {
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-block-end: 8px;
+    text-align: center;
+  }
+
+  &__moon {
+    width: 44px;
+    height: 44px;
+    color: var(--gold);
+  }
+
+  &__text + &__text {
+    margin-top: 14px;
+  }
+
+  &__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-block: 24px;
+    padding-inline: 20px;
+    text-align: center;
+    border: 1px solid rgba(250, 225, 163, 0.35);
+    border-radius: var(--border-radius);
+    background: rgba(9, 9, 9, 0.5);
+    box-shadow: 0 0 30px rgba(160, 110, 40, 0.2);
+  }
+
+  &__cta-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.04em;
+    color: var(--gold);
+  }
+
+  &__cta-lead {
+    margin: 0;
+    color: var(--text-soft);
+  }
+
+  &__cta-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+}
+
+.dream-tell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 100px 60px;
+  padding-inline: 20px;
+  text-align: center;
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  @include respond-above(lg) {
+    padding-inline: 3rem;
+  }
+
+  &__kicker {
+    margin-top: 12px;
+  }
+
+  &__title {
+    margin: 8px 0 12px;
+  }
+
+  &__lead {
+    max-width: 32rem;
+    margin: 0 0 24px;
+    color: var(--text-soft);
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 36rem;
+  }
+
+  // One field that holds the chosen ones as tokens, then the typing area.
+  &__field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding-block: 8px;
+    padding-inline: 12px;
+    background: var(--input-bg);
+    border: var(--border);
+    border-radius: var(--border-radius);
+    cursor: text;
+    text-align: left;
+
+    &:focus-within {
+      border-color: var(--gold);
+    }
+  }
+
+  &__input {
+    flex: 1 1 8rem;
+    min-width: 0;
+    min-height: 36px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+
+    &::placeholder {
+      color: var(--text-faint);
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0 0;
+    padding-block: 0;
+    padding-inline: 0;
+    list-style: none;
+  }
+
+  &__hint,
+  &__count,
+  &__free {
+    margin: 12px 0 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+
+  &__error {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+    color: var(--gold);
+  }
+
+  &__submit {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 22rem;
+  }
+}
+
+.dream-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding-block: 0;
+  padding-inline: 12px;
+  background: rgba(250, 225, 163, 0.08);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  color: var(--gold);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  &__x {
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 0 10px rgba(250, 225, 163, 0.35);
+  }
+}
+
+.dream-chip {
+  min-height: 40px;
+  padding-block: 0;
+  padding-inline: 16px;
+  background: transparent;
+  border: var(--border);
+  border-radius: 20px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  &--on {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: rgba(250, 225, 163, 0.08);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.dream-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding-block: 120px 60px;
+  padding-inline: 20px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+
+  @include respond-above(md) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 64px;
+    max-width: 62rem;
+    margin-inline: auto;
+  }
+
+  &__card {
+    flex: 0 0 auto;
+  }
+
+  &__img {
+    width: 200px;
+    height: auto;
+    border: 1px solid rgba(250, 225, 163, 0.6);
+    border-radius: var(--border-radius);
+    box-shadow:
+      0 0 24px rgba(250, 225, 163, 0.2),
+      0 0 60px rgba(160, 110, 40, 0.25);
+
+    @include respond-above(md) {
+      width: 260px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+
+    @include respond-above(md) {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  &__title {
+    margin: 4px 0 8px;
+  }
+
+  &__symbol {
+    margin-top: 20px;
+  }
+
+  &__draw {
+    width: 100%;
+    margin-top: 28px;
+    padding-block-start: 22px;
+    border-top: var(--border);
+  }
+
+  &__card-name {
+    margin: 4px 0 8px;
+    font-size: 1.6rem;
+    font-weight: 100;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--text-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 20px;
+
+    @include respond-above(md) {
+      flex-direction: row;
+      gap: 24px;
+      width: auto;
+    }
+
+    .dream-glow {
+      width: 100%;
+
+      @include respond-above(md) {
+        width: auto;
+      }
+    }
+  }
+
+  &__again {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--gold);
+    }
+  }
+
+  &__more {
+    margin: 22px 0 0;
+    color: var(--text-soft);
+
+    a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+// Dream matches under the card matches in the /cards search.
+.cards-search__dreams {
+  margin-top: 28px;
+
+  &-title {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    font-weight: var(--font-weight);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+}
+
+// Second pill on the main page, same shape as the games one.
+.game-entrance--dream {
+  padding-inline-start: 62px;
+
+  .game-entrance__moon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 34px;
+    height: 34px;
+    transform: translateY(-50%);
+    color: var(--gold);
+    filter: drop-shadow(0 0 6px rgba(250, 225, 163, 0.6));
+  }
+}
+
+// Header menu: the "New" tag next to "Tell me your dream".
+.header-nav__tag {
+  margin-inline-start: 8px;
+  padding-block: 1px;
+  padding-inline: 7px;
+  border: 1px solid rgba(250, 225, 163, 0.6);
+  border-radius: 10px;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}

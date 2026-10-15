@@ -8,6 +8,7 @@ import { tarots } from "@/data";
 import { DEFAULT_DECK, getCardImagePath } from "@/lib/decks";
 import { CARD_GROUPS, PAPUS_SOURCE, buildCardSearchIndex, normalize } from "@/lib/cardMeanings";
 import { CardSearch } from "@/components/CardSearch";
+import { getLocalizedDreams } from "@/lib/dreamTranslations";
 import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 import {
   CARD_CONTENT_LOCALES,
@@ -99,7 +100,14 @@ export default async function CardsIndexPage({ params }: Props) {
           <p className="cards-index__note">{t("englishOnly")}</p>
         )}
 
-        <CardSearch index={searchIndex}>
+        <CardSearch
+          index={searchIndex}
+          dreams={getLocalizedDreams(params.locale).map(({ slug, title, terms }) => ({
+            slug,
+            title,
+            terms,
+          }))}
+        >
           {/*
             <details>, not a client component: the group collapses with no JS, it
             is keyboard-accessible for free, and — the reason that matters here —
