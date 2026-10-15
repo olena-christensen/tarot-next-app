@@ -301,7 +301,7 @@ export function groupDreamsByLetter(): { letter: string; dreams: DreamSymbol[] }
     const letter = dream.title.charAt(0).toUpperCase();
     groups.set(letter, [...(groups.get(letter) ?? []), dream]);
   }
-  return [...groups.entries()].map(([letter, dreams]) => ({ letter, dreams }));
+  return Array.from(groups.entries()).map(([letter, dreams]) => ({ letter, dreams }));
 }
 
 /** Lower case, no accents, single spaces, so "Snake!" finds "snake". */

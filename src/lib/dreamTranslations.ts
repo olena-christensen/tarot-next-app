@@ -54,5 +54,5 @@ export function groupLocalizedByLetter(
     const letter = dream.title.charAt(0).toLocaleUpperCase(locale);
     groups.set(letter, [...(groups.get(letter) ?? []), dream]);
   }
-  return [...groups.entries()].map(([letter, dreams]) => ({ letter, dreams }));
+  return Array.from(groups.entries()).map(([letter, dreams]) => ({ letter, dreams }));
 }
