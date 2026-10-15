@@ -366,14 +366,31 @@ export const CastleGame = () => {
     browserFull.current = false;
   };
   useEffect(() => {
+    // Android Chrome can leave the page zoomed in after full screen ends
+    // (Lena, 2026-10-15). Capping the zoom for a moment snaps it back to 1;
+    // the normal setting returns right after, so pinch-zoom still works.
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
+    const normal = meta?.content ?? "";
+    let zoomTimer: number | undefined;
+    const resetZoom = () => {
+      if (!meta) return;
+      meta.content = `${normal}, maximum-scale=1`;
+      window.clearTimeout(zoomTimer);
+      zoomTimer = window.setTimeout(() => (meta.content = normal), 300);
+    };
     const onChange = () => {
+      if (!document.fullscreenElement) resetZoom();
       if (!document.fullscreenElement && browserFull.current) {
         browserFull.current = false;
         setBare(false);
       }
     };
     document.addEventListener("fullscreenchange", onChange);
-    return () => document.removeEventListener("fullscreenchange", onChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      window.clearTimeout(zoomTimer);
+      if (meta) meta.content = normal;
+    };
   }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("castle-locked", immersive);

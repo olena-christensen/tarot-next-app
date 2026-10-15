@@ -993,7 +993,7 @@ html.castle-locked body {
 
 .castle-wheel {
   position: relative;
-  width: min(340px, 86vw);
+  width: min(340px, 100%); // the modal's content box, not the screen: 86vw overflowed it on phones
   aspect-ratio: 1;
   margin: 30px auto 0;
 
@@ -1040,6 +1040,8 @@ html.castle-locked body {
 
   &__card {
     width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 22px 18px;
     background: #0d0a10;
     border: 1px solid rgba(250, 225, 163, 0.55);
