@@ -9,16 +9,6 @@ import { SubscriptionModal } from "@/components/SubscriptionModal";
 import { ReadingGateModal, type GateReason } from "@/components/ReadingGateModal";
 import { useOpenLogin } from "@/components/LoginContext";
 import Footer from "@/components/Footer";
-import { useAppContext } from "@/AppProvider";
-
-// The cards/reading screen (.tarot-modal) is a full screen, not a page — no
-// footer belongs over it. Hidden while the cards modal is open (incl. its
-// closing fade, which keeps isCardsModalOpen true).
-function HomeFooter() {
-  const { state } = useAppContext();
-  if (state.isCardsModalOpen) return null;
-  return <Footer overlay />;
-}
 
 /**
  * The main page. The header, session and login window come from SiteChrome in
@@ -54,20 +44,25 @@ export function HomePageClient() {
 
   return (
     <>
-      <main className="">
-        <OfferBlock
-          onOpenLogin={() => openLogin()}
-          onOpenSubscription={() => setIsSubscriptionOpen(true)}
+      {/* The footer follows the page in normal flow (Lena, 2026-10-16): pinned
+          to the screen bottom when the page is short, scrolled to when it isn't —
+          it no longer floats over the content. */}
+      <div className="page-shell">
+        <main className="page-shell__main">
+          <OfferBlock
+            onOpenLogin={() => openLogin()}
+            onOpenSubscription={() => setIsSubscriptionOpen(true)}
+            onBlockedAnon={() => setGateReason("anon")}
+            onBlockedFree={() => setGateReason("free")}
+          />
+        </main>
+        <HomeAbout />
+        <Tarot
           onBlockedAnon={() => setGateReason("anon")}
           onBlockedFree={() => setGateReason("free")}
         />
-      </main>
-      <HomeAbout />
-      <Tarot
-        onBlockedAnon={() => setGateReason("anon")}
-        onBlockedFree={() => setGateReason("free")}
-      />
-      <HomeFooter />
+        <Footer />
+      </div>
       <SubscriptionModal
         isOpen={isSubscriptionOpen}
         onClose={() => setIsSubscriptionOpen(false)}

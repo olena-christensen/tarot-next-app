@@ -87,25 +87,6 @@ export const HomeAbout = () => {
     };
   }, [open]);
 
-  // The fixed footer's height (its text, not its transparent top padding) —
-  // the reader block sits exactly one gap above it (see _offer-block.scss).
-  useEffect(() => {
-    const footer = document.querySelector<HTMLElement>(".main-footer--overlay");
-    if (!footer) return;
-    const root = document.documentElement;
-    const measure = () => {
-      const pad = parseFloat(getComputedStyle(footer).paddingTop) || 0;
-      root.style.setProperty("--home-footer-h", `${Math.round(footer.offsetHeight - pad)}px`);
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(footer);
-    return () => {
-      ro.disconnect();
-      root.style.removeProperty("--home-footer-h");
-    };
-  }, []);
-
   const reader = (id: "vespera" | "crow" | "reginald", key: string) => (
     <>
       <b>{tReaders(`${id}.displayName`)}</b>, {tReaders(`${id}.title`)} — {t(key)}

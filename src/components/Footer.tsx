@@ -4,19 +4,13 @@ import { Link as IntlLink } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { resetCookieConsent } from "@/components/CookieBanner";
 
-export default function Footer({ overlay = false }: { overlay?: boolean }) {
+export default function Footer() {
     const t = useTranslations("ui");
     const tDisc = useTranslations("disclaimers");
-    const tCards = useTranslations("cardMeanings");
-    const tDreams = useTranslations("dreams");
     return (
-        <footer className={`main-footer container${overlay ? " main-footer--overlay" : ""}`}>
+        <footer className="main-footer container">
             <p className="main-footer__disclaimer">{tDisc("entertainmentFull")}</p>
             <p className="main-footer__legal">
-                <IntlLink className="main-footer__link" href="/cards">{tCards("navLabel")}</IntlLink>
-                {" · "}
-                <IntlLink className="main-footer__link" href="/dreams">{tDreams("footerLink")}</IntlLink>
-                {" · "}
                 <NextLink className="main-footer__link" href="/terms">{t("termsOfService")}</NextLink>
                 {" · "}
                 <NextLink className="main-footer__link" href="/privacy">{t("privacyPolicy")}</NextLink>
@@ -35,7 +29,7 @@ export default function Footer({ overlay = false }: { overlay?: boolean }) {
                     {t("cookieSettings")}
                 </button>
             </p>
-            <p className="main-footer__legal">© 2026 Olena Christensen</p>
+            <p className="main-footer__owner">© 2026 Olena Christensen</p>
         </footer>
     );
 };
