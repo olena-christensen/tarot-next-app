@@ -113,11 +113,55 @@ JSON_OUT = os.path.join(ROOT, "src", "lib", "castleGame",
 SUFFIX = "-phone" if PHONE else ""
 
 
+# The phone room's mantel sits lower (Lena, 2026-10-16): the hood above it is
+# stretched down, the mantel moves down whole, and the opening under it gets
+# shorter. Only the chimney's own columns change; the walls beside it don't.
+MANTEL_DROP = 60                       # pixels: about a fifth of the fireplace below the hood
+CHIMNEY_COLS = (300, 655)              # the chimney and its mantel, side to side
+CHIMNEY_ROWS = (700, 1008, 1090, 1307) # hood stretch from, mantel top, under the mantel, floor
+
+
+def phone_y(y):
+    """Where a point of the drawn chimney ends up after the mantel is lowered."""
+    a, m0, m1, f = CHIMNEY_ROWS
+    d = MANTEL_DROP
+    y = float(y)
+    if y <= a or y >= f:
+        return y
+    if y <= m0:
+        return a + (y - a) * (m0 + d - a) / (m0 - a)
+    if y <= m1:
+        return y + d
+    return m1 + d + (y - m1) * (f - m1 - d) / (f - m1)
+
+
 def phone_room():
     """The tall room as drawn (944 x 1888, half as wide as tall). It is close to
     the shape of a phone browser's visible area, so filling the screen trims
     only a sliver."""
-    return Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
+    im = Image.open(os.path.join(ITEMS_DIR, "room-portrait.jpg")).convert("RGB")
+    src = np.asarray(im).astype(float)
+    hgt = src.shape[0]
+    # for every row of the result, the row of the drawing it comes from
+    a, m0, m1, f = CHIMNEY_ROWS
+    d = MANTEL_DROP
+    out_rows = np.arange(hgt, dtype=float)
+    back = out_rows.copy()
+    s1 = (out_rows > a) & (out_rows <= m0 + d)
+    back[s1] = a + (out_rows[s1] - a) * (m0 - a) / (m0 + d - a)
+    s2 = (out_rows > m0 + d) & (out_rows <= m1 + d)
+    back[s2] = out_rows[s2] - d
+    s3 = (out_rows > m1 + d) & (out_rows < f)
+    back[s3] = m1 + (out_rows[s3] - m1 - d) * (f - m1) / (f - m1 - d)
+    lo = np.floor(back).astype(int); hi = np.minimum(lo + 1, hgt - 1); t = (back - lo)[:, None, None]
+    moved = src[lo] * (1 - t) + src[hi] * t
+    # only the chimney's columns, with soft sides
+    x0, x1 = CHIMNEY_COLS
+    w = np.zeros(src.shape[1]); w[x0:x1] = 1
+    k = np.exp(-0.5 * (np.arange(-18, 19) / 6) ** 2); k /= k.sum()
+    w = np.convolve(w, k, mode="same")[None, :, None]
+    res = src * (1 - w) + moved * w
+    return Image.fromarray(np.clip(res, 0, 255).astype(np.uint8))
 
 
 room = phone_room() if PHONE else Image.open(os.path.join(SRC, "castle-room.png")).convert("RGB")
@@ -349,7 +393,7 @@ ICON_FILE = {"firewood": "firewood.png",
 
 # ---------------------------------------------------------------- places
 # Measured on castle-room.png (1600 x 899).
-CHAIN_END = (797, 58)          # chandelier hangs here once the hook is gone
+CHAIN_END = (797, -28)         # chandelier hangs high (Lena, 2026-10-16); its own chain runs up out of the picture
 TABLE = [(662, 508), (920, 508), (1162, 742), (420, 742)]   # table top TL TR BR BL
 TABLE_FRONT_BOTTOM = 782
 
@@ -405,6 +449,10 @@ LEDGE_GLOW = {"shelf": 150, "mantel": 180}
 LEDGE_SHADOW = (-9, -3)                # candelabra's shadow on the wall behind: the wall runs away from us
 FIRE = (1463, 683, 116)                # centre x, base y, width: middle of the fireplace
 FIRE_SPILL = 100                       # the warm spill on the floor lies this far to the left
+FIRE_LIGHT = (300, 0.20, 230, 0.14)    # glow round the fire (radius, strength), spill on the floor
+FIRE_SPREAD = None                     # phone: (height, flatten) of a wide, low fire
+FIRE_INSIDE = 0.40                     # how brightly the inside of the fireplace glows
+FIRE_HEARTH = 0                        # phone: how far the glow runs over the hearth floor
 
 PLACES = {
     "ceiling": ["chandelierIron", "chandelierAntler", "chandelierCrystal"],
@@ -853,7 +901,13 @@ def build_fire():
     cx, by, w = FIRE
     im = Image.open(os.path.join(ITEMS_DIR, ITEMS["firewood"][0])).convert("RGB")
     im = im.crop(Image.eval(im.convert("L"), lambda v: 255 if v > 14 else 0).getbbox())
-    im = resize_w(im, w)
+    if FIRE_SPREAD:
+        # A wide, low fire (Lena, 2026-10-16): the same single fire, one
+        # natural mound of flames, only drawn wider and lower than it is tall.
+        hgt, _ = FIRE_SPREAD
+        im = im.resize((w, hgt), Image.LANCZOS)
+    else:
+        im = resize_w(im, w)
     a = np.asarray(im).astype(float)
     r, g, b = a[..., 0], a[..., 1], a[..., 2]
     mx = a.max(2)
@@ -889,9 +943,17 @@ def build_fire():
     F = F * 0.25 + ndimage.gaussian_filter(F, 12) * 0.9
     inside = Image.new("L", (W, H), 0)
     ImageDraw.Draw(inside).polygon(FIRE_OPENING, fill=255)
-    inside = np.asarray(inside.filter(ImageFilter.GaussianBlur(8))) / 255
-    I = F + inside * glow(cx, by - 30, 110, 0.40, 1.2) \
-        + glow(cx, by - 40, 300, 0.20, 0.9) + glow(cx - FIRE_SPILL, by + 70, 230, 0.14, 0.4)
+    if FIRE_HEARTH:
+        # the glow runs out over the hearth floor in front and fades, instead
+        # of stopping at a hard line (Lena, 2026-10-16)
+        xs = [p[0] for p in FIRE_OPENING]; yb = max(p[1] for p in FIRE_OPENING)
+        ImageDraw.Draw(inside).polygon([(min(xs), yb - 4), (max(xs), yb - 4),
+                                        (max(xs) + 24, yb + FIRE_HEARTH), (min(xs) - 24, yb + FIRE_HEARTH)], fill=150)
+    inside = np.asarray(inside.filter(ImageFilter.GaussianBlur(14 if FIRE_HEARTH else 8))) / 255
+    big_r, big_s, spill_r, spill_s = FIRE_LIGHT
+    I = F + inside * glow(cx, by - 30, 110, FIRE_INSIDE, 1.2) + glow(cx, by - 40, big_r, big_s, 0.9)
+    if spill_s:
+        I = I + glow(cx - FIRE_SPILL, by + 70, spill_r, spill_s, 0.4)
     return L, I
 
 
@@ -927,7 +989,7 @@ if PHONE:
     # The chandelier hangs high, as on the computer (Lena, 2026-10-16): the
     # chain is cut here and the chain below it and the hook are painted out.
     CHAIN_END = (474, 400)
-    HOOK_CUT = [(408, 650, 462, 490, 30), (640, 762, 446, 502, 64)]
+    HOOK_CUT = [(408, 650, 462, 490, 30), (640, round(phone_y(762)) + 4, 446, 502, 64)]
     CHANDELIER_SCALE = 0.95
     TABLE = [(343, 1312), (594, 1312), (858, 1621), (79, 1621)]
     TABLE_POOL = (468, 1460, 300)
@@ -959,20 +1021,31 @@ if PHONE:
     # behind its front edge, a level line.
 
     def mantel_edge(x):
-        return 1005 + 0 * np.asarray(x, float)
+        return phone_y(1005) + 0 * np.asarray(x, float)
 
     LEDGES = {"mantel": (475, mantel_edge, 150, 0.60)}
     LEDGE_GLOW = {"mantel": 150}
     LEDGE_SHADOW = (0, 3)               # the chimney faces us: the shadow falls straight behind
     LEDGE_SIDE_FILE = {k: ITEMS[k][0] for k in LEDGE_SIDE_FILE}   # face on, as in the Emporium
-    FIRE = (478, 1292, 118)
+    # A wide, low fire from side to side of the hearth, and its light kept
+    # in the fireplace — it warms, it doesn't light the table (Lena, 2026-10-16).
+    FIRE = (480, round(phone_y(1294)), 150)
+    FIRE_SPREAD = (112, 1.0)
+    FIRE_LIGHT = (110, 0.07, 0, 0)
+    FIRE_INSIDE = 0.24
+    FIRE_HEARTH = 26
     FIRE_SPILL = 0                      # the fire faces the room: its spill comes straight towards us
-    FIRE_OPENING = [(390, 1302), (390, 1118), (410, 1102), (478, 1094), (548, 1102), (571, 1118), (571, 1302)]
+    FIRE_OPENING = [(x, round(phone_y(y))) for x, y in
+                    [(390, 1302), (390, 1118), (410, 1102), (478, 1094), (548, 1102), (571, 1118), (571, 1302)]]
+
+    def _py(box):
+        return tuple(v if i % 2 == 0 else round(phone_y(v)) for i, v in enumerate(box))
+
     ANDIRONS = [
-        ("ellipse", (419, 1214, 430, 1228)), ("rect", (421, 1226, 427, 1284)),
-        ("poly", [(420, 1280), (428, 1280), (443, 1302), (437, 1303), (424, 1288), (410, 1303), (404, 1302)]),
-        ("ellipse", (528, 1217, 539, 1231)), ("rect", (530, 1229, 536, 1284)),
-        ("poly", [(529, 1280), (537, 1280), (553, 1302), (547, 1303), (533, 1288), (519, 1303), (513, 1302)]),
+        ("ellipse", _py((419, 1214, 430, 1228))), ("rect", _py((421, 1226, 427, 1284))),
+        ("poly", [_py(p) for p in [(420, 1280), (428, 1280), (443, 1302), (437, 1303), (424, 1288), (410, 1303), (404, 1302)]]),
+        ("ellipse", _py((528, 1217, 539, 1231))), ("rect", _py((530, 1229, 536, 1284))),
+        ("poly", [_py(p) for p in [(529, 1280), (537, 1280), (553, 1302), (547, 1303), (533, 1288), (519, 1303), (513, 1302)]]),
     ]
     for _p in ("wallLeft", "wallBackCentre", "shelf"):
         PLACES.pop(_p, None)

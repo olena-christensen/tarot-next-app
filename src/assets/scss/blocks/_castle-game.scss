@@ -165,6 +165,12 @@
     cursor: help;
     outline: none;
 
+    // the wider invisible tap area never shows
+    polygon.castle__spot-reach {
+      fill: transparent !important;
+      stroke: none !important;
+    }
+
     polygon {
       fill: rgba(250, 225, 163, 0.001); // invisible, still catches the pointer
       stroke: transparent;
@@ -653,6 +659,13 @@ html.castle-locked body {
 
 .castle__eye {
   margin-left: 8px;
+
+  // "show free spots" while it is on
+  &--on {
+    border-color: rgba(250, 225, 163, 0.9);
+    color: var(--gold);
+    box-shadow: 0 0 10px rgba(250, 225, 163, 0.4);
+  }
 }
 
 .castle__corner {
