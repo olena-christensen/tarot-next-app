@@ -180,6 +180,24 @@ describe("applyMonoInvoiceStatus", () => {
     expect(sub().expiresAt).toEqual(new Date("2026-10-14T00:00:00Z"));
   });
 
+  // --- Review item 11: payments outlive a deleted account -------------------
+
+  it("a deleted account's late success is recorded, grants nothing, and does not throw", async () => {
+    payments.rows.push({ userId: null, monoInvoiceId: "inv-9", productType: "MOONSTONES_3", status: "processing" });
+    await applyMonoInvoiceStatus({ invoiceId: "inv-9", status: "success" }, NOW);
+
+    expect(payment("inv-9").status).toBe("success");
+    expect(subs.rows).toHaveLength(0);
+  });
+
+  it("a deleted account's refund is recorded and does not throw", async () => {
+    payments.rows.push({ userId: null, monoInvoiceId: "inv-9", productType: "MONTHLY", status: "success" });
+    await applyMonoInvoiceStatus({ invoiceId: "inv-9", status: "reversed" }, NOW);
+
+    expect(payment("inv-9").status).toBe("reversed");
+    expect(sendPaymentFailedEmail).not.toHaveBeenCalled();
+  });
+
   it("an invoice with no ledger row throws so the webhook is retried", async () => {
     await expect(
       applyMonoInvoiceStatus({ invoiceId: "inv-unknown", status: "success" }, NOW)
