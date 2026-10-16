@@ -86,7 +86,8 @@ export const CATALOG: CatalogItem[] = [
   { id: "treatCakePops", tab: "treats", price: 2, places: TREAT },
   { id: "treatCake", tab: "treats", price: 2, places: TREAT },
   // Fire & music
-  { id: "firewood", tab: "fireMusic", price: 2, places: ["fireplace"], autoPlace: "fireplace", light: true },
+  // not lit on purchase: the player chooses to place it, keep it or send it (Lena, 2026-10-16)
+  { id: "firewood", tab: "fireMusic", price: 2, places: ["fireplace"], light: true },
   { id: "gramophone", tab: "fireMusic", price: 1, places: ["corner"] },
   { id: "recordWaltz", tab: "fireMusic", price: 1, places: [], record: true, sample: "waltz" },
   { id: "recordOrgan", tab: "fireMusic", price: 1, places: [], record: true, sample: "organ" },
