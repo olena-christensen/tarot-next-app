@@ -1,33 +1,22 @@
 .main-footer {
   padding-top: 2rem;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 
-  // Overlay variant: floats over the full-screen main/tarot views.
-  // Default (no modifier) sits in normal flow at the end of scrolling pages.
-  &--overlay {
-    position: fixed;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: 50; // above the tarot reading screen (40), below cookie banner (60) + modals (100)
-    pointer-events: none;
+  // Home page intro only (src/lib/intro.ts).
+  html[data-intro="play"] & {
+    animation: introFade 0.8s ease-out 0.9s both;
 
-    // Home page intro only (src/lib/intro.ts).
-    html[data-intro="play"] & {
-      animation: introFade 0.8s ease-out 0.9s both;
-
-      @media (prefers-reduced-motion: reduce) {
-        animation: introFade 0.4s ease-out both;
-      }
+    @media (prefers-reduced-motion: reduce) {
+      animation: introFade 0.4s ease-out both;
     }
+  }
 
-    // On short mobile screens the fixed footer must not sit on top of the
-    // primary CTAs (reader "Summon", tarot post-actions). Drop the tall
-    // disclaimer block here; the legal links row stays.
-    @include respond-below(sm) {
-      .main-footer__disclaimer {
-        display: none;
-      }
-    }
+  // Tiny, bottom right (Lena, 2026-10-16).
+  .main-footer__owner {
+    margin: 0;
+    text-align: right;
+    font-size: 6px;
+    line-height: 1;
   }
 
   .main-footer__link {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { track } from "@vercel/analytics";
@@ -114,6 +114,15 @@ const SPOT_HINT: Record<PlaceId, { hint: string; tab: TabId }> = {
   fireplace: { hint: "fireplace", tab: "fireMusic" },
   corner: { hint: "corner", tab: "fireMusic" },
 };
+/** How much wider than drawn a table spot catches a tap (Lena, 2026-10-16). */
+const SPOT_REACH: Partial<Record<PlaceId, number>> = { tableCentre: 2, treatMiddle: 2, treatFront: 2, settings: 1.3 };
+/** A polygon grown around its own middle. */
+function widen(pts: number[][], k: number): string {
+  const cx = pts.reduce((a, p) => a + p[0], 0) / pts.length;
+  const cy = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+  return pts.map(([x, y]) => `${cx + (x - cx) * k},${cy + (y - cy) * k}`).join(" ");
+}
+
 /** On the bare table only the cloth is offered; the rest stands on it. */
 const ON_THE_CLOTH: PlaceId[] = ["settings", "tableCentre", "treatMiddle", "treatFront"];
 const SOUND_KEY = "castle-sound";
@@ -266,6 +275,8 @@ export const CastleGame = () => {
 
   // ---------- hints on empty spots ----------
   const [hint, setHint] = useState<PlaceId | null>(null);
+  // "Where can things go?" (Lena, 2026-10-16): every free spot glows at once.
+  const [showSpots, setShowSpots] = useState(false);
   const hintTimer = useRef<number | null>(null);
   const keepHint = () => {
     if (hintTimer.current) window.clearTimeout(hintTimer.current);
@@ -283,9 +294,13 @@ export const CastleGame = () => {
   const notePointer = (e: { pointerType: string }) => {
     lastPointer.current = e.pointerType;
   };
+  // The spot the shop was opened from: an item bought or placed next goes
+  // straight there, no second choosing (Lena, 2026-10-16).
+  const wantedSpot = useRef<PlaceId | null>(null);
   const openShopFor = (place: PlaceId) => {
     setHint(null);
     if (needSignIn()) return;
+    wantedSpot.current = place;
     setTab(SPOT_HINT[place].tab);
     setCatalogOpen(true);
   };
@@ -301,7 +316,7 @@ export const CastleGame = () => {
     if (!menu) return;
     const away = (e: PointerEvent) => {
       const el = e.target as Element | null;
-      if (!el?.closest(".castle__menu, .castle__hit")) setMenu(null);
+      if (!el?.closest(".castle__menu, .castle__hit, .castle__spot--placed")) setMenu(null);
     };
     document.addEventListener("pointerdown", away);
     return () => document.removeEventListener("pointerdown", away);
@@ -672,6 +687,14 @@ export const CastleGame = () => {
     setGot(null);
     const places = catalogItem(row.itemId)?.places ?? [];
     if (places.length === 0) return;
+    const wanted = wantedSpot.current;
+    wantedSpot.current = null;
+    if (wanted && places.includes(wanted) && !placedAt.has(wanted)) {
+      const data = await post("/api/castle/place", { rowId: row.id, place: wanted });
+      apply(data.state);
+      track("castle_placed", { item: row.itemId, place: wanted });
+      return;
+    }
     if (places.length === 1) {
       const data = await post("/api/castle/place", { rowId: row.id, place: places[0] });
       apply(data.state);
@@ -853,6 +876,19 @@ export const CastleGame = () => {
             )}
           </svg>
         </button>
+        <button
+          type="button"
+          className={`castle__eye${showSpots ? " castle__eye--on" : ""}`}
+          onClick={() => setShowSpots((v) => !v)}
+          aria-label={t("showSpots")}
+          title={t("showSpots")}
+          aria-pressed={showSpots}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16" rx="3" strokeDasharray="3 2.4" />
+            <path d="M12 9v6M9 12h6" />
+          </svg>
+        </button>
         <button type="button" className="castle__eye" onClick={() => enterFull()} aria-label={t("fullScreen")} title={t("fullScreen")}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
@@ -879,19 +915,33 @@ export const CastleGame = () => {
                 const row = placedAt.get(place);
                 const patch = row ? PATCHES[place]?.[row.itemId] : undefined;
                 if (!row || !patch) return null;
+                const fireGlow = place === "fireplace" && patch.light;
                 return (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={place}
-                    className="castle__patch"
-                    src={`${room.art}/patches/${row.itemId}--${place}.webp`}
-                    style={{ left: patch.x, top: patch.y, width: patch.w, height: patch.h }}
-                    alt=""
-                    draggable={false}
-                  />
+                  <Fragment key={place}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="castle__patch"
+                      src={`${room.art}/patches/${row.itemId}--${place}.webp`}
+                      style={{ left: patch.x, top: patch.y, width: patch.w, height: patch.h }}
+                      alt=""
+                      draggable={false}
+                    />
+                    {/* The fire's glow lies under whatever stands in front of the
+                        fireplace, so the table and its things stay clear (Lena, 2026-10-16). */}
+                    {fireGlow && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        className="castle__light castle__light--fire"
+                        src={`${room.art}/lights/${row.itemId}--${place}.webp`}
+                        style={{ left: fireGlow.x, top: fireGlow.y, width: fireGlow.w, height: fireGlow.h }}
+                        alt=""
+                        draggable={false}
+                      />
+                    )}
+                  </Fragment>
                 );
               })}
-              {lights.map(({ place, itemId, box }) => (
+              {lights.filter((l) => l.place !== "fireplace").map(({ place, itemId, box }) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={`l-${place}`}
@@ -908,6 +958,9 @@ export const CastleGame = () => {
                   const row = placedAt.get(place);
                   const patch = row ? PATCHES[place]?.[row.itemId] : undefined;
                   if (!row || !patch || place === "fireplace") return null;
+                  // Placed plates are tapped on the plates themselves (below), not
+                  // on a box over the whole table that hid the middle spots.
+                  if (place === "settings" && room.spots.settings) return null;
                   return (
                     <button
                       key={`t-${place}`}
@@ -927,7 +980,7 @@ export const CastleGame = () => {
                     <button
                       key={`e-${place}`}
                       type="button"
-                      className={`castle__empty${hint === place ? " castle__empty--on" : ""}`}
+                      className={`castle__empty${hint === place || showSpots ? " castle__empty--on" : ""}`}
                       style={{ left: b.x, top: b.y, width: b.w, height: b.h, borderWidth: 2 / scale }}
                       aria-label={t(`hints.${SPOT_HINT[place].hint}`)}
                       onPointerEnter={(e) => {
@@ -957,6 +1010,27 @@ export const CastleGame = () => {
                 })}
               {/* Table spots lie flat on the table top, like the plates (Lena, 2026-10-14). */}
               <svg className="castle__spots" width={WORLD.w} height={WORLD.h} viewBox={`0 0 ${WORLD.w} ${WORLD.h}`} aria-hidden={false}>
+                {/* Placed plates: only the plates open their menu (Lena, 2026-10-16). */}
+                {!placing &&
+                  (() => {
+                    const row = placedAt.get("settings");
+                    const shapes = room.spots.settings;
+                    if (!row || !shapes) return null;
+                    return (
+                      <g
+                        role="button"
+                        tabIndex={0}
+                        aria-label={t(`items.${row.itemId}`)}
+                        className={`castle__spot castle__spot--placed${menu?.id === row.id ? " castle__spot--on" : ""}`}
+                        onClick={() => setMenu(menu?.id === row.id ? null : row)}
+                        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setMenu(menu?.id === row.id ? null : row)}
+                      >
+                        {shapes.map((pts, i) => (
+                          <polygon key={i} className="castle__spot-reach" points={widen(pts, 1.25)} />
+                        ))}
+                      </g>
+                    );
+                  })()}
                 {(placing ? ringPlaces : emptySpots).map((place) => {
                   const shapes = room.spots[place];
                   if (!shapes) return null;
@@ -971,7 +1045,7 @@ export const CastleGame = () => {
                       role="button"
                       tabIndex={0}
                       aria-label={ring ? place : t(`hints.${SPOT_HINT[place].hint}`)}
-                      className={`castle__spot${ring ? " castle__spot--ring" : ""}${ring && placedAt.has(place) ? " castle__spot--busy" : ""}${!ring && hint === place ? " castle__spot--on" : ""}`}
+                      className={`castle__spot${ring ? " castle__spot--ring" : ""}${ring && placedAt.has(place) ? " castle__spot--busy" : ""}${!ring && (hint === place || showSpots) ? " castle__spot--on" : ""}`}
                       onClick={choose}
                       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && choose()}
                       onPointerEnter={(e) => {
@@ -985,6 +1059,12 @@ export const CastleGame = () => {
                       {shapes.map((pts, i) => (
                         <polygon key={i} points={pts.map((p) => p.join(",")).join(" ")} />
                       ))}
+                      {/* A wider invisible area around small spots, so a tap near
+                          the middle of the table finds them (Lena, 2026-10-16). */}
+                      {(SPOT_REACH[place] ?? 1) > 1 &&
+                        shapes.map((pts, i) => (
+                          <polygon key={`r${i}`} className="castle__spot-reach" points={widen(pts, SPOT_REACH[place]!)} />
+                        ))}
                     </g>
                   );
                 })}
@@ -1174,7 +1254,15 @@ export const CastleGame = () => {
       )}
 
       {/* ---------- catalog ---------- */}
-      <Modal isOpen={catalogOpen} onClose={() => setCatalogOpen(false)} wide pinned>
+      <Modal
+        isOpen={catalogOpen}
+        onClose={() => {
+          wantedSpot.current = null;
+          setCatalogOpen(false);
+        }}
+        wide
+        pinned
+      >
         <div className="castle-dialog">
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("catalog")}</h2>
@@ -1311,7 +1399,14 @@ export const CastleGame = () => {
       </Modal>
 
       {/* ---------- just bought ---------- */}
-      <Modal isOpen={Boolean(got)} onClose={() => setGot(null)} narrow>
+      <Modal
+        isOpen={Boolean(got)}
+        onClose={() => {
+          wantedSpot.current = null;
+          setGot(null);
+        }}
+        narrow
+      >
         {got && gotCard({ row: got, kicker: t("yoursNow") })}
       </Modal>
 

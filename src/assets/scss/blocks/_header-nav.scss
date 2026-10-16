@@ -68,9 +68,11 @@
     font-size: 12px;
     font-weight: 200;
     letter-spacing: 0.08em;
-    opacity: 0;
+    // Not drawn at all until it shows: an invisible tip still took room off
+    // the right edge and made every page scroll sideways on a phone when
+    // signed in (Lena, 2026-10-16).
+    display: none;
     pointer-events: none;
-    transition: opacity 0.15s ease;
     z-index: 1;
   }
 
@@ -90,7 +92,7 @@
   @media (hover: hover) {
     &:hover::after,
     &:focus-within::after {
-      opacity: 1;
+      display: block;
     }
   }
 }

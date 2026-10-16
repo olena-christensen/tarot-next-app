@@ -55,7 +55,8 @@
   z-index: 1;
   max-width: 46rem;
   margin: 0 auto;
-  padding: 56px 24px calc(var(--home-footer-h, 92px) + 64px);
+  padding-block: 56px 64px;
+  padding-inline: 24px;
 
   &__title {
     margin: 0 0 18px;
@@ -120,9 +121,4 @@
     color: var(--gold);
     text-underline-offset: 4px;
   }
-}
-
-// Text scrolling under the floating footer: give the footer a dark backing.
-.home-about-open .main-footer--overlay {
-  background: linear-gradient(to top, rgba(9, 9, 9, 0.97) 70%, rgba(9, 9, 9, 0));
 }

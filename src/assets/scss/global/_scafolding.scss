@@ -34,6 +34,13 @@ div#root {
   .main-footer {
     margin-top: auto;
   }
+
+  // The main page: its first screen grows to fill the space above the footer.
+  &__main {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .list {
