@@ -209,8 +209,11 @@ model Subscription {
 
 model Payment {
   id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Null once the account is deleted: the payment record is kept (bookkeeping,
+  /// and so mono's later updates for it still find their row), the link to the
+  /// person is not.
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   monoInvoiceId String   @unique // one ledger row per Mono invoice
   reference     String? // our correlation reference
   productType   String // "SINGLE" | "MONTHLY" | "YEARLY" (what was bought)

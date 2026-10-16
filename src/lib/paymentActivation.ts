@@ -115,6 +115,29 @@ export async function applyMonoInvoiceStatus(
   }
   const { userId, productType } = payment;
 
+  if (userId === null) {
+    // The account was deleted after paying; its payment record was kept. Nothing
+    // to grant or email — record what mono says and acknowledge it, so mono
+    // stops retrying.
+    await prisma.payment.updateMany({
+      where: { monoInvoiceId: invoiceId },
+      data: {
+        status,
+        ...(maskedPan ? { maskedPan } : {}),
+        ...(paymentSystem ? { paymentSystem } : {}),
+        ...(failureReason ? { failureReason } : {}),
+      },
+    });
+    console.info(`[payment-apply] ${status} for invoiceId ${invoiceId} of a deleted account — recorded only`);
+    return status === "success"
+      ? "success"
+      : status === "expired"
+        ? "expired"
+        : status === "failure" || status === "reversed"
+          ? "failure"
+          : "intermediate";
+  }
+
   const details: Prisma.PaymentUpdateManyMutationInput = {};
   if (maskedPan) details.maskedPan = maskedPan;
   if (paymentSystem) details.paymentSystem = paymentSystem;
