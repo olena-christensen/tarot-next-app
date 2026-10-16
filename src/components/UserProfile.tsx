@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { routing } from "@/i18n/routing";
@@ -209,6 +209,19 @@ export const UserProfile = () => {
         const data = await res.json();
         setPasswordError(data.error || t("failedToUpdatePassword"));
         return;
+      }
+
+      // The change ended every session on this account, this one included —
+      // sign straight back in with the new password so only the others end.
+      // Best-effort: if it fails, the password still changed and this device
+      // is signed out within five minutes.
+      if (session?.user?.email) {
+        await signIn("credentials", {
+          email: session.user.email,
+          password: newPassword,
+          rememberMe: "true",
+          redirect: false,
+        }).catch(() => {});
       }
 
       setPasswordSuccess(t("passwordUpdated"));

@@ -57,7 +57,9 @@ export async function PUT(request: Request) {
 
   await prisma.user.update({
     where: { id: session.user.id },
-    data: { password: hashedPassword },
+    // Ends every other sign-in within five minutes (src/lib/sessionVersion.ts);
+    // the profile signs this device in again with the new password.
+    data: { password: hashedPassword, sessionVersion: { increment: 1 } },
   });
 
   return NextResponse.json({ message: "Password updated successfully" });

@@ -53,7 +53,9 @@ export async function POST(request: Request) {
     await prisma.$transaction([
       prisma.user.update({
         where: { id: record.userId },
-        data: { password: hashedPassword },
+        // Ends every other sign-in within five minutes (src/lib/sessionVersion.ts);
+        // this device signs in again with the new password right after.
+        data: { password: hashedPassword, sessionVersion: { increment: 1 } },
       }),
       prisma.passwordResetToken.update({
         where: { id: record.id },

@@ -41,5 +41,7 @@ declare module "next-auth/jwt" {
     sessionExpiresAt?: number | null;
     /** Epoch ms of the last successful "does this user still exist" check. */
     verifiedAt?: number;
+    /** User.sessionVersion at sign-in; a newer value in the DB ends this session. */
+    sessionVersion?: number;
   }
 }

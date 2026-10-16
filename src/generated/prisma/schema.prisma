@@ -45,6 +45,9 @@ model User {
   image              String?
   createdAt          DateTime                 @default(now())
   termsAcceptedAt    DateTime?
+  /// Bumped to end every other sign-in (password reset/change, Google linked
+  /// over a password). See src/lib/sessionVersion.ts.
+  sessionVersion     Int                      @default(0)
   preferredDeck      String                   @default("Rider-Waite")
   preferredReader    String                   @default("vespera")
   preferredLocale    String                   @default("en")
