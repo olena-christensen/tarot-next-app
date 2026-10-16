@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 import { normalizeEmail } from "./normalizeEmail";
+import { isSessionRevoked, onGoogleLinked } from "./sessionVersion";
 import {
   clearRateLimit,
   clientIp,
@@ -161,6 +162,13 @@ export const authOptions: NextAuthOptions = {
         token.sessionExpiresAt = remembered
           ? null
           : Date.now() + SHORT_SESSION_MS;
+        // Read fresh rather than from `user`: linking Google can bump it during
+        // this same sign-in (events.linkAccount runs before this callback).
+        const versionRow = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { sessionVersion: true },
+        });
+        token.sessionVersion = versionRow?.sessionVersion ?? 0;
       }
 
       // Absolute deadline for a not-remembered session. Checked before anything
@@ -214,6 +222,7 @@ export const authOptions: NextAuthOptions = {
           preferredLocale: string;
           dailyCardEmail: boolean;
           readingReminder: boolean;
+          sessionVersion: number;
         } | null;
         try {
           // Same query that answers "do you still exist", widened to re-read the
@@ -232,6 +241,7 @@ export const authOptions: NextAuthOptions = {
               preferredLocale: true,
               dailyCardEmail: true,
               readingReminder: true,
+              sessionVersion: true,
             },
           });
         } catch (err) {
@@ -244,6 +254,11 @@ export const authOptions: NextAuthOptions = {
           // Throwing is how NextAuth v4 invalidates a JWT session: the session
           // route catches it, logs JWT_SESSION_ERROR and clears the cookie.
           throw new Error("user_no_longer_exists");
+        }
+        // The password changed (or Google replaced it) since this session
+        // signed in: end it, the same way as a deleted account.
+        if (isSessionRevoked(token.sessionVersion, fresh.sessionVersion)) {
+          throw new Error("session_revoked");
         }
         // The DB is authoritative: every writer (avatar upload, rename, each
         // preference PATCH) persists before calling update(), so a value here is
@@ -280,6 +295,14 @@ export const authOptions: NextAuthOptions = {
     },
   },
   events: {
+    async linkAccount({ user, account }) {
+      if (account.provider !== "google") return;
+      try {
+        await onGoogleLinked(user.id);
+      } catch (err) {
+        console.error("[auth] failed to clear password after Google link", err);
+      }
+    },
     async createUser({ user }) {
       // When the adapter creates a new OAuth user, record terms acceptance
       // based on the short-lived consent cookie set on the client before the
