@@ -296,11 +296,11 @@ export const CastleGame = () => {
   };
   // The spot the shop was opened from: an item bought or placed next goes
   // straight there, no second choosing (Lena, 2026-10-16).
-  const wantedSpot = useRef<PlaceId | null>(null);
+  const wantedSpot = useRef<{ place: PlaceId; replace?: boolean } | null>(null);
   const openShopFor = (place: PlaceId) => {
     setHint(null);
     if (needSignIn()) return;
-    wantedSpot.current = place;
+    wantedSpot.current = { place };
     setTab(SPOT_HINT[place].tab);
     setCatalogOpen(true);
   };
@@ -696,10 +696,11 @@ export const CastleGame = () => {
     if (places.length === 0) return;
     const wanted = wantedSpot.current;
     wantedSpot.current = null;
-    if (wanted && places.includes(wanted) && !placedAt.has(wanted)) {
-      const data = await post("/api/castle/place", { rowId: row.id, place: wanted });
+    // from a free spot, or from "swap" (the old item goes back to the vault)
+    if (wanted && places.includes(wanted.place) && (wanted.replace || !placedAt.has(wanted.place))) {
+      const data = await post("/api/castle/place", { rowId: row.id, place: wanted.place });
       apply(data.state);
-      track("castle_placed", { item: row.itemId, place: wanted });
+      track("castle_placed", { item: row.itemId, place: wanted.place });
       return;
     }
     if (places.length === 1) {
@@ -856,12 +857,22 @@ export const CastleGame = () => {
       <p className="castle__subtitle">{t("subtitle")}</p>
 
       <div className="castle__hud">
+        {/* The wheel as a small fortune-wheel icon (Lena, 2026-10-16); it glows
+            while today's free spin waits. */}
         <button
           type="button"
-          className={`castle__pill${canFree ? " castle__pill--glow" : ""}`}
+          className={`castle__eye castle__wheel-btn${canFree ? " castle__eye--glow" : ""}`}
           onClick={() => (needSignIn() ? undefined : setWheelOpen(true))}
+          aria-label={canFree ? t("wheelFree") : t("wheelButton")}
+          title={canFree ? t("wheelFree") : t("wheelButton")}
         >
-          ✦ {canFree ? t("wheelFree") : t("wheelButton")}
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="13" r="8" />
+            <circle cx="12" cy="13" r="1.8" />
+            <path d="M12 5v16M5.07 9l13.86 8M5.07 17l13.86-8" />
+            <path d="M10.4 2.6h3.2L12 5.2z" fill="currentColor" />
+            <path d="M20.5 2.5l.45 1.05 1.05.45-1.05.45-.45 1.05-.45-1.05L19 4l1.05-.45z" fill="currentColor" stroke="none" />
+          </svg>
         </button>
         <button
           type="button"
@@ -1420,6 +1431,25 @@ export const CastleGame = () => {
       {/* ---------- swap ---------- */}
       <Modal isOpen={Boolean(swapFor)} onClose={() => setSwapFor(null)} wide>
         <div className="castle-dialog">
+          {/* top left, across from the close skull */}
+          <div className="castle-dialog__top">
+            {/* Find something new for this spot (Lena, 2026-10-16): what is
+                bought next takes the old item's place. */}
+            <button
+              type="button"
+              className="castle-dialog__clear castle-dialog__clear--next"
+              onClick={() => {
+                const place = swapFor?.place;
+                setSwapFor(null);
+                if (!place) return;
+                wantedSpot.current = { place, replace: true };
+                setTab(SPOT_HINT[place].tab);
+                setCatalogOpen(true);
+              }}
+            >
+              {t("toEmporium")}
+            </button>
+          </div>
           <div className="castle-dialog__head">
             <h2 className="castle-dialog__title">{t("swapTitle")}</h2>
           </div>
