@@ -438,12 +438,19 @@ TABLE_POOL = (792, 600, 230)           # where the chandelier's light pools on t
 
 
 def hook_cover():
-    """The room's own wall, shifted sideways, painted over the hook."""
-    y0, y1, x0, x1, shift = HOOK_CUT
-    cut = np.zeros((H, W)); cut[y0:y1, x0:x1] = 1
-    cut = ndimage.gaussian_filter(cut, 3)
-    src = np.roll(RA, shift, axis=1)
-    return Image.fromarray(np.dstack([src, cut * 255]).astype(np.uint8), "RGBA")
+    """The room's own wall, shifted sideways, painted over the hook (and, on
+    the phone, over the chain below where the chandelier now hangs).
+    HOOK_CUT is one (rows, columns, shift) box or a list of them."""
+    boxes = HOOK_CUT if isinstance(HOOK_CUT, list) else [HOOK_CUT]
+    colour = np.zeros((H, W, 3)); weight = np.zeros((H, W)); alpha = np.zeros((H, W))
+    for y0, y1, x0, x1, shift in boxes:
+        cut = np.zeros((H, W)); cut[y0:y1, x0:x1] = 1
+        cut = ndimage.gaussian_filter(cut, 3)
+        colour += np.roll(RA, shift, axis=1) * cut[..., None]
+        weight += cut
+        alpha = np.maximum(alpha, cut)
+    colour = colour / np.maximum(weight, 1e-6)[..., None]   # one box: exactly the shifted wall
+    return Image.fromarray(np.dstack([colour, alpha * 255]).astype(np.uint8), "RGBA")
 
 
 def build_chandelier(item):
@@ -917,9 +924,11 @@ if PHONE:
     # fireplace in the middle of the back wall, the table pointing at it, three
     # chairs a side. The table's sides meet at (468, 1166).
     VANISH = (468, 1166)
-    CHAIN_END = (472, 585)              # the chain is cut here; the hook below is painted out
-    HOOK_CUT = (646, 762, 446, 502, 64)
-    CHANDELIER_SCALE = 0.88
+    # The chandelier hangs high, as on the computer (Lena, 2026-10-16): the
+    # chain is cut here and the chain below it and the hook are painted out.
+    CHAIN_END = (474, 400)
+    HOOK_CUT = [(408, 650, 462, 490, 30), (640, 762, 446, 502, 64)]
+    CHANDELIER_SCALE = 0.95
     TABLE = [(343, 1312), (594, 1312), (858, 1621), (79, 1621)]
     TABLE_POOL = (468, 1460, 300)
     # From the perspective (the near edge is 3.1 times wider than the far one)
