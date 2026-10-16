@@ -13,7 +13,10 @@
   flex-direction: column;
   align-items: center;
   flex: 1 0 auto; // fills the screen above the footer (.page-shell__main)
-  overflow-x: clip; // smoke and medallions never cause a sideways scroll
+  // The smoke canvas is a full screen tall; the block is now shorter (the footer
+  // follows it), so clip both ways — otherwise the smoke spills under the footer
+  // and adds empty scroll below it.
+  overflow: clip;
   padding-top: 112px; // under the header row (88px)
   padding-bottom: var(--veil-gap); // the footer follows in normal flow
 
