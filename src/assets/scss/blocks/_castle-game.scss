@@ -660,6 +660,18 @@ html.castle-locked body {
 .castle__eye {
   margin-left: 8px;
 
+  // the wheel: first in the bar, glowing while today's free spin waits
+  &.castle__wheel-btn {
+    margin-left: 0;
+  }
+
+  &--glow {
+    color: var(--text-soft);
+    border-color: rgba(250, 225, 163, 0.8);
+    box-shadow: 0 0 14px rgba(250, 225, 163, 0.35);
+    animation: castleGlow 2.4s ease-in-out infinite alternate;
+  }
+
   // "show free spots" while it is on
   &--on {
     border-color: rgba(250, 225, 163, 0.9);
@@ -1241,6 +1253,7 @@ html.castle-locked body {
 @media (prefers-reduced-motion: reduce) {
   .castle__light,
   .castle__pill--glow,
+  .castle__eye--glow,
   .castle__party-btn--ready,
   .castle__ring {
     animation: none;
@@ -1587,4 +1600,11 @@ html.castle-locked body {
   display: flex;
   justify-content: center;
   margin: 0 0 8px;
+}
+
+// Swap: the Emporium button sits top left, across from the close skull (Lena, 2026-10-16).
+.castle-dialog__top {
+  display: flex;
+  margin-bottom: 12px;
+  padding-right: 52px;
 }
