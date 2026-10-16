@@ -60,7 +60,9 @@ reading prose that was written for the writer's benefit, not the reader's.
 - **NEVER run git add, git commit, git stage, or any git write operation** — the user does their own commits. (Do not assume or name a specific editor/tool, and never explain how to commit/push.) Subagents must NOT touch git either. Read-only git commands (status, log, diff) are fine.
 - **ALWAYS use Opus model** — never use Sonnet, Haiku, or any other model for subagents or any task
 - **Document rules, conventions, decisions, and handovers in repo files (this CLAUDE.md or `docs/`) — NEVER in agent/private memory.** Everything must be human-readable by the user and any dev, and re-read from the file each session. Do not rely on private memory for durable knowledge; if you learn something worth keeping, write it into the relevant repo file.
-- **Dev server runs on `localhost:3001`** (not 3000 — the user runs multiple projects).
+- **Dev server runs on `localhost:3001`. NEVER touch `localhost:3000` — not to open, test, probe or run anything. It is not this app** (the user runs multiple projects).
+- **Ask before running anything** — starting a server, opening a page, driving the browser. Never on your own initiative.
+- **Browser: only ever the user's existing default Chrome window.** Never open a new window, tab group or a pile of tabs.
 - When reducing permission prompts / fixing settings, edit `.claude/settings.json` directly — don't run steps that themselves prompt (transcript scans, out-of-project reads). In subagents, use the Read tool, not `cat`/`ls`/`for` loops (shell expansion defeats the allowlist).
 - **STATUS.md hygiene:** open sections contain checkboxes only — no intro paragraphs, no
   process notes, no `[x]` history. Finished work moves to the Done archive; lessons and
