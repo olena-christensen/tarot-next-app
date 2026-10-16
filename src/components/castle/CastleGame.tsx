@@ -509,7 +509,14 @@ export const CastleGame = () => {
       const data = await post<Partial<PartyOutcome>>("/api/castle/party");
       apply(data.state);
       if (typeof data.bats === "number") {
-        setPartyOutcome({ bats: data.bats, best: data.best ?? data.bats, stones: data.stones ?? 0, toNext: data.toNext ?? null });
+        setPartyOutcome({
+          bats: data.bats,
+          best: data.best ?? data.bats,
+          stones: data.stones ?? 0,
+          toNext: data.toNext ?? null,
+          eaten: data.eaten ?? 0,
+          burnt: Boolean(data.burnt),
+        });
       }
     } catch {
       // the film still plays; the rating just doesn't show

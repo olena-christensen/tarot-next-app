@@ -23,7 +23,7 @@ const DARK_AT = 23.6;
 const MUSIC_FADE = [21.5, 25] as const;
 const MUSIC_VOLUME = 0.6;
 
-export type PartyOutcome = { bats: number; best: number; stones: number; toNext: number | null };
+export type PartyOutcome = { bats: number; best: number; stones: number; toNext: number | null; eaten: number; burnt: boolean };
 
 type Props = {
   /** Record sample name (public/sounds/castle/<name>-sample.mp3). */
@@ -121,6 +121,12 @@ export const CastleParty = ({ record, outcome, run, muted, tall, onReplay, onSha
               <p className="castle-party__hint">
                 {outcome.toNext === null ? t("perfect") : t("toNext", { count: outcome.toNext })}
               </p>
+              {/* What the party used up (Lena, 2026-10-16). */}
+              {(outcome.eaten > 0 || outcome.burnt) && (
+                <p className="castle-party__hint">
+                  {outcome.eaten > 0 && outcome.burnt ? t("afterBoth") : outcome.burnt ? t("afterFire") : t("afterTreats")}
+                </p>
+              )}
             </div>
           )}
           <div className="castle-party__credit">

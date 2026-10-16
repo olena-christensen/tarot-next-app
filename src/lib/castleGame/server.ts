@@ -260,7 +260,13 @@ export async function takeGift(giftId: string, userId: string, now: Date = new D
   return count ? { ok: true, itemId: row.itemId } : { ok: false, reason: "taken" };
 }
 
-export type PartyResult = { ok: true; bats: number; best: number; stones: number; toNext: number | null } | Fail;
+export type PartyResult =
+  | { ok: true; bats: number; best: number; stones: number; toNext: number | null; eaten: number; burnt: boolean }
+  | Fail;
+
+/** What a party uses up (Lena, 2026-10-16): the treats are eaten and the
+ * firewood burns. Everything else stays in the hall. */
+const USED_UP: PlaceId[] = ["treatMiddle", "treatFront", "fireplace"];
 
 /** Party night: rates the hall and pays for every bat beyond the player's best. */
 export async function throwParty(userId: string): Promise<PartyResult> {
@@ -273,16 +279,30 @@ export async function throwParty(userId: string): Promise<PartyResult> {
   );
   if (rating.bats === 0) return { ok: false, reason: "not-ready" };
   const earned = Array.from({ length: rating.bats }, (_, i) => `bat${i + 1}`);
+  const usedUp = rows.filter((r: { place: string | null }) => r.place && USED_UP.includes(r.place as PlaceId));
   const stones = await prisma.$transaction(async (tx) => {
     const { count } = await tx.castleSpin.createMany({
       data: earned.map((kind) => ({ userId, day: PARTY_DAY, kind, prize: String(STONES_PER_BAT) })),
       skipDuplicates: true,
     });
     if (count) await addStones(tx, userId, count * STONES_PER_BAT);
+    if (usedUp.length) {
+      await tx.castleItem.deleteMany({
+        where: { userId, sentAt: null, id: { in: usedUp.map((r: { id: string }) => r.id) } },
+      });
+    }
     return count * STONES_PER_BAT;
   });
   const best = await prisma.castleSpin.count({ where: { userId, day: PARTY_DAY } });
-  return { ok: true, bats: rating.bats, best, stones, toNext: rating.toNext };
+  return {
+    ok: true,
+    bats: rating.bats,
+    best,
+    stones,
+    toNext: rating.toNext,
+    eaten: usedUp.filter((r: { place: string | null }) => r.place !== "fireplace").length,
+    burnt: usedUp.some((r: { place: string | null }) => r.place === "fireplace"),
+  };
 }
 
 /** "Clear the hall" (Lena, 2026-10-14): every placed item goes back to the player's items. */
