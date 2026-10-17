@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { Providers } from "@/components/Providers";
 import { Header } from "@/components/Header";
+import { HalloweenBanner } from "@/components/HalloweenBanner";
 import { Modal } from "@/components/Modal";
 import { LoginForm } from "@/components/LoginForm";
 import { LoginContext } from "@/components/LoginContext";
@@ -63,6 +64,8 @@ const ChromeInner = ({ children }: { children: React.ReactNode }) => {
     <LoginContext.Provider value={openLogin}>
       {/* The main page draws its own medallions. */}
       {!bare && !home && <MysticBackground />}
+      {/* Above the header on every page, in October only (src/lib/halloween.ts). */}
+      {!bare && <HalloweenBanner />}
       {!bare && <Header onOpenLogin={() => openLogin()} />}
       {children}
       <Modal

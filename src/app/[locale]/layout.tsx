@@ -9,6 +9,7 @@ import { CookieBanner } from "@/components/CookieBanner";
 import { SiteChrome } from "@/components/SiteChrome";
 import { Analytics } from "@vercel/analytics/next";
 import { introBootScript } from "@/lib/intro";
+import { halloweenBootScript } from "@/lib/halloween";
 
 const raleway = Raleway({ subsets: ["latin", "latin-ext", "cyrillic"] });
 
@@ -82,11 +83,13 @@ export default async function LocaleLayout({ children, params }: Props) {
   const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
-    // suppressHydrationWarning: the intro boot script sets data-intro on <html> before React loads.
+    // suppressHydrationWarning: the boot scripts set data-intro and data-halloween on <html> before React loads.
     <html lang={locale} suppressHydrationWarning>
       <body className={raleway.className}>
         {/* Decides whether the home page intro plays — must run before the first paint. */}
         <script dangerouslySetInnerHTML={{ __html: introBootScript(routing.locales) }} />
+        {/* Decides whether the Halloween banner shows — same reason. */}
+        <script dangerouslySetInnerHTML={{ __html: halloweenBootScript() }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdString }}

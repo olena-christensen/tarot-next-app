@@ -1,0 +1,328 @@
+// Halloween countdown strip at the very top of every page, above the header (HalloweenBanner.tsx).
+// A cross of the potion game and the app: the potion room painted dimly behind,
+// the flickering pumpkin, steam and candle flames; gold hairlines, thin type and
+// the pumpkin pill's button on top. It shows only under <html data-halloween>,
+// set before the first paint (src/lib/halloween.ts).
+//
+// The plum (11, 8, 16) and the ember (255, 150, 60) are the potion game's own
+// colours (_potion-game.scss), not new ones.
+//
+// Mobile-first: one slim row on phones, digit boxes from md up. Both layouts are
+// in the markup and only one shows, so nothing moves when the numbers fill in.
+
+// The strip's height, in one place. It is in normal flow, so every page below it
+// moves down by itself; only what is positioned against the top of the page reads
+// this: the header (_main-header.scss), the phone greeting strip
+// (_header-greeting.scss) and the full-screen page shell (_scafolding.scss).
+// The home page's short-screen media queries cannot read it, so they repeat
+// its values in their thresholds (_offer-block.scss).
+:root {
+  --banner-h: 0px;
+}
+
+html[data-halloween] {
+  --banner-h: 52px;
+
+  @include respond-above(md) {
+    --banner-h: 104px;
+  }
+}
+
+.halloween-banner {
+  position: relative;
+  z-index: 31; // the header's layer, so its menu panel never slides under the strip
+  display: none;
+  align-items: center;
+  gap: 10px;
+  height: var(--banner-h);
+  box-sizing: border-box;
+  padding-inline: 12px 16px;
+  overflow: hidden;
+  border-block: var(--border);
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(11, 8, 16, 0.55) 0%,
+      rgba(11, 8, 16, 0.92) 38%,
+      rgba(11, 8, 16, 0.92) 70%,
+      rgba(11, 8, 16, 0.6) 100%
+    ),
+    url("/game-art/potion/room.webp");
+  background-size: cover;
+  background-position: center 62%;
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+  text-decoration: none; // a link to the games page, a strip to the eye
+
+  html[data-halloween] & {
+    display: flex;
+  }
+
+  // Home page intro only (src/lib/intro.ts): it drops in with the header.
+  html[data-intro="play"] & {
+    animation: introDrop 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: introFade 0.4s ease-out both;
+    }
+  }
+
+  &__pumpkin {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    margin-block-start: -6px; // the hat brim sits a little above the row, like the pill
+    animation: entranceFlicker 2.2s ease-in-out infinite alternate; // the pill's flicker (_potion-game.scss)
+  }
+
+  &__flame {
+    display: none;
+  }
+
+  &__clock {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  // Steam is decoration drifting over the numbers; absolute so it never takes space.
+  &__steam {
+    position: absolute;
+    top: -4px;
+    left: 40%;
+    width: 46px;
+    opacity: 0;
+    pointer-events: none;
+    animation: halloweenSteam 6s ease-in-out infinite;
+
+    &--late {
+      display: none;
+    }
+  }
+
+  &__countdown {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  &__kicker {
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  &__line {
+    font-size: 1.2rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums; // digits keep one width, so the line never shivers
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  // A digit not known until after load: holds its width, shows nothing.
+  &__pending {
+    visibility: hidden;
+  }
+
+  &__line-unit {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+
+  &__units {
+    display: none;
+  }
+
+  &__night {
+    display: none;
+    font-size: 1.15rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  &__cta {
+    flex: 0 0 auto;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  &__cta-short {
+    font-size: 0.85rem;
+  }
+
+  &__cta-full {
+    display: none;
+  }
+
+  // 31 October: no numbers, just the night itself.
+  html[data-halloween="night"] & {
+    .halloween-banner__countdown {
+      display: none;
+    }
+
+    .halloween-banner__night {
+      display: block;
+    }
+  }
+
+  @include respond-above(md) {
+    justify-content: center;
+    gap: 44px;
+    padding-inline: 3rem;
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(11, 8, 16, 0.35) 0%,
+        rgba(11, 8, 16, 0.9) 26%,
+        rgba(11, 8, 16, 0.94) 50%,
+        rgba(11, 8, 16, 0.9) 74%,
+        rgba(11, 8, 16, 0.35) 100%
+      ),
+      url("/game-art/potion/room.webp");
+    background-position: center 60%;
+
+    &__pumpkin {
+      width: 84px;
+      height: 84px;
+      margin-block-start: -6px;
+    }
+
+    &__flame {
+      display: block;
+      width: 14px;
+      height: 30px;
+      object-fit: contain;
+      transform-origin: 50% 100%;
+      animation: halloweenFlame 1.3s ease-in-out infinite alternate;
+    }
+
+    &__clock {
+      flex: 0 0 auto;
+      justify-content: center;
+    }
+
+    &__steam {
+      top: -18px;
+      left: 34%;
+      width: 64px;
+      animation-duration: 7s;
+
+      &--late {
+        display: block;
+        left: 62%;
+        width: 60px;
+        animation-delay: 3.5s;
+      }
+    }
+
+    &__countdown {
+      align-items: center;
+      gap: 6px;
+    }
+
+    &__kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+    }
+
+    &__line {
+      display: none;
+    }
+
+    &__units {
+      display: flex;
+      gap: 10px;
+    }
+
+    &__unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      min-width: 60px;
+      padding-block: 4px;
+      border: var(--border);
+      border-radius: var(--border-radius);
+      background: rgba(9, 9, 9, 0.6);
+    }
+
+    &__value {
+      font-size: 1.7rem;
+      line-height: 1;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &__label {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    &__night {
+      font-size: 1.7rem;
+    }
+
+    &__cta-short {
+      display: none;
+    }
+
+    // The pumpkin pill's button (.game-entrance in _potion-game.scss), without the pumpkin.
+    &__cta-full {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      padding-block: 11px;
+      padding-inline: 26px;
+      border: 1px solid rgba(250, 225, 163, 0.6);
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(40, 24, 14, 0.95), rgba(14, 10, 12, 0.95));
+      box-shadow: 0 0 18px rgba(255, 150, 60, 0.28), inset 0 0 12px rgba(255, 150, 60, 0.08);
+      transition: box-shadow 0.2s ease;
+    }
+
+    &:hover &__cta-full {
+      box-shadow: 0 0 26px rgba(255, 150, 60, 0.45), inset 0 0 12px rgba(255, 150, 60, 0.12);
+    }
+
+    &__cta-kicker {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    &__cta-text {
+      font-size: 1.05rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__pumpkin,
+    &__flame {
+      animation: none;
+    }
+
+    &__steam {
+      display: none;
+    }
+  }
+}
+
+@keyframes halloweenSteam {
+  0% { transform: translateY(8px); opacity: 0; }
+  30% { opacity: 0.45; }
+  100% { transform: translateY(-26px); opacity: 0; }
+}
+
+@keyframes halloweenFlame {
+  from { transform: scaleY(1); opacity: 0.85; }
+  to { transform: scaleY(1.18); opacity: 1; }
+}

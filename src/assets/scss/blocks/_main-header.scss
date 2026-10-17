@@ -25,7 +25,7 @@
 
 .main-header {
   position: absolute;
-  top: 0;
+  top: var(--banner-h); // under the Halloween strip while it shows, else 0 (_halloween-banner.scss)
   left: 0;
   right: 0;
   display: flex;

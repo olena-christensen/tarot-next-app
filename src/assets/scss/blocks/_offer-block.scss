@@ -378,61 +378,97 @@
   }
 }
 
+// The short-screen steps below measure the whole viewport, but in October the
+// Halloween strip takes --banner-h off the top (_halloween-banner.scss). A
+// media query cannot read a custom property, so each step is repeated under
+// html[data-halloween] with its threshold raised by the strip's height at that
+// width. Keep those thresholds in step with --banner-h.
+
 // Short phone screens (small phones, Display Zoom, larger text): a more
 // compact reader block, so less of it needs scrolling.
-@media (max-height: 720px) and (max-width: 37.5em) {
-  .offer-block {
-    .offer-block__reader {
-      gap: 10px;
-    }
+@mixin offer-short-phone {
+  .offer-block__reader {
+    gap: 10px;
+  }
 
-    .offer-block__reader-portrait {
-      width: 72px;
-      height: 72px;
-    }
+  .offer-block__reader-portrait {
+    width: 72px;
+    height: 72px;
+  }
 
-    .offer-block__reader-name {
-      font-size: 1.3rem;
-    }
+  .offer-block__reader-name {
+    font-size: 1.3rem;
+  }
 
-    .offer-block__reader-bio {
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
+  .offer-block__reader-bio {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
 
-    .offer-block__reader-actions {
-      gap: 12px; // keeps the --veil-gap steps below exact
-    }
+  .offer-block__reader-actions {
+    gap: 12px; // keeps the --veil-gap steps below exact
   }
 }
 
 // Laptop screens without much height: a smaller title and portrait.
+@mixin offer-short-laptop {
+  .offer-block__title {
+    font-size: 72px;
+  }
+
+  .offer-block__reader {
+    gap: 10px;
+  }
+
+  .offer-block__reader-portrait {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+@mixin offer-shorter-laptop {
+  .offer-block__title {
+    font-size: 60px;
+  }
+
+  .offer-block__reader-portrait {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-height: 720px) and (max-width: 37.5em) {
+  .offer-block {
+    @include offer-short-phone;
+  }
+}
+
+@media (max-height: 772px) and (max-width: 37.5em) {
+  html[data-halloween] .offer-block {
+    @include offer-short-phone;
+  }
+}
+
 @media (min-width: 56.25em) and (max-height: 820px) {
   .offer-block {
-    .offer-block__title {
-      font-size: 72px;
-    }
+    @include offer-short-laptop;
+  }
+}
 
-    .offer-block__reader {
-      gap: 10px;
-    }
-
-    .offer-block__reader-portrait {
-      width: 76px;
-      height: 76px;
-    }
+@media (min-width: 56.25em) and (max-height: 924px) {
+  html[data-halloween] .offer-block {
+    @include offer-short-laptop;
   }
 }
 
 @media (min-width: 56.25em) and (max-height: 740px) {
   .offer-block {
-    .offer-block__title {
-      font-size: 60px;
-    }
+    @include offer-shorter-laptop;
+  }
+}
 
-    .offer-block__reader-portrait {
-      width: 64px;
-      height: 64px;
-    }
+@media (min-width: 56.25em) and (max-height: 844px) {
+  html[data-halloween] .offer-block {
+    @include offer-shorter-laptop;
   }
 }

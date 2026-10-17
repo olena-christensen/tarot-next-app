@@ -312,7 +312,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/morthalion/Projects/tarot-next-app/src/generated/prisma",
+      "value": "D:\\Projects\\tarot-next-app\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -321,17 +321,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/morthalion/Projects/tarot-next-app/src/generated/prisma/schema.prisma",
+    "sourceFilePath": "D:\\Projects\\tarot-next-app\\src\\generated\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "",
   "clientVersion": "6.19.2",
