@@ -4,11 +4,11 @@
 
 ## Status
 
-Started 2026-10-17. Repository side done; Lena's husband sets up his computer from the shared setup page.
+Started 2026-10-17. Repository side done; Kenneth sets up his computer from the shared setup page.
 
 ## Goal
 
-Lena's husband works on the games from his own computer and Claude account with the same rules as Lena, and with far fewer permission prompts on both machines. His changes reach Lena as pull requests on GitHub.
+Kenneth works on the games from his own computer and Claude account with the same rules as Lena, and with far fewer permission prompts on both machines. His changes reach Lena as pull requests on GitHub.
 
 ## Files
 
@@ -18,9 +18,9 @@ Lena's husband works on the games from his own computer and Claude account with 
 
 ## To Do
 
-- [ ] Lena adds her husband as a collaborator on the GitHub repository
+- [ ] Lena adds Kenneth as a collaborator on the GitHub repository
 - [ ] Lena pastes `.claude/project-instructions.md` into her own project instructions (replacing the old text)
-- [ ] Her husband follows the setup page
+- [ ] Kenneth follows the setup page
 
 ## In Progress
 
