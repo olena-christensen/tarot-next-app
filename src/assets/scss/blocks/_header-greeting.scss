@@ -29,6 +29,13 @@
   @include respond-above(md) {
     display: none;
   }
+
+  // While the Halloween strip is at the top, the greeting sits under it and
+  // scrolls away with the header; pinned to the viewport it would cover the strip.
+  html[data-halloween] & {
+    position: absolute;
+    top: var(--banner-h);
+  }
 }
 
 // The desktop placement is not styled here — it is an ordinary `.main-menu__link`
